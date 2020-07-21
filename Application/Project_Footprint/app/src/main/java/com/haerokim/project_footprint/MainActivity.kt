@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             Toast.makeText(this,"시작",Toast.LENGTH_LONG).show()
         }
 
-        GetPlaceInfo(this, "스시아루히").execute()
+        GetPlaceInfo(this, "제이의꽃다방두번째").execute()
     }
 
     override fun onDestroy() {

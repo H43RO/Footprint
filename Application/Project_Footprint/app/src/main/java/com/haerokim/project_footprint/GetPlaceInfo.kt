@@ -12,7 +12,6 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -32,7 +31,10 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         lateinit var placeCategory: String
         lateinit var placeDescription: String
         lateinit var placeTime: String
+        lateinit var placeLocate: String
         lateinit var placeImageSrc: String
+        lateinit var placeMenuName: ArrayList<String>
+        lateinit var placeMenuPrice: ArrayList<String>
 
         try {
             var doc: Document =
@@ -41,29 +43,44 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             var categoryElement: Elements = doc.select("div[class=biz_name_area]").select("span")
             var descriptionElement: Elements = doc.select("div[class=info] div").select("span")
             var timeElement: Elements = doc.select("div[class=biztime] span").select("span")
+            var locateElement: Elements = doc.select("span[class=addr]")
+            var menuNameElement: Elements = doc.select("span[class=name]")
+            var menuPriceElement: Elements = doc.select("div em[class=price]")
             var imageElement: Elements = doc.select("div[class=thumb_area] a").select("img")
+//
+//            Log.d("HTML_title", titleElement[0].text())
+//            Log.d("HTML_category", categoryElement[0].text())
+//            Log.d("HTML_description", descriptionElement[0].text())
+//            Log.d("HTML_time", timeElement[0].text())
+//            Log.d("HTML_locate", locateElement[0].text())
+//            Log.d("HTML_image", imageElement[0].attr("src"))
+//            Log.d("HTML Array_Name" ,menuNameElement.text())
+//            Log.d("HTML Array_Price" ,menuPriceElement.text())
 
-            //Description, Time은 Null일 수도 있음
-
-            Log.d("HTML_title", titleElement[0].text())
-            Log.d("HTML_category", categoryElement[0].text())
-            Log.d("HTML_description", descriptionElement[0].text())
-            Log.d("HTML_time", timeElement[0].text())
-            Log.d("HTML_time", imageElement[0].toString())
-
-
-            placeTitle = titleElement[0].text()
-            placeCategory = categoryElement[0].text()
-            placeDescription = descriptionElement[0].text()
-            placeTime = timeElement[0].text()
-            placeImageSrc = imageElement[0].attr("src")
-
+            placeTitle = if(titleElement.size != 0){ titleElement[0].text() } else{ "" }
+            placeCategory = if(categoryElement.size != 0){ categoryElement[0].text() } else { "" }
+            placeDescription = if(descriptionElement.size != 0){ descriptionElement[0].text() } else { "" }
+            placeTime = if(timeElement.size != 0){ timeElement[0].text() } else { "" }
+            placeLocate = if(locateElement.size != 0){ locateElement[0].text() } else { "" }
+            placeMenuName = menuNameElement as ArrayList<String>
+            placeMenuPrice = menuPriceElement as ArrayList<String>
+            placeImageSrc = if (imageElement.size != 0){ imageElement[0].attr("src") } else { "" }
 
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
         val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra("Title", placeTitle)
+        intent.putExtra("Category", placeCategory)
+        intent.putExtra("Description", placeDescription)
+        intent.putExtra("Time", placeTime)
+        intent.putExtra("Locate", placeLocate)
+        intent.putStringArrayListExtra("MenuName", placeMenuName)
+        intent.putStringArrayListExtra("MenuPrice", placeMenuPrice)
+        intent.putExtra("Image", placeImageSrc)
+
+
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, 0)
@@ -71,11 +88,12 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         if (Build.VERSION.SDK_INT >= 26) {
             var mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val id = "my_channel_01"
+            val id = "channel_01"
             val name: CharSequence = "주변에 맛집 $placeName 가 있어요!"
             val description = "탭하여 더 많은 정보 확인하기"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(id, name, importance)
+
             mChannel.description = description
             mChannel.enableLights(true)
             mChannel.lightColor = Color.RED
@@ -84,8 +102,9 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             mNotificationManager.createNotificationChannel(mChannel)
             mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             val notifyID = 1
-            val CHANNEL_ID = "my_channel_01"
+            val CHANNEL_ID = "channel_01"
             val notification: Notification =
                 Notification.Builder(context)
                     .setContentTitle("주변에 맛집 ${placeName}가 있어요!")
@@ -96,16 +115,18 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                     .setContentIntent(pendingIntent)
                     .build()
             mNotificationManager.notify(1, notification)
+
         } else {
             val builder =
                 NotificationCompat.Builder(context, "detected")
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("농장에 침입이 감지되었습니다!")
-                    .setContentText("탭하여 CCTV 확인하기")
+                    .setContentTitle("주변에 맛집 ${placeName}가 있어요!")
+                    .setContentText("탭하여 더 많은 정보 확인하기")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)
                     .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
                     .setAutoCancel(true)
+
             val notificationManager =
                 NotificationManagerCompat.from(context)
 
