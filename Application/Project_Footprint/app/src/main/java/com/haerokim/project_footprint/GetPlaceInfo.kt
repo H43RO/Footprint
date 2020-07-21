@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -33,8 +34,8 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         lateinit var placeTime: String
         lateinit var placeLocate: String
         lateinit var placeImageSrc: String
-        lateinit var placeMenuName: ArrayList<String>
-        lateinit var placeMenuPrice: ArrayList<String>
+        var placeMenuName: ArrayList<String> = arrayListOf()
+        var placeMenuPrice: ArrayList<String> = arrayListOf()
 
         try {
             var doc: Document =
@@ -54,32 +55,42 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
 //            Log.d("HTML_time", timeElement[0].text())
 //            Log.d("HTML_locate", locateElement[0].text())
 //            Log.d("HTML_image", imageElement[0].attr("src"))
-//            Log.d("HTML Array_Name" ,menuNameElement.text())
-//            Log.d("HTML Array_Price" ,menuPriceElement.text())
 
             placeTitle = if(titleElement.size != 0){ titleElement[0].text() } else{ "" }
             placeCategory = if(categoryElement.size != 0){ categoryElement[0].text() } else { "" }
             placeDescription = if(descriptionElement.size != 0){ descriptionElement[0].text() } else { "" }
             placeTime = if(timeElement.size != 0){ timeElement[0].text() } else { "" }
             placeLocate = if(locateElement.size != 0){ locateElement[0].text() } else { "" }
-            placeMenuName = menuNameElement as ArrayList<String>
-            placeMenuPrice = menuPriceElement as ArrayList<String>
+
+            //Jsoup Parser의 Return 형태인 Elements에서 ArrayList로 변환 (Intent 데이터로 넣어주기 위함)
+            for(element in menuNameElement){
+                placeMenuName.add(element.text())
+            }
+
+            for(element in menuPriceElement){
+                placeMenuPrice.add(element.text())
+            }
+
+//            Log.d("HTML Array_Name" , placeMenuName[0])
+//            Log.d("HTML Array_Price" ,placeMenuPrice[0])
+
             placeImageSrc = if (imageElement.size != 0){ imageElement[0].attr("src") } else { "" }
 
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra("Title", placeTitle)
-        intent.putExtra("Category", placeCategory)
-        intent.putExtra("Description", placeDescription)
-        intent.putExtra("Time", placeTime)
-        intent.putExtra("Locate", placeLocate)
-        intent.putStringArrayListExtra("MenuName", placeMenuName)
-        intent.putStringArrayListExtra("MenuPrice", placeMenuPrice)
-        intent.putExtra("Image", placeImageSrc)
+        val intent = Intent(context, PlaceDetailActivity::class.java)
 
+        val bundle:Bundle = Bundle()
+        bundle.putString("Title", placeTitle)
+        bundle.putString("Category", placeCategory)
+        bundle.putString("Description", placeDescription)
+        bundle.putString("Time", placeTime)
+        bundle.putString("Locate", placeLocate)
+        bundle.putStringArrayList("MenuName", placeMenuName)
+        bundle.putStringArrayList("MenuPrice", placeMenuPrice)
+        bundle.putString("Image", placeImageSrc)
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent =
