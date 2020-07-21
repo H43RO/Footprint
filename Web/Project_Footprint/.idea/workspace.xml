@@ -12,6 +12,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
@@ -39,17 +46,6 @@
               <item name="Project_Footprint" type="b2602c69:ProjectViewProjectNode" />
               <item name="Project_Footprint" type="462c0819:PsiDirectoryNode" />
               <item name="footprint" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Project_Footprint" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project_Footprint" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Project_Footprint" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project_Footprint" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -85,18 +81,18 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1595236820717</updated>
-      <workItem from="1595236824512" duration="424000" />
+      <workItem from="1595236824512" duration="600000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="424000" />
+    <option name="totallyTimeSpent" value="600000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="896" y="23" width="896" height="1041" extended-state="0" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.51170963" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25526932" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
