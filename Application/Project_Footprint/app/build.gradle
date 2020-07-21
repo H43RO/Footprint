@@ -32,6 +32,7 @@ dependencies {
     implementation 'org.altbeacon:android-beacon-library:2+'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.jsoup:jsoup:1.11.3'
+    implementation 'androidx.core:core:1.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.7'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.7'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
