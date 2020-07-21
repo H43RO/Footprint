@@ -1,5 +1,7 @@
 package com.haerokim.project_footprint
 
+import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -8,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.*
-
 
 class MainActivity : AppCompatActivity(), BeaconConsumer {
     private lateinit var beaconManager : BeaconManager
@@ -24,17 +25,18 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
         beaconManager.bind(this)
 
-        var handler: Handler = object : Handler() {
+        var  handler: Handler = @SuppressLint("HandlerLeak")
+        object : Handler() {
             override fun handleMessage(msg: Message?) {
                 Textview.setText("")
 
                 // 비콘의 아이디와 거리를 측정하여 textView에 넣는다.
                 for (beacon in beaconList) {
                     Textview.append(
-                        "ID : " + beacon.id2 + " / " + "Distance : " + String.format(
+                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
                             "%.3f",
                             beacon.distance
-                        ).toDouble() + "m\n"
+                        ).toDouble() + "m\n\n"
                     )
                 }
 
@@ -47,10 +49,13 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             handler.sendEmptyMessage(0)
             Toast.makeText(this,"시작",Toast.LENGTH_LONG).show()
         }
+
+        GetPlaceInfo().execute()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        BluetoothAdapter.getDefaultAdapter().disable();
         beaconManager.unbind(this)
     }
 
