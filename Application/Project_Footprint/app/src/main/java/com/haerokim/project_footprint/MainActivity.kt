@@ -47,10 +47,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
         button.setOnClickListener {
             handler.sendEmptyMessage(0)
-            Toast.makeText(this,"시작",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,"비콘 스캔시작",Toast.LENGTH_LONG).show()
         }
 
-        GetPlaceInfo(this, "스시아루히").execute()
+        GetPlaceInfo(this, "연남동 감칠").execute()
+
     }
 
     override fun onDestroy() {

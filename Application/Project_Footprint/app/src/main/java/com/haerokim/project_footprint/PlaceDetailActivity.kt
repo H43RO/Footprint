@@ -19,24 +19,25 @@ import java.net.URL
 import java.net.URLConnection
 
 class PlaceDetailActivity : AppCompatActivity() {
+    override fun onBackPressed() {
+        val home: Intent = Intent(this, MainActivity::class.java)
+        startActivity(home)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
 
-        val bundle = intent.extras
+        var bundle = intent.extras
 
-        val placeTitle = bundle?.getString("Title") ?: "등록된 정보가 없습니다."
-        val placeCategory = bundle?.getString("Category") ?: "등록된 정보가 없습니다."
-        val placeDescription = bundle?.getString("Description") ?: "등록된 정보가 없습니다."
-        val placeLocation = bundle?.getString("Location") ?: "등록된 정보가 없습니다"
-        val placeTime = bundle?.getString("Time") ?: "등록된 정보가 없습니다."
-        val placeMenuName = bundle?.getStringArrayList("MenuName")
-        val placeMenuPrice = bundle?.getStringArrayList("MenuPrice")
-        val placeImageSrc = bundle?.getString("Image") ?: "등록된 정보가 없습니다."
-
-//        Log.d("Intent Title", placeTitle)
-//        Log.d("Intent Description", placeDescription)
-//        Log.d("Intent Image", placeImageSrc)
+        var placeTitle = bundle?.getString("Title") ?: "등록된 정보가 없습니다."
+        var placeCategory = bundle?.getString("Category") ?: "등록된 정보가 없습니다."
+        var placeDescription = bundle?.getString("Description") ?: "여기서 식사하시는거 어때요?"
+        var placeLocation = bundle?.getString("Location") ?: "등록된 정보가 없습니다"
+        var placeTime = bundle?.getString("Time") ?: "등록된 정보가 없습니다."
+        var placeMenuName = bundle?.getStringArrayList("MenuName")
+        var placeMenuPrice = bundle?.getStringArrayList("MenuPrice")
+        var placeImageSrc = bundle?.getString("Image") ?: "등록된 정보가 없습니다."
 
         title_text.setText(placeTitle)
         category_text.setText(placeCategory)
@@ -44,23 +45,26 @@ class PlaceDetailActivity : AppCompatActivity() {
 
         location_text.setText(placeLocation)
 
+        var i : Int = 0
+
         if (placeMenuName != null) {
-            for(menu in placeMenuName){
-                if(menu == placeMenuName.last()){
+            for (menu in placeMenuName) {
+                if (menu == placeMenuName.last()) {
                     menu_name_list.append(menu)
-                }else{
+                } else {
                     menu_name_list.append(menu + '\n')
                 }
             }
         }
 
         if (placeMenuPrice != null) {
-            for(price in placeMenuPrice){
-                if(price == placeMenuPrice.last()){
+            for (price in placeMenuPrice) {
+                if (i++ == placeMenuPrice.size - 1) {
                     menu_price_list.append(price)
-                }else{
+                } else {
                     menu_price_list.append(price + '\n')
                 }
+                Log.d("element", price)
             }
         }
 
@@ -74,12 +78,11 @@ class PlaceDetailActivity : AppCompatActivity() {
         title_background.setColorFilter(Color.parseColor("#9F9F9F"), PorterDuff.Mode.MULTIPLY);
 
         location_card.setOnClickListener {
-            val gmmIntentUri = Uri.parse("geo:0,0?q=$placeTitle")
+            val gmmIntentUri = Uri.parse("geo:0,0?q=$placeLocation")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
         }
-
 
     }
 }
