@@ -32,7 +32,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         lateinit var placeCategory: String
         lateinit var placeDescription: String
         lateinit var placeTime: String
-        lateinit var placeLocate: String
+        lateinit var placeLocation: String
         lateinit var placeImageSrc: String
         var placeMenuName: ArrayList<String> = arrayListOf()
         var placeMenuPrice: ArrayList<String> = arrayListOf()
@@ -44,10 +44,14 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             var categoryElement: Elements = doc.select("div[class=biz_name_area]").select("span")
             var descriptionElement: Elements = doc.select("div[class=info] div").select("span")
             var timeElement: Elements = doc.select("div[class=biztime] span").select("span")
-            var locateElement: Elements = doc.select("span[class=addr]")
+            var locationElement: Elements = doc.select("span[class=addr]")
             var menuNameElement: Elements = doc.select("span[class=name]")
             var menuPriceElement: Elements = doc.select("div em[class=price]")
-            var imageElement: Elements = doc.select("div[class=thumb_area] a").select("img")
+
+
+            var imageDoc: Document =
+                Jsoup.connect("https://store.naver.com/restaurants/detail?id=1251024640").get()
+            var imageElement: Elements = imageDoc.select("img")
 //
 //            Log.d("HTML_title", titleElement[0].text())
 //            Log.d("HTML_category", categoryElement[0].text())
@@ -60,7 +64,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             placeCategory = if(categoryElement.size != 0){ categoryElement[0].text() } else { "" }
             placeDescription = if(descriptionElement.size != 0){ descriptionElement[0].text() } else { "" }
             placeTime = if(timeElement.size != 0){ timeElement[0].text() } else { "" }
-            placeLocate = if(locateElement.size != 0){ locateElement[0].text() } else { "" }
+            placeLocation = if(locationElement.size != 0){ locationElement[0].text() } else { "" }
 
             //Jsoup Parser의 Return 형태인 Elements에서 ArrayList로 변환 (Intent 데이터로 넣어주기 위함)
             for(element in menuNameElement){
@@ -87,10 +91,12 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         bundle.putString("Category", placeCategory)
         bundle.putString("Description", placeDescription)
         bundle.putString("Time", placeTime)
-        bundle.putString("Locate", placeLocate)
+        bundle.putString("Location", placeLocation)
         bundle.putStringArrayList("MenuName", placeMenuName)
         bundle.putStringArrayList("MenuPrice", placeMenuPrice)
         bundle.putString("Image", placeImageSrc)
+
+        intent.putExtras(bundle)
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent =
