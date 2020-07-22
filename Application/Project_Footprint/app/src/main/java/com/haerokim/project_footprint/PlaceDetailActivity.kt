@@ -84,5 +84,13 @@ class PlaceDetailActivity : AppCompatActivity() {
             startActivity(mapIntent)
         }
 
+
+        //추후 SQL 쿼리를 통한 ID 값 취득이 가능해지면 구현 예정
+        link_card.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://www.naver.com/")
+            startActivity(intent)
+        }
+
     }
 }
