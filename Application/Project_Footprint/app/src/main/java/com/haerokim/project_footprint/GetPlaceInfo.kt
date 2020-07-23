@@ -20,13 +20,13 @@ import java.io.IOException
 import kotlin.concurrent.timerTask
 
 class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Void, Void>() {
+    //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
+    //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
     private var placeName = place
 
-    override fun onPreExecute() {
-        super.onPreExecute()
-    }
-
     override fun doInBackground(vararg params: Void?): Void? {
+
+        // 해당 데이터 처리하는 Activity에서 Null 대응하므로 Nullable 타입으로 지정
         var placeTitle: String? = null
         var placeCategory: String?= null
         var placeDescription: String?= null
@@ -37,26 +37,24 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         var placeMenuPrice: ArrayList<String> = arrayListOf()
 
         try {
-            var doc: Document =
+            // 네이버 플레이스 URL로 변경 예정 ( 아이디 SQL 쿼리로 얻어올 수 있게끔 매핑 예정 )
+            val doc: Document =
                 Jsoup.connect("https://search.naver.com/search.naver?query=$placeName").get()
-            var titleElement: Elements = doc.select("div[class=biz_name_area]").select("a")
-            var categoryElement: Elements = doc.select("div[class=biz_name_area]").select("span")
-            var descriptionElement: Elements = doc.select("div[class=info] div").select("span")
-            var timeElement: Elements = doc.select("div[class=biztime] span").select("span")
-            var locationElement: Elements = doc.select("span[class=addr]")
-            var menuNameElement: Elements = doc.select("span[class=name]")
-            var menuPriceElement: Elements = doc.select("div em[class=price]")
+            val titleElement: Elements = doc.select("div[class=biz_name_area]").select("a")
+            val categoryElement: Elements = doc.select("div[class=biz_name_area]").select("span")
+            val descriptionElement: Elements = doc.select("div[class=info] div").select("span")
+            val timeElement: Elements = doc.select("div[class=biztime] span").select("span")
+            val locationElement: Elements = doc.select("span[class=addr]")
+            val menuNameElement: Elements = doc.select("span[class=name]")
+            val menuPriceElement: Elements = doc.select("div em[class=price]")
 
-            var imageDoc: Document =
+            // 네이버 플레이스 URL에다가 tab=photo 쿼리 붙이면 이미지 파싱 URL임
+            val imageDoc: Document =
                 Jsoup.connect("https://store.naver.com/restaurants/detail?entry=plt&id=36177811&query=%EA%B0%90%EC%B9%A0&tab=photo").get()
-            var imageElement: Elements = imageDoc.select("div.list_photo img")
-//
-//            Log.d("HTML_title", titleElement[0].text())
-//            Log.d("HTML_category", categoryElement[0].text())
-//            Log.d("HTML_description", descriptionElement[0].text())
-//            Log.d("HTML_time", timeElement[0].text())
-//            Log.d("HTML_locate", locateElement[0].text())
-//            Log.d("HTML_image", imageElement[0].attr("src"))
+            val imageElement: Elements = imageDoc.select("div.list_photo img")
+
+
+            // ===================HTML 파싱 데이터 모두 변수에 담아줌=================== //
 
             placeTitle = if (titleElement.size != 0) {
                 titleElement[0].text()
@@ -84,7 +82,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                 null
             }
 
-            //Jsoup Parser의 Return 형태인 Elements에서 ArrayList로 변환 (Intent 데이터로 넣어주기 위함)
+            //Jsoup Parser의 Return 형태인 Elements에서 ArrayList로 변환
             for (element in menuNameElement) {
                 placeMenuName.add(element.text())
             }
@@ -93,23 +91,20 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                 placeMenuPrice.add(element.text())
             }
 
-//            Log.d("HTML Array_Name" , placeMenuName[0])
-//            Log.d("HTML Array_Price" ,placeMenuPrice[0])
-
             placeImageSrc = if (imageElement.size != 0) {
                 imageElement[0].attr("src")
             } else {
                 ""
             }
 
+            // ===================HTML 파싱 데이터 모두 변수에 담아줌=================== //
 
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-
+        //PlaceDetailActivity 로 보낼 장소 데이터 모두 번들에 담음
         val intent = Intent(context, PlaceDetailActivity::class.java)
-
         val bundle: Bundle = Bundle()
         bundle.putString("Title", placeTitle)
         bundle.putString("Category", placeCategory)
@@ -120,11 +115,14 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         bundle.putStringArrayList("MenuPrice", placeMenuPrice)
         bundle.putString("Image", placeImageSrc)
 
+        //번들 intent data로 담아줌
         intent.putExtras(bundle)
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // ========================= Head-Up Notification 구현 ========================= //
 
         if (Build.VERSION.SDK_INT >= 26) {
             var mNotificationManager =
@@ -144,7 +142,6 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            val notifyID = 1
             val CHANNEL_ID = "channel_01"
             val notification: Notification =
                 Notification.Builder(context)
@@ -175,11 +172,12 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             notificationManager.notify(1004, builder.build())
         }
 
+        // ========================= Head-Up Notification 구현 ========================= //
+
         return null
     }
 
     override fun onPostExecute(result: Void?) {
         super.onPostExecute(result)
-
     }
 }
