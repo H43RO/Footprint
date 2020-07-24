@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.*
 
 class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
-    private lateinit var beaconManager : BeaconManager
+    private lateinit var beaconManager: BeaconManager
     private var beaconList: MutableList<Beacon> = mutableListOf()
 
     override fun onPermissionGranted() {
@@ -34,12 +34,12 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check();
 
-        beaconManager =  BeaconManager.getInstanceForApplication(this)
+        beaconManager = BeaconManager.getInstanceForApplication(this)
         beaconManager.getBeaconParsers()
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
         beaconManager.bind(this)
 
-        var  handler: Handler = @SuppressLint("HandlerLeak")
+        var handler: Handler = @SuppressLint("HandlerLeak")
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 Textview.setText("")
@@ -47,9 +47,12 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
                 // 비콘의 아이디와 거리를 측정하여 textView에 넣는다.
                 for (beacon in beaconList) {
                     Textview.append(
-                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format("%.3f",beacon.distance).toDouble() + "m\n\n"
+                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
+                            "%.3f",
+                            beacon.distance
+                        ).toDouble() + "m\n\n"
                     )
-                    if(beacon.distance > 10){
+                    if (beacon.distance > 10) {
                         GetPlaceInfo(applicationContext, "연남동 감칠").execute()
                     }
                 }
@@ -59,9 +62,10 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
             }
         }
 
+
         button.setOnClickListener {
             //위치 권한 허용
-            if(TedPermission.isGranted(this)){
+            if (TedPermission.isGranted(this)) {
                 val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
                 if (mBluetoothAdapter == null) {
                     // Device does not support Bluetooth
@@ -70,13 +74,14 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
                 } else {
                     // Bluetooth is enabled
                     handler.sendEmptyMessage(0)
-                    Toast.makeText(this,"비콘 스캔시작",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "비콘 스캔시작", Toast.LENGTH_LONG).show()
                 }
-            }else{
+            } else {
 
             }
         }
     }
+
 
     override fun onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->

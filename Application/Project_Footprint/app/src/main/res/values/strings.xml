@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Project_Footprint</string>
+    <string name="title_activity_home">MainActivity</string>
+    <string name="title_home">홈</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_menu">메뉴</string>
 </resources>
