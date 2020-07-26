@@ -20,4 +20,10 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 
+    <androidx.appcompat.widget.AppCompatToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggle_test"
+        android:text="ON"/>
+
 </LinearLayout>

@@ -20,9 +20,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn"
-        android:text="FUCK"/>
+        android:id="@+id/toggle"
+        android:text="ON"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,10 +3,8 @@ package com.haerokim.project_footprint
 import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
-import android.os.RemoteException
+import android.content.Intent
+import android.os.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -14,14 +12,17 @@ import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.*
 
+
 class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
     private lateinit var beaconManager: BeaconManager
     private var beaconList: MutableList<Beacon> = mutableListOf()
 
     override fun onPermissionGranted() {
+        Toast.makeText(this, "권환 획득 완료!", Toast.LENGTH_LONG).show()
     }
 
     override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+        Toast.makeText(this, "권환 획득 실패", Toast.LENGTH_LONG).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
             override fun handleMessage(msg: Message?) {
                 Textview.setText("")
 
-                // 비콘의 아이디와 거리를 측정하여 textView에 넣는다.
+                // 비콘의 아이디와 거리를 측정하여 보여줌
                 for (beacon in beaconList) {
                     Textview.append(
                         "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
@@ -52,9 +53,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
                             beacon.distance
                         ).toDouble() + "m\n\n"
                     )
-                    if (beacon.distance > 10) {
-                        GetPlaceInfo(applicationContext, "연남동 감칠").execute()
-                    }
+
                 }
 
                 // 자기 자신을 0.5초마다 호출
@@ -62,26 +61,39 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
             }
         }
 
-
-        button.setOnClickListener {
-            //위치 권한 허용
-            if (TedPermission.isGranted(this)) {
-                val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-                if (mBluetoothAdapter == null) {
-                    // Device does not support Bluetooth
-                } else if (!mBluetoothAdapter.isEnabled) {
-                    // Bluetooth is not enabled :)
-                } else {
-                    // Bluetooth is enabled
-                    handler.sendEmptyMessage(0)
-                    Toast.makeText(this, "비콘 스캔시작", Toast.LENGTH_LONG).show()
+        val foregroundIntent = Intent(this, ForegroundService::class.java)
+        toggle_test.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                //위치 권한 허용 되어있으면 비콘 스캔 시작
+                if (TedPermission.isGranted(this)) {
+                    val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+                    if (mBluetoothAdapter == null) {
+                        // Device does not support Bluetooth
+                    } else if (!mBluetoothAdapter.isEnabled) {
+                        // Bluetooth is not enabled :)
+                    } else {
+                        // Bluetooth is enabled
+                        handler.sendEmptyMessage(0)
+                        Toast.makeText(this, "비콘 스캔시작", Toast.LENGTH_LONG).show()
+                    }
+                } else { //워치 권한 X
+                    Toast.makeText(this, "앱 사용을 위해 위치 권한이 있어야합니다.", Toast.LENGTH_LONG).show()
                 }
-            } else {
 
+                //Foreground Service 시작 (비콘 스캔 서비스)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(foregroundIntent)
+                } else {
+                    startService(foregroundIntent)
+                }
+
+                GetPlaceInfo(applicationContext, "연남동 감칠").execute()
+
+            } else {
+                stopService(foregroundIntent)
             }
         }
     }
-
 
     override fun onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->
