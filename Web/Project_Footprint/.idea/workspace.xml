@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cf25d8ba-478d-4f85-a11d-dc205064cead" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/HomeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/HomeActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/dashboard/DashboardFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/dashboard/DashboardFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/home/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/notifications/NotificationsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/notifications/NotificationsFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ForegroundService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/footprint/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/footprint/urls.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,45 +14,12 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/footprint/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="22" column="15" lean-forward="true" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
-              <folding>
-                <element signature="e#633#665#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/footprint/wsgi.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/website/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-              <folding>
-                <element signature="e#0#36#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/footprint/settings.py">
+        <entry file="file://$PROJECT_DIR$/website/__init__.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/footprint/asgi.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/website/admin.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
@@ -83,10 +44,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="896" />
     <option name="y" value="23" />
-    <option name="width" value="896" />
-    <option name="height" value="1041" />
+    <option name="width" value="1792" />
+    <option name="height" value="1032" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -148,18 +108,27 @@
       <option name="presentableId" value="Default" />
       <updated>1595236820717</updated>
       <workItem from="1595236824512" duration="600000" />
-      <workItem from="1595595836819" duration="307000" />
+      <workItem from="1595595836819" duration="542000" />
+      <workItem from="1595656269472" duration="633000" />
     </task>
+    <task id="LOCAL-00001" summary="Web App 개발 환경 세팅">
+      <created>1595596202457</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1595596202457</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="907000" />
+    <option name="totallyTimeSpent" value="1775000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="896" y="23" width="896" height="1041" extended-state="0" />
+    <frame x="0" y="23" width="1792" height="1032" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26112413" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12857144" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -173,7 +142,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32982087" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.20319149" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -185,13 +154,11 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Web App 개발 환경 세팅" />
+    <option name="LAST_COMMIT_MESSAGE" value="Web App 개발 환경 세팅" />
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/footprint/settings.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/footprint/asgi.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/footprint/wsgi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -218,6 +185,21 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/footprint/settings.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/footprint/asgi.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/admin.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
