@@ -11,7 +11,7 @@ class Place(models.Model):
 
 
 class History(models.Model):  # Restaurant 라는 상점을 나타내는 모델을 정의
-    user_id = models.CharField(max_length=30)  # 이름
+    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)  # 이름
 
     img = models.CharField(max_length=600, default=None, null=True)
     title = models.CharField(max_length=100)
