@@ -3,9 +3,8 @@
     package="com.haerokim.project_footprint">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-feature android:name="android.hardware.location.network" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:required="false" />
@@ -23,19 +22,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home">
+        </activity>
+
+        <activity android:name=".PlaceDetailActivity" />
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlaceDetailActivity" />
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <service android:name=".ForegroundService" />
     </application>
 
 </manifest>

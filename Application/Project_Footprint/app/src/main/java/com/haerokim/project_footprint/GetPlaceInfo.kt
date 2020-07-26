@@ -127,7 +127,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         if (Build.VERSION.SDK_INT >= 26) {
             var mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val id = "channel_01"
+            val id = "channel_notify"
             val name: CharSequence = "주변에 맛집 $placeName 가 있어요!"
             val description = "탭하여 더 많은 정보 확인하기"
             val importance = NotificationManager.IMPORTANCE_HIGH
@@ -142,7 +142,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            val CHANNEL_ID = "channel_01"
+            val CHANNEL_ID = "channel_notify"
             val notification: Notification =
                 Notification.Builder(context)
                     .setContentTitle("당신 주변의 맛집 ${placeName} 발견!")
@@ -152,11 +152,11 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .build()
-            mNotificationManager.notify(1, notification)
+            mNotificationManager.notify(5603, notification)
 
         } else {
             val builder =
-                NotificationCompat.Builder(context, "detected")
+                NotificationCompat.Builder(context, "channel_notify")
                     .setSmallIcon(R.drawable.ic_baseline_location_on_24)
                     .setContentTitle("당신 주변의 맛집 ${placeName} 발견!")
                     .setContentText("탭하여 더 많은 정보 확인하기")
@@ -169,7 +169,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                 NotificationManagerCompat.from(context)
 
             // notificationId is a unique int for each notification that you must define
-            notificationManager.notify(1004, builder.build())
+            notificationManager.notify(5603, builder.build())
         }
 
         // ========================= Head-Up Notification 구현 ========================= //
