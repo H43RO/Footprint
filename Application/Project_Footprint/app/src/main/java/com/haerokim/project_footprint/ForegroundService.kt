@@ -13,7 +13,6 @@ import androidx.core.app.NotificationCompat
 
 class ForegroundService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.d("fucking foreground", "너 인성 문제있어?")
         val clsIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, clsIntent, 0)
         val clsBuilder: NotificationCompat.Builder

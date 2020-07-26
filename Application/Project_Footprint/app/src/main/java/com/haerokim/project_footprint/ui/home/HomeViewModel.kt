@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
+        value = "This is Fucking Fragment"
     }
-
-    fun setValue(string: String){
-        _text.value = string
-    }
+//
+//    fun setValue(string: String){
+//        _text.value = string
+//    }
     val text: LiveData<String> = _text
 }
