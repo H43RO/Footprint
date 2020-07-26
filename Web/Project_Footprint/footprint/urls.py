@@ -21,5 +21,6 @@ from website import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
-    path('website/', include('website.urls'))
+    path('website/', include('website.urls')),
+    path('history/', views.history, name="history")
 ]
