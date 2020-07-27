@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import History, Place
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
+from .forms import PlaceRegisterForm
 from django.db.models import Count, Avg
 
 # Create your views here.
@@ -29,3 +30,12 @@ def place_list(request):
         'places': Place.objects.all()
     }
     return render(request, 'place_list.html', context)
+
+def place_register(request):
+    if request.method == 'POST':
+        form = PlaceRegisterForm(request.POST)
+        if form.is_valid():
+            new_item = form.save()
+        return HttpResponseRedirect('/website/place_list/')
+    form = PlaceRegisterForm()
+    return render(request, 'place_register.html', {'form': form})
