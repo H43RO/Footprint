@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="containter">
+    <h2> Restaurant List </h2>
+    {% for item in place %}
+    <div class="row restaurant-item" style="margin:20px atuo;">
+        <div class="col-sm-12">
+            <div class="card border-secondary">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class class="card-text">음식점 설명</p>
+                <a href="#" class="card-link">자세히</a>
+             </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
