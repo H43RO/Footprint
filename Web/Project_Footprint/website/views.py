@@ -10,7 +10,6 @@ def index(request):
 
 def place_list(request):
     context = {
-        'place': Place.objects.all()
+        'places': Place.objects.all()
     }
     return render(request, 'place_list.html', context)
-
