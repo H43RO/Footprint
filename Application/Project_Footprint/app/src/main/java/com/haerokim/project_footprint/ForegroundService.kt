@@ -1,29 +1,80 @@
 package com.haerokim.project_footprint
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import org.altbeacon.beacon.*
 
-class ForegroundService : Service() {
+class ForegroundService : Service(), BeaconConsumer {
+
+    lateinit var beaconManager: BeaconManager
+    var beaconList: MutableList<Beacon> = mutableListOf()
+
+    override fun onBeaconServiceConnect() {
+        beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->
+            // 비콘이 감지되면 해당 함수가 호출됨. Collection<Beacon> beacons에는 감지된 비콘의 리스트가,
+            // region에는 비콘들에 대응하는 Region 객체가 들어옴.
+            if (beacons.size > 0) {
+                beaconList.clear()
+                for (beacon in beacons) {
+                    beaconList.add(beacon)
+                }
+            }
+        })
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(Region("myRangingUniqueId", null, null, null))
+        } catch (e: RemoteException) {
+        }
+    }
+
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val clsIntent = Intent(this, MainActivity::class.java)
+        return START_STICKY
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext()!!)
+        beaconManager.getBeaconParsers()
+            .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
+
+        var handler: Handler = @SuppressLint("HandlerLeak")
+        object : Handler() {
+            override fun handleMessage(msg: Message?) {
+                for (beacon in beaconList) {
+//                    beacon_list.append(
+//                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
+//                            "%.3f",
+//                            beacon.distance
+//                        ).toDouble() + "m\n\n"
+//                    )
+                    Log.d("Scan Result", beacon.id1.toString())
+                }
+                this.sendEmptyMessageDelayed(0, 500)
+            }
+        }
+
+
+        val clsIntent = Intent(this, HomeActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, clsIntent, 0)
         val clsBuilder: NotificationCompat.Builder
         clsBuilder = if (Build.VERSION.SDK_INT >= 26) {
             val CHANNEL_ID = "channel_foreground"
             val clsChannel =
-                NotificationChannel(CHANNEL_ID, "서비스 앱", NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationChannel(CHANNEL_ID, "footprint", NotificationManager.IMPORTANCE_DEFAULT)
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
                 clsChannel
             )
             NotificationCompat.Builder(this, CHANNEL_ID)
+
         } else {
             NotificationCompat.Builder(this)
         }
@@ -34,11 +85,16 @@ class ForegroundService : Service() {
         // Foreground 서비스로 실행한다
         startForeground(1, clsBuilder.build())
 
-        return START_STICKY
+        handler.sendEmptyMessage(0)
+        beaconManager.bind(this)
+
+        GetPlaceInfo(applicationContext, "연남동 감칠").execute()
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        beaconManager.unbind(this)
     }
 
     override fun onBind(intent: Intent): IBinder? {
