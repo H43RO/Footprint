@@ -3,6 +3,11 @@
 import os
 import sys
 
+import shutil
+
+
+
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'footprint.settings')
