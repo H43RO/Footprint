@@ -8,12 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.haerokim.project_footprint.ui.home.HomeFragment
 
 class ForegroundService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val clsIntent = Intent(this, HomeActivity::class.java)
+        val clsIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, clsIntent, 0)
         val clsBuilder: NotificationCompat.Builder
         clsBuilder = if (Build.VERSION.SDK_INT >= 26) {
@@ -24,7 +24,6 @@ class ForegroundService : Service() {
                 clsChannel
             )
             NotificationCompat.Builder(this, CHANNEL_ID)
-
         } else {
             NotificationCompat.Builder(this)
         }

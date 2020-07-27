@@ -20,6 +20,12 @@ import java.net.URLConnection
 
 class PlaceDetailActivity : AppCompatActivity() {
 
+    //뒤로 가기 버튼 누르면 MainActivity로 이동함
+    override fun onBackPressed() {
+        val home: Intent = Intent(this, MainActivity::class.java)
+        startActivity(home)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
