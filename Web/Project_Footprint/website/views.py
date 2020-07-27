@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from website.models import History, Place
+from .models import History, Place
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.db.models import Count, Avg
@@ -23,3 +23,9 @@ def history(request):
         'places' : place
     }
     return render(request, 'history.html', context)
+
+def place_list(request):
+    context = {
+        'places': Place.objects.all()
+    }
+    return render(request, 'place_list.html', context)
