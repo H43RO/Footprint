@@ -1,3 +1,0 @@
-*.pyc
-/website/migrations/__init__.py
-db.sqlite3
