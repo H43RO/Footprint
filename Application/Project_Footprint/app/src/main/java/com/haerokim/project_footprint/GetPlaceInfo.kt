@@ -122,7 +122,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        // ========================= Head-Up Notification 구현 ========================= //
+        // ========================= Head-Up Notification 구현  (SDK 26 기준으로 다르게 구현 필요) ========================= //
 
         if (Build.VERSION.SDK_INT >= 26) {
             var mNotificationManager =
@@ -139,8 +139,6 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             mChannel.enableVibration(true)
             mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
             mNotificationManager.createNotificationChannel(mChannel)
-            mNotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             val CHANNEL_ID = "channel_notify"
             val notification: Notification =
@@ -150,6 +148,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                     .setSmallIcon(R.drawable.ic_baseline_location_on_24)
                     .setChannelId(CHANNEL_ID)
                     .setAutoCancel(true)
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent)
                     .build()
             mNotificationManager.notify(5603, notification)
@@ -160,6 +159,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                     .setSmallIcon(R.drawable.ic_baseline_location_on_24)
                     .setContentTitle("당신 주변의 맛집 ${placeName} 발견!")
                     .setContentText("탭하여 더 많은 정보 확인하기")
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)
                     .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
