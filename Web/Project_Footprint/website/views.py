@@ -1,15 +1,15 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
 from django.contrib import messages
-from .forms import SignUpForm
-from .models import User
+from django.db import transaction
+from django.db.models import Count, Avg
+from django.core.paginator import Paginator
+from .forms import SignUpForm, PlaceRegisterForm
+from .models import User, History, Place
 
-
-# Create your views here.
 
 
 def index(request):
@@ -41,3 +41,34 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+
+def history(request):
+    historys = History.objects.all()
+    paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
+
+    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
+    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
+    place = Place.objects.all()
+    context = {
+        'historys': historys,
+        'places' : place
+    }
+    return render(request, 'history.html', context)
+
+
+def place_list(request):
+    context = {
+        'places': Place.objects.all()
+    }
+    return render(request, 'place_list.html', context)
+
+
+def place_register(request):
+    if request.method == 'POST':
+        form = PlaceRegisterForm(request.POST)
+        if form.is_valid():
+            new_item = form.save()
+        return HttpResponseRedirect('/website/place_list/')
+    form = PlaceRegisterForm()
+    return render(request, 'place_register.html', {'form': form})

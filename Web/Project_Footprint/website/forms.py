@@ -1,6 +1,7 @@
+from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User,Place
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
 
@@ -37,19 +38,25 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
-        # error_messages = {
-        #     'username': {
-        #         'max_length': _("이름이 너무 깁니다. 10자 이하로 해주세요."),
-        #     },
-        #     'birth_date': {
-        #         'max_length': _("생년월일이 너무 깁니다. 15자 이하로 해주세요."),
-        #     },
-        #     'nickname': {
-        #         'max_length': _("닉네임이 너무 깁니다. 10자 이하로 해주세요."),
-        #     },
-        # }
 
 
-
-
+class PlaceRegisterForm(ModelForm):
+    class Meta:
+        model = Place
+        fields = ['title', 'naver_place_id', 'place_div']
+        labels = {
+            'title': _('가게명 '),
+            'naver_place_id': _('Naver Place Id '),
+            'place_div': _('장소 구분 ')
+        }
+        help_texts = {
+            'title': _('가게명을 입력해주세요.'),
+            'naver_place_id': _('Naver Place Id를 입력해주세요.'),
+            'place_div': _('해당하는 숫자를 입력해주세요.(관광지: 0, 식당: 1)')
+        }
+        error_messages = {
+            'title': {
+                'max_length': _('가게명을 30자 이내로 적어주세요')
+            },
+        }
 
