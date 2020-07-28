@@ -114,6 +114,11 @@ class HomeFragment : Fragment(),  PermissionListener {
                 context?.stopService(foregroundIntent)
             }
         }
+
+        card_surround_place.setOnClickListener {
+            startActivity(Intent(context, SurroundPlaceActivity::class.java))
+        }
+
     }
 
 }

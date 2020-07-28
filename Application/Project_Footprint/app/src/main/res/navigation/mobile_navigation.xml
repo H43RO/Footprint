@@ -22,4 +22,6 @@
         android:name="com.haerokim.project_footprint.ui.menu.MenuFragment"
         android:label="@string/title_menu"
         tools:layout="@layout/fragment_menu" />
+
+
 </navigation>
