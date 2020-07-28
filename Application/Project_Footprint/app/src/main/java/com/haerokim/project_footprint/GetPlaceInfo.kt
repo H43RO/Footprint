@@ -10,14 +10,12 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
-import kotlin.concurrent.timerTask
 
 class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Void, Void>() {
     //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
@@ -38,6 +36,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
 
         try {
             // 네이버 플레이스 URL로 변경 예정 ( 아이디 SQL 쿼리로 얻어올 수 있게끔 매핑 예정 )
+
             val doc: Document =
                 Jsoup.connect("https://search.naver.com/search.naver?query=$placeName").get()
             val titleElement: Elements = doc.select("div[class=biz_name_area]").select("a")
@@ -52,7 +51,6 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
             val imageDoc: Document =
                 Jsoup.connect("https://store.naver.com/restaurants/detail?entry=plt&id=36177811&query=%EA%B0%90%EC%B9%A0&tab=photo").get()
             val imageElement: Elements = imageDoc.select("div.list_photo img")
-
 
             // ===================HTML 파싱 데이터 모두 변수에 담아줌=================== //
 
@@ -151,6 +149,7 @@ class GetPlaceInfo(var context: Context, var place: String) : AsyncTask<Void, Vo
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent)
                     .build()
+
             mNotificationManager.notify(5603, notification)
 
         } else {

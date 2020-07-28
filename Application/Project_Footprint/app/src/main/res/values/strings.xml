@@ -4,4 +4,6 @@
     <string name="title_home">홈</string>
     <string name="title_dashboard">대시보드</string>
     <string name="title_menu">더 보기</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

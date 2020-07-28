@@ -22,10 +22,6 @@ class MenuFragment : Fragment() {
         menuViewModel =
             ViewModelProviders.of(this).get(MenuViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_menu, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        menuViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 

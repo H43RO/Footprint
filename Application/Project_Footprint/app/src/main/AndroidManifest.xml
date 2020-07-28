@@ -5,8 +5,11 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.location.network" />
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -25,21 +28,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".SurroundPlaceActivity"></activity>
         <activity
             android:name=".HomeActivity"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".MainActivity" />
 
-        <activity android:name=".MainActivity">
-
-        </activity>
         <service android:name=".ForegroundService" />
     </application>
 

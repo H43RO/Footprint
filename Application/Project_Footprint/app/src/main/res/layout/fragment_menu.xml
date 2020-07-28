@@ -4,60 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/layout_background"
     android:orientation="vertical"
     tools:context=".ui.menu.MenuFragment">
 
-    <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/profile_card"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:cardElevation="10dp" />
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="12dp"
-        app:cardElevation="10dp">
+        android:layout_height="200dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="16dp"
+        app:cardBackgroundColor="#9FA3BD"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="32dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:gravity="center_vertical"/>
 
-            <ImageView
-                android:layout_marginTop="100dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:src="@drawable/line"/>
+    </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:layout_marginTop="100dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:src="@drawable/line"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        app:cardBackgroundColor="#777C98"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="32dp">
 
-            <ImageView
-                android:layout_marginTop="100dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:src="@drawable/line"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"/>
 
-        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        app:cardBackgroundColor="#777C98"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="32dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        app:cardBackgroundColor="#777C98"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="32dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"/>
 
     </androidx.cardview.widget.CardView>
 
