@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.*
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.haerokim.project_footprint.*
@@ -23,6 +25,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class HomeFragment : Fragment(),  PermissionListener {
 
     private val REQUEST_ENABLE_BT = 5603
+    private val homeViewModel: HomeViewModel by activityViewModels()
+    private lateinit var layout : View
+
     override fun onPermissionGranted() {
     }
     override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -35,8 +40,6 @@ class HomeFragment : Fragment(),  PermissionListener {
             else -> Log.d("Bluetooth", "활성화 실패")
         }
     }
-
-    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,15 +58,17 @@ class HomeFragment : Fragment(),  PermissionListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val switchStateSave = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val foregroundIntent = Intent(context, ForegroundService::class.java)
+        val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
+        //UI 복원 시 switch 모드 정상화 (SharedPreference)
+        scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
 
         TedPermission.with(context)
             .setPermissionListener(this)
             .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
-
-        val foregroundIntent = Intent(context, ForegroundService::class.java)
-        val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
         scanning_mode_switch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -84,10 +89,11 @@ class HomeFragment : Fragment(),  PermissionListener {
                         startActivityForResult(bluetoothOnIntent, REQUEST_ENABLE_BT)
                     } else {
                         // 블루투스 켜져있는 경우
-                        Toast.makeText(context, "비콘 스캔시작", Toast.LENGTH_LONG).show()
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content), "당신의 발자취를 따라가기 시작합니다!", Snackbar.LENGTH_LONG).show()
                     }
+
                 } else { //워치 권한 허용 안됨
-                    Toast.makeText(context, "앱 사용을 위해 위치 권한이 있어야합니다.", Toast.LENGTH_LONG).show()
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), "앱 사용을 위해 위치 권한이 필요합니다", Snackbar.LENGTH_LONG).show()
                 }
 
                 //Foreground Service 시작 (비콘 스캔 서비스)
@@ -102,6 +108,8 @@ class HomeFragment : Fragment(),  PermissionListener {
                     putBoolean("state", false)
                     commit()
                 }
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), "더 이상 발자취를 따라가지 않습니다.", Snackbar.LENGTH_LONG).show()
+
                 homeViewModel.changeMode("off")
                 context?.stopService(foregroundIntent)
             }

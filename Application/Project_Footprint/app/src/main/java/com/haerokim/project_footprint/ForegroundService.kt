@@ -32,6 +32,7 @@ class ForegroundService : Service(), BeaconConsumer {
         try {
             beaconManager.startRangingBeaconsInRegion(Region("myRangingUniqueId", null, null, null))
         } catch (e: RemoteException) {
+
         }
     }
 
@@ -62,7 +63,6 @@ class ForegroundService : Service(), BeaconConsumer {
             }
         }
 
-
         val clsIntent = Intent(this, HomeActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, clsIntent, 0)
         val clsBuilder: NotificationCompat.Builder
@@ -92,9 +92,9 @@ class ForegroundService : Service(), BeaconConsumer {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun stopService(name: Intent?): Boolean {
         beaconManager.unbind(this)
+        return super.stopService(name)
     }
 
     override fun onBind(intent: Intent): IBinder? {
