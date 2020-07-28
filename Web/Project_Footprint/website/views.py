@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from django.contrib.auth import login, authenticate
@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib import messages
-from website.forms import CustomUserCreationForm, RegisterForm
+from website.forms import RegisterForm
 from website.models import User
 # Create your views here.
 
@@ -20,9 +20,10 @@ def list(request):
     user = User.objects.all()
     context = {
         'users' : user
-
     }
     return render(request, 'list.html', context)
+
+
 
 def signup(request):
     if request.method == 'POST':
@@ -32,12 +33,12 @@ def signup(request):
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
-            login(request, user)
-            return redirect('../list/')
+            if user is not None:
+                login(request, user, backend='Django.contrib.auth.backends.ModelBackend')
+                return HttpResponseRedirect('../list/')
     else:
         form = RegisterForm()
     return render(request, 'signup.html', {'form': form})
-
 
 
 # @login_required

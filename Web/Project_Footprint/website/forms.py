@@ -5,18 +5,11 @@ import factory
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
 
-class UserFactory(factory.DjangoModelFactory):
-       class Meta:
-           model = User
 
-       username = factory.Faker('username')
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User 
-        birth_date = forms.DateField(help_text='Format: YYYY-MM-DD')
 
-class RegisterForm(CustomUserCreationForm):
+
+class RegisterForm(UserCreationForm):
     password1 = forms.CharField(
         label="비밀번호",
         strip=False,
@@ -30,13 +23,6 @@ class RegisterForm(CustomUserCreationForm):
         widget=forms.PasswordInput(),
         help_text='비밀번호를 재입력해주세요.',
     )  
-    email = forms.EmailField(required=True, widget=forms.EmailInput(
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'Email',
-            'required': 'True',
-        }
-    ))  
     class Meta:
         model = User
         fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
