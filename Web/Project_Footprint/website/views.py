@@ -25,6 +25,7 @@ def history(request):
     }
     return render(request, 'history.html', context)
 
+
 def place_list(request):
     context = {
         'places': Place.objects.all()
@@ -36,6 +37,21 @@ def place_register(request):
         form = PlaceRegisterForm(request.POST)
         if form.is_valid():
             new_item = form.save()
-        return HttpResponseRedirect('/website/place_list/')
+        return HttpResponseRedirect('/place_list/')
     form = PlaceRegisterForm()
     return render(request, 'place_register.html', {'form': form})
+
+
+def place_restaurant(request):
+    context = {
+        'restaurants': Place.objects.filter(place_div=1)
+    }
+    return render(request, 'place_restaurant_list.html', context)
+
+
+def place_sights(request):
+    context = {
+        'sights': Place.objects.filter(place_div=0)
+    }
+    return render(request, 'place_sights_list.html', context)
+

@@ -9,6 +9,8 @@ class Place(models.Model):
     naver_place_id = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
 
 class History(models.Model):
     #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
