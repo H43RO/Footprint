@@ -1,20 +1,9 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<div class="container">
-    {% for item in users %}
-    <div class="row user-item" style="margin:20px auto;">
-        <div class="col-sm-12">
-            <div class="card border-secondary">
-              <div class="card-body">
-                <h5 class="card-text">{{ item.username }}</h5>
-                <h5 class="card-text">{{ item.nickname }}</h5>
-                <h5 class="card-text">{{ item.age }}</h5>
-                <h5 class="card-text">{{ item.gender }}</h5>
-              </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+    <ui>
+      {% for user in users %}
+    <li> {{ user.email }}/{{ user.nickname }}/{{ user.gender }}</li>
+      {% endfor %}
+    </ui>
 {% endblock %}
