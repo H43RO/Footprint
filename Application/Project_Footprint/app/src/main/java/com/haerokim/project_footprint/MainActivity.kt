@@ -28,71 +28,71 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, PermissionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        TedPermission.with(this)
-            .setPermissionListener(this)
-            .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
-            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-            .check();
-
-        beaconManager = BeaconManager.getInstanceForApplication(this)
-        beaconManager.getBeaconParsers()
-            .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
-        beaconManager.bind(this)
-
-        var handler: Handler = @SuppressLint("HandlerLeak")
-        object : Handler() {
-            override fun handleMessage(msg: Message?) {
-                Textview.setText("")
-
-                // 비콘의 아이디와 거리를 측정하여 보여줌
-                for (beacon in beaconList) {
-                    Textview.append(
-                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
-                            "%.3f",
-                            beacon.distance
-                        ).toDouble() + "m\n\n"
-                    )
-
-                }
-
-                // 자기 자신을 0.5초마다 호출
-                this.sendEmptyMessageDelayed(0, 500)
-            }
-        }
-
-        val foregroundIntent = Intent(this, ForegroundService::class.java)
-        toggle_test.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                //위치 권한 허용 되어있으면 비콘 스캔 시작
-                if (TedPermission.isGranted(this)) {
-                    val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-                    if (mBluetoothAdapter == null) {
-                        // Device does not support Bluetooth
-                    } else if (!mBluetoothAdapter.isEnabled) {
-                        // Bluetooth is not enabled :)
-                    } else {
-                        // Bluetooth is enabled
-                        handler.sendEmptyMessage(0)
-                        Toast.makeText(this, "비콘 스캔시작", Toast.LENGTH_LONG).show()
-                    }
-                } else { //워치 권한 X
-                    Toast.makeText(this, "앱 사용을 위해 위치 권한이 있어야합니다.", Toast.LENGTH_LONG).show()
-                }
-
-                //Foreground Service 시작 (비콘 스캔 서비스)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(foregroundIntent)
-                } else {
-                    startService(foregroundIntent)
-                }
-
-                GetPlaceInfo(applicationContext, "연남동 감칠").execute()
-
-            } else {
-                stopService(foregroundIntent)
-            }
-        }
+//
+//        TedPermission.with(this)
+//            .setPermissionListener(this)
+//            .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
+//            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+//            .check();
+//
+//        beaconManager = BeaconManager.getInstanceForApplication(this)
+//        beaconManager.getBeaconParsers()
+//            .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
+//        beaconManager.bind(this)
+//
+//        var handler: Handler = @SuppressLint("HandlerLeak")
+//        object : Handler() {
+//            override fun handleMessage(msg: Message?) {
+//                Textview.setText("")
+//
+//                // 비콘의 아이디와 거리를 측정하여 보여줌
+//                for (beacon in beaconList) {
+//                    Textview.append(
+//                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
+//                            "%.3f",
+//                            beacon.distance
+//                        ).toDouble() + "m\n\n"
+//                    )
+//
+//                }
+//
+//                // 자기 자신을 0.5초마다 호출
+//                this.sendEmptyMessageDelayed(0, 500)
+//            }
+//        }
+//
+//        val foregroundIntent = Intent(this, ForegroundService::class.java)
+//        toggle_test.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if (isChecked) {
+//                //위치 권한 허용 되어있으면 비콘 스캔 시작
+//                if (TedPermission.isGranted(this)) {
+//                    val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+//                    if (mBluetoothAdapter == null) {
+//                        // Device does not support Bluetooth
+//                    } else if (!mBluetoothAdapter.isEnabled) {
+//                        // Bluetooth is not enabled :)
+//                    } else {
+//                        // Bluetooth is enabled
+//                        handler.sendEmptyMessage(0)
+//                        Toast.makeText(this, "비콘 스캔시작", Toast.LENGTH_LONG).show()
+//                    }
+//                } else { //워치 권한 X
+//                    Toast.makeText(this, "앱 사용을 위해 위치 권한이 있어야합니다.", Toast.LENGTH_LONG).show()
+//                }
+//
+//                //Foreground Service 시작 (비콘 스캔 서비스)
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    startForegroundService(foregroundIntent)
+//                } else {
+//                    startService(foregroundIntent)
+//                }
+//
+//                GetPlaceInfo(applicationContext, "연남동 감칠").execute()
+//
+//            } else {
+//                stopService(foregroundIntent)
+//            }
+//        }
     }
 
     override fun onBeaconServiceConnect() {
