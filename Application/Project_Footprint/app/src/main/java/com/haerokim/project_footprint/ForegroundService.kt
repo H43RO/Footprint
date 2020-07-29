@@ -88,9 +88,22 @@ class ForegroundService : Service(), BeaconConsumer {
         handler.sendEmptyMessage(0)
         beaconManager.bind(this)
 
-        GetPlaceInfo(applicationContext, "연남동 감칠").execute()
+        //Django REST API와 연동하여 Beacon UUID를 통해 NAVER PLACE_ID를 GET해올 예정
+        NotifyPlaceInfo(applicationContext, "연남동 감칠").execute()
 
     }
+
+    fun getSurroundPlace(): MutableList<Beacon>{
+        return beaconList
+    }
+
+//                    beacon_list.append(
+//                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
+//                            "%.3f",
+//                            beacon.distance
+//                        ).toDouble() + "m\n\n"
+//                    )
+
 
     override fun stopService(name: Intent?): Boolean {
         beaconManager.unbind(this)

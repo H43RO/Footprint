@@ -24,25 +24,40 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:padding="24dp">
 
-            <TextView
-                android:id="@+id/result_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                tools:text="Result" />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_marginTop="4dp"
-                android:id="@+id/result_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/result_price"
-                android:text="Date"
-                android:textSize="16dp" />
+                <TextView
+                    android:id="@+id/text_place_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22dp"
+                    android:textStyle="bold"
+                    tools:text="Place Tite" />
+
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/text_place_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_place_title"
+                    android:text="Place Category"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:tint="#606060"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
 
         </RelativeLayout>
 
