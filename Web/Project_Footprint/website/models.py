@@ -22,6 +22,7 @@ class UserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
+
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a User with the given email and password.
@@ -51,13 +52,14 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True)
     birth_date = models.DateField(null=True, blank=False)
     nickname = models.CharField(max_length=10, blank=False, null=True)
     age = models.IntegerField(blank=False, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
 
     USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['birth_date', 'nickname', 'age', 'gender']
     objects = UserManager()
 

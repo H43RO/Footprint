@@ -7,10 +7,10 @@ from django.contrib import messages
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm
 from .models import User, History, Place
 
-
+from .backends import EmailAuthBackend
 
 def index(request):
     context = {
@@ -32,15 +32,31 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=email, password=raw_password)
+            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password1'])
             if user is not None:
-                login(request, user, backend='Django.contrib.auth.backends.ModelBackend')
+                # login(request, user)
                 return HttpResponseRedirect('../list/')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def signin(request):
+    if request.method == 'POST':
+        form = SignInForm(data=request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            if user is not None:
+                print(user)
+                login(request, user)
+                return HttpResponseRedirect('../list')
+        else:
+            print(0)
+    else :
+        form = SignInForm()
+    return render(request, 'signin.html', {'form': form})
+
+
+
 
 
 def history(request):
