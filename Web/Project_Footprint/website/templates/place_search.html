@@ -1,0 +1,19 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+
+    <h2> Place List </h2>
+    {% if not place_search %}
+    <h5> 검색된 결과가 없습니다. </h5>
+    {% else %}
+        {% for searchs in place_search.all %}
+        <div class="containter">
+            <div class="card-body">
+                <h5 class="card-title">{{ searchs.title }}</h5>
+                <p class class="card-text">음식점 설명</p>
+                <a href="#" class="card-link">자세히</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

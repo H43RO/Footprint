@@ -69,7 +69,7 @@ def place_register(request):
         form = PlaceRegisterForm(request.POST)
         if form.is_valid():
             new_item = form.save()
-        return HttpResponseRedirect('/website/place_list/')
+        return HttpResponseRedirect('../place_list')
     form = PlaceRegisterForm()
     return render(request, 'place_register.html', {'form': form})
 
@@ -86,3 +86,14 @@ def place_sights(request):
         'sights': Place.objects.filter(place_div=0)
     }
     return render(request, 'place_sights_list.html', context)
+
+
+def place_search(request):
+    place_search = Place.objects.all().order_by('-id')
+    q = request.POST.get('q', "")
+
+    if q:
+        place_search = place_search.filter(title__icontains=q)
+        return render(request,'place_search.html',{'place_search':place_search,'q':q})
+    else:
+        return render(request,'place_search.html')
