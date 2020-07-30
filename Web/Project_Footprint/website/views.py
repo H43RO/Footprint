@@ -1,15 +1,14 @@
+from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm
 from .models import User, History, Place
-
 
 
 def index(request):
@@ -32,15 +31,37 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=email, password=raw_password)
+            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password1'])
             if user is not None:
-                login(request, user, backend='Django.contrib.auth.backends.ModelBackend')
+                # login(request, user)
                 return HttpResponseRedirect('../list/')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+
+def signin(request):
+    if request.method == 'POST':
+        form = SignInForm(data=request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            if user is not None:
+                print(user)
+                login(request, user)
+                return HttpResponseRedirect('../index/')
+        else:
+            # print(0)
+            messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
+            return HttpResponseRedirect('../signin/')
+
+    else:
+        form = SignInForm()
+    return render(request, 'signin.html', {'form': form})
+
+
+def signout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('../index/')
 
 
 def history(request):

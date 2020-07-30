@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import User, Place
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
@@ -38,6 +38,23 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
+
+
+class SignInForm(AuthenticationForm):
+    username = forms.EmailField(
+        label=_("이메일"),
+        widget=forms.EmailInput,
+    )
+
+    password = forms.CharField(
+        label=_("비밀번호"),
+        strip=False,
+        widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = User
+        fields = ['email', 'password']
 
 
 class PlaceRegisterForm(ModelForm):

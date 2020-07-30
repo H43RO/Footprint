@@ -30,18 +30,32 @@
             <a class="nav-link" href="/place_register">Place Register</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/history">History</a>
+            <a class="nav-link" href="#">History</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/list">My Info</a>
+            {% if request.user.is_authenticated %}
+                <a class="nav-link" href="/list">My Info</a>
+            {% endif %}
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/signup">Sign Up</a>
+            {% if not request.user.is_authenticated %}
+                <a class="nav-link" href="/signup">Sign Up</a>
+            {% endif %}
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/register">Sign In</a>
+            {% if request.user.is_authenticated %}
+                <a class="nav-link" href="/signout">Sign Out</a>
+            {% else %}
+                <a class="nav-link" href="/signin">Sign In</a>
+            {% endif %}
           </li>
         </ul>
+        {% if request.user.is_authenticated %}
+          <p class="nav navbar-nav navbar-right">
+            안녕하세요, {{user.nickname}} 님. 좋은 하루 되세요!
+          </p>
+        {% endif %}
+
       </div>
     </nav>
     {% block content %}
