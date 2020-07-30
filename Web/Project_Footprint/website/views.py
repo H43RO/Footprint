@@ -120,11 +120,11 @@ def history(request):
 
 def history_create(request):
     if request.method == 'POST':
-        form = HistoryForm(request.POST)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
+        form = HistoryForm(request.POST, request.FILES)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
         if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
             new_item = form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
-        return Hender(request, 'history_list.html', {'form': form})  # 리스트 화면으로 이동합니다.
-    form = HistoryForm()  # 만약에 POST방식이 아니라면
+        return render(request, 'history_list.html', {'form': form})  # 리스트 화면으로 이동합니다.
+    form = HistoryForm(request.FILES)  # 만약에 POST방식이 아니라면
     return render(request, 'history_create.html', {'form': form})
 
 

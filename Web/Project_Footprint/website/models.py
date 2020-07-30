@@ -77,10 +77,10 @@ class Place(models.Model):
         return self.title
 
 class History(models.Model):
-    img = models.ImageField(blank=True, upload_to="blog/%Y/%m/%d")
+    img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
     title = models.CharField(max_length=100, blank=True)
     mood = models.CharField(max_length=30, default=3)
-    comment = models.CharField(max_length=1000, blank=True)
+    comment = models.TextField(max_length=1000, blank=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
