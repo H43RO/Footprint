@@ -28,7 +28,7 @@
         android:textSize="20dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        tools:listitem="@layout/item"
+        tools:listitem="@layout/place_item"
         android:id="@+id/surround_place_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

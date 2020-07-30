@@ -16,7 +16,7 @@ import org.altbeacon.beacon.*
 class ForegroundService : Service(), BeaconConsumer {
 
     lateinit var beaconManager: BeaconManager
-    var beaconList: MutableList<Beacon> = mutableListOf()
+    var beaconList: ArrayList<Beacon> = ArrayList()
 
     override fun onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->
@@ -90,21 +90,12 @@ class ForegroundService : Service(), BeaconConsumer {
         beaconManager.bind(this)
 
         //Django REST API와 연동하여 Beacon UUID를 통해 NAVER PLACE_ID를 GET해올 예정
-        NotifyPlaceInfo(applicationContext, "연남동 감칠").execute()
-
+        ShowPlaceInfo(applicationContext, "UUID").notifyInfo()
     }
 
-    fun getSurroundPlace(): MutableList<Beacon>{
+    fun getSurroundBeacon(): ArrayList<Beacon>{
         return beaconList
     }
-
-//                    beacon_list.append(
-//                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
-//                            "%.3f",
-//                            beacon.distance
-//                        ).toDouble() + "m\n\n"
-//                    )
-
 
     override fun stopService(name: Intent?): Boolean {
         beaconManager.unbind(this)
