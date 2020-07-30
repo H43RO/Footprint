@@ -139,5 +139,4 @@ def history_update(request):
         form = HistoryForm(instance=item)
         form.password = ''  # password 데이터를 비웁니다.
         return render(request, 'history_update.html', {'form': form})
-
-    return render(request, 'history_list.html', {'form': form})
+    return HttpResponseRedirect("../")
