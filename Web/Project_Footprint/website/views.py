@@ -46,12 +46,11 @@ def signin(request):
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is not None:
-                print(user)
-                login(request, user)
                 return HttpResponseRedirect('../list')
         else:
-            print(0)
-    else :
+            # print(0)
+            messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
+    else:
         form = SignInForm()
     return render(request, 'signin.html', {'form': form})
 
