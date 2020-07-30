@@ -1,6 +1,6 @@
-package com.haerokim.project_footprint
+package com.haerokim.project_footprint.Data
 
-class Place(
+data class Place(
     var title: String?, var category: String?, var description: String?, var time: String?,
     var location: String?, var imageSrc: String?, var menuName: ArrayList<String>, var menuPrice: ArrayList<String>
 ) {

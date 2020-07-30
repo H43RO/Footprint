@@ -1,22 +1,15 @@
-package com.haerokim.project_footprint
+package com.haerokim.project_footprint.Activity
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
-import androidx.core.graphics.drawable.toDrawable
 import com.bumptech.glide.Glide
+import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.activity_place_detail.*
-import java.io.BufferedInputStream
-import java.lang.Exception
-import java.net.URL
-import java.net.URLConnection
 
 class PlaceDetailActivity : AppCompatActivity() {
 

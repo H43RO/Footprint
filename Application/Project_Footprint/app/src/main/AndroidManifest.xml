@@ -28,18 +28,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SurroundPlaceActivity"></activity>
-        <activity
-            android:name=".HomeActivity"
-            android:launchMode="singleInstance">
+        <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlaceDetailActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activity.SurroundPlaceActivity" />
+        <activity
+            android:name=".Activity.HomeActivity"
+            android:launchMode="singleInstance">
+        </activity>
+        <activity android:name=".Activity.PlaceDetailActivity" />
+        <activity android:name=".Activity.MainActivity" />
 
         <service android:name=".ForegroundService" />
     </application>

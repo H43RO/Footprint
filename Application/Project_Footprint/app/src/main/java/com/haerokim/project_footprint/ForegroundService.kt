@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.haerokim.project_footprint.Activity.HomeActivity
 import org.altbeacon.beacon.*
 
 class ForegroundService : Service(), BeaconConsumer {
