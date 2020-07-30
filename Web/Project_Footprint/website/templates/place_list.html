@@ -1,8 +1,16 @@
-{% extends 'base.html' %}
+{% extends './base.html' %}
 {% load static %}
 {% block content %}
 <div class="containter">
     <h2> Place List </h2>
+    <div class="filter_content section--search_category">
+        <div class="section--category_group">
+            <ul class="list--category depth1" style="list-style:none">
+                <a href="/place_restaurant_list">식당</a> / <a href="/place_sights_list">관광지</a>
+            </ul>
+        </div>
+    </div>
+    </div>
     {% for item in places %}
     <div class="row restaurant-item" style="margin:20px atuo;">
         <div class="col-sm-12">

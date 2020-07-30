@@ -32,6 +32,7 @@ class ForegroundService : Service(), BeaconConsumer {
         try {
             beaconManager.startRangingBeaconsInRegion(Region("myRangingUniqueId", null, null, null))
         } catch (e: RemoteException) {
+
         }
     }
 
@@ -62,7 +63,6 @@ class ForegroundService : Service(), BeaconConsumer {
             }
         }
 
-
         val clsIntent = Intent(this, HomeActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, clsIntent, 0)
         val clsBuilder: NotificationCompat.Builder
@@ -88,13 +88,26 @@ class ForegroundService : Service(), BeaconConsumer {
         handler.sendEmptyMessage(0)
         beaconManager.bind(this)
 
-        GetPlaceInfo(applicationContext, "연남동 감칠").execute()
+        //Django REST API와 연동하여 Beacon UUID를 통해 NAVER PLACE_ID를 GET해올 예정
+        NotifyPlaceInfo(applicationContext, "연남동 감칠").execute()
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    fun getSurroundPlace(): MutableList<Beacon>{
+        return beaconList
+    }
+
+//                    beacon_list.append(
+//                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
+//                            "%.3f",
+//                            beacon.distance
+//                        ).toDouble() + "m\n\n"
+//                    )
+
+
+    override fun stopService(name: Intent?): Boolean {
         beaconManager.unbind(this)
+        return super.stopService(name)
     }
 
     override fun onBind(intent: Intent): IBinder? {
