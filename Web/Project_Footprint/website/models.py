@@ -57,6 +57,20 @@ class User(AbstractUser):
     age = models.IntegerField(blank=False, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
 
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
+    is_active = models.BooleanField(
+        _('active'),
+        default=False,                 # 기본값을 False 로 변경
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
+    )
+
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['birth_date', 'nickname', 'age', 'gender']
@@ -64,6 +78,8 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+        
 
 
 class Place(models.Model):
@@ -85,4 +101,3 @@ class History(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-

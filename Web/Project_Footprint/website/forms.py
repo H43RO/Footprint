@@ -76,4 +76,3 @@ class PlaceRegisterForm(ModelForm):
                 'max_length': _('가게명을 30자 이내로 적어주세요')
             },
         }
-
