@@ -75,7 +75,7 @@ class Place(models.Model):
 
 
 class History(models.Model):
-    img = models.CharField(max_length=600, blank=True)
+    img = models.ImageField(blank=True, upload_to="blog/%Y/%m/%d")
     title = models.CharField(max_length=100, blank=True)
     mood = models.CharField(max_length=30, default=3)
     comment = models.CharField(max_length=1000, blank=True)

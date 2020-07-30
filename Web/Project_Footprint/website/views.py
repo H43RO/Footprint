@@ -131,7 +131,7 @@ def history_create(request):
 def history_update(request):
     if request.method == 'POST' and 'id' in request.POST:
         item = get_object_or_404(History, pk=request.POST.get('id'))
-        form = UpdateHistoryForm(request.POST, instance=item)
+        form = UpdateHistoryForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             item = form.save()
     elif 'id' in request.GET:

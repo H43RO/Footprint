@@ -83,7 +83,7 @@ class PlaceRegisterForm(ModelForm):
         }
 
 
-class HistoryForm(ModelForm):
+class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
         fields = ['title', 'mood', 'img', 'comment', 'place', 'user']
@@ -97,7 +97,7 @@ class HistoryForm(ModelForm):
 
         }
         widgets = {
-            'mood': forms.Select(choices=MOOD_POINT_CHOICES)
+            'mood': forms.Select(choices=MOOD_POINT_CHOICES),
         }
         help_texts = {
             'comment': _('일기를 작성해주세요.'),
