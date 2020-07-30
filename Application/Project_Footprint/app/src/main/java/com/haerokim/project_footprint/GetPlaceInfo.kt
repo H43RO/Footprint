@@ -1,6 +1,7 @@
 package com.haerokim.project_footprint
 
 import android.os.AsyncTask
+import com.haerokim.project_footprint.Data.Place
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements

@@ -12,6 +12,8 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.haerokim.project_footprint.Activity.PlaceDetailActivity
+import com.haerokim.project_footprint.Data.Place
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements

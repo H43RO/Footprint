@@ -1,11 +1,8 @@
-package com.haerokim.project_footprint
+package com.haerokim.project_footprint.Activity
 
-import android.bluetooth.BluetoothAdapter
 import android.os.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.gun0912.tedpermission.PermissionListener
-import org.altbeacon.beacon.*
+import com.haerokim.project_footprint.R
 
 class MainActivity : AppCompatActivity() {
 
