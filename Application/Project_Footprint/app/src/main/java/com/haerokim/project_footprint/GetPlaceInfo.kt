@@ -7,11 +7,11 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
 
-class GetPlaceInfo(place: String) : AsyncTask<Place, Void, Place>() {
+class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
     //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
     //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
-    private var placeName = place
     private lateinit var placeInfo: Place
+    private var placeNaverID = placeID
 
     //호출하는 쪽에서 GetPlaceInfo("name").execute().get() 을 통해 Place 객체 받음
 
@@ -31,7 +31,7 @@ class GetPlaceInfo(place: String) : AsyncTask<Place, Void, Place>() {
             // 네이버 플레이스 URL로 변경 예정 ( 아이디 SQL 쿼리로 얻어올 수 있게끔 매핑 예정 )
 
             val doc: Document =
-                Jsoup.connect("https://search.naver.com/search.naver?query=$placeName").get()
+                Jsoup.connect("https://store.naver.com/restaurants/detail?id=$placeNaverID").get()
             val titleElement: Elements = doc.select("div[class=biz_name_area]").select("a")
             val categoryElement: Elements = doc.select("div[class=biz_name_area]").select("span")
             val descriptionElement: Elements = doc.select("div[class=info] div").select("span")
@@ -97,7 +97,7 @@ class GetPlaceInfo(place: String) : AsyncTask<Place, Void, Place>() {
 
         //Place 정보를 담은 객체 생성해서 리턴해줌
 
-        placeInfo = Place(
+        placeInfo = Place(placeNaverID,
             placeTitle, placeCategory, placeDescription
             , placeTime, placeLocation, placeImageSrc, placeMenuName, placeMenuPrice
         )
