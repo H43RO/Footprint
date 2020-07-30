@@ -52,6 +52,8 @@ def signin(request):
         else:
             # print(0)
             messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
+            return HttpResponseRedirect('../signin/')
+
     else:
         form = SignInForm()
     return render(request, 'signin.html', {'form': form})
