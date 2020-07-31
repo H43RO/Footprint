@@ -26,6 +26,10 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
+from rest_framework import viewsets
+from .history_serializer import HistorySerializer
+
+
 
 def index(request):
     context = {
@@ -148,7 +152,7 @@ def history(request):
         item.delete()
         return redirect('history-delete')
     historys = History.objects.all()
-    #paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
+    # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
 
     # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
     # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
@@ -189,6 +193,12 @@ def history_update(request):
         form.password = ''  # password 데이터를 비웁니다.
         return render(request, 'history_update.html', {'form': form})
     return HttpResponseRedirect("../")
+
+
+
+class HistoryViewSet(viewsets.ModelViewSet):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
 
 
 class ApiPlaceId(ModelViewSet):
