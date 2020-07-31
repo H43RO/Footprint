@@ -10,7 +10,7 @@ import retrofit2.http.*
 interface RetrofitService {
     //로그인 : 수정 예정
     @FormUrlEncoded
-    @POST("/api/login/") // Django 서버단 URL 확정되면 변경할 것
+    @POST("api/login/") // Django 서버단 URL 확정되면 변경할 것
     fun requestLogin( // 서버단 변수명과 통일해야함 (Converting 호환성 중요)
         @Field("userID") userID: String,
         @Field("userPW") userPW: String
@@ -18,14 +18,14 @@ interface RetrofitService {
 
     // 장소 정보 요청 : 수정 예정
     @FormUrlEncoded
-    @GET("/api/get-place-id")
+    @GET("api/get-place-id?")
     fun requestPlaceInfo(
-        @Field("placeID") placeID: String
+        @Query("UUID") UUID: String
     ): Call<String> //Response : NaverPlaceID
 
     // 사용자 프로필 조회 : 수정 예정
     @FormUrlEncoded
-    @GET("/api/get-profile")
+    @GET("api/get-profile")
     fun reqeustUserInfo(
         @Field("profile") userProfile: User
     ): Call<User> //Response : User Object
@@ -72,5 +72,4 @@ interface RetrofitService {
     fun registerUser(
         @Field("name") name: String
     ): Call<String> //Response : Status Code
-
 }
