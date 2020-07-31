@@ -57,6 +57,7 @@ class SignInForm(AuthenticationForm):
         fields = ['email', 'password']
 
 
+
 class PlaceRegisterForm(ModelForm):
     class Meta:
         model = Place

@@ -49,15 +49,12 @@ def signup(request):
                 uid64 = urlsafe_base64_encode(force_bytes(user.pk))
                 token = account_activation_token.make_token(user)
                 message_data = message(domain, uid64, token)
-
                 mail_title = _("이메일 인증을 완료해 주세요")
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
                 # login(request, user)
                 return HttpResponseRedirect('../list/')
-                # except KeyError:
-                #     return messages.error(request, _('유효하지 않은 key입니다.'))
             
     else:
         form = SignUpForm()
