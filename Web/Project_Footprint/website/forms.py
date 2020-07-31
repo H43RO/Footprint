@@ -1,15 +1,10 @@
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import User, Place, History
+from .models import User, Place
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
 
-MOOD_POINT_CHOICES = (
-    ('angry', "angry"),
-    ('soso', "soso"),
-    ('happy', "happy"),
-)
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
@@ -28,7 +23,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
+        fields = ['email', 'password1', 'password2', 'nickname', 'birth_date', 'age', 'gender']
         labels = {
             'email': _('이메일'),
             'birth_date': _('생년월일'),
@@ -62,7 +57,6 @@ class SignInForm(AuthenticationForm):
         fields = ['email', 'password']
 
 
-
 class PlaceRegisterForm(ModelForm):
     class Meta:
         model = Place
@@ -83,29 +77,3 @@ class PlaceRegisterForm(ModelForm):
             },
         }
 
-
-class HistoryForm(forms.ModelForm):
-    class Meta:
-        model = History
-        fields = ['title', 'mood', 'img', 'comment', 'place', 'user']
-        labels = {
-            'title': _('제목'),
-            'mood':_('내 기분'),
-            'img': _('사진'),
-            'comment': _('코멘트'),
-            'place': _('장소'),
-            'user': _('사용자'),
-
-        }
-        widgets = {
-            'mood': forms.Select(choices=MOOD_POINT_CHOICES),
-        }
-        help_texts = {
-            'comment': _('일기를 작성해주세요.'),
-        }
-
-
-class UpdateHistoryForm(HistoryForm):
-    class Meta:
-        model = History
-        exclude = [' ']
