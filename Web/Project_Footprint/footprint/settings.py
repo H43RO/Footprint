@@ -136,6 +136,9 @@ EMAIL_HOST_PASSWORD = 'abcd' ## write your email password
 EMAIL_USE_TLS = True
 
 
+#Maintain Session
+SESSION_COOKIE_AGE = 60 * 60
+SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
