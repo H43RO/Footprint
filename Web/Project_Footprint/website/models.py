@@ -56,7 +56,6 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=10, blank=False, null=True)
     age = models.IntegerField(blank=False, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
-
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
