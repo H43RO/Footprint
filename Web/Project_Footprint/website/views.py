@@ -54,7 +54,6 @@ def signup(request):
                 email.send()
                 # login(request, user)
                 return HttpResponseRedirect('../list/')
-            
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -65,8 +64,7 @@ def signin(request):
         form = SignInForm(data=request.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
-                print(user)
+            if user is not None:   
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
