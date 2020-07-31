@@ -1,5 +1,7 @@
+import kwargs as kwargs
+
 from .backends import EmailAuthBackend
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -9,6 +11,14 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm
 from .models import User, History, Place
+from rest_framework import viewsets, permissions, generics, status
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from .user_info_serializer import UserSerializer
+from django_filters import rest_framework as filters
+
 
 
 def index(request):
@@ -33,7 +43,6 @@ def signup(request):
             form.save()
             user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password1'])
             if user is not None:
-                # login(request, user)
                 return HttpResponseRedirect('../list/')
     else:
         form = SignUpForm()
@@ -46,7 +55,6 @@ def signin(request):
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is not None:
-                print(user)
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
@@ -62,6 +70,15 @@ def signin(request):
 def signout(request):
     auth.logout(request)
     return HttpResponseRedirect('../index/')
+
+
+def myinfo(request):
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        context = {
+            'users': User.objects.filter(id=user_id)
+        }
+        return render(request, 'myinfo.html', context)
 
 
 def history(request):
@@ -118,3 +135,17 @@ def place_search(request):
         return render(request,'place_search.html',{'place_search':place_search,'q':q})
     else:
         return render(request,'place_search.html')
+
+
+class UserListView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('id',)
+
+    # def get_queryset(self):
+    #     user_id = self.request.user.id
+    #     print(id)
+    #     user_serializer = User.objects.filter(id=1)
+    #     return Response(user_serializer.data, status=status.HTTP_200_OK)
+    #     return user_serializer

@@ -23,7 +23,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
+        fields = ['email', 'password1', 'password2', 'nickname', 'birth_date', 'age', 'gender']
         labels = {
             'email': _('이메일'),
             'birth_date': _('생년월일'),
