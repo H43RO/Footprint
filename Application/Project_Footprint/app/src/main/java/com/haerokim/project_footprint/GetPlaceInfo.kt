@@ -94,7 +94,6 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
         //Place 정보를 담은 객체 생성해서 리턴해줌
 
         placeInfo = Place(placeNaverID,
