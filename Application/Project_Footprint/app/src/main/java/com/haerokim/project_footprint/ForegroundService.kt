@@ -11,7 +11,16 @@ import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.haerokim.project_footprint.Activity.HomeActivity
+import com.haerokim.project_footprint.Data.History
+import com.haerokim.project_footprint.Network.RetrofitService
 import org.altbeacon.beacon.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ForegroundService : Service(), BeaconConsumer {
 
@@ -48,16 +57,72 @@ class ForegroundService : Service(), BeaconConsumer {
         beaconManager.getBeaconParsers()
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
+        var retrofit = Retrofit.Builder()
+            .baseUrl("http://0.0.0.0:8000") //사이트 Base URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        var getPlaceInfoService: RetrofitService =
+            retrofit.create(RetrofitService::class.java)
+
+        var history: History? = null
+        var placeID: String? = null
+
         var handler: Handler = @SuppressLint("HandlerLeak")
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
-//                    beacon_list.append(
-//                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
-//                            "%.3f",
-//                            beacon.distance
-//                        ).toDouble() + "m\n\n"
-//                    )
+                    if (beacon.distance < 50) {
+                        if (beacon.distance < 5) {
+                            getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
+                                .enqueue(object : retrofit2.Callback<String> {
+                                    override fun onFailure(call: Call<String>, t: Throwable) {
+                                        Log.d("GetPlaceInfo", "정보 얻기 실패")
+                                    }
+
+                                    override fun onResponse(
+                                        call: Call<String>,
+                                        response: Response<String>
+                                    ) {
+                                        Log.d("GetPlaceInfo", "정보 얻기 성공!")
+                                        placeID = response.body() ?: "정보 없음"
+                                    }
+                                })
+                            val current = LocalDateTime.now()
+                            val formatter = DateTimeFormatter.ISO_DATE_TIME
+                            val formatted = current.format(formatter) // ex) 2020-07-31T22:21:51
+
+                            //History POST
+                            history = placeID?.let {
+                                History(
+                                    user = "1234", placeID = it, created_at = formatted,
+                                    historyID = null, comment = null, image = null
+                                )
+                            }
+
+                        }
+                        //beacon.id1 값을 통해 requestPlaceInfo API로 Place ID 받아옴
+                        getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
+                            .enqueue(object : retrofit2.Callback<String> {
+                                override fun onFailure(call: Call<String>, t: Throwable) {
+                                    Log.d("GetPlaceInfo", "정보 얻기 실패")
+                                }
+
+                                override fun onResponse(
+                                    call: Call<String>,
+                                    response: Response<String>
+                                ) {
+                                    Log.d("GetPlaceInfo", "정보 얻기 성공!")
+                                    placeID = response.body() ?: "정보 없음"
+                                }
+                            })
+                        placeID?.let {
+                            ShowPlaceInfo(
+                                context = applicationContext,
+                                placeID = it
+                            ).notifyInfo()
+                        }
+                    }
                     Log.d("Scan Result", beacon.id1.toString())
                 }
                 this.sendEmptyMessageDelayed(0, 500)
@@ -89,11 +154,9 @@ class ForegroundService : Service(), BeaconConsumer {
         handler.sendEmptyMessage(0)
         beaconManager.bind(this)
 
-        //Django REST API와 연동하여 Beacon UUID를 통해 NAVER PLACE_ID를 GET해올 예정
-        ShowPlaceInfo(applicationContext, "UUID").notifyInfo()
     }
 
-    fun getSurroundBeacon(): ArrayList<Beacon>{
+    fun getSurroundBeacon(): ArrayList<Beacon> {
         return beaconList
     }
 

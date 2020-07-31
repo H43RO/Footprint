@@ -5,19 +5,26 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.*
+import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.haerokim.project_footprint.*
+import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.Activity.SurroundPlaceActivity
 import com.haerokim.project_footprint.R
+import com.haerokim.project_footprint.ui.surround.SurroundFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -40,6 +47,20 @@ class HomeFragment : Fragment(),  PermissionListener {
         }
     }
 
+    var homeActivity: HomeActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        homeActivity = activity as HomeActivity
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        homeActivity = null
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +71,8 @@ class HomeFragment : Fragment(),  PermissionListener {
         homeViewModel.scanMode.observe(viewLifecycleOwner, Observer<Boolean> {
             scanning_mode_switch.isChecked = it
         })
+
+
 
         return root
     }
@@ -90,7 +113,6 @@ class HomeFragment : Fragment(),  PermissionListener {
                         // 블루투스 켜져있는 경우
                         Snackbar.make(requireActivity().findViewById(android.R.id.content), "당신의 발자취를 따라가기 시작합니다!", Snackbar.LENGTH_LONG).show()
                     }
-
                 } else { //워치 권한 허용 안됨
                     Snackbar.make(requireActivity().findViewById(android.R.id.content), "앱 사용을 위해 위치 권한이 필요합니다", Snackbar.LENGTH_LONG).show()
                 }
@@ -115,7 +137,7 @@ class HomeFragment : Fragment(),  PermissionListener {
         }
 
         card_surround_place.setOnClickListener {
-            startActivity(Intent(context, SurroundPlaceActivity::class.java))
+            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_surround)
         }
 
     }

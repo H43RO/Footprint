@@ -7,6 +7,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signip'),
     path('signout/', views.signout, name='signout'),
+    path('activate/<str:uidb64>/<str:token>', views.user_activate, name='user_activate'),
     path('list/', views.list, name='list'),
     path('history/', views.history, name='history'),
     path('place_list/', views.place_list, name='place_list'),
@@ -17,6 +18,8 @@ urlpatterns = [
     path('place_search/',views.place_search,name='place_search'),
     path('history/update/',views.history_update,name='history-update'),
     path('history/create/',views.history_create,name='history-create'),
+    path('history/<int:id>/delete/',views.history_delete,name='history-delete'),
 ]
+
 
 
