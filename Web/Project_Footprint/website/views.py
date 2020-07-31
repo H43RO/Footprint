@@ -17,6 +17,12 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm
 from .models import User, History, Place
+from .place_info_serializers import PlaceSerializer
+from django_filters import rest_framework as filters
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+# from rest_framework.filters import SearchFilter
+# from rest_framework.decorators import action
+# from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
@@ -189,6 +195,18 @@ def history_update(request):
     return HttpResponseRedirect("../")
 
 
+
 class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
+
+
+class ApiPlaceId(ModelViewSet):
+    queryset = Place.objects.all()
+    serializer_class = PlaceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('beacon_uuid', 'naver_place_id')
+    # filter_backends = [SearchFilter]
+    # search_fields = ['title']
+
+
