@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <form action="{% url 'history-update' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ form.instance.id }}"/>
+        <table>
+            {{ form.as_table }}
+        </table>
+        <button type="submit" >수정완료</button>
+    </form>
+</div>
+{% endblock %}
