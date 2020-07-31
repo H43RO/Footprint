@@ -15,8 +15,9 @@ urlpatterns = [
     path('place_restaurant_list/', views.place_restaurant, name='place_restaurant_list'),
     path('place_sights_list/', views.place_sights, name='place_sights_list'),
     path('index/', views.index, name='index'),
-    path('place_search/',views.place_search,name='place_search',),
-    
+    path('place_search/',views.place_search,name='place_search'),
+    path('history/update/',views.history_update,name='history-update'),
+    path('history/create/',views.history_create,name='history-create'),
 ]
 
 

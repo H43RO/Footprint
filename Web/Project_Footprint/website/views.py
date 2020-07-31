@@ -15,8 +15,7 @@ from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm
 from .models import User, History, Place
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
@@ -84,7 +83,6 @@ def signout(request):
     auth.logout(request)
     return HttpResponseRedirect('../index/')
 
-
 def user_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -97,24 +95,6 @@ def user_activate(request, uidb64, token):
             return redirect('../place_search/')
     except ValidationError:
         return HttpResponse({"messge" : "TYPE_ERROR"}, status=400)
-
-
-
-
-
-def history(request):
-    historys = History.objects.all()
-    paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
-
-    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
-    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
-    place = Place.objects.all()
-    context = {
-        'historys': historys,
-        'places' : place
-    }
-    return render(request, 'history.html', context)
-
 
 def place_list(request):
     context = {
@@ -156,3 +136,39 @@ def place_search(request):
         return render(request,'place_search.html',{'place_search':place_search,'q':q})
     else:
         return render(request,'place_search.html')
+
+
+def history(request):
+    historys = History.objects.all()
+    #paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
+
+    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
+    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
+    context = {
+        'historys': historys,
+    }
+    return render(request, 'history_list.html', context)
+
+
+def history_create(request):
+    if request.method == 'POST':
+        form = HistoryForm(request.POST, request.FILES)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
+        if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
+            new_item = form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
+        return render(request, 'history_list.html', {'form': form})  # 리스트 화면으로 이동합니다.
+    form = HistoryForm(request.FILES)  # 만약에 POST방식이 아니라면
+    return render(request, 'history_create.html', {'form': form})
+
+
+def history_update(request):
+    if request.method == 'POST' and 'id' in request.POST:
+        item = get_object_or_404(History, pk=request.POST.get('id'))
+        form = UpdateHistoryForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save()
+    elif 'id' in request.GET:
+        item = get_object_or_404(History, pk=request.GET.get('id'))
+        form = HistoryForm(instance=item)
+        form.password = ''  # password 데이터를 비웁니다.
+        return render(request, 'history_update.html', {'form': form})
+    return HttpResponseRedirect("../")
