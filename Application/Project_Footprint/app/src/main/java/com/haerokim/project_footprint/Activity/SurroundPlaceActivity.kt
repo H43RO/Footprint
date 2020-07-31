@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
+import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Data.Place
 import com.haerokim.project_footprint.ForegroundService
 import com.haerokim.project_footprint.GetPlaceInfo
@@ -73,7 +74,7 @@ class SurroundPlaceActivity : AppCompatActivity() {
                 //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
                 var retrofit = Retrofit.Builder()
-                    .baseUrl("http://0.0.0.0:8000") //사이트 Base URL
+                    .baseUrl(" http://0c0c648cfd92.ngrok.io") //사이트 Base URL
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
@@ -84,22 +85,22 @@ class SurroundPlaceActivity : AppCompatActivity() {
                 // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
                 for (beacon in surroundBeaconList) {
                     getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
-                        .enqueue(object : Callback<String> {
-                            override fun onFailure(call: Call<String>, t: Throwable) {
+                        .enqueue(object : Callback<List<NaverPlaceID>> {
+                            override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
                                 Log.d("GetPlaceInfo", "정보 얻기 실패")
                             }
                             // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
                             override fun onResponse(
-                                call: Call<String>,
-                                response: Response<String>
+                                call: Call<List<NaverPlaceID>>,
+                                response: Response<List<NaverPlaceID>>
                             ) {
                                 Log.d("GetPlaceInfo", "정보 얻기 성공")
-                                response.body()
-                                    ?.let {
-                                        surroundPlaceList.add(
-                                            GetPlaceInfo(it).execute().get()
-                                        )
-                                    }
+//                                response.body()
+//                                    ?.let {
+//                                        surroundPlaceList.add(
+//                                            GetPlaceInfo(it).execute().get()
+//                                        )
+//                                    }
                             }
                         })
                 }

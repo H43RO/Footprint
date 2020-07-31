@@ -1,9 +1,6 @@
 package com.haerokim.project_footprint.Network
 
-import com.haerokim.project_footprint.Data.History
-import com.haerokim.project_footprint.Data.Login
-import com.haerokim.project_footprint.Data.Place
-import com.haerokim.project_footprint.Data.User
+import com.haerokim.project_footprint.Data.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -16,12 +13,11 @@ interface RetrofitService {
         @Field("userPW") userPW: String
     ): Call<Login> //Response : Login Object (includes Status code)
 
-    // 장소 정보 요청 : 수정 예정
-    @FormUrlEncoded
-    @GET("api/get-place-id?")
+    // 장소 정보 요청
+    @GET("api/places")
     fun requestPlaceInfo(
-        @Query("UUID") UUID: String
-    ): Call<String> //Response : NaverPlaceID
+        @Query("beacon_uuid") UUID: String
+    ): Call<List<NaverPlaceID>> //Response : NaverPlaceID
 
     // 사용자 프로필 조회 : 수정 예정
     @FormUrlEncoded
