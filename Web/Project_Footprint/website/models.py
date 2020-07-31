@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
+DEFAULT_HISTORY = 1
 
 GENDER_CHOICES = (
     (0, 'male'),
@@ -93,11 +94,11 @@ class Place(models.Model):
 
 class History(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
-    title = models.CharField(max_length=100, blank=True)
+    title = models.TextField(max_length=100, blank=True, null=True)
     mood = models.CharField(max_length=30, default=3)
-    comment = models.TextField(max_length=1000, blank=True)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField(max_length=1000, blank=True, null=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE,blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
