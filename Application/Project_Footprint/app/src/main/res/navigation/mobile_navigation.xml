@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_surround"
             app:destination="@id/navigation_surround" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_notice"
+            app:destination="@id/navigation_notice" />
     </fragment>
 
     <fragment
@@ -32,5 +35,14 @@
         android:name="com.haerokim.project_footprint.ui.surround.SurroundFragment"
         android:label="@string/title_surround"
         tools:layout="@layout/fragment_surround" />
+
+
+    <fragment
+        android:id="@+id/navigation_notice"
+        android:name="com.haerokim.project_footprint.NoticeFragment"
+        android:label="@string/title_surround"
+        tools:layout="@layout/fragment_blank" />
+
+
 
 </navigation>
