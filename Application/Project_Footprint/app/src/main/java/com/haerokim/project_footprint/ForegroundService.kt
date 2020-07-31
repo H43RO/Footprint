@@ -52,12 +52,14 @@ class ForegroundService : Service(), BeaconConsumer {
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
+
 //                    beacon_list.append(
 //                        "ID : " + beacon.id1 + " \n " + "Distance : " + String.format(
 //                            "%.3f",
 //                            beacon.distance
 //                        ).toDouble() + "m\n\n"
 //                    )
+
                     Log.d("Scan Result", beacon.id1.toString())
                 }
                 this.sendEmptyMessageDelayed(0, 500)
