@@ -101,12 +101,16 @@ def place_search(request):
 
     if q:
         place_search = place_search.filter(title__icontains=q)
-        return render(request,'place_search.html',{'place_search':place_search,'q':q})
+        return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
-        return render(request,'place_search.html')
+        return render(request, 'place_search.html')
 
 
 def history(request):
+    if request.method == 'POST' and 'id' in request.POST:
+        item = get_object_or_404(History, id=id)
+        item.delete()
+        return redirect('history-delete')
     historys = History.objects.all()
     #paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
 
@@ -123,9 +127,18 @@ def history_create(request):
         form = HistoryForm(request.POST, request.FILES)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
         if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
             new_item = form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
-        return render(request, 'history_list.html', {'form': form})  # 리스트 화면으로 이동합니다.
+        return HttpResponseRedirect('../')  # 리스트 화면으로 이동합니다.
     form = HistoryForm(request.FILES)  # 만약에 POST방식이 아니라면
     return render(request, 'history_create.html', {'form': form})
+
+
+def history_delete(request, id):
+    item = get_object_or_404(History, pk=id)
+    if request.method == 'POST':
+        item.delete()
+        return redirect('history')  # 리스트 화면으로 이동합니다.
+
+    return render(request, 'history_delete.html', {'item': item})
 
 
 def history_update(request):
