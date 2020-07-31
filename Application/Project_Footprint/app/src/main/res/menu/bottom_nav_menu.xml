@@ -7,12 +7,17 @@
         android:title="@string/title_home" />
 
     <item
+        android:id="@+id/navigation_surround"
+        android:icon="@drawable/ic_baseline_place_24"
+        android:title="@string/title_surround" />
+
+    <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_dashboard" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_menu"
         android:icon="@drawable/ic_menu_24"
         android:title="@string/title_menu" />
 

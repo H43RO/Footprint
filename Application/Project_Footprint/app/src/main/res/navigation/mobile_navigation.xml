@@ -9,7 +9,14 @@
         android:id="@+id/navigation_home"
         android:name="com.haerokim.project_footprint.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_surround"
+            app:destination="@id/navigation_surround" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_notice"
+            app:destination="@id/navigation_notice" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -18,10 +25,24 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_menu"
         android:name="com.haerokim.project_footprint.ui.menu.MenuFragment"
         android:label="@string/title_menu"
         tools:layout="@layout/fragment_menu" />
+
+    <fragment
+        android:id="@+id/navigation_surround"
+        android:name="com.haerokim.project_footprint.ui.surround.SurroundFragment"
+        android:label="@string/title_surround"
+        tools:layout="@layout/fragment_surround" />
+
+
+    <fragment
+        android:id="@+id/navigation_notice"
+        android:name="com.haerokim.project_footprint.NoticeFragment"
+        android:label="@string/title_surround"
+        tools:layout="@layout/fragment_blank" />
+
 
 
 </navigation>

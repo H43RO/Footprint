@@ -1,17 +1,18 @@
 package com.haerokim.project_footprint
 
 import android.os.AsyncTask
+import android.util.Log
 import com.haerokim.project_footprint.Data.Place
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
 
-class GetPlaceInfo(place: String) : AsyncTask<Place, Void, Place>() {
+class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
     //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
     //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
-    private var placeName = place
     private lateinit var placeInfo: Place
+    private var placeNaverID = placeID
 
     //호출하는 쪽에서 GetPlaceInfo("name").execute().get() 을 통해 Place 객체 받음
 
@@ -29,24 +30,24 @@ class GetPlaceInfo(place: String) : AsyncTask<Place, Void, Place>() {
 
         try {
             // 네이버 플레이스 URL로 변경 예정 ( 아이디 SQL 쿼리로 얻어올 수 있게끔 매핑 예정 )
-
             val doc: Document =
-                Jsoup.connect("https://search.naver.com/search.naver?query=$placeName").get()
-            val titleElement: Elements = doc.select("div[class=biz_name_area]").select("a")
+                Jsoup.connect("https://store.naver.com/restaurants/detail?id=$placeNaverID").get()
+            val titleElement: Elements = doc.select("div[class=biz_name_area]").select("strong")
             val categoryElement: Elements = doc.select("div[class=biz_name_area]").select("span")
             val descriptionElement: Elements = doc.select("div[class=info] div").select("span")
             val timeElement: Elements = doc.select("div[class=biztime] span").select("span")
             val locationElement: Elements = doc.select("span[class=addr]")
-            val menuNameElement: Elements = doc.select("span[class=name]")
+            val menuNameElement: Elements = doc.select("div[class=list_menu_inner]").select("span[class=name]")
             val menuPriceElement: Elements = doc.select("div em[class=price]")
 
             // 네이버 플레이스 URL에다가 tab=photo 쿼리 붙이면 이미지 파싱 URL임
             val imageDoc: Document =
-                Jsoup.connect("https://store.naver.com/restaurants/detail?entry=plt&id=36177811&query=%EA%B0%90%EC%B9%A0&tab=photo")
+                Jsoup.connect("https://store.naver.com/restaurants/detail?id=$placeNaverID&tab=photo")
                     .get()
             val imageElement: Elements = imageDoc.select("div.list_photo img")
 
             // ===================HTML 파싱 데이터 모두 변수에 담아줌=================== //
+
 
             placeTitle = if (titleElement.size != 0) {
                 titleElement[0].text()
@@ -94,13 +95,13 @@ class GetPlaceInfo(place: String) : AsyncTask<Place, Void, Place>() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
         //Place 정보를 담은 객체 생성해서 리턴해줌
 
-        placeInfo = Place(
+        placeInfo = Place(placeNaverID,
             placeTitle, placeCategory, placeDescription
             , placeTime, placeLocation, placeImageSrc, placeMenuName, placeMenuPrice
         )
+
 
         return placeInfo
     }
