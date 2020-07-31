@@ -18,6 +18,8 @@ urlpatterns = [
     path('place_search/',views.place_search,name='place_search'),
     path('history/update/',views.history_update,name='history-update'),
     path('history/create/',views.history_create,name='history-create'),
+    path('history/<int:id>/delete/',views.history_delete,name='history-delete'),
 ]
+
 
 
