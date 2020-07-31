@@ -33,6 +33,9 @@ class SurroundPlaceActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    //객체 배열이 완성되고 비동기적으로 ListAdapter가 완성될 수 있도록 구현할 예정
+    //그렇지 않으면 Adapting 과정에서 충돌 발생할 것
+
     class PlaceListAdapter(
         private val surroundPlaceList: ArrayList<Place>, private val context: Context
     ) :
@@ -50,7 +53,6 @@ class SurroundPlaceActivity : AppCompatActivity() {
         override fun getItemCount() = surroundPlaceList.size
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
             // 검증 필요
             holder.view.setOnClickListener {
                 ShowPlaceInfo(context, surroundPlaceList[position].naverPlaceID).showInfo()
@@ -64,19 +66,9 @@ class SurroundPlaceActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_surround_place)
-
-        viewManager = LinearLayoutManager(this)
-        viewAdapter = PlaceListAdapter(surroundPlaceList, this)
-
-        recyclerView = findViewById<RecyclerView>(R.id.surround_place_list).apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }
 
         // 현재 Scanning 중인 서비스를 통해 주위 비콘 리스트를 얻음
         surroundBeaconList = ForegroundService().getSurroundBeacon()
@@ -88,6 +80,7 @@ class SurroundPlaceActivity : AppCompatActivity() {
             .baseUrl("http://0.0.0.0:8000") //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
         var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
 
         // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
@@ -99,6 +92,7 @@ class SurroundPlaceActivity : AppCompatActivity() {
                         Log.d("GetPlaceInfo", "정보 얻기 실패")
                     }
 
+                    // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         Log.d("GetPlaceInfo", "정보 얻기 성공")
                         response.body()
@@ -107,7 +101,15 @@ class SurroundPlaceActivity : AppCompatActivity() {
                 })
         }
 
-        Log.d("SurroundPlaceList", surroundPlaceList[0].title)
+        viewManager = LinearLayoutManager(this)
+        viewAdapter = PlaceListAdapter(surroundPlaceList, this)
+
+        recyclerView = findViewById<RecyclerView>(R.id.surround_place_list).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+
 
     }
 }
