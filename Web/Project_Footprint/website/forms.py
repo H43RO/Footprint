@@ -1,9 +1,16 @@
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import User, Place
+from .models import User, Place, History
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
+
+
+MOOD_POINT_CHOICES = (
+    ('angry', "angry"),
+    ('soso', "soso"),
+    ('happy', "happy"),
+)
 
 
 class SignUpForm(UserCreationForm):
@@ -20,10 +27,9 @@ class SignUpForm(UserCreationForm):
         widget=forms.PasswordInput,
         help_text='비밀번호를 재입력해주세요.',
     )
-
     class Meta:
         model = User
-        fields = ['email', 'password1', 'password2', 'nickname', 'birth_date', 'age', 'gender']
+        fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
         labels = {
             'email': _('이메일'),
             'birth_date': _('생년월일'),
@@ -73,6 +79,7 @@ class PlaceRegisterForm(ModelForm):
             },
         }
 
+
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
@@ -97,4 +104,3 @@ class UpdateHistoryForm(HistoryForm):
     class Meta:
         model = History
         exclude = [' ']
-

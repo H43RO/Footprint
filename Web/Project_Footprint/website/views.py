@@ -1,4 +1,3 @@
-import kwargs as kwargs
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
@@ -26,12 +25,27 @@ from django_filters import rest_framework as filters
 from .place_info_serializers import PlaceSerializer
 from django_filters import rest_framework as filters
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-# from rest_framework.filters import SearchFilter
 # from rest_framework.decorators import action
 # from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
+<<<<<<< HEAD
+from rest_framework import viewsets, generics
+from .history_serializer import HistorySerializer
+from .history_date_serializer import HistoryDateSerializer
+# from .history_date_serializer import
+from django_filters import FilterSet, CharFilter, NumberFilter
+from django.views.generic import ListView
+from rest_framework.decorators import action
+#
+from .models import History
+# from .history_date_serializer import HistoryDateSerializer
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django_filters import rest_framework as filters
+=======
 from rest_framework import viewsets, mixins, generics
 from .history_serializer import HistorySerializer
 from rest_framework.generics import (
@@ -42,6 +56,7 @@ from rest_framework.generics import (
 )
 
 
+>>>>>>> master
 
 
 def index(request):
@@ -109,13 +124,14 @@ def user_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+
         if account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
             return redirect('../place_search/')
+
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
-
 
 def myinfo(request):
     if request.user.is_authenticated:
@@ -129,7 +145,6 @@ def myinfo(request):
 def history(request):
     historys = History.objects.all()
     paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
-
     # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
     # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
     place = Place.objects.all()
@@ -138,6 +153,7 @@ def history(request):
         'places' : place
     }
     return render(request, 'history.html', context)
+
 
 
 def place_list(request):
@@ -187,14 +203,6 @@ class UserListView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('id',)
-
-    # def get_queryset(self):
-    #     user_id = self.request.user.id
-    #     print(id)
-    #     user_serializer = User.objects.filter(id=1)
-    #     return Response(user_serializer.data, status=status.HTTP_200_OK)
-    #     return user_serializer
-
 
 
 def history(request):
@@ -246,7 +254,6 @@ def history_update(request):
     return HttpResponseRedirect("../")
 
 
-
 class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
@@ -272,3 +279,36 @@ class ApiPlaceId(ModelViewSet):
     filter_fields = ('beacon_uuid', 'naver_place_id')
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
+
+
+class HistoryFilter(FilterSet):
+    title = CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = History
+        fields = ('title', 'created_at')
+
+
+class HistoryDateFilter(filters.FilterSet):
+
+    class Meta:
+        model = History
+        fields = {
+            'title': ['icontains'],
+            'created_at': ['date', 'lte', 'gte']
+        }
+
+
+class HistoryDateViewSet(viewsets.ModelViewSet):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    filterset_class = HistoryDateFilter
+    filter_backends = [filters.DjangoFilterBackend]
+    # filter_fields = ['title', 'created_at']
+
+    @action(methods=['get'], detail=False)
+    def newest(self, request):
+        newest = self.get_queryset().order_by('created_at').last()
+        serializer = self.get_serializer_class()(newest)
+        return Response(serializer.data)
+

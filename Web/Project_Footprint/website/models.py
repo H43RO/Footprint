@@ -5,7 +5,9 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
+from django.utils import timezone
 
+DEFAULT_HISTORY = 1
 
 GENDER_CHOICES = (
     (0, 'male'),
@@ -72,24 +74,17 @@ class Place(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title + ': '
-
+        return self.title
 
 class History(models.Model):
-    # user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    
-class History(models.Model):
-    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    img = models.CharField(max_length=600, default=None, null=True)
-    title = models.CharField(max_length=100)
-    comment = models.CharField(max_length=1000)
-
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
+    title = models.TextField(max_length=100, blank=True, null=True)
+    mood = models.CharField(max_length=30, default=3)
+    comment = models.TextField(max_length=1000, blank=True, null=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE,blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
-

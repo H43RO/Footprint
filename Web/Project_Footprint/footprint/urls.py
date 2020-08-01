@@ -15,11 +15,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from website import views
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
+from website.views import HistoryViewSet, HistoryDateViewSet, ApiPlaceId
 from website.views import HistoryViewSet
 from website.views import (
     HistoryViewSet,
@@ -30,8 +29,9 @@ from website import views
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
-router.register('historys',HistoryViewSet)
-router.register('places', views.ApiPlaceId)
+router.register('historys', HistoryViewSet)
+router.register('places', ApiPlaceId)
+router.register('historysdate', HistoryDateViewSet,basename='historydate')
 router.register('userinfo', views.UserListView, basename='userinfo')
 router.register('userinfo', views.UserListView)
 
@@ -39,6 +39,7 @@ urlpatterns = [
     path('', include('website.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
+    url('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
