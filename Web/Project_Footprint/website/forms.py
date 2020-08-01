@@ -38,20 +38,16 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
-
-
 class SignInForm(AuthenticationForm):
     username = forms.EmailField(
         label=_("이메일"),
         widget=forms.EmailInput,
     )
-
     password = forms.CharField(
         label=_("비밀번호"),
         strip=False,
         widget=forms.PasswordInput
     )
-
     class Meta:
         model = User
         fields = ['email', 'password']
@@ -76,4 +72,29 @@ class PlaceRegisterForm(ModelForm):
                 'max_length': _('가게명을 30자 이내로 적어주세요')
             },
         }
+
+class HistoryForm(forms.ModelForm):
+    class Meta:
+        model = History
+        fields = ['title', 'mood', 'img', 'comment', 'place', 'user']
+        labels = {
+            'title': _('제목'),
+            'mood':_('내 기분'),
+            'img': _('사진'),
+            'comment': _('코멘트'),
+            'place': _('장소'),
+            'user': _('사용자'),
+        }
+        widgets = {
+            'mood': forms.Select(choices=MOOD_POINT_CHOICES),
+        }
+        help_texts = {
+            'comment': _('일기를 작성해주세요.'),
+        }
+
+
+class UpdateHistoryForm(HistoryForm):
+    class Meta:
+        model = History
+        exclude = [' ']
 
