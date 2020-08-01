@@ -103,6 +103,12 @@ def user_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+        if account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return redirect('../place_search/')
+    except ValidationError:
+        return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
 
 def myinfo(request):
@@ -126,12 +132,6 @@ def history(request):
         'places' : place
     }
     return render(request, 'history.html', context)
-        if account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.save()
-            return redirect('../place_search/')
-        except ValidationError:
-        return HttpResponse({"messge" : "TYPE_ERROR"}, status=400)
 
 
 def place_list(request):
