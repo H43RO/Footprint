@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'website',
     'rest_framework',
     'django_filters',
+    'rest_registration',
 ]
 
 REST_FRAMEWORK = {
@@ -53,6 +54,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
+
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -145,6 +153,8 @@ EMAIL_HOST_USER = 'abcd@gmail.com' ## write your Google email : abcd@gmail.com
 EMAIL_HOST_PASSWORD = 'abcd' ## write your email password
 EMAIL_USE_TLS = True
 
+#for User Authentication
+LOGIN_AUTHENTICATOR : 'rest_registration.utils.users.authenticate_by_login_and_password_or_none'
 
 #Maintain Session
 SESSION_COOKIE_AGE = 60 * 60

@@ -25,9 +25,15 @@ from django_filters.views import FilterView
 router = routers.DefaultRouter()
 router.register('places', views.ApiPlaceId)
 
+api_urlpatterns = [
+    path('accounts/', include('rest_registration.api.urls')),
+]
+
+
 urlpatterns = [
     path('', include('website.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/v1/', include(api_urlpatterns)),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
