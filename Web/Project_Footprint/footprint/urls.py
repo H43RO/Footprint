@@ -1,5 +1,4 @@
 """footprint URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
@@ -20,6 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
 from rest_framework import routers
+from website.views import HistoryViewSet
 from website.views import (
     HistoryViewSet,
     HistoryUpdateAPIView,
@@ -29,8 +29,10 @@ from website import views
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
+router.register('historys',HistoryViewSet)
 router.register(r'historys', HistoryViewSet)
 router.register('places', views.ApiPlaceId)
+
 router.register('userinfo', views.UserListView, basename='userinfo')
 
 urlpatterns = [
@@ -41,4 +43,3 @@ urlpatterns = [
     url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
