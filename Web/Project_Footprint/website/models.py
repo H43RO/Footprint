@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
 
+DEFAULT_HISTORY = 1
 
 GENDER_CHOICES = (
     (0, 'male'),
@@ -74,6 +75,8 @@ class Place(models.Model):
     naver_place_id = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
 
 class History(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")

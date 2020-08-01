@@ -31,7 +31,8 @@ from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets, generics
-from .history_serializer import HistorySerializer, HistoryDateSerializer
+from .history_serializer import HistorySerializer
+from .history_date_serializer import HistoryDateSerializer
 # from .history_date_serializer import
 from django_filters import FilterSet, CharFilter, NumberFilter
 from django.views.generic import ListView
@@ -259,25 +260,10 @@ class HistoryFilter(FilterSet):
 
     class Meta:
         model = History
-        fields = ('title','created_at')
-
-
-class HistoryDateViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
-    serializer_class = HistoryDateSerializer
-    filter_fields = ('title', 'created_at')
-    filter_class = HistoryFilter
-
-    @action(method=['get'], detail=False)
-    def newest(self, request):
-        newest = self.get_queryset()
-        serializer = self.get_serializer_class()(newest)
-        return Response(serializer.data)
+        fields = ('title', 'created_at')
 
 
 class HistoryDateFilter(filters.FilterSet):
-    # title = filters.CharFilter(lookup_expr='icontains')
-    # created_at = filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = History
@@ -289,8 +275,10 @@ class HistoryDateFilter(filters.FilterSet):
 
 class HistoryDateViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
-    serializer_class = HistoryDateSerializer
+    serializer_class = HistorySerializer
     filterset_class = HistoryDateFilter
+    filter_backends = [filters.DjangoFilterBackend]
+    # filter_fields = ['title', 'created_at']
 
     @action(methods=['get'], detail=False)
     def newest(self, request):

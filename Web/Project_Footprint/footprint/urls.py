@@ -20,16 +20,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
 from rest_framework import routers
-from website.views import HistoryViewSet
-from website.views import HistoryDateViewSet
+from website.views import HistoryViewSet, HistoryDateViewSet, ApiPlaceId
 from website import views
-from website.views import ApiPlaceId
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
 router.register('historys', HistoryViewSet)
 router.register('places', ApiPlaceId)
-router.register('historysdate', HistoryDateViewSet, basename='HistoryDate')
+router.register('historysdate', HistoryDateViewSet,basename='historydate')
 router.register('userinfo', views.UserListView, basename='userinfo')
 
 
@@ -38,7 +36,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     url('api/', include(router.urls)),
-    url('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
