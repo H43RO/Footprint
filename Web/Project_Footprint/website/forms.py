@@ -44,8 +44,6 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
-
-
 class SignInForm(AuthenticationForm):
     username = forms.EmailField(
         label=_("이메일"),

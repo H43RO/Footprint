@@ -30,6 +30,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
+<<<<<<< HEAD
 from rest_framework import viewsets, generics
 from .history_serializer import HistorySerializer
 from .history_date_serializer import HistoryDateSerializer
@@ -44,6 +45,18 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django_filters import rest_framework as filters
+=======
+from rest_framework import viewsets, mixins, generics
+from .history_serializer import HistorySerializer
+from rest_framework.generics import (
+    ListAPIView,
+    UpdateAPIView,
+    RetrieveUpdateAPIView,
+    DestroyAPIView
+)
+
+
+>>>>>>> master
 
 
 def index(request):
@@ -244,6 +257,19 @@ def history_update(request):
 class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
+
+
+class HistoryUpdateAPIView(UpdateAPIView):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    lookup_field = 'id'
+
+
+class HistoryDeleteAPIView(DestroyAPIView):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    lookup_field = 'id'
+
 
 
 class ApiPlaceId(ModelViewSet):

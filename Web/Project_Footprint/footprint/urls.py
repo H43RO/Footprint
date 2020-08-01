@@ -1,5 +1,4 @@
 """footprint URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
@@ -18,9 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from django.conf.urls import url
 from rest_framework import routers
 from website.views import HistoryViewSet, HistoryDateViewSet, ApiPlaceId
+from website.views import HistoryViewSet
+from website.views import (
+    HistoryViewSet,
+    HistoryUpdateAPIView,
+    HistoryDeleteAPIView,
+    )
 from website import views
 from django_filters.views import FilterView
 
@@ -29,7 +33,7 @@ router.register('historys', HistoryViewSet)
 router.register('places', ApiPlaceId)
 router.register('historysdate', HistoryDateViewSet,basename='historydate')
 router.register('userinfo', views.UserListView, basename='userinfo')
-
+router.register('userinfo', views.UserListView)
 
 urlpatterns = [
     path('', include('website.urls')),
@@ -37,5 +41,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
