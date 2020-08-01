@@ -1,12 +1,11 @@
-## for Email verification
+from .backends import EmailAuthBackend
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
-
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -16,6 +15,13 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm
 from .models import User, History, Place
+from rest_framework import viewsets, permissions, generics, status
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from .user_info_serializer import UserSerializer
+from django_filters import rest_framework as filters
 from .place_info_serializers import PlaceSerializer
 from django_filters import rest_framework as filters
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -82,7 +88,7 @@ def signin(request):
         form = SignInForm(data=request.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:   
+            if user is not None:
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
@@ -108,10 +114,33 @@ def user_activate(request, uidb64, token):
         if account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-
             return redirect('../place_search/')
+
     except ValidationError:
-        return HttpResponse({"messge" : "TYPE_ERROR"}, status=400)
+        return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
+
+def myinfo(request):
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        context = {
+            'users': User.objects.filter(id=user_id)
+        }
+        return render(request, 'myinfo.html', context)
+
+
+def history(request):
+    historys = History.objects.all()
+    paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
+    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
+    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
+    place = Place.objects.all()
+    context = {
+        'historys': historys,
+        'places' : place
+    }
+    return render(request, 'history.html', context)
+
+
 
 def place_list(request):
     context = {
@@ -152,7 +181,14 @@ def place_search(request):
         place_search = place_search.filter(title__icontains=q)
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
-        return render(request, 'place_search.html')
+        return render(request,'place_search.html')
+
+
+class UserListView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('id',)
 
 
 def history(request):

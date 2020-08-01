@@ -55,7 +55,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
             var mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val id = "channel_notify"
-            val name: CharSequence = "주변에 맛집 $placeName 가 있어요!"
+            val name: CharSequence = "주변에 맛집 $placeTitle 가 있어요!"
             val description = "탭하여 더 많은 정보 확인하기"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(id, name, importance)
@@ -70,7 +70,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
             val CHANNEL_ID = "channel_notify"
             val notification: Notification =
                 Notification.Builder(context)
-                    .setContentTitle("당신 주변의 맛집 ${placeName} 발견!")
+                    .setContentTitle("당신 주변의 맛집 ${placeTitle} 발견!")
                     .setContentText("탭하여 더 많은 정보 확인하기")
                     .setSmallIcon(R.drawable.ic_baseline_location_on_24)
                     .setChannelId(CHANNEL_ID)
@@ -85,7 +85,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
             val builder =
                 NotificationCompat.Builder(context, "channel_notify")
                     .setSmallIcon(R.drawable.ic_baseline_location_on_24)
-                    .setContentTitle("당신 주변의 맛집 ${placeName} 발견!")
+                    .setContentTitle("당신 주변의 맛집 ${placeTitle} 발견!")
                     .setContentText("탭하여 더 많은 정보 확인하기")
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
