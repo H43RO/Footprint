@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.Data.History
+import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Network.RetrofitService
 import org.altbeacon.beacon.*
 import retrofit2.Call
@@ -26,6 +27,7 @@ class ForegroundService : Service(), BeaconConsumer {
 
     lateinit var beaconManager: BeaconManager
     var beaconList: ArrayList<Beacon> = ArrayList()
+    var alreadyVisitedList: ArrayList<String> = ArrayList() // Beacon의 UUID가 기록될 예정
 
     override fun onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->
@@ -58,7 +60,7 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://0.0.0.0:8000") //사이트 Base URL
+            .baseUrl("http://0c0c648cfd92.ngrok.io/") //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -72,60 +74,51 @@ class ForegroundService : Service(), BeaconConsumer {
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
-                    if (beacon.distance < 50) {
-                        if (beacon.distance < 5) {
+                    if (beacon.distance < 5) {
+                        if (beacon.id1.toString() in alreadyVisitedList) {
+                            Log.d("Scan", "이미 방문함")
+                        } else {
                             getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
-                                .enqueue(object : retrofit2.Callback<String> {
-                                    override fun onFailure(call: Call<String>, t: Throwable) {
-                                        Log.d("GetPlaceInfo", "정보 얻기 실패")
+                                .enqueue(object : retrofit2.Callback<List<NaverPlaceID>> {
+                                    override fun onFailure(
+                                        call: Call<List<NaverPlaceID>>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", t.message)
                                     }
 
                                     override fun onResponse(
-                                        call: Call<String>,
-                                        response: Response<String>
+                                        call: Call<List<NaverPlaceID>>,
+                                        response: Response<List<NaverPlaceID>>
                                     ) {
-                                        Log.d("GetPlaceInfo", "정보 얻기 성공!")
-                                        placeID = response.body() ?: "정보 없음"
+                                        var id = response.body()
+                                        Log.d("GetPlaceInfo", id?.get(0)?.naver_place_id)
+
+                                        id?.get(0)?.naver_place_id?.let {
+                                            ShowPlaceInfo(
+                                                applicationContext,
+                                                it
+                                            ).notifyInfo()
+                                        }
+                                        alreadyVisitedList.add(beacon.id1.toString())
                                     }
                                 })
-                            val current = LocalDateTime.now()
-                            val formatter = DateTimeFormatter.ISO_DATE_TIME
-                            val formatted = current.format(formatter) // ex) 2020-07-31T22:21:51
-
-                            //History POST
-                            history = placeID?.let {
-                                History(
-                                    user = "1234", placeID = it, created_at = formatted,
-                                    historyID = null, comment = null, image = null
-                                )
-                            }
-
                         }
-                        //beacon.id1 값을 통해 requestPlaceInfo API로 Place ID 받아옴
-                        getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
-                            .enqueue(object : retrofit2.Callback<String> {
-                                override fun onFailure(call: Call<String>, t: Throwable) {
-                                    Log.d("GetPlaceInfo", "정보 얻기 실패")
-                                }
 
-                                override fun onResponse(
-                                    call: Call<String>,
-                                    response: Response<String>
-                                ) {
-                                    Log.d("GetPlaceInfo", "정보 얻기 성공!")
-                                    placeID = response.body() ?: "정보 없음"
-                                }
-                            })
-                        placeID?.let {
-                            ShowPlaceInfo(
-                                context = applicationContext,
-                                placeID = it
-                            ).notifyInfo()
+                        val current = LocalDateTime.now()
+                        val formatter = DateTimeFormatter.ISO_DATE_TIME
+                        val formatted = current.format(formatter) // ex) 2020-07-31T22:21:51
+
+                        //History POST
+                        history = placeID?.let {
+                            History(
+                                user = "1234", placeID = it, created_at = formatted,
+                                historyID = null, comment = null, image = null
+                            )
                         }
                     }
-                    Log.d("Scan Result", beacon.id1.toString())
                 }
-                this.sendEmptyMessageDelayed(0, 500)
+                this.sendEmptyMessageDelayed(0, 1000)
             }
         }
 

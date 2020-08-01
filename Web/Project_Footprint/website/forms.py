@@ -5,11 +5,13 @@ from .models import User, Place, History
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
 
+
 MOOD_POINT_CHOICES = (
     ('angry', "angry"),
     ('soso', "soso"),
     ('happy', "happy"),
 )
+
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
@@ -25,7 +27,6 @@ class SignUpForm(UserCreationForm):
         widget=forms.PasswordInput,
         help_text='비밀번호를 재입력해주세요.',
     )
-
     class Meta:
         model = User
         fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
@@ -50,17 +51,14 @@ class SignInForm(AuthenticationForm):
         label=_("이메일"),
         widget=forms.EmailInput,
     )
-
     password = forms.CharField(
         label=_("비밀번호"),
         strip=False,
         widget=forms.PasswordInput
     )
-
     class Meta:
         model = User
         fields = ['email', 'password']
-
 
 
 class PlaceRegisterForm(ModelForm):
@@ -95,7 +93,6 @@ class HistoryForm(forms.ModelForm):
             'comment': _('코멘트'),
             'place': _('장소'),
             'user': _('사용자'),
-
         }
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),
