@@ -58,10 +58,11 @@ REST_FRAMEWORK = {
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': False,
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
-    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False, 
+    'USER_LOGIN_FIELDS' :  ['email'],
+    'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
+
 }
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -154,7 +155,9 @@ EMAIL_HOST_PASSWORD = 'abcd' ## write your email password
 EMAIL_USE_TLS = True
 
 #for User Authentication
-LOGIN_AUTHENTICATOR : 'rest_registration.utils.users.authenticate_by_login_and_password_or_none'
+# LOGIN_SERIALIZER_CLASS = 'website.user_serializers.UserSerializer'
+# USER_LOGIN_FIELDS = ['username']
+
 
 #Maintain Session
 SESSION_COOKIE_AGE = 60 * 60

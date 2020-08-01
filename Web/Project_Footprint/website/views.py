@@ -27,6 +27,15 @@ from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
 
+
+
+from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
+from rest_framework import generics, permissions, status, views
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.response import Response
+from . import user_serializers
+
 def index(request):
     context = {
         'items': '발자취'
@@ -198,5 +207,4 @@ class ApiPlaceId(ModelViewSet):
     filter_fields = ('beacon_uuid', 'naver_place_id')
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
-
 

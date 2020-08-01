@@ -24,7 +24,6 @@ from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
 router.register('places', views.ApiPlaceId)
-
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
