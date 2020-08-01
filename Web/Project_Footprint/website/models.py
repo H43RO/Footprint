@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
+
 GENDER_CHOICES = (
     (0, 'male'),
     (1, 'female'),
@@ -77,6 +78,9 @@ class Place(models.Model):
 class History(models.Model):
     # user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    
+class History(models.Model):
+    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     img = models.CharField(max_length=600, default=None, null=True)
     title = models.CharField(max_length=100)
     comment = models.CharField(max_length=1000)
@@ -88,3 +92,4 @@ class History(models.Model):
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
+

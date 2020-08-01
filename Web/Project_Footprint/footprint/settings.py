@@ -92,19 +92,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # for email
 AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
-
-## for email verification
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'abcd@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'abcd' ## write your email password
-EMAIL_USE_TLS = True
-
-
-#Maintain Session
-SESSION_COOKIE_AGE = 60 * 60
-SESSION_SAVE_EVERY_REQUEST = True
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

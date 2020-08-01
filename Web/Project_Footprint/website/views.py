@@ -43,6 +43,7 @@ from rest_framework.generics import (
 
 
 
+
 def index(request):
     context = {
         'items': '발자취'

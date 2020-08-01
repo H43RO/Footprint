@@ -73,7 +73,6 @@ class PlaceRegisterForm(ModelForm):
             },
         }
 
-
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
@@ -98,3 +97,4 @@ class UpdateHistoryForm(HistoryForm):
     class Meta:
         model = History
         exclude = [' ']
+
