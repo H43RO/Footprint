@@ -15,9 +15,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from website import views
 from django.conf.urls.static import static
 from django.conf import settings
-from django.conf.urls import url
 from rest_framework import routers
 from website.views import HistoryViewSet
 from website.views import (
@@ -32,7 +33,7 @@ router = routers.DefaultRouter()
 router.register('historys',HistoryViewSet)
 router.register('places', views.ApiPlaceId)
 router.register('userinfo', views.UserListView, basename='userinfo')
-
+router.register('userinfo', views.UserListView)
 
 urlpatterns = [
     path('', include('website.urls')),
