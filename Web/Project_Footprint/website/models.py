@@ -6,7 +6,6 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
-DEFAULT_HISTORY = 1
 
 GENDER_CHOICES = (
     (0, 'male'),
@@ -57,19 +56,6 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=10, blank=False, null=True)
     age = models.IntegerField(blank=False, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_('Designates whether the user can log into this admin site.'),
-    )
-    is_active = models.BooleanField(
-        _('active'),
-        default=False,                 # 기본값을 False 로 변경
-        help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
@@ -78,8 +64,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
-
-        
 
 
 class Place(models.Model):
@@ -90,7 +74,8 @@ class Place(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.title + ': '
+
 
 class History(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
@@ -104,4 +89,3 @@ class History(models.Model):
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
-

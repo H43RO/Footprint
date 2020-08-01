@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -30,7 +31,7 @@ from django_filters.views import FilterView
 router = routers.DefaultRouter()
 router.register(r'historys', HistoryViewSet)
 router.register('places', views.ApiPlaceId)
-
+router.register('userinfo', views.UserListView, basename='userinfo')
 
 urlpatterns = [
     path('', include('website.urls')),
@@ -39,5 +40,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
-
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -1,15 +1,10 @@
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import User, Place, History
+from .models import User, Place
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation
 
-MOOD_POINT_CHOICES = (
-    ('angry', "angry"),
-    ('soso', "soso"),
-    ('happy', "happy"),
-)
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
@@ -28,7 +23,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
+        fields = ['email', 'password1', 'password2', 'nickname', 'birth_date', 'age', 'gender']
         labels = {
             'email': _('이메일'),
             'birth_date': _('생년월일'),
@@ -62,7 +57,6 @@ class SignInForm(AuthenticationForm):
         fields = ['email', 'password']
 
 
-
 class PlaceRegisterForm(ModelForm):
     class Meta:
         model = Place
@@ -82,6 +76,7 @@ class PlaceRegisterForm(ModelForm):
                 'max_length': _('가게명을 30자 이내로 적어주세요')
             },
         }
+
 
 
 class HistoryForm(forms.ModelForm):
