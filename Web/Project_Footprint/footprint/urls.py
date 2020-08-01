@@ -19,12 +19,16 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
 from rest_framework import routers
-from website.views import HistoryViewSet
+from website.views import (
+    HistoryViewSet,
+    HistoryUpdateAPIView,
+    HistoryDeleteAPIView,
+    )
 from website import views
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
-router.register('historys',HistoryViewSet)
+router.register(r'historys', HistoryViewSet)
 router.register('places', views.ApiPlaceId)
 
 
@@ -32,6 +36,8 @@ urlpatterns = [
     path('', include('website.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
