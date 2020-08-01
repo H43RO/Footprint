@@ -30,7 +30,6 @@ from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
 router.register('historys',HistoryViewSet)
-router.register(r'historys', HistoryViewSet)
 router.register('places', views.ApiPlaceId)
 
 router.register('userinfo', views.UserListView, basename='userinfo')
