@@ -1,4 +1,3 @@
-import kwargs as kwargs
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
@@ -8,13 +7,14 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
+    CheckPasswordForm
 from .models import User, History, Place
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
@@ -182,14 +182,6 @@ class UserListView(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('id',)
 
-    # def get_queryset(self):
-    #     user_id = self.request.user.id
-    #     print(id)
-    #     user_serializer = User.objects.filter(id=1)
-    #     return Response(user_serializer.data, status=status.HTTP_200_OK)
-    #     return user_serializer
-
-
 
 def history(request):
     if request.method == 'POST' and 'id' in request.POST:
@@ -240,7 +232,6 @@ def history_update(request):
     return HttpResponseRedirect("../")
 
 
-
 class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
@@ -253,3 +244,32 @@ class ApiPlaceId(ModelViewSet):
     filter_fields = ('beacon_uuid', 'naver_place_id')
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
+
+
+@login_required
+def user_info_update(request):
+    if request.method == 'POST':
+        form = UpdateUserInfoForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    elif 'id' in request.GET:
+        form = UpdateUserInfoForm(instance=request.user)
+        return render(request, 'user_info_update.html', {'form': form})
+    return HttpResponseRedirect("../myinfo")
+
+
+@login_required
+def user_delete(request):
+    if request.method == 'POST':
+        password_form = CheckPasswordForm(request.user, request.POST)
+        if password_form.is_valid():
+            request.user.delete()
+            logout(request)
+            return redirect('../list')
+        else:
+            return HttpResponseRedirect('../user_delete/')
+    else:
+        password_form = CheckPasswordForm(request.user)
+        return render(request, 'user_delete.html', {'password_form': password_form})
+    return HttpResponseRedirect("../list")
+

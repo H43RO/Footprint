@@ -27,8 +27,7 @@
                 {% else %}
                     <p class="card-text">성별 : not specified</p>
                 {% endif %}
-                <a class="card-link">수정하기</a>
-                <a class="card-link">탈퇴하기</a>
+                <a href = "{% url 'user_info_update' %}?id={{ user.id }}" class="card-link">수정하기</a>
              </div>
             </div>
         </div>

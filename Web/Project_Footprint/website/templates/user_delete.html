@@ -1,0 +1,27 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<form action="{% url 'user_delete' %}" method="post" novalidate>
+    {% csrf_token %}
+    <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다. <br>
+    <div>
+        <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
+        {{ password_form.password }}
+<!--        {{ error.messages }}-->
+        {% if password_form.password.errors %}
+            <script type="text/javascript">
+                document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')
+            </script>
+            {% for error in password_form.password.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+        <small>
+            본인인증을 위해 비밀번호를 입력해주세요.
+        </small>
+    </div>
+
+    <button type="submit" name="bt" >탈퇴하기</button>
+</form>
+
+{% endblock %}

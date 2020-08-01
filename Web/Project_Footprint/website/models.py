@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
+DEFAULT_HISTORY = 1
 
 GENDER_CHOICES = (
     (0, 'male'),
@@ -56,6 +57,19 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=10, blank=False, null=True)
     age = models.IntegerField(blank=False, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
+    is_active = models.BooleanField(
+        _('active'),
+        default=True,  # 기본값을 False 로 변경
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
+    )
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
@@ -73,16 +87,19 @@ class Place(models.Model):
     naver_place_id = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
+
 
 class History(models.Model):
-    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    img = models.CharField(max_length=600, default=None, null=True)
-    title = models.CharField(max_length=100)
-    comment = models.CharField(max_length=1000)
-
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
-
+    img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
+    title = models.TextField(max_length=100, blank=True, null=True)
+    mood = models.CharField(max_length=30, default=3)
+    comment = models.TextField(max_length=1000, blank=True, null=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=DEFAULT_HISTORY, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title + ': ' + self.comment[:3]
