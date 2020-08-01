@@ -11,7 +11,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
-
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
@@ -20,15 +19,24 @@ from .models import User, History, Place
 from .place_info_serializers import PlaceSerializer
 from django_filters import rest_framework as filters
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-# from rest_framework.filters import SearchFilter
 # from rest_framework.decorators import action
 # from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
+from rest_framework import viewsets, generics
+from .history_serializer import HistorySerializer, HistoryDateSerializer
+# from .history_date_serializer import
+from django_filters import FilterSet, CharFilter, NumberFilter
+from django.views.generic import ListView
+from rest_framework.decorators import action
+#
+from .models import History
+# from .history_date_serializer import HistoryDateSerializer
 from rest_framework import viewsets
-from .history_serializer import HistorySerializer
-
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django_filters import rest_framework as filters
 
 
 def index(request):
@@ -90,6 +98,7 @@ def signin(request):
 def signout(request):
     auth.logout(request)
     return HttpResponseRedirect('../index/')
+
 
 def user_activate(request, uidb64, token):
     try:
@@ -195,7 +204,6 @@ def history_update(request):
     return HttpResponseRedirect("../")
 
 
-
 class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
@@ -209,4 +217,48 @@ class ApiPlaceId(ModelViewSet):
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
 
+
+class HistoryFilter(FilterSet):
+    title = CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = History
+        fields = ('title','created_at')
+
+
+class HistoryDateViewSet(viewsets.ModelViewSet):
+    queryset = History.objects.all()
+    serializer_class = HistoryDateSerializer
+    filter_fields = ('title', 'created_at')
+    filter_class = HistoryFilter
+
+    @action(method=['get'], detail=False)
+    def newest(self, request):
+        newest = self.get_queryset()
+        serializer = self.get_serializer_class()(newest)
+        return Response(serializer.data)
+
+
+class HistoryDateFilter(filters.FilterSet):
+    # title = filters.CharFilter(lookup_expr='icontains')
+    # created_at = filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = History
+        fields = {
+            'title': ['icontains'],
+            'created_at': ['date', 'lte', 'gte']
+        }
+
+
+class HistoryDateViewSet(viewsets.ModelViewSet):
+    queryset = History.objects.all()
+    serializer_class = HistoryDateSerializer
+    filterset_class = HistoryDateFilter
+
+    @action(methods=['get'], detail=False)
+    def newest(self, request):
+        newest = self.get_queryset().order_by('created_at').last()
+        serializer = self.get_serializer_class()(newest)
+        return Response(serializer.data)
 

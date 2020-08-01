@@ -20,12 +20,15 @@ from django.conf import settings
 from django.conf.urls import url
 from rest_framework import routers
 from website.views import HistoryViewSet
+from website.views import HistoryDateViewSet
 from website import views
+from website.views import ApiPlaceId
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
-router.register('historys',HistoryViewSet)
-router.register('places', views.ApiPlaceId)
+router.register('historys', HistoryViewSet)
+router.register('places', ApiPlaceId)
+router.register('historysdate', HistoryDateViewSet, basename='HistoryDate')
 
 
 urlpatterns = [
