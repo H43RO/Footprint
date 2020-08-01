@@ -58,19 +58,6 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=10, blank=False, null=True)
     age = models.IntegerField(blank=False, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_('Designates whether the user can log into this admin site.'),
-    )
-    is_active = models.BooleanField(
-        _('active'),
-        default=False,                 # 기본값을 False 로 변경
-        help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
@@ -80,8 +67,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-        
-
 
 class Place(models.Model):
     beacon_uuid = models.CharField(max_length=100)
@@ -90,19 +75,16 @@ class Place(models.Model):
     naver_place_id = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.title
 
 class History(models.Model):
-    img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
-    title = models.CharField(max_length=100, blank=True)
-    mood = models.CharField(max_length=30, default=3)
-    comment = models.TextField(max_length=1000, blank=True)
+    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    img = models.CharField(max_length=600, default=None, null=True)
+    title = models.CharField(max_length=100)
+    comment = models.CharField(max_length=1000)
+
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.title + ': ' + self.comment[:3]
 

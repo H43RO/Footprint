@@ -63,6 +63,7 @@ REST_REGISTRATION = {
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
 
 }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -165,3 +166,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
