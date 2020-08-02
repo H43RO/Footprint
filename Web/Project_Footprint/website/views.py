@@ -38,16 +38,6 @@ from rest_framework.generics import (
     DestroyAPIView
 )
 
-
-
-
-from django.contrib.auth import get_user_model
-from django.contrib.sites.shortcuts import get_current_site
-from rest_framework import generics, permissions, status, views
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.response import Response
-from . import user_serializers
-
 def index(request):
     context = {
         'items': '발자취'
