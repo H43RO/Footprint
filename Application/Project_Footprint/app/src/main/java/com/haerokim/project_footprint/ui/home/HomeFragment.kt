@@ -32,7 +32,6 @@ class HomeFragment : Fragment(),  PermissionListener {
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
-    private lateinit var layout : View
 
     override fun onPermissionGranted() {
     }
@@ -47,20 +46,6 @@ class HomeFragment : Fragment(),  PermissionListener {
         }
     }
 
-    var homeActivity: HomeActivity? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        homeActivity = activity as HomeActivity
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        homeActivity = null
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,8 +56,6 @@ class HomeFragment : Fragment(),  PermissionListener {
         homeViewModel.scanMode.observe(viewLifecycleOwner, Observer<Boolean> {
             scanning_mode_switch.isChecked = it
         })
-
-
 
         return root
     }

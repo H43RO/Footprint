@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.haerokim.project_footprint">
 
     <uses-feature
@@ -7,9 +8,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-feature android:name="android.hardware.location.network" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -44,7 +43,24 @@
         <activity android:name=".Activity.PlaceDetailActivity" />
         <activity android:name=".Activity.MainActivity" />
 
-        <service android:name=".ForegroundService" />
+        <service
+            android:name=".ForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="true"
+            tools:node="replace">
+            <meta-data
+                android:name="longScanForcingEnabled"
+                android:value="true" />
+        </service>
+
+        <receiver android:name=".ui.surround.SurroundFragment$SurroundBeaconReceiver"  android:exported="true">
+            <intent-filter>
+                <action android:name="surround_beacon_list"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
