@@ -13,6 +13,13 @@ MOOD_POINT_CHOICES = (
 )
 
 
+MOOD_POINT_CHOICES = (
+    ('angry', "angry"),
+    ('soso', "soso"),
+    ('happy', "happy"),
+)
+
+
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
         label="비밀번호",
@@ -27,7 +34,6 @@ class SignUpForm(UserCreationForm):
         widget=forms.PasswordInput,
         help_text='비밀번호를 재입력해주세요.',
     )
-
     class Meta:
         model = User
         fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
@@ -45,20 +51,16 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
-
-
 class SignInForm(AuthenticationForm):
     username = forms.EmailField(
         label=_("이메일"),
         widget=forms.EmailInput,
     )
-
     password = forms.CharField(
         label=_("비밀번호"),
         strip=False,
         widget=forms.PasswordInput
     )
-
     class Meta:
         model = User
         fields = ['email', 'password']
@@ -97,7 +99,6 @@ class HistoryForm(forms.ModelForm):
             'comment': _('코멘트'),
             'place': _('장소'),
             'user': _('사용자'),
-
         }
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),

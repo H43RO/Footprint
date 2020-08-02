@@ -16,7 +16,7 @@ from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
     CheckPasswordForm
 from .models import User, History, Place
-from rest_framework import viewsets, permissions, generics, status
+from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
@@ -24,24 +24,20 @@ from rest_framework.decorators import api_view
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from django_filters import rest_framework as filters
 from .place_info_serializers import PlaceSerializer
-from django_filters import rest_framework as filters
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-# from rest_framework.filters import SearchFilter
-# from rest_framework.decorators import action
-# from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets
 from .history_serializer import HistorySerializer
+from .history_date_serializer import HistoryDateSerializer
+from django_filters import FilterSet, CharFilter, NumberFilter, DateFilter
+from rest_framework.decorators import action
 from rest_framework.generics import (
     ListAPIView,
     UpdateAPIView,
     RetrieveUpdateAPIView,
     DestroyAPIView
 )
-
-
 
 
 def index(request):
@@ -109,13 +105,14 @@ def user_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+
         if account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
             return redirect('../place_search/')
+
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
-
 
 def myinfo(request):
     if request.user.is_authenticated:
@@ -129,7 +126,6 @@ def myinfo(request):
 def history(request):
     historys = History.objects.all()
     paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
-
     # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
     # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
     place = Place.objects.all()
@@ -138,6 +134,7 @@ def history(request):
         'places' : place
     }
     return render(request, 'history.html', context)
+
 
 
 def place_list(request):
@@ -180,6 +177,13 @@ def place_search(request):
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
         return render(request,'place_search.html')
+
+
+class UserListView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('id',)
 
 
 def history(request):
@@ -236,11 +240,32 @@ class HistoryViewSet(viewsets.ModelViewSet):
     serializer_class = HistorySerializer
 
 
-class ApiPlaceId(ModelViewSet):
+class HistoryUpdateAPIView(UpdateAPIView):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    lookup_field = 'id'
+
+
+class HistoryDeleteAPIView(DestroyAPIView):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    lookup_field = 'id'
+
+
+class PlaceTitleFilter(filters.FilterSet):
+
+    class Meta:
+        model = Place
+        fields = {
+            'title': ['icontains']
+        }
+
+
+class ApiPlaceId(viewsets.ModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('beacon_uuid', 'naver_place_id')
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = PlaceTitleFilter
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
 
@@ -291,3 +316,35 @@ class UserDeleteView(DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserListSerializer
     lookup_field = 'id'
+
+    
+class HistoryFilter(FilterSet):
+    title = CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = History
+        fields = ('title', 'created_at')
+
+
+class HistoryDateFilter(filters.FilterSet):
+
+    class Meta:
+        model = History
+        fields = {
+            'title': ['icontains'],
+            'created_at': ['date', 'date__lte', 'date__gte']
+        }
+
+
+class HistoryDateViewSet(viewsets.ModelViewSet):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
+    filterset_class = HistoryDateFilter
+    filter_backends = [filters.DjangoFilterBackend]
+    # filter_fields = ['title', 'created_at']
+
+    @action(methods=['get'], detail=False)
+    def newest(self, request):
+        newest = self.get_queryset().order_by('created_at').last()
+        serializer = self.get_serializer_class()(newest)
+        return Response(serializer.data)

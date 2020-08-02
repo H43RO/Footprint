@@ -1,14 +1,11 @@
-from . import views
 from django.urls import path
-
-
+from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
     path('signout/', views.signout, name='signout'),
-    path('myinfo/', views.myinfo, name='myinfo'),
     path('activate/<str:uidb64>/<str:token>', views.user_activate, name='user_activate'),
     path('list/', views.list, name='list'),
     path('history/', views.history, name='history'),
@@ -23,6 +20,5 @@ urlpatterns = [
     path('history/<int:id>/delete/', views.history_delete,name='history-delete'),
     path('user_info_update/', views.user_info_update, name='user_info_update'),
     path('user_delete/', views.user_delete, name='user_delete'),
+    path('myinfo/', views.myinfo, name='myinfo')
 ]
-
-

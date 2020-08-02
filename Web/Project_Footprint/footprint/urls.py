@@ -1,5 +1,4 @@
 """footprint URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
@@ -21,27 +20,36 @@ from website import views
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from django.conf.urls import url
 from rest_framework import routers
-
-from website import views
+from website.views import HistoryViewSet, HistoryDateViewSet, ApiPlaceId, UserUpdateView, UserDeleteView
+from website.views import HistoryViewSet
+from website.views import (
+    HistoryViewSet,
+    HistoryUpdateAPIView,
+    HistoryDeleteAPIView,
+    )
 from django_filters.views import FilterView
 
-from website.views import HistoryViewSet, UserUpdateView, UserDeleteView
-
 router = routers.DefaultRouter()
-router.register('historys',HistoryViewSet)
-router.register('places', views.ApiPlaceId)
-router.register('userinfo', views.UserListView)
+router.register('historys', HistoryViewSet)
+router.register('places', ApiPlaceId)
+router.register('historysdate', HistoryDateViewSet,basename='historydate')
+router.register('userinfo', views.UserListView, basename='userinfo')
+api_urlpatterns = [
+    path('accounts/', include('rest_registration.api.urls')),
+]
 
 urlpatterns = [
     path('', include('website.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/v1/', include(api_urlpatterns)),
     url('api/', include(router.urls)),
-    url('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
     url(r'^userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
+    url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
