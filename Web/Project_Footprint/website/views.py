@@ -251,15 +251,22 @@ class HistoryDeleteAPIView(DestroyAPIView):
     lookup_field = 'id'
 
 
+class PlaceTitleFilter(filters.FilterSet):
 
-class ApiPlaceId(ModelViewSet):
+    class Meta:
+        model = Place
+        fields = {
+            'title': ['icontains']
+        }
+
+
+class ApiPlaceId(viewsets.ModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('beacon_uuid', 'naver_place_id')
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = PlaceTitleFilter
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
-
 
 class HistoryFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')
@@ -275,7 +282,7 @@ class HistoryDateFilter(filters.FilterSet):
         model = History
         fields = {
             'title': ['icontains'],
-            'created_at': ['date', 'lte', 'gte']
+            'created_at': ['date', 'date__lte', 'date__gte']
         }
 
 
