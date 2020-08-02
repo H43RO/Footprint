@@ -21,7 +21,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from .user_info_serializer import UserSerializer
+from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from django_filters import rest_framework as filters
 from .place_info_serializers import PlaceSerializer
 from django_filters import rest_framework as filters
@@ -34,6 +34,12 @@ from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from .history_serializer import HistorySerializer
+from rest_framework.generics import (
+    ListAPIView,
+    UpdateAPIView,
+    RetrieveUpdateAPIView,
+    DestroyAPIView
+)
 
 
 
@@ -176,13 +182,6 @@ def place_search(request):
         return render(request,'place_search.html')
 
 
-class UserListView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('id',)
-
-
 def history(request):
     if request.method == 'POST' and 'id' in request.POST:
         item = get_object_or_404(History, id=id)
@@ -267,9 +266,28 @@ def user_delete(request):
             logout(request)
             return redirect('../list')
         else:
+            messages.error(request, '비밀번호를 다시 입력해주세요')
             return HttpResponseRedirect('../user_delete/')
     else:
         password_form = CheckPasswordForm(request.user)
         return render(request, 'user_delete.html', {'password_form': password_form})
     return HttpResponseRedirect("../list")
 
+
+class UserListView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('id',)
+
+
+class UserUpdateView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    lookup_field = 'id'
+
+
+class UserDeleteView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    lookup_field = 'id'

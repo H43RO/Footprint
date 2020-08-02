@@ -15,22 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-<<<<<<< HEAD
 from django.urls import path
 from rest_framework import routers
 from website import views
-
-router = routers.DefaultRouter()
-router.register('userinfo', views.UserListView, basename='userinfo')
-=======
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
 from rest_framework import routers
-from website.views import HistoryViewSet
+
 from website import views
 from django_filters.views import FilterView
+
+from website.views import HistoryViewSet, UserUpdateView, UserDeleteView
 
 router = routers.DefaultRouter()
 router.register('historys',HistoryViewSet)
@@ -44,5 +41,7 @@ urlpatterns = [
     url('api/', include(router.urls)),
     url('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
+    url(r'^userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
