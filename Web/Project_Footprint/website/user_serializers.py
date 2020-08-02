@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from .models import User
 from django.contrib import auth
 from django.utils.translation import gettext as _
