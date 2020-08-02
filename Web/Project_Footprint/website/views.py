@@ -38,7 +38,6 @@ from rest_framework.generics import (
     DestroyAPIView
 )
 
-
 def index(request):
     context = {
         'items': '발자취'
@@ -268,6 +267,7 @@ class ApiPlaceId(viewsets.ModelViewSet):
     # filter_backends = [SearchFilter]
     # search_fields = ['title']
 
+
 class HistoryFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')
 
@@ -298,4 +298,3 @@ class HistoryDateViewSet(viewsets.ModelViewSet):
         newest = self.get_queryset().order_by('created_at').last()
         serializer = self.get_serializer_class()(newest)
         return Response(serializer.data)
-

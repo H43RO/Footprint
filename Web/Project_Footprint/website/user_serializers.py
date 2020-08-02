@@ -1,22 +1,18 @@
-from rest_framework import serializers
 from .models import User
+from django.contrib import auth
+from django.utils.translation import gettext as _
+from rest_framework import serializers
+from rest_registration.settings import registration_settings
+from django.contrib.auth import authenticate
 
-class UserSerializer(serializers.ModelSerializer):
-    def create(self, validated_data, *args, **kwargs):
-        email = validated_data['email']
-        password = validated_data['password']
-        birth_date = validated_data['birth_date']
-        nickname = validated_data['nickname']
-        age = validated_data['age']
-        # user = User(**validated_data)
-        gender = validated_data['gender']
-        # user = User.objects.create(email, password, birth_date, nickname, age, gender)
-        user = User.objects.create(email=email, password=password, birth_date=birth_date, nickname=nickname, age=age, gender=gender)
-        user.save()
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+    def get_authenticated_user(self):
+        email = self.data.get('email')
+        password = self.data.get('password')
+        user = authenticate(username=email, password=password)
         return user
-    
     class Meta:
         model = User
-        fields = ("email", "password", "birth_date", "nickname", "age", "gender")
-        write_only_fields = ['password']
-        # read_only_fields = ['id']
+        fields = ("email")
