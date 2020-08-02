@@ -15,7 +15,7 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm
 from .models import User, History, Place
-from rest_framework import viewsets, permissions, generics, status
+from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
@@ -23,40 +23,20 @@ from rest_framework.decorators import api_view
 from .user_info_serializer import UserSerializer
 from django_filters import rest_framework as filters
 from .place_info_serializers import PlaceSerializer
-from django_filters import rest_framework as filters
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-# from rest_framework.decorators import action
-# from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
-<<<<<<< HEAD
-from rest_framework import viewsets, generics
 from .history_serializer import HistorySerializer
 from .history_date_serializer import HistoryDateSerializer
-# from .history_date_serializer import
-from django_filters import FilterSet, CharFilter, NumberFilter
-from django.views.generic import ListView
+from django_filters import FilterSet, CharFilter, NumberFilter, DateFilter
 from rest_framework.decorators import action
-#
-from .models import History
-# from .history_date_serializer import HistoryDateSerializer
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from django_filters import rest_framework as filters
-=======
-from rest_framework import viewsets, mixins, generics
-from .history_serializer import HistorySerializer
 from rest_framework.generics import (
     ListAPIView,
     UpdateAPIView,
     RetrieveUpdateAPIView,
     DestroyAPIView
 )
-
-
->>>>>>> master
 
 
 def index(request):
