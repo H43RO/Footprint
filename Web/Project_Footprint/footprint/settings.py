@@ -118,6 +118,8 @@ STATIC_URL = '/static/'
 # for email
 AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ## for email verification
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

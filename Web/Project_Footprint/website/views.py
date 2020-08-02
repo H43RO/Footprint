@@ -7,20 +7,21 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
+    CheckPasswordForm
 from .models import User, History, Place
 from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from .user_info_serializer import UserSerializer
+from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from django_filters import rest_framework as filters
 from .place_info_serializers import PlaceSerializer
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -37,6 +38,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
     DestroyAPIView
 )
+
 
 def index(request):
     context = {
@@ -268,6 +270,54 @@ class ApiPlaceId(viewsets.ModelViewSet):
     # search_fields = ['title']
 
 
+@login_required
+def user_info_update(request):
+    if request.method == 'POST':
+        form = UpdateUserInfoForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    elif 'id' in request.GET:
+        form = UpdateUserInfoForm(instance=request.user)
+        return render(request, 'user_info_update.html', {'form': form})
+    return HttpResponseRedirect("../myinfo")
+
+
+@login_required
+def user_delete(request):
+    if request.method == 'POST':
+        password_form = CheckPasswordForm(request.user, request.POST)
+        if password_form.is_valid():
+            request.user.delete()
+            logout(request)
+            return redirect('../list')
+        else:
+            messages.error(request, '비밀번호를 다시 입력해주세요')
+            return HttpResponseRedirect('../user_delete/')
+    else:
+        password_form = CheckPasswordForm(request.user)
+        return render(request, 'user_delete.html', {'password_form': password_form})
+    return HttpResponseRedirect("../list")
+
+
+class UserListView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('id',)
+
+
+class UserUpdateView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    lookup_field = 'id'
+
+
+class UserDeleteView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    lookup_field = 'id'
+
+    
 class HistoryFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')
 
