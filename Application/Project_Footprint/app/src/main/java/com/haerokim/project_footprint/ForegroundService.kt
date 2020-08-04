@@ -71,20 +71,19 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://ff3db6dde570.ngrok.io/") //사이트 Base URL
+            .baseUrl("http://93004a82a8f1.ngrok.io/") //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         var getPlaceInfoService: RetrofitService =
             retrofit.create(RetrofitService::class.java)
 
-        val homeViewModel: HomeViewModel = HomeViewModel()
 
         var handler: Handler = @SuppressLint("HandlerLeak")
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
-                    if (beacon.distance in 5..80 && beacon.id1.toString() !in alreadyVisitedList) {
+                    if (beacon.distance in 0..80 && beacon.id1.toString() !in alreadyVisitedList) {
                         Log.d("beacon_far_away", beacon.id1.toString())
                         alreadyVisitedList.add(beacon.id1.toString())
                         //API 통해 Naver Place ID 획득
@@ -112,7 +111,7 @@ class ForegroundService : Service(), BeaconConsumer {
                                 }
                             })
 
-                    } else if (beacon.distance < 5 && beacon.id1.toString() !in alreadyVisitedList) { // '장소 방문'으로 감지했을 때 History POST
+                    } else if (beacon.distance > 5 && beacon.id1.toString() !in alreadyVisitedList) { // '장소 방문'으로 감지했을 때 History POST
 
                         Log.d("beacon_near_by", beacon.id1.toString())
                         val current = LocalDateTime.now()

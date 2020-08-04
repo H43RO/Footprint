@@ -32,36 +32,43 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SurroundFragment : Fragment() {
 
     var surroundBeaconList: ArrayList<String> = ArrayList()
+    var tempBeaconList:ArrayList<String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
+    var tempPlaceList: ArrayList<Place> = ArrayList()
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     val receiver = SurroundBeaconReceiver()
 
-    var isAlreadyBound:Boolean = true
-
-
-    inner class SurroundBeaconReceiver: BroadcastReceiver(){
+    inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 surroundBeaconList = intent.getStringArrayListExtra("surround_beacon_list")
 
-                if(isAlreadyBound){
+                if (tempBeaconList != surroundBeaconList) {
+                    Log.d("Surround", "AsyncTask 진입!")
                     PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-
-                    isAlreadyBound = false
+                    tempBeaconList = surroundBeaconList
+                }else{
+                    Log.d("Surround", "변함 없음!")
                 }
             }
         }
     }
 
-    inner class PlaceListBinder:AsyncTask<Void, Void, Void>(){
+    inner class PlaceListBinder : AsyncTask<Void, Void, Void>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            tempPlaceList.clear()
+        }
+
         override fun doInBackground(vararg params: Void?): Void? {
             //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
-                .baseUrl("http://ff3db6dde570.ngrok.io/") //사이트 Base URL
+                .baseUrl("http://93004a82a8f1.ngrok.io/") //사이트 Base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
@@ -81,16 +88,20 @@ class SurroundFragment : Fragment() {
                             call: Call<List<NaverPlaceID>>,
                             response: Response<List<NaverPlaceID>>
                         ) {
-                            Log.d("GetPlaceInfo", "정보 얻기 성공")
+                            Log.d("GetPlaceInfo", "정보 얻기 성공!")
                             response.body()
                                 ?.let {
-                                    surroundPlaceList.add(GetPlaceInfo(it[0].naver_place_id).execute().get())
+                                    tempPlaceList.add(
+                                        GetPlaceInfo(it[0].naver_place_id).executeOnExecutor(
+                                            AsyncTask.THREAD_POOL_EXECUTOR
+                                        ).get()
+                                    )
                                 }
-//                            Log.d("Surround_title binding", surroundPlaceList[0].title)
                         }
                     })
             }
 
+            Thread.sleep(5000)
 
             return null
         }
@@ -98,11 +109,13 @@ class SurroundFragment : Fragment() {
         override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
 
+            surroundPlaceList.clear()
+            surroundPlaceList.addAll(tempPlaceList)
+            Log.d("Surround!", "바인딩 완료!")
             viewAdapter.notifyDataSetChanged()
+
         }
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -169,5 +182,11 @@ class SurroundFragment : Fragment() {
             adapter = viewAdapter
         }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.unregisterReceiver(receiver)
     }
 }
