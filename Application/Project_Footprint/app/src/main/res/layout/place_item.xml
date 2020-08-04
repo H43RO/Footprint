@@ -12,7 +12,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
@@ -21,33 +21,36 @@
         app:cardCornerRadius="24dp"
         app:cardElevation="8dp">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/place_image"
                 android:layout_width="match_parent"
-                android:layout_height="180dp" />
+                android:layout_height="250dp"
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="bottom"
+                android:background="#68000000"
                 android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:paddingLeft="24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingLeft="24dp">
 
                     <TextView
                         android:id="@+id/text_place_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="22dp"
+                        android:textColor="#ffffff"
                         android:textStyle="bold"
                         tools:text="Place Tite" />
 
@@ -55,26 +58,23 @@
                         android:id="@+id/text_place_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#ffffff"
                         android:layout_below="@+id/text_place_title"
                         android:layout_marginTop="4dp"
                         android:text="Place Category"
-                        android:textSize="14dp" />
+                        android:textSize="16dp" />
 
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_marginRight="24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
                     android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                    android:tint="#606060" />
+                    android:tint="#ffffff" />
 
             </RelativeLayout>
-
-        </LinearLayout>
-
-
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>
