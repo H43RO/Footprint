@@ -1,0 +1,27 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <form action="{% url 'user_info_update' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ form.instance.id }}"/>
+        {% for field in form %}
+        <p>
+          {{ field.label_tag }}<br>
+          {{ field }}
+          {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </p>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit" >수정완료</button>
+    </form>
+    <form action="{% url 'user_delete' %}" >
+        {% csrf_token %}
+        <button class="btn btn-danger">탈퇴하기</button></a>
+    </form>
+</div>
+{% endblock %}

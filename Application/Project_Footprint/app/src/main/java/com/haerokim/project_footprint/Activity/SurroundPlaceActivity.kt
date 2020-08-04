@@ -68,8 +68,6 @@ class SurroundPlaceActivity : AppCompatActivity() {
         val refreshBeaconList: TimerTask = object : TimerTask() {
             override fun run() {
                 // 현재 Scanning 중인 서비스를 통해 주위 비콘 리스트를 얻음
-                surroundBeaconList = ForegroundService().getSurroundBeacon()
-
                 //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
                 //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
