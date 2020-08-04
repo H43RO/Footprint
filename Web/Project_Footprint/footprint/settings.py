@@ -47,7 +47,7 @@ REST_FRAMEWORK = {
 
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
-  # 'VERIFICATION_FROM_EMAIL' : 'abc123@gmail.com',
+    'VERIFICATION_FROM_EMAIL' : '',
     'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},
     # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
     'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
