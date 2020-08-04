@@ -40,11 +40,14 @@ class SurroundFragment : Fragment() {
     lateinit var viewManager: RecyclerView.LayoutManager
     val receiver = SurroundBeaconReceiver()
 
+    // TODO: 2020/08/05 아이템 Click 이벤트 구현 (정보 창으로 이동), 로딩 애니메이션 구현 (Surround Fragment)
+
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 surroundBeaconList = intent.getStringArrayListExtra("surround_beacon_list")
 
+                //기존 리스트와 다른 점이 없으면 새로고침하지 않음
                 if (tempBeaconList != surroundBeaconList) {
                     Log.d("Surround", "AsyncTask 진입!")
                     PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
@@ -109,6 +112,7 @@ class SurroundFragment : Fragment() {
         override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
 
+            //안정적인 DataSetChange를 위해 tempPlaceList 사용함
             surroundPlaceList.clear()
             surroundPlaceList.addAll(tempPlaceList)
             Log.d("Surround!", "바인딩 완료!")
