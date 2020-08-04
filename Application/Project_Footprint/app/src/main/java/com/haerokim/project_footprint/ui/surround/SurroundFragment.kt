@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -37,15 +38,71 @@ class SurroundFragment : Fragment() {
     lateinit var viewManager: RecyclerView.LayoutManager
     val receiver = SurroundBeaconReceiver()
 
+    var isAlreadyBound:Boolean = true
+
 
     inner class SurroundBeaconReceiver: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 surroundBeaconList = intent.getStringArrayListExtra("surround_beacon_list")
-                Log.d("broad",surroundBeaconList[0])
+
+                if(isAlreadyBound){
+                    PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+
+                    isAlreadyBound = false
+                }
             }
         }
     }
+
+    inner class PlaceListBinder:AsyncTask<Void, Void, Void>(){
+        override fun doInBackground(vararg params: Void?): Void? {
+            //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
+            //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
+
+            var retrofit = Retrofit.Builder()
+                .baseUrl("http://ff3db6dde570.ngrok.io/") //사이트 Base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
+
+            // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
+            // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
+            for (beacon in surroundBeaconList) {
+                getPlaceInfoService.requestPlaceInfo(beacon)
+                    .enqueue(object : Callback<List<NaverPlaceID>> {
+                        override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
+                            Log.d("GetPlaceInfo", "정보 얻기 실패")
+                        }
+
+                        // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
+                        override fun onResponse(
+                            call: Call<List<NaverPlaceID>>,
+                            response: Response<List<NaverPlaceID>>
+                        ) {
+                            Log.d("GetPlaceInfo", "정보 얻기 성공")
+                            response.body()
+                                ?.let {
+                                    surroundPlaceList.add(GetPlaceInfo(it[0].naver_place_id).execute().get())
+                                }
+//                            Log.d("Surround_title binding", surroundPlaceList[0].title)
+                        }
+                    })
+            }
+
+
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+
+            viewAdapter.notifyDataSetChanged()
+        }
+    }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -98,43 +155,6 @@ class SurroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        // 현재 Scanning 중인 서비스를 통해 주위 비콘 리스트를 얻음
-
-
-        //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
-        //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
-
-        var retrofit = Retrofit.Builder()
-            .baseUrl("http://c5eac9187e3a.ngrok.io/") //사이트 Base URL
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-        // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
-        // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
-        for (beacon in surroundBeaconList) {
-            getPlaceInfoService.requestPlaceInfo(beacon)
-                .enqueue(object : Callback<List<NaverPlaceID>> {
-                    override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
-                        Log.d("GetPlaceInfo", "정보 얻기 실패")
-                    }
-
-                    // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
-                    override fun onResponse(
-                        call: Call<List<NaverPlaceID>>,
-                        response: Response<List<NaverPlaceID>>
-                    ) {
-                        Log.d("GetPlaceInfo", "정보 얻기 성공")
-                        response.body()
-                            ?.let {
-                                surroundPlaceList.add(GetPlaceInfo(it[0].naver_place_id).execute().get())
-                            }
-                    }
-                })
-        }
 
         viewManager = LinearLayoutManager(context)
         viewAdapter =
