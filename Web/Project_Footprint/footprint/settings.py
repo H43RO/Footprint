@@ -36,16 +36,23 @@ REST_FRAMEWORK = {
 
     ],
     'PAGE_SIZE': 10,
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]    
 }
 
 REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': False,
+    'REGISTER_VERIFICATION_ENABLED': True,
+  # 'VERIFICATION_FROM_EMAIL' : 'abc123@gmail.com',
+    'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},
+    # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
+    'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
     'RESET_PASSWORD_VERIFICATION_ENABLED': False, 
     'USER_LOGIN_FIELDS' :  ['email'],
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
-
+    # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 }
 
 MIDDLEWARE = [
@@ -122,8 +129,8 @@ AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'abcd@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'abcd' ## write your email password
+EMAIL_HOST_USER = '' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = '' ## write your email password
 EMAIL_USE_TLS = True
 
 #Maintain Session
