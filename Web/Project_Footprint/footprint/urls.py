@@ -43,5 +43,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    path('grappelli/', include('grappelli.urls')),  # grappelli URLS
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
