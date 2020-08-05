@@ -7,6 +7,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
@@ -19,6 +20,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 AUTH_USER_MODEL = 'website.User'
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,6 +30,7 @@ INSTALLED_APPS = [
     'website',
     'rest_framework',
     'django_filters',
+    'rangefilter',
     'rest_registration',
 ]
 
@@ -35,17 +38,24 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
 
     ],
-    'PAGE_SIZE': 10,
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]    
 }
 
 REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': False,
+    'REGISTER_VERIFICATION_ENABLED': True,
+    'VERIFICATION_FROM_EMAIL' : 'abcd@gmail.com',
+    'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},
+    # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
+    'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
     'RESET_PASSWORD_VERIFICATION_ENABLED': False, 
     'USER_LOGIN_FIELDS' :  ['email'],
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
-
+    # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 }
 
 MIDDLEWARE = [
@@ -67,6 +77,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -78,8 +89,12 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':  'footprintdatabase',
+        'USER': 'root',
+        'PASSWORD': '080799',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 # Password validation
@@ -115,11 +130,13 @@ TIME_ZONE = 'Asia/Seoul'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # for email
 AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 ## for email verification
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

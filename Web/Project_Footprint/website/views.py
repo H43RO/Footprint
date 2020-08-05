@@ -9,8 +9,10 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
+
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+
 from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
@@ -18,28 +20,11 @@ from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
     CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place
-from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view
-from .user_info_serializer import UserListSerializer, UserUpdateSerializer
-from django_filters import rest_framework as filters
-from .place_info_serializers import PlaceSerializer
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
-from .history_serializer import HistorySerializer
-from .history_date_serializer import HistoryDateSerializer
-from django_filters import FilterSet, CharFilter, NumberFilter, DateFilter
-from rest_framework.decorators import action
-from rest_framework.generics import (
-    ListAPIView,
-    UpdateAPIView,
-    RetrieveUpdateAPIView,
-    DestroyAPIView
-)
+import requests
 
 
 def index(request):
@@ -116,6 +101,15 @@ def user_activate(request, uidb64, token):
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
 
+def api_user_activate(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        timestamp = request.GET.get('timestamp')
+        signature = request.GET.get('signature')
+        requests.post('http://127.0.0.1:8000/api/v1/accounts/verify-registration/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature  })
+    return HttpResponseRedirect('../index/')
+
+
 def myinfo(request):
     if request.user.is_authenticated:
         user_id = request.user.id
@@ -135,7 +129,7 @@ def history(request):
         'historys': historys,
         'places' : place
     }
-    return render(request, 'history.html', context)
+    return render(request, 'history_list.html', context)
 
 
 
@@ -179,7 +173,6 @@ def place_search(request):
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
         return render(request,'place_search.html')
-
 
 def history(request):
     if request.method == 'POST' and 'id' in request.POST:
@@ -359,6 +352,4 @@ def user_password_update(request):
     else:
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
-
-
 
