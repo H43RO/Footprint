@@ -71,7 +71,7 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://93004a82a8f1.ngrok.io/") //사이트 Base URL
+            .baseUrl(" http://48e4a789724d.ngrok.io/") //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
