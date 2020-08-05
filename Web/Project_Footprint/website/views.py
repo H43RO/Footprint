@@ -19,7 +19,6 @@ from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
-
 import requests
 
 

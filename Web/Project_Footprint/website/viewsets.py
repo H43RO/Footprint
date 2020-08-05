@@ -102,7 +102,8 @@ class PlaceTitleFilter(filters.FilterSet):
     class Meta:
         model = Place
         fields = {
-            'title': ['icontains']
+            'title': ['icontains'],
+            'beacon_uuid': ['icontains']
         }
 
 
