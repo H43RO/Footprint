@@ -34,21 +34,22 @@ class ForegroundService : Service(), BeaconConsumer {
 
     lateinit var beaconManager: BeaconManager
     var beaconList: ArrayList<Beacon> = ArrayList()
-    var alreadyVisitedList: ArrayList<String> = ArrayList() // Beacon의 UUID가 기록될 예정
+    var alreadyVisitedList: MutableSet<String> = mutableSetOf() // Beacon의 UUID가 기록될 예정
     var surroundBeaconList: ArrayList<String> = ArrayList() //BroadCast 할 List (UUID 담김)
 
     override fun onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->
             // 비콘이 감지되면 해당 함수가 호출됨. Collection<Beacon> beacons에는 감지된 비콘의 리스트가,
             // region에는 비콘들에 대응하는 Region 객체가 들어옴.
+            beaconList.clear()
+            surroundBeaconList.clear()
+
             if (beacons.size > 0) {
-                beaconList.clear()
-                surroundBeaconList.clear()
                 for (beacon in beacons) {
                     beaconList.add(beacon)
                     surroundBeaconList.add(beacon.id1.toString())
-                    broadcastSurroundBeacon()
                 }
+                broadcastSurroundBeacon()
             }
         })
 
@@ -71,19 +72,19 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl(" http://48e4a789724d.ngrok.io/") //사이트 Base URL
+            .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         var getPlaceInfoService: RetrofitService =
             retrofit.create(RetrofitService::class.java)
 
-
         var handler: Handler = @SuppressLint("HandlerLeak")
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
                     if (beacon.distance in 0..80 && beacon.id1.toString() !in alreadyVisitedList) {
+                        alreadyVisitedList.add(beacon.id1.toString())
                         Log.d("beacon_scanned", beacon.id1.toString())
                         //API 통해 Naver Place ID 획득
                         getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
@@ -109,13 +110,8 @@ class ForegroundService : Service(), BeaconConsumer {
                                     id?.get(0)?.naver_place_id?.let {
                                         ShowPlaceInfo(applicationContext, it).notifyInfo()
                                     }
-
-                                    if (beacon.id1.toString() !in alreadyVisitedList) {
-                                        alreadyVisitedList.add(beacon.id1.toString())
-                                    }
                                 }
                             })
-
                     } else if (beacon.distance > 5 && beacon.id1.toString() !in alreadyVisitedList) { // '장소 방문'으로 감지했을 때 History POST
 
                         Log.d("beacon_near_by", beacon.id1.toString())
