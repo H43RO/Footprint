@@ -189,11 +189,11 @@ def place_search(request):
         return render(request,'place_search.html')
 
 
-class UserListView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('id',)
+# class UserListView(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     filter_backends = (filters.DjangoFilterBackend,)
+#     filter_fields = ('id',)
 
 
 def history(request):

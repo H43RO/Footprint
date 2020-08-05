@@ -7,7 +7,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
@@ -32,6 +31,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rangefilter',
     'rest_registration',
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
@@ -47,7 +47,7 @@ REST_FRAMEWORK = {
 
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
-    'VERIFICATION_FROM_EMAIL' : '',
+    'VERIFICATION_FROM_EMAIL' : 'abc@gmail.com',
     'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},
     # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
     'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
@@ -55,9 +55,11 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_ENABLED': False, 
     'USER_LOGIN_FIELDS' :  ['email'],
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
+    'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
     # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 }
-
+from rest_registration.api.views import login
+from rest_registration.api.views import register
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -92,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'footprintdatabase',
         'USER': 'root',
-        'PASSWORD': '080799',
+        'PASSWORD': 's9423093',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -141,12 +143,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = '' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = '' ## write your email password
+EMAIL_HOST_USER = 'abc@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'aaaa' ## write your email password
 EMAIL_USE_TLS = True
 
 #Maintain Session
-SESSION_COOKIE_AGE = 60 * 60
+SESSION_COOKIE_AGE = 60*60
 SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
