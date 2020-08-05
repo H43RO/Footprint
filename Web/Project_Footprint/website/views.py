@@ -15,6 +15,12 @@ from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
     CheckPasswordForm
 from .models import User, History, Place
+from rest_framework.response import Response
+from .backends import EmailAuthBackend
+from .token import account_activation_token, message
+from django.utils.translation import gettext_lazy as _
+
+import requests
 
 
 def index(request):
@@ -90,6 +96,15 @@ def user_activate(request, uidb64, token):
 
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
+
+def api_user_activate(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        timestamp = request.GET.get('timestamp')
+        signature = request.GET.get('signature')
+        requests.post('http://127.0.0.1:8000/api/v1/accounts/verify-registration/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature  })
+    return HttpResponseRedirect('../index/')
+
 
 def myinfo(request):
     if request.user.is_authenticated:
