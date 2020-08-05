@@ -84,8 +84,7 @@ class ForegroundService : Service(), BeaconConsumer {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
                     if (beacon.distance in 0..80 && beacon.id1.toString() !in alreadyVisitedList) {
-                        Log.d("beacon_far_away", beacon.id1.toString())
-                        alreadyVisitedList.add(beacon.id1.toString())
+                        Log.d("beacon_scanned", beacon.id1.toString())
                         //API 통해 Naver Place ID 획득
                         getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
                             .enqueue(object : retrofit2.Callback<List<NaverPlaceID>> {
@@ -101,13 +100,19 @@ class ForegroundService : Service(), BeaconConsumer {
                                     response: Response<List<NaverPlaceID>>
                                 ) {
                                     var id = response.body()
-                                    Log.d("GetPlaceInfo", id?.get(0)?.naver_place_id)
+                                    Log.d(
+                                        "Foreground_GetPlaceInfo",
+                                        "감지된 장소 : " + id?.get(0)?.naver_place_id
+                                    )
 
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알
                                     id?.get(0)?.naver_place_id?.let {
                                         ShowPlaceInfo(applicationContext, it).notifyInfo()
                                     }
-                                    alreadyVisitedList.add(beacon.id1.toString())
+
+                                    if (beacon.id1.toString() !in alreadyVisitedList) {
+                                        alreadyVisitedList.add(beacon.id1.toString())
+                                    }
                                 }
                             })
 

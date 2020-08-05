@@ -7,11 +7,11 @@ import retrofit2.http.*
 interface RetrofitService {
     //로그인 : 수정 예정
     @FormUrlEncoded
-    @POST("api/login/") // Django 서버단 URL 확정되면 변경할 것
-    fun requestLogin( // 서버단 변수명과 통일해야함 (Converting 호환성 중요)
-        @Field("userID") userID: String,
-        @Field("userPW") userPW: String
-    ): Call<Login> //Response : Login Object (includes Status code)
+    @POST("api/v1/accounts/login/")
+    fun requestLogin(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Call<User>
 
     // 장소 정보 요청
     @GET("api/places")
