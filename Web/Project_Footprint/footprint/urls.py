@@ -24,6 +24,7 @@ from rest_framework import routers
 from website.viewsets import (
     HistoryDateViewSet,
     ApiPlaceId,
+    ApiPlaceTitle,
     UserUpdateView,
     UserDeleteView,
     UserListView,
@@ -36,6 +37,7 @@ from django_filters.views import FilterView
 router = routers.DefaultRouter()
 router.register('historys', HistoryViewSet)
 router.register('places', ApiPlaceId)
+router.register('placetitle',ApiPlaceTitle, basename='placetitle')
 router.register('historysdate', HistoryDateViewSet,basename='historydate')
 router.register('userinfo', UserListView, basename='userinfo')
 api_urlpatterns = [

@@ -4,6 +4,7 @@ from .history_date_serializer import HistoryDateSerializer
 from .history_serializer import HistorySerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
+from .place_id_serializers import PlaceIdSerializer
 from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -103,17 +104,21 @@ class PlaceTitleFilter(filters.FilterSet):
         model = Place
         fields = {
             'title': ['icontains'],
-            'beacon_uuid': ['icontains']
         }
 
 
 class ApiPlaceId(viewsets.ModelViewSet):
     queryset = Place.objects.all()
+    serializer_class = PlaceIdSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('beacon_uuid', 'naver_place_id')
+
+
+class ApiPlaceTitle(viewsets.ModelViewSet):
+    queryset = Place.objects.all()
     serializer_class = PlaceSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = PlaceTitleFilter
-    # filter_backends = [SearchFilter]
-    # search_fields = ['title']
 
 
 @login_required
