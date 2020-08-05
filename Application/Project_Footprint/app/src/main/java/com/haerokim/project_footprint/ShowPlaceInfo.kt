@@ -101,8 +101,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
         }
     }
 
-    fun showInfo(){
-        var place = GetPlaceInfo(placeID).execute().get()
+    fun showInfo(place: Place){
 
         var placeTitle = place.title
         var placeCategory = place.category
@@ -115,6 +114,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
 
         //PlaceDetailActivity 로 보낼 장소 데이터 모두 번들에 담음
         val intent = Intent(context, PlaceDetailActivity::class.java)
+
         val bundle: Bundle = Bundle()
         bundle.putString("Title", placeTitle)
         bundle.putString("Category", placeCategory)
@@ -127,6 +127,6 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
 
         //번들 intent data로 담아줌
         intent.putExtras(bundle)
-        startActivity(intent)
+        context.startActivity(intent)
     }
 }

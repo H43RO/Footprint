@@ -21,6 +21,7 @@ import com.haerokim.project_footprint.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.ShowPlaceInfo
+import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import org.altbeacon.beacon.Beacon
 import retrofit2.Call
@@ -40,7 +41,7 @@ class SurroundFragment : Fragment() {
     lateinit var viewManager: RecyclerView.LayoutManager
     val receiver = SurroundBeaconReceiver()
 
-    // TODO: 2020/08/05 아이템 Click 이벤트 구현 (정보 창으로 이동), 로딩 애니메이션 구현 (Surround Fragment)
+    // TODO: 2020/08/05 아이템 Click 이벤트 구현 (정보 창으로 이동)
 
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -63,6 +64,8 @@ class SurroundFragment : Fragment() {
         override fun onPreExecute() {
             super.onPreExecute()
 
+            loading_spinner.visibility = View.VISIBLE
+
             tempPlaceList.clear()
         }
 
@@ -71,7 +74,7 @@ class SurroundFragment : Fragment() {
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
-                .baseUrl("http://93004a82a8f1.ngrok.io/") //사이트 Base URL
+                .baseUrl(" http://48e4a789724d.ngrok.io/") //사이트 Base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
@@ -118,6 +121,7 @@ class SurroundFragment : Fragment() {
             Log.d("Surround!", "바인딩 완료!")
             viewAdapter.notifyDataSetChanged()
 
+            loading_spinner.visibility = View.GONE
         }
     }
 
@@ -150,7 +154,7 @@ class SurroundFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             // 검증 필요
             holder.view.setOnClickListener {
-                ShowPlaceInfo(context, surroundPlaceList[position].naverPlaceID).showInfo()
+                ShowPlaceInfo(context, surroundPlaceList[position].naverPlaceID).showInfo(surroundPlaceList[position])
             }
             holder.view.text_place_title.text = surroundPlaceList[position].title
             holder.view.text_place_category.text = surroundPlaceList[position].category
@@ -172,6 +176,7 @@ class SurroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         viewManager = LinearLayoutManager(context)
         viewAdapter =
