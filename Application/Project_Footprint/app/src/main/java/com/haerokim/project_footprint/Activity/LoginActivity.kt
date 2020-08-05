@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import com.haerokim.project_footprint.Data.Login
+import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Network.RetrofitService
 import kotlinx.android.synthetic.main.activity_login.*
@@ -51,14 +52,11 @@ class LoginActivity : AppCompatActivity() {
                     edit_text_password.error = "비밀번호는 8자 이상 25자 이하 입니다."
                 } else {
                     // 모든 Validation Check를 통과하면
-                    loginService.requestLogin(email, password).enqueue(object : Callback<Login> {
-                        override fun onFailure(call: Call<Login>, t: Throwable) {
-                            Log.d("login", "로그인 실패")
+                    loginService.requestLogin(email, password).enqueue(object : Callback<User> {
+                        override fun onFailure(call: Call<User>, t: Throwable) {
                         }
-                        override fun onResponse(call: Call<Login>, response: Response<Login>) {
-                            login = response.body()
+                        override fun onResponse(call: Call<User>, response: Response<User>) {
                             startActivity(Intent(applicationContext, HomeActivity::class.java))
-                            Log.d("login", "로그인 성공")
                         }
                     })
                 }
