@@ -38,7 +38,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
 
     ],
-    'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 

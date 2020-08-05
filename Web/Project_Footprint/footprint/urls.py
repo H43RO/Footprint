@@ -21,9 +21,12 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
-from website.views import HistoryViewSet, HistoryDateViewSet, ApiPlaceId, UserUpdateView, UserDeleteView
-from website.views import HistoryViewSet
-from website.views import (
+from website.viewsets import (
+    HistoryDateViewSet,
+    ApiPlaceId,
+    UserUpdateView,
+    UserDeleteView,
+    UserListView,
     HistoryViewSet,
     HistoryUpdateAPIView,
     HistoryDeleteAPIView,
@@ -34,7 +37,7 @@ router = routers.DefaultRouter()
 router.register('historys', HistoryViewSet)
 router.register('places', ApiPlaceId)
 router.register('historysdate', HistoryDateViewSet,basename='historydate')
-router.register('userinfo', views.UserListView, basename='userinfo')
+router.register('userinfo', UserListView, basename='userinfo')
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
@@ -46,11 +49,10 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/v1/', include(api_urlpatterns)),
     url('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
-    url(r'^userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
-    url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
-    url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    url('userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
+    url('userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
+    url('historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url('historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
