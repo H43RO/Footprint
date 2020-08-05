@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -31,19 +32,92 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SurroundFragment : Fragment() {
 
     var surroundBeaconList: ArrayList<String> = ArrayList()
+    var tempBeaconList:ArrayList<String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
+    var tempPlaceList: ArrayList<Place> = ArrayList()
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     val receiver = SurroundBeaconReceiver()
 
+    // TODO: 2020/08/05 아이템 Click 이벤트 구현 (정보 창으로 이동), 로딩 애니메이션 구현 (Surround Fragment)
 
-    inner class SurroundBeaconReceiver: BroadcastReceiver(){
+    inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 surroundBeaconList = intent.getStringArrayListExtra("surround_beacon_list")
-                Log.d("broad",surroundBeaconList[0])
+
+                //기존 리스트와 다른 점이 없으면 새로고침하지 않음
+                if (tempBeaconList != surroundBeaconList) {
+                    Log.d("Surround", "AsyncTask 진입!")
+                    PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                    tempBeaconList = surroundBeaconList
+                }else{
+                    Log.d("Surround", "변함 없음!")
+                }
             }
+        }
+    }
+
+    inner class PlaceListBinder : AsyncTask<Void, Void, Void>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            tempPlaceList.clear()
+        }
+
+        override fun doInBackground(vararg params: Void?): Void? {
+            //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
+            //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
+
+            var retrofit = Retrofit.Builder()
+                .baseUrl("http://93004a82a8f1.ngrok.io/") //사이트 Base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
+
+            // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
+            // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
+            for (beacon in surroundBeaconList) {
+                getPlaceInfoService.requestPlaceInfo(beacon)
+                    .enqueue(object : Callback<List<NaverPlaceID>> {
+                        override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
+                            Log.d("GetPlaceInfo", "정보 얻기 실패")
+                        }
+
+                        // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
+                        override fun onResponse(
+                            call: Call<List<NaverPlaceID>>,
+                            response: Response<List<NaverPlaceID>>
+                        ) {
+                            Log.d("GetPlaceInfo", "정보 얻기 성공!")
+                            response.body()
+                                ?.let {
+                                    tempPlaceList.add(
+                                        GetPlaceInfo(it[0].naver_place_id).executeOnExecutor(
+                                            AsyncTask.THREAD_POOL_EXECUTOR
+                                        ).get()
+                                    )
+                                }
+                        }
+                    })
+            }
+
+            Thread.sleep(5000)
+
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+
+            //안정적인 DataSetChange를 위해 tempPlaceList 사용함
+            surroundPlaceList.clear()
+            surroundPlaceList.addAll(tempPlaceList)
+            Log.d("Surround!", "바인딩 완료!")
+            viewAdapter.notifyDataSetChanged()
+
         }
     }
 
@@ -99,43 +173,6 @@ class SurroundFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // 현재 Scanning 중인 서비스를 통해 주위 비콘 리스트를 얻음
-
-
-        //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
-        //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
-
-        var retrofit = Retrofit.Builder()
-            .baseUrl("http://c5eac9187e3a.ngrok.io/") //사이트 Base URL
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-        // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
-        // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
-        for (beacon in surroundBeaconList) {
-            getPlaceInfoService.requestPlaceInfo(beacon)
-                .enqueue(object : Callback<List<NaverPlaceID>> {
-                    override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
-                        Log.d("GetPlaceInfo", "정보 얻기 실패")
-                    }
-
-                    // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
-                    override fun onResponse(
-                        call: Call<List<NaverPlaceID>>,
-                        response: Response<List<NaverPlaceID>>
-                    ) {
-                        Log.d("GetPlaceInfo", "정보 얻기 성공")
-                        response.body()
-                            ?.let {
-                                surroundPlaceList.add(GetPlaceInfo(it[0].naver_place_id).execute().get())
-                            }
-                    }
-                })
-        }
-
         viewManager = LinearLayoutManager(context)
         viewAdapter =
             PlaceListAdapter(
@@ -149,5 +186,11 @@ class SurroundFragment : Fragment() {
             adapter = viewAdapter
         }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.unregisterReceiver(receiver)
     }
 }
