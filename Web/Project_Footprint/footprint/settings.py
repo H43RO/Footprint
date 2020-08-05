@@ -44,7 +44,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]    
 }
-
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
     'VERIFICATION_FROM_EMAIL' : 'abc@gmail.com',
@@ -58,8 +57,7 @@ REST_REGISTRATION = {
     'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
     # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 }
-from rest_registration.api.views import login
-from rest_registration.api.views import register
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
