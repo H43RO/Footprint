@@ -42,10 +42,11 @@ class SurroundFragment : Fragment() {
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
-                surroundBeaconList = intent.getStringArrayListExtra("surround_beacon_list")
+                surroundBeaconList= intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
 
                 //기존 리스트와 다른 점이 없으면 새로고침하지 않음
-                if (tempBeaconList != surroundBeaconList) {
+                //원소 순서와 상관 없이 원소가 같아야함 (Set 의 특성 이용)
+                if (tempBeaconList.toSet() != surroundBeaconList.toSet()) {
                     Log.d("Surround", "AsyncTask 진입!")
                     PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
                     tempBeaconList = surroundBeaconList
@@ -70,7 +71,7 @@ class SurroundFragment : Fragment() {
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
-                .baseUrl(" http://48e4a789724d.ngrok.io/") //사이트 Base URL
+                .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
