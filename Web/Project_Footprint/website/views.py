@@ -1,3 +1,5 @@
+from django.contrib.auth.forms import PasswordChangeForm
+
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
@@ -7,14 +9,14 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
-    CheckPasswordForm
+    CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place
 from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
@@ -87,7 +89,6 @@ def signin(request):
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
-            print(0)
             messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
             return HttpResponseRedirect('../signin/')
 
@@ -113,6 +114,7 @@ def user_activate(request, uidb64, token):
 
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
+
 
 def myinfo(request):
     if request.user.is_authenticated:
@@ -177,13 +179,6 @@ def place_search(request):
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
         return render(request,'place_search.html')
-
-
-class UserListView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('id',)
 
 
 def history(request):
@@ -317,7 +312,7 @@ class UserDeleteView(DestroyAPIView):
     serializer_class = UserListSerializer
     lookup_field = 'id'
 
-    
+
 class HistoryFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')
 
@@ -348,3 +343,22 @@ class HistoryDateViewSet(viewsets.ModelViewSet):
         newest = self.get_queryset().order_by('created_at').last()
         serializer = self.get_serializer_class()(newest)
         return Response(serializer.data)
+
+
+def user_password_update(request):
+    if request.method == 'POST':
+        form = UserPasswordUpdateForm(request.user, request.POST)
+        try:
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
+                return redirect('../index')
+        except ValidationError as e:
+            messages.error(request, e)
+            return HttpResponseRedirect("../user_password_update")
+    else:
+        form = UserPasswordUpdateForm(request.user)
+    return render(request, 'user_password_update.html', {'form': form})
+
+
+

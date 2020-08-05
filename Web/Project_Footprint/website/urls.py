@@ -20,5 +20,6 @@ urlpatterns = [
     path('history/<int:id>/delete/', views.history_delete,name='history-delete'),
     path('user_info_update/', views.user_info_update, name='user_info_update'),
     path('user_delete/', views.user_delete, name='user_delete'),
-    path('myinfo/', views.myinfo, name='myinfo')
+    path('myinfo/', views.myinfo, name='myinfo'),
+    path('user_password_update/', views.user_password_update, name='user_password_update'),
 ]
