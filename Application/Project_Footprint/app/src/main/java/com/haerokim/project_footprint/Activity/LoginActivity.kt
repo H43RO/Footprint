@@ -1,14 +1,18 @@
 package com.haerokim.project_footprint.Activity
 
+import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import com.haerokim.project_footprint.Data.Login
 import com.haerokim.project_footprint.Data.User
+import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Network.RetrofitService
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,14 +22,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
 
-    var login: Login? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        Paper.init(this)
+
+        val autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = autoLogin.edit()
+
+        if (autoLogin.getBoolean("auto_login_enable", false)) {
+            val intent = Intent(applicationContext, HomeActivity::class.java)
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+        }
+
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://0.0.0.0:8000") //사이트 Base URL
+            .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -54,9 +68,22 @@ class LoginActivity : AppCompatActivity() {
                     // 모든 Validation Check를 통과하면
                     loginService.requestLogin(email, password).enqueue(object : Callback<User> {
                         override fun onFailure(call: Call<User>, t: Throwable) {
+                            Log.e("login error", t.message)
                         }
+
                         override fun onResponse(call: Call<User>, response: Response<User>) {
-                            startActivity(Intent(applicationContext, HomeActivity::class.java))
+
+                            //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
+                            Paper.book().write("user_profile", response.body())
+                            Log.d("Login_Success", response.body()?.nickname)
+
+                            //자동 로그인을 위한 SharedPreference 적용
+                            editor.putBoolean("auto_login_enable", true)
+                            editor.commit()
+
+                            val intent = Intent(applicationContext, HomeActivity::class.java)
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intent)
                         }
                     })
                 }
