@@ -16,14 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Data.Place
-import com.haerokim.project_footprint.ForegroundService
 import com.haerokim.project_footprint.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.ShowPlaceInfo
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
-import org.altbeacon.beacon.Beacon
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +29,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SurroundFragment : Fragment() {
-
     var surroundBeaconList: ArrayList<String> = ArrayList()
     var tempBeaconList:ArrayList<String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
@@ -39,17 +36,15 @@ class SurroundFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
-    val receiver = SurroundBeaconReceiver()
-
-    // TODO: 2020/08/05 아이템 Click 이벤트 구현 (정보 창으로 이동)
+    val surroundBeaconReceiver = SurroundBeaconReceiver()
 
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
-                surroundBeaconList = intent.getStringArrayListExtra("surround_beacon_list")
-
+                surroundBeaconList= intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
                 //기존 리스트와 다른 점이 없으면 새로고침하지 않음
-                if (tempBeaconList != surroundBeaconList) {
+                //원소 순서와 상관 없이 원소가 같아야함 (Set 의 특성 이용)
+                if (tempBeaconList.toSet() != surroundBeaconList.toSet()) {
                     Log.d("Surround", "AsyncTask 진입!")
                     PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
                     tempBeaconList = surroundBeaconList
@@ -64,6 +59,7 @@ class SurroundFragment : Fragment() {
         override fun onPreExecute() {
             super.onPreExecute()
 
+            //Loading Splash 시작
             loading_spinner.visibility = View.VISIBLE
 
             tempPlaceList.clear()
@@ -74,7 +70,7 @@ class SurroundFragment : Fragment() {
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
-                .baseUrl(" http://48e4a789724d.ngrok.io/") //사이트 Base URL
+                .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
@@ -121,13 +117,14 @@ class SurroundFragment : Fragment() {
             Log.d("Surround!", "바인딩 완료!")
             viewAdapter.notifyDataSetChanged()
 
+            //Loading Splash 종료
             loading_spinner.visibility = View.GONE
         }
     }
 
     override fun onResume() {
         super.onResume()
-        activity?.registerReceiver(receiver, IntentFilter("surround_beacon_list"))
+        activity?.registerReceiver(surroundBeaconReceiver, IntentFilter("surround_beacon_list"))
     }
     //객체 배열이 완성되고 비동기적으로 ListAdapter가 완성될 수 있도록 구현할 예정
     //그렇지 않으면 Adapting 과정에서 충돌 발생할 것
@@ -142,7 +139,6 @@ class SurroundFragment : Fragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.place_item, parent, false)
-
 
             return ViewHolder(
                 view
@@ -177,7 +173,6 @@ class SurroundFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewManager = LinearLayoutManager(context)
         viewAdapter =
             PlaceListAdapter(
@@ -196,6 +191,6 @@ class SurroundFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        activity?.unregisterReceiver(receiver)
+        activity?.unregisterReceiver(surroundBeaconReceiver)
     }
 }

@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, \
+    SetPasswordForm
 from .models import User, Place, History
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation, get_user_model
@@ -26,7 +27,6 @@ class SignUpForm(UserCreationForm):
         strip=False,
         widget=forms.PasswordInput,
         help_text='8~25글자 사이의 비밀번호를 입력해주세요.',
-        error_messages={'max_length': _("비밀번호가 너무 깁니다. 8자 이하로 해주세요."), }
     )
     password2 = forms.CharField(
         label="비밀번호 확인",
@@ -51,6 +51,8 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
+
+
 class SignInForm(AuthenticationForm):
     username = forms.EmailField(
         label=_("이메일"),
@@ -149,4 +151,40 @@ class CheckPasswordForm(forms.Form):
         if password:
             if not check_password(password, confirm_password):
                 self.add_error('password', '비밀번호가 일치하지 않습니다.')
+
+
+class UserPasswordUpdateForm(PasswordChangeForm):
+    """
+    A form that lets a user change their password by entering their old
+    password.
+    """
+    old_password = forms.CharField(
+        label=_("현재 비밀번호"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'autofocus': True}),
+        error_messages={
+            **SetPasswordForm.error_messages,
+            'password_incorrect': _("Your old password was entered incorrectly. Please enter it again."),
+        }
+    )
+    new_password1 = forms.CharField(
+        label=_("변경할 비밀번호"),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label=_("변경할 비밀번호 재입력"),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        strip=False,
+        error_messages={
+            'password_mismatch': _('The two password fields didn’t match.'),
+        }
+    )
+    field_order = ['old_password', 'new_password1', 'new_password2']
+
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password1', 'new_password2']
+
+
 
