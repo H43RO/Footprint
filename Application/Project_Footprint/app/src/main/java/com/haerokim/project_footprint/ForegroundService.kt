@@ -15,7 +15,6 @@ import androidx.fragment.app.activityViewModels
 import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.Data.History
 import com.haerokim.project_footprint.Data.NaverPlaceID
-import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.ui.home.HomeFragment
 import com.haerokim.project_footprint.ui.home.HomeViewModel
@@ -50,7 +49,6 @@ class ForegroundService : Service(), BeaconConsumer {
                     beaconList.add(beacon)
                     surroundBeaconList.add(beacon.id1.toString())
                 }
-                //데이터 생성될 때마다 Broadcasting
                 broadcastSurroundBeacon()
             }
         })

@@ -23,10 +23,8 @@ import com.gun0912.tedpermission.TedPermission
 import com.haerokim.project_footprint.*
 import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.Activity.SurroundPlaceActivity
-import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.ui.surround.SurroundFragment
-import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -67,9 +65,6 @@ class HomeFragment : Fragment(),  PermissionListener {
         val switchStateSave = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val foregroundIntent = Intent(context, ForegroundService::class.java)
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-
-        val user: User =  Paper.book().read("user_profile")
-        text_title_nickname.text = user.nickname + " 님"
 
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)

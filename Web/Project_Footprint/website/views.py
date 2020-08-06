@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
@@ -9,6 +9,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
+
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
@@ -18,28 +19,10 @@ from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
     CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place
-from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view
-from .user_info_serializer import UserListSerializer, UserUpdateSerializer
-from django_filters import rest_framework as filters
-from .place_info_serializers import PlaceSerializer
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
-from .history_serializer import HistorySerializer
-from .history_date_serializer import HistoryDateSerializer
-from django_filters import FilterSet, CharFilter, NumberFilter, DateFilter
-from rest_framework.decorators import action
-from rest_framework.generics import (
-    ListAPIView,
-    UpdateAPIView,
-    RetrieveUpdateAPIView,
-    DestroyAPIView
-)
 import requests
 
 
@@ -90,6 +73,7 @@ def signin(request):
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
+            print(0)
             messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
             return HttpResponseRedirect('../signin/')
 
@@ -116,6 +100,7 @@ def user_activate(request, uidb64, token):
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
+
 def api_user_activate(request):
     if request.method == 'GET':
         user_id = request.GET.get('user_id')
@@ -132,20 +117,6 @@ def myinfo(request):
             'users': User.objects.filter(id=user_id)
         }
         return render(request, 'myinfo.html', context)
-
-
-def history(request):
-    historys = History.objects.all()
-    paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
-    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
-    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
-    place = Place.objects.all()
-    context = {
-        'historys': historys,
-        'places' : place
-    }
-    return render(request, 'history.html', context)
-
 
 
 def place_list(request):
@@ -188,13 +159,6 @@ def place_search(request):
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
         return render(request,'place_search.html')
-
-
-# class UserListView(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     filter_backends = (filters.DjangoFilterBackend,)
-#     filter_fields = ('id',)
 
 
 def history(request):
@@ -246,41 +210,6 @@ def history_update(request):
     return HttpResponseRedirect("../")
 
 
-class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
-    serializer_class = HistorySerializer
-
-
-class HistoryUpdateAPIView(UpdateAPIView):
-    queryset = History.objects.all()
-    serializer_class = HistorySerializer
-    lookup_field = 'id'
-
-
-class HistoryDeleteAPIView(DestroyAPIView):
-    queryset = History.objects.all()
-    serializer_class = HistorySerializer
-    lookup_field = 'id'
-
-
-class PlaceTitleFilter(filters.FilterSet):
-
-    class Meta:
-        model = Place
-        fields = {
-            'title': ['icontains']
-        }
-
-
-class ApiPlaceId(viewsets.ModelViewSet):
-    queryset = Place.objects.all()
-    serializer_class = PlaceSerializer
-    filter_backends = [filters.DjangoFilterBackend]
-    filterset_class = PlaceTitleFilter
-    # filter_backends = [SearchFilter]
-    # search_fields = ['title']
-
-
 @login_required
 def user_info_update(request):
     if request.method == 'POST':
@@ -310,57 +239,6 @@ def user_delete(request):
     return HttpResponseRedirect("../list")
 
 
-class UserListView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('id',)
-
-
-class UserUpdateView(UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserUpdateSerializer
-    lookup_field = 'id'
-
-
-class UserDeleteView(DestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
-    lookup_field = 'id'
-
-
-class HistoryFilter(FilterSet):
-    title = CharFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = History
-        fields = ('title', 'created_at')
-
-
-class HistoryDateFilter(filters.FilterSet):
-
-    class Meta:
-        model = History
-        fields = {
-            'title': ['icontains'],
-            'created_at': ['date', 'date__lte', 'date__gte']
-        }
-
-
-class HistoryDateViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
-    serializer_class = HistorySerializer
-    filterset_class = HistoryDateFilter
-    filter_backends = [filters.DjangoFilterBackend]
-    # filter_fields = ['title', 'created_at']
-
-    @action(methods=['get'], detail=False)
-    def newest(self, request):
-        newest = self.get_queryset().order_by('created_at').last()
-        serializer = self.get_serializer_class()(newest)
-        return Response(serializer.data)
-
-
 def user_password_update(request):
     if request.method == 'POST':
         form = UserPasswordUpdateForm(request.user, request.POST)
@@ -375,3 +253,4 @@ def user_password_update(request):
     else:
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
+

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Data.Place
-import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
@@ -30,6 +29,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SurroundFragment : Fragment() {
+
     var surroundBeaconList: ArrayList<String> = ArrayList()
     var tempBeaconList:ArrayList<String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
@@ -43,6 +43,7 @@ class SurroundFragment : Fragment() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 surroundBeaconList= intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
+
                 //기존 리스트와 다른 점이 없으면 새로고침하지 않음
                 //원소 순서와 상관 없이 원소가 같아야함 (Set 의 특성 이용)
                 if (tempBeaconList.toSet() != surroundBeaconList.toSet()) {
@@ -60,7 +61,6 @@ class SurroundFragment : Fragment() {
         override fun onPreExecute() {
             super.onPreExecute()
 
-            //Loading Splash 시작
             loading_spinner.visibility = View.VISIBLE
 
             tempPlaceList.clear()
@@ -118,7 +118,6 @@ class SurroundFragment : Fragment() {
             Log.d("Surround!", "바인딩 완료!")
             viewAdapter.notifyDataSetChanged()
 
-            //Loading Splash 종료
             loading_spinner.visibility = View.GONE
         }
     }
@@ -173,6 +172,7 @@ class SurroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         viewManager = LinearLayoutManager(context)
         viewAdapter =
