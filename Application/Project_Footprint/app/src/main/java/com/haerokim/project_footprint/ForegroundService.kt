@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.Data.History
 import com.haerokim.project_footprint.Data.NaverPlaceID
+import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.ui.home.HomeFragment
 import com.haerokim.project_footprint.ui.home.HomeViewModel
@@ -73,7 +74,7 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
+            .baseUrl(Website.baseUrl) //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
