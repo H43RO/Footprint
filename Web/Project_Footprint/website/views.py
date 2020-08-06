@@ -375,6 +375,3 @@ def user_password_update(request):
     else:
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
-
-
-
