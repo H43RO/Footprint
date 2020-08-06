@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_registration.settings import registration_settings
 from django.contrib.auth import authenticate
+from rest_framework.response import Response
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -16,3 +17,9 @@ class UserLoginSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ("email")
+
+def build_default_success_response(message, status, extra_data):
+    data = message
+    if extra_data:
+        data.update(extra_data)
+    return Response(data, status=status)

@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rangefilter',
     'rest_registration',
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
