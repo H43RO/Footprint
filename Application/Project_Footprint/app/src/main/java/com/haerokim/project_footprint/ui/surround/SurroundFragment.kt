@@ -71,7 +71,7 @@ class SurroundFragment : Fragment() {
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
-                .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
+                .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

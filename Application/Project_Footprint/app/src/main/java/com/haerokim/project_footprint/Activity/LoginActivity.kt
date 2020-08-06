@@ -24,8 +24,21 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        Paper.init(this)
+
+        val autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = autoLogin.edit()
+
+        if (autoLogin.getBoolean("auto_login_enable", false)) {
+            val intent = Intent(applicationContext, HomeActivity::class.java)
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+        }
+
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://0.0.0.0:8000") //사이트 Base URL
+            .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
+
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

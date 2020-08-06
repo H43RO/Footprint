@@ -72,9 +72,11 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
+            .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        Log.d("url", Website.baseUrl)
 
         var getPlaceInfoService: RetrofitService =
             retrofit.create(RetrofitService::class.java)
