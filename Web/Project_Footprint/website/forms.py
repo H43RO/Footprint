@@ -67,7 +67,6 @@ class SignInForm(AuthenticationForm):
         model = User
         fields = ['email', 'password']
 
-
 class PlaceRegisterForm(ModelForm):
     class Meta:
         model = Place

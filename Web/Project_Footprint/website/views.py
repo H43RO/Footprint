@@ -40,6 +40,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
     DestroyAPIView
 )
+import requests
 
 
 def index(request):
@@ -115,6 +116,14 @@ def user_activate(request, uidb64, token):
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
+def api_user_activate(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        timestamp = request.GET.get('timestamp')
+        signature = request.GET.get('signature')
+        requests.post('http://127.0.0.1:8000/api/v1/accounts/verify-registration/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature  })
+    return HttpResponseRedirect('../index/')
+
 
 def myinfo(request):
     if request.user.is_authenticated:
@@ -179,6 +188,13 @@ def place_search(request):
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
         return render(request,'place_search.html')
+
+
+# class UserListView(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     filter_backends = (filters.DjangoFilterBackend,)
+#     filter_fields = ('id',)
 
 
 def history(request):

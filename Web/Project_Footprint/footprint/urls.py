@@ -51,5 +51,6 @@ urlpatterns = [
     url(r'^userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
     url(r'^historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url(r'^historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    path('grappelli/', include('grappelli.urls')),  # grappelli URLS
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
