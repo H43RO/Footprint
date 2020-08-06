@@ -38,9 +38,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         var retrofit = Retrofit.Builder()
-            .baseUrl(Website.baseUrl) //사이트 Base URL
+            .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
