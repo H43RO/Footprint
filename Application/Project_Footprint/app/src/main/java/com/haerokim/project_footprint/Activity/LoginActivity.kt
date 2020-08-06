@@ -37,8 +37,6 @@ class LoginActivity : AppCompatActivity() {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
         }
-
-
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.baseUrl) //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
