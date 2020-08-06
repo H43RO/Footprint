@@ -17,7 +17,6 @@ urlpatterns = [
     path('place_sights_list/', views.place_sights, name='place_sights_list'),
     path('index/', views.index, name='index'),
     path('place_search/',views.place_search,name='place_search'),
-
     path('history/update/',views.history_update,name='history-update'),
     path('history/create/',views.history_create,name='history-create'),
     path('history/<int:id>/delete/', views.history_delete,name='history-delete'),
@@ -25,5 +24,4 @@ urlpatterns = [
     path('user_delete/', views.user_delete, name='user_delete'),
     path('myinfo/', views.myinfo, name='myinfo'),
     path('user_password_update/', views.user_password_update, name='user_password_update'),
-
-
+]
