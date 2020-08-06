@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Data.Place
+import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
