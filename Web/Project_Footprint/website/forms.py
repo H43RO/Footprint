@@ -67,6 +67,7 @@ class SignInForm(AuthenticationForm):
         model = User
         fields = ['email', 'password']
 
+
 class PlaceRegisterForm(ModelForm):
     class Meta:
         model = Place
@@ -185,6 +186,3 @@ class UserPasswordUpdateForm(PasswordChangeForm):
     class Meta:
         model = User
         fields = ['old_password', 'new_password1', 'new_password2']
-
-
-

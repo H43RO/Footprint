@@ -50,7 +50,6 @@ class ForegroundService : Service(), BeaconConsumer {
                     beaconList.add(beacon)
                     surroundBeaconList.add(beacon.id1.toString())
                 }
-                //데이터 생성될 때마다 Broadcasting
                 broadcastSurroundBeacon()
             }
         })
@@ -77,6 +76,8 @@ class ForegroundService : Service(), BeaconConsumer {
             .baseUrl(Website.baseUrl) //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        Log.d("url", Website.baseUrl)
 
         var getPlaceInfoService: RetrofitService =
             retrofit.create(RetrofitService::class.java)
