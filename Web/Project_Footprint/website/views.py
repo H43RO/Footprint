@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
@@ -7,13 +9,13 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
-    CheckPasswordForm
+    CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
@@ -96,7 +98,6 @@ def user_activate(request, uidb64, token):
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
-
 def api_user_activate(request):
     if request.method == 'GET':
         user_id = request.GET.get('user_id')
@@ -113,55 +114,6 @@ def myinfo(request):
             'users': User.objects.filter(id=user_id)
         }
         return render(request, 'myinfo.html', context)
-
-
-def history(request):
-    if request.method == 'POST' and 'id' in request.POST:
-        item = get_object_or_404(History, id=id)
-        item.delete()
-        return redirect('history-delete')
-    historys = History.objects.all()
-    # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
-
-    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
-    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
-    context = {
-        'historys': historys,
-    }
-    return render(request, 'history_list.html', context)
-
-
-def history_create(request):
-    if request.method == 'POST':
-        form = HistoryForm(request.POST, request.FILES)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
-        if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
-            new_item = form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
-        return HttpResponseRedirect('../')  # 리스트 화면으로 이동합니다.
-    form = HistoryForm(request.FILES)  # 만약에 POST방식이 아니라면
-    return render(request, 'history_create.html', {'form': form})
-
-
-def history_delete(request, id):
-    item = get_object_or_404(History, pk=id)
-    if request.method == 'POST':
-        item.delete()
-        return redirect('history')  # 리스트 화면으로 이동합니다.
-
-    return render(request, 'history_delete.html', {'item': item})
-
-
-def history_update(request):
-    if request.method == 'POST' and 'id' in request.POST:
-        item = get_object_or_404(History, pk=request.POST.get('id'))
-        form = UpdateHistoryForm(request.POST, request.FILES, instance=item)
-        if form.is_valid():
-            item = form.save()
-    elif 'id' in request.GET:
-        item = get_object_or_404(History, pk=request.GET.get('id'))
-        form = HistoryForm(instance=item)
-        form.password = ''  # password 데이터를 비웁니다.
-        return render(request, 'history_update.html', {'form': form})
-    return HttpResponseRedirect("../")
 
 
 def place_list(request):
@@ -250,3 +202,51 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
+
+def history(request):
+    if request.method == 'POST' and 'id' in request.POST:
+        item = get_object_or_404(History, id=id)
+        item.delete()
+        return redirect('history-delete')
+    historys = History.objects.all()
+    # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
+
+    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
+    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
+    context = {
+        'historys': historys,
+    }
+    return render(request, 'history_list.html', context)
+
+
+def history_create(request):
+    if request.method == 'POST':
+        form = HistoryForm(request.POST, request.FILES)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
+        if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
+            new_item = form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
+        return HttpResponseRedirect('../')  # 리스트 화면으로 이동합니다.
+    form = HistoryForm(request.FILES)  # 만약에 POST방식이 아니라면
+    return render(request, 'history_create.html', {'form': form})
+
+
+def history_delete(request, id):
+    item = get_object_or_404(History, pk=id)
+    if request.method == 'POST':
+        item.delete()
+        return redirect('history')  # 리스트 화면으로 이동합니다.
+
+    return render(request, 'history_delete.html', {'item': item})
+
+
+def history_update(request):
+    if request.method == 'POST' and 'id' in request.POST:
+        item = get_object_or_404(History, pk=request.POST.get('id'))
+        form = UpdateHistoryForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save()
+    elif 'id' in request.GET:
+        item = get_object_or_404(History, pk=request.GET.get('id'))
+        form = HistoryForm(instance=item)
+        form.password = ''  # password 데이터를 비웁니다.
+        return render(request, 'history_update.html', {'form': form})
+    return HttpResponseRedirect("../")

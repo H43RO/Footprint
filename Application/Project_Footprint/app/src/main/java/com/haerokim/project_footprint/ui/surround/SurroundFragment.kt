@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Data.Place
+<<<<<<< HEAD
+=======
+import com.haerokim.project_footprint.Data.Website
+>>>>>>> master
 import com.haerokim.project_footprint.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
@@ -70,7 +74,11 @@ class SurroundFragment : Fragment() {
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
+<<<<<<< HEAD
                 .baseUrl("http://5e637d81aee0.ngrok.io/") //사이트 Base URL
+=======
+                .baseUrl(Website.baseUrl) //사이트 Base URL
+>>>>>>> master
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
