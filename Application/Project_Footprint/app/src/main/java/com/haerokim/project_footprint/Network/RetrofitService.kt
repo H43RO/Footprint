@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface RetrofitService {
-    //로그인 : 수정 예정
+    //로그인 (csrf-token 헤더 논의)
     @FormUrlEncoded
     @POST("api/v1/accounts/login/")
     fun requestLogin(

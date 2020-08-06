@@ -49,6 +49,7 @@ class ForegroundService : Service(), BeaconConsumer {
                     beaconList.add(beacon)
                     surroundBeaconList.add(beacon.id1.toString())
                 }
+                //데이터 생성될 때마다 Broadcasting
                 broadcastSurroundBeacon()
             }
         })
