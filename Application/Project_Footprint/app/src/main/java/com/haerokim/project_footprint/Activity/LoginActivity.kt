@@ -8,10 +8,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import com.haerokim.project_footprint.Data.User
-<<<<<<< HEAD
-=======
 import com.haerokim.project_footprint.Data.Website
->>>>>>> master
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
@@ -41,14 +38,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-<<<<<<< HEAD
         var retrofit = Retrofit.Builder()
             .baseUrl("http://35f55b6ce8b8.ngrok.io/") //사이트 Base URL
-=======
 
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.baseUrl) //사이트 Base URL
->>>>>>> master
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
