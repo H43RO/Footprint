@@ -169,3 +169,47 @@ def place_search(request):
     else:
         return render(request,'place_search.html')
 
+
+@login_required
+def user_info_update(request):
+    if request.method == 'POST':
+        form = UpdateUserInfoForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    elif 'id' in request.GET:
+        form = UpdateUserInfoForm(instance=request.user)
+        return render(request, 'user_info_update.html', {'form': form})
+    return HttpResponseRedirect("../myinfo")
+
+
+@login_required
+def user_delete(request):
+    if request.method == 'POST':
+        password_form = CheckPasswordForm(request.user, request.POST)
+        if password_form.is_valid():
+            request.user.delete()
+            logout(request)
+            return redirect('../list')
+        else:
+            messages.error(request, '비밀번호를 다시 입력해주세요')
+            return HttpResponseRedirect('../user_delete/')
+    else:
+        password_form = CheckPasswordForm(request.user)
+        return render(request, 'user_delete.html', {'password_form': password_form})
+    return HttpResponseRedirect("../list")
+
+
+def user_password_update(request):
+    if request.method == 'POST':
+        form = UserPasswordUpdateForm(request.user, request.POST)
+        try:
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
+                return redirect('../index')
+        except ValidationError as e:
+            messages.error(request, e)
+            return HttpResponseRedirect("../user_password_update")
+    else:
+        form = UserPasswordUpdateForm(request.user)
+    return render(request, 'user_password_update.html', {'form': form})

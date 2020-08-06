@@ -121,35 +121,6 @@ class ApiPlaceTitle(viewsets.ModelViewSet):
     filterset_class = PlaceTitleFilter
 
 
-@login_required
-def user_info_update(request):
-    if request.method == 'POST':
-        form = UpdateUserInfoForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-    elif 'id' in request.GET:
-        form = UpdateUserInfoForm(instance=request.user)
-        return render(request, 'user_info_update.html', {'form': form})
-    return HttpResponseRedirect("../myinfo")
-
-
-@login_required
-def user_delete(request):
-    if request.method == 'POST':
-        password_form = CheckPasswordForm(request.user, request.POST)
-        if password_form.is_valid():
-            request.user.delete()
-            logout(request)
-            return redirect('../list')
-        else:
-            messages.error(request, '비밀번호를 다시 입력해주세요')
-            return HttpResponseRedirect('../user_delete/')
-    else:
-        password_form = CheckPasswordForm(request.user)
-        return render(request, 'user_delete.html', {'password_form': password_form})
-    return HttpResponseRedirect("../list")
-
-
 class UserListView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserListSerializer
