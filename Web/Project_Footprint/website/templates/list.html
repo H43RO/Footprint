@@ -3,7 +3,7 @@
 {% block content %}
     <ui>
       {% for user in users %}
-    <li> {{ user.email }}/{{ user.nickname }}/{{ user.gender }}/{{user.password}}</li>
+    <li> {{ user.id }}/{{ user.email }}/{{ user.nickname }}/{{user.birth_date}}/{{user.age}}/{{ user.gender }}</li>
       {% endfor %}
     </ui>
 {% endblock %}

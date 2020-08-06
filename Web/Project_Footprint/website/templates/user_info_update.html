@@ -17,6 +17,7 @@
           {% endfor %}
         </p>
         {% endfor %}
+        <p>비밀번호 변경을 원하십니까? <a href="/user_password_update" target="blank"><strong>비밀번호 변경</strong></a></p>
         <button class="btn btn-primary" type="submit" >수정완료</button>
     </form>
     <form action="{% url 'user_delete' %}" >
