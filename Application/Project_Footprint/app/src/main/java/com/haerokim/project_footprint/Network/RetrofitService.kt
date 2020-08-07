@@ -30,10 +30,9 @@ interface RetrofitService {
 
     // 사용자 탈퇴 : 수정 예정
     @FormUrlEncoded
-    @DELETE("/api/user-leave")
-    fun leaveUser(
-        @Field("userID") userID: String,
-        @Field("userPW") userPW: String
+    @DELETE("userinfo/{userID}/delete")
+    fun withDrawUser(
+        @Field("userID") userID: Int
     ): Call<String> //Response : Status Code
 
     // 히스토리 작성 및 수정 : 수정 예정

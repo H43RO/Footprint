@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_background"
+    android:orientation="vertical"
+    android:padding="24dp"
+    tools:context=".Activity.WithdrawActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="회원 탈퇴"
+        android:textColor="#ffffff"
+        android:textSize="40dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:id="@+id/text_caution"
+        android:text="User 님의 소중한 기록이 삭제됩니다."
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="소중한 인연 잊지 않겠습니다."
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#ffffff"
+        app:boxStrokeWidthFocused="0dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusTopStart="8dp"
+        android:layout_marginTop="70dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_password"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="textPassword"
+            android:hint="비밀번호를 입력하세요"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancel_withdraw"
+            android:textSize="15dp"
+            android:layout_gravity="right"
+            android:backgroundTint="#9192AA"
+            android:layout_marginRight="16dp"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:text="취소"/>
+
+        <Button
+            android:id="@+id/submit_withdraw"
+            android:textSize="15dp"
+            android:layout_gravity="right"
+            android:backgroundTint="#666A9A"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:text="탈퇴"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
