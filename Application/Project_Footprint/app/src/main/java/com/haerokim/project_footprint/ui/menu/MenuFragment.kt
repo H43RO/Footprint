@@ -1,7 +1,11 @@
 package com.haerokim.project_footprint.ui.menu
 
+import android.app.Activity
+import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +18,7 @@ import androidx.navigation.findNavController
 import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 
@@ -30,7 +35,6 @@ class MenuFragment : Fragment() {
             ViewModelProviders.of(this).get(MenuViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_menu, container, false)
 
-
         return root
     }
 
@@ -44,6 +48,15 @@ class MenuFragment : Fragment() {
 
         image_user_profile.setBackground(ShapeDrawable(OvalShape()))
         image_user_profile.setClipToOutline(true)
+
+        val pref: SharedPreferences? = context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
+        val profileImageUri = Uri.parse(pref?.getString("profile_image", ""))
+
+        if(profileImageUri.toString() != ""){
+            image_user_profile.setImageURI(profileImageUri)
+        }else{
+            image_user_profile.setImageResource(R.drawable.basic_profile)
+        }
 
         frame_profile_edit.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_menu_to_navigation_edit_profile)

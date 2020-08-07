@@ -44,7 +44,6 @@
                         android:id="@+id/image_edit_user_profile"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/image_border"
                         android:backgroundTint="@color/colorAccent"
                         android:src="@drawable/basic_profile" />
 
