@@ -13,6 +13,8 @@
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:required="false" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -40,6 +42,10 @@
         </activity>
         <activity android:name=".Activity.PlaceDetailActivity" />
         <activity android:name=".Activity.MainActivity" />
+
+<!--        이미지 크롭 라이브러리-->
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
 
         <service
             android:name=".ForegroundService"
