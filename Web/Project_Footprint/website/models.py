@@ -104,3 +104,10 @@ class History(models.Model):
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
+
+
+class Notice(models.Model):
+    contents = models.CharField(max_length=5000)
+    title = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
