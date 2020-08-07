@@ -1,10 +1,11 @@
-from .models import User, Place, History
+from .models import User, Place, History, Notice
 from .place_info_serializers import PlaceSerializer
 from .history_date_serializer import HistoryDateSerializer
 from .history_serializer import HistorySerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
 from .place_id_serializers import PlaceIdSerializer
+from .notice_serializers import NoticeSerializer
 from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -199,3 +200,8 @@ class HistoryDateViewSet(viewsets.ModelViewSet):
         newest = self.get_queryset().order_by('created_at').last()
         serializer = self.get_serializer_class()(newest)
         return Response(serializer.data)
+
+
+class NoticeViewSet(viewsets.ModelViewSet):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
