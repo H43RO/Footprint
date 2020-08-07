@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
+import com.haerokim.project_footprint.Activity.WithdrawActivity
 import com.haerokim.project_footprint.Data.UpdateProfile
 import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.Data.Website
@@ -91,6 +92,7 @@ class EditProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        Paper.init(context)
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
 
@@ -140,6 +142,10 @@ class EditProfileFragment : Fragment() {
             edit_profile_email.setText(user.email)
             edit_profile_birth_date.setText(userBirthDateString)
             edit_profile_age.setText(user.age.toString())
+        }
+
+        button_withdraw.setOnClickListener {
+            startActivity(Intent(requireContext(), WithdrawActivity::class.java))
         }
 
         // 회원 프로필 정보 수정
