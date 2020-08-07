@@ -101,7 +101,6 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
         }
     }
 
-    // Place 객체를 받아 정보를 추출한 뒤 Activity 이동
     fun showInfo(place: Place){
 
         var placeTitle = place.title
