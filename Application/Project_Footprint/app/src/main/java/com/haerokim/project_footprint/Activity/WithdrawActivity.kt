@@ -7,16 +7,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginLeft
 import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_withdraw.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,23 +61,12 @@ class WithdrawActivity : AppCompatActivity() {
                                     DialogInterface.OnClickListener { dialog, which ->
                                         service.withDrawUser(user.id)
                                             .enqueue(object : Callback<String> {
-                                                override fun onFailure(
-                                                    call: Call<String>,
-                                                    t: Throwable
-                                                ) {
+                                                override fun onFailure(call: Call<String>, t: Throwable) {
                                                 }
 
-                                                override fun onResponse(
-                                                    call: Call<String>,
-                                                    response: Response<String>
-                                                ) {
+                                                override fun onResponse(call: Call<String>, response: Response<String>) {
                                                     Paper.book().destroy()
-                                                    startActivity(
-                                                        Intent(
-                                                            applicationContext,
-                                                            LoginActivity::class.java
-                                                        )
-                                                    )
+                                                    startActivity(Intent(applicationContext, LoginActivity::class.java))
                                                 }
                                             })
                                     })

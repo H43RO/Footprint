@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
@@ -125,15 +126,29 @@ class EditProfileFragment : Fragment() {
 
         // 프로필 사진 변경
         button_change_profile_image.setOnClickListener {
-            CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setActivityTitle("프로필 사진 변경")
-                .setCropShape(CropImageView.CropShape.OVAL)
-                .setCropMenuCropButtonTitle("완료")
-                .setAspectRatio(1, 1)
-                .setRequestedSize(400,400)
-                .start(requireContext(), this)
-
+           val popup: PopupMenu = PopupMenu(context, it)
+            popup.inflate(R.menu.profile_image_menu)
+            // 기본 이미지로 변경할 건지, 갤러리 및 촬영 사진으로 변경할 것인지
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+                when(it.itemId){
+                    R.id.basic->{
+                        pref?.edit()?.remove("profile_image")?.commit()
+                        image_edit_user_profile.setImageResource(R.drawable.basic_profile)
+                    }
+                    R.id.galery->{
+                        CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setActivityTitle("프로필 사진 변경")
+                            .setCropShape(CropImageView.CropShape.OVAL)
+                            .setCropMenuCropButtonTitle("완료")
+                            .setAspectRatio(1, 1)
+                            .setRequestedSize(400,400)
+                            .start(requireContext(), this)
+                    }
+                }
+                true
+            })
+            popup.show()
         }
 
         // 회원 프로필 정보 수정 취소
