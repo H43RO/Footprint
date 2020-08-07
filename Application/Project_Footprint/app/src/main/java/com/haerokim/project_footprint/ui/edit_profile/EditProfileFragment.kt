@@ -2,11 +2,11 @@ package com.haerokim.project_footprint.ui.edit_profile
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.SharedPreferences
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.*
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
@@ -20,6 +20,7 @@ import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
+import com.haerokim.project_footprint.Activity.LoginActivity
 import com.haerokim.project_footprint.Activity.WithdrawActivity
 import com.haerokim.project_footprint.Data.UpdateProfile
 import com.haerokim.project_footprint.Data.User
@@ -128,7 +129,7 @@ class EditProfileFragment : Fragment() {
         button_change_profile_image.setOnClickListener {
            val popup: PopupMenu = PopupMenu(context, it)
             popup.inflate(R.menu.profile_image_menu)
-            // 기본 이미지로 변경할 건지, 갤러리 및 촬영 사진으로 변경할 것인지
+            // 기본 이미지로 변경할 건지, 갤러리 및 촬영 사진으로 변경할 것인
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when(it.itemId){
                     R.id.basic->{
@@ -157,10 +158,6 @@ class EditProfileFragment : Fragment() {
             edit_profile_email.setText(user.email)
             edit_profile_birth_date.setText(userBirthDateString)
             edit_profile_age.setText(user.age.toString())
-        }
-
-        button_withdraw.setOnClickListener {
-            startActivity(Intent(requireContext(), WithdrawActivity::class.java))
         }
 
         // 회원 프로필 정보 수정
@@ -218,6 +215,47 @@ class EditProfileFragment : Fragment() {
                         Snackbar.make(requireActivity().findViewById(android.R.id.content), "회원 정보 변경 완료!", Snackbar.LENGTH_LONG).show()
                     }
                 })
+        }
+
+        // 로그아웃 버튼
+        button_logout.setOnClickListener {
+            val builder: AlertDialog.Builder =
+                AlertDialog.Builder(context)
+            builder.setTitle("로그아웃")
+            builder.setMessage("로그아웃하시겠습니까?")
+            builder.setPositiveButton("예",
+                DialogInterface.OnClickListener { dialog, which ->
+                    // 로그인 정보, 회원 정보 모두 삭제
+                    Paper.book().delete("user_profile")
+                    val autoLogin = context?.getSharedPreferences("auto_login", Activity.MODE_PRIVATE)
+                    val editor: SharedPreferences.Editor = autoLogin!!.edit()
+                    editor.remove("auto_login_enable")
+                    editor.commit()
+                    startActivity(Intent(context, LoginActivity::class.java))
+                })
+            builder.setNegativeButton("아니오",
+                DialogInterface.OnClickListener { dialog, which ->
+                })
+            val alertDialog = builder.create()
+            alertDialog.show()
+            val view: ViewGroup.MarginLayoutParams =
+                alertDialog.getButton(Dialog.BUTTON_POSITIVE).layoutParams as ViewGroup.MarginLayoutParams
+            view.leftMargin = 16
+            alertDialog.getButton(Dialog.BUTTON_NEGATIVE)
+                .setBackgroundColor(Color.parseColor("#e8e8e8"))
+            alertDialog.getButton(Dialog.BUTTON_NEGATIVE)
+                .setTextColor(Color.parseColor("#000000"))
+
+        }
+
+        // 비밀번호 변경 버튼
+        button_modify_password.setOnClickListener {
+
+        }
+
+        // 회원 탙퇴 버튼
+        button_withdraw.setOnClickListener {
+            startActivity(Intent(requireContext(), WithdrawActivity::class.java))
         }
     }
 }
