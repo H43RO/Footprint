@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
+import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.Data.Login
 import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.Data.Website
@@ -19,6 +20,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,13 +41,16 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd")
+            .create()
+
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         var loginService: RetrofitService = retrofit.create(RetrofitService::class.java)
-
 
         button_login.setOnClickListener {
             var email = edit_text_email.text.toString()
@@ -72,10 +78,8 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                         override fun onResponse(call: Call<User>, response: Response<User>) {
-
                             //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
                             Paper.book().write("user_profile", response.body())
-                            Log.d("Login_Success", response.body()?.nickname)
 
                             //자동 로그인을 위한 SharedPreference 적용
                             editor.putBoolean("auto_login_enable", true)
@@ -84,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
                             val intent = Intent(applicationContext, HomeActivity::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             startActivity(intent)
+
                         }
                     })
                 }

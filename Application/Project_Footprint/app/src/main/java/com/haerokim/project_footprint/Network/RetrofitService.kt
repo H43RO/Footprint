@@ -3,9 +3,11 @@ package com.haerokim.project_footprint.Network
 import com.haerokim.project_footprint.Data.*
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 interface RetrofitService {
-    //로그인 (csrf-token 헤더 논의)
+    // 로그인
     @FormUrlEncoded
     @POST("api/v1/accounts/login/")
     fun requestLogin(
@@ -19,12 +21,12 @@ interface RetrofitService {
         @Query("beacon_uuid") UUID: String
     ): Call<List<NaverPlaceID>> //Response : NaverPlaceID
 
-    // 사용자 프로필 조회 : 수정 예정
-    @FormUrlEncoded
-    @GET("api/get-profile")
-    fun reqeustUserInfo(
-        @Field("profile") userProfile: User
-    ): Call<User> //Response : User Object
+    // 사용자 회원정보 수정
+    @PUT("userinfo/{userID}/update/")
+    fun updateUserInfo(
+        @Path("userID") userID: Int,
+        @Body body: UpdateProfile
+    ): Call<UpdateProfile> //Response : User Object
 
     // 사용자 탈퇴 : 수정 예정
     @FormUrlEncoded

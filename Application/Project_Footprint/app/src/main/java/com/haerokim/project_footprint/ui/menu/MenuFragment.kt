@@ -10,9 +10,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 
 class MenuFragment : Fragment() {
@@ -40,9 +42,12 @@ class MenuFragment : Fragment() {
 
         frame_profile_edit.bringChildToFront(icon_edit_profile)
 
-        image_user_profile.setBackground(ShapeDrawable(OvalShape()));
-        image_user_profile.setClipToOutline(true);
+        image_user_profile.setBackground(ShapeDrawable(OvalShape()))
+        image_user_profile.setClipToOutline(true)
 
+        frame_profile_edit.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_menu_to_navigation_edit_profile)
+        }
 
 
     }
