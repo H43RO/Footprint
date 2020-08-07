@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_notice"
             app:destination="@id/navigation_notice" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_menu"
+            app:destination="@id/navigation_menu" />
     </fragment>
 
     <fragment
@@ -28,7 +31,11 @@
         android:id="@+id/navigation_menu"
         android:name="com.haerokim.project_footprint.ui.menu.MenuFragment"
         android:label="@string/title_menu"
-        tools:layout="@layout/fragment_menu" />
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_navigation_menu_to_navigation_edit_profile"
+            app:destination="@id/navigation_edit_profile" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_surround"
@@ -36,13 +43,16 @@
         android:label="@string/title_surround"
         tools:layout="@layout/fragment_surround" />
 
-
     <fragment
         android:id="@+id/navigation_notice"
         android:name="com.haerokim.project_footprint.NoticeFragment"
-        android:label="@string/title_surround"
+        android:label="공지사항"
         tools:layout="@layout/fragment_blank" />
 
-
+    <fragment
+        android:id="@+id/navigation_edit_profile"
+        android:name="com.haerokim.project_footprint.ui.edit_profile.EditProfileFragment"
+        android:label="프로필 수정"
+        tools:layout="@layout/fragment_edit_profile" />
 
 </navigation>

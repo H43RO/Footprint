@@ -70,6 +70,8 @@ class HomeFragment : Fragment(),  PermissionListener {
 
         val user: User =  Paper.book().read("user_profile")
         text_home_user_nickname.text = user.nickname + " 님"
+        Snackbar.make(requireActivity().findViewById(android.R.id.content), "환영합니다!", Snackbar.LENGTH_LONG).show()
+
 
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
@@ -126,6 +128,10 @@ class HomeFragment : Fragment(),  PermissionListener {
 
         card_surround_place.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_surround)
+        }
+
+        image_home_user_profile.setOnClickListener{
+            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_menu)
         }
 
     }
