@@ -92,13 +92,14 @@ class PlaceRegisterForm(ModelForm):
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = ['title', 'mood', 'img', 'comment', 'place', 'user']
+        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'user']
         labels = {
             'title': _('제목'),
             'mood':_('내 기분'),
             'img': _('사진'),
             'comment': _('코멘트'),
             'place': _('장소'),
+            'custom_place': _('임의 장소'),
             'user': _('사용자'),
         }
         widgets = {
