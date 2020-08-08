@@ -72,7 +72,7 @@ class SurroundFragment : Fragment() {
             //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
             var retrofit = Retrofit.Builder()
-                .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
+                .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
@@ -81,7 +81,7 @@ class SurroundFragment : Fragment() {
             // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
             // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
             for (beacon in surroundBeaconList) {
-                getPlaceInfoService.requestPlaceInfo(beacon)
+                getPlaceInfoService.requestNaverPlaceID(beacon)
                     .enqueue(object : Callback<List<NaverPlaceID>> {
                         override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
                             Log.d("GetPlaceInfo", "정보 얻기 실패")

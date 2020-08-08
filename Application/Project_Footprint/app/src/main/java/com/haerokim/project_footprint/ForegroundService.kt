@@ -1,41 +1,32 @@
 package com.haerokim.project_footprint
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.util.rangeTo
-import androidx.fragment.app.activityViewModels
 import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.Data.History
 import com.haerokim.project_footprint.Data.NaverPlaceID
+import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.Network.RetrofitService
-import com.haerokim.project_footprint.ui.home.HomeFragment
-import com.haerokim.project_footprint.ui.home.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
+import io.paperdb.Paper
 import org.altbeacon.beacon.*
-import org.altbeacon.beacon.service.ScanJob
 import org.altbeacon.beacon.service.ScanJobScheduler
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class ForegroundService : Service(), BeaconConsumer {
 
     lateinit var beaconManager: BeaconManager
     var beaconList: ArrayList<Beacon> = ArrayList()
-    var alreadyVisitedList: MutableSet<String> = mutableSetOf() // Beacon의 UUID가 기록될 예정
+    var alreadyNotifiedPlace: MutableSet<String> = mutableSetOf() // 푸시알림을 보냈던 Beacon의 UUID가 기록될 예정
+    var alreadyVisitedPlace: MutableSet<String> = mutableSetOf() // 푸시알림을 보냈던 Beacon의 UUID가 기록될 예정
     var surroundBeaconList: ArrayList<String> = ArrayList() //BroadCast 할 List (UUID 담김)
 
     override fun onBeaconServiceConnect() {
@@ -73,62 +64,79 @@ class ForegroundService : Service(), BeaconConsumer {
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
 
         var retrofit = Retrofit.Builder()
-            .baseUrl(Website.baseUrl) //사이트 Base URL
+            .baseUrl(Website.BASE_URL) //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        Log.d("url", Website.baseUrl)
-
-        var getPlaceInfoService: RetrofitService =
+        var retrofitService: RetrofitService =
             retrofit.create(RetrofitService::class.java)
+
+        var user: User = Paper.book().read("user_profile")
 
         var handler: Handler = @SuppressLint("HandlerLeak")
         object : Handler() {
             override fun handleMessage(msg: Message?) {
                 for (beacon in beaconList) {
-                    if (beacon.distance in 0..80 && beacon.id1.toString() !in alreadyVisitedList) {
-                        alreadyVisitedList.add(beacon.id1.toString())
+
+                    // 지나가는 장소 ( 주변에 있는 장소 )
+                    if (beacon.distance in 0..80 && beacon.id1.toString() !in alreadyNotifiedPlace) {
+                        alreadyNotifiedPlace.add(beacon.id1.toString()) //이미 Notification 한 장소 리스트에 등록
                         Log.d("beacon_scanned", beacon.id1.toString())
-                        //API 통해 Naver Place ID 획득
-                        getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
+
+                        // 모듈의 UUID 통해서 Naver Place ID 얻어옴
+                        retrofitService.requestNaverPlaceID(beacon.id1.toString())
                             .enqueue(object : retrofit2.Callback<List<NaverPlaceID>> {
-                                override fun onFailure(
-                                    call: Call<List<NaverPlaceID>>,
-                                    t: Throwable
-                                ) {
+                                override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
                                     Log.e("Error", t.message)
                                 }
 
-                                override fun onResponse(
-                                    call: Call<List<NaverPlaceID>>,
-                                    response: Response<List<NaverPlaceID>>
-                                ) {
+                                override fun onResponse(call: Call<List<NaverPlaceID>>, response: Response<List<NaverPlaceID>>) {
                                     var id = response.body()
-                                    Log.d(
-                                        "Foreground_GetPlaceInfo",
-                                        "감지된 장소 : " + id?.get(0)?.naver_place_id
-                                    )
-
-                                    // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알
+                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.get(0)?.naver_place_id)
+                                    // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
                                     id?.get(0)?.naver_place_id?.let {
-                                        ShowPlaceInfo(applicationContext, it).notifyInfo()
+                                        ShowPlaceInfo(applicationContext, it).notifyInfo("nearPlace")
                                     }
                                 }
                             })
-                    } else if (beacon.distance > 5 && beacon.id1.toString() !in alreadyVisitedList) { // '장소 방문'으로 감지했을 때 History POST
-
+                    }
+                    // 가까운 장소 ( 방문 장소 )
+                    if (beacon.distance < 6 && beacon.id1.toString() !in alreadyVisitedPlace) {
+                        alreadyVisitedPlace.add(beacon.id1.toString()) //이미 방문한 장소 리스트에 등록
+                        // '장소 방문'으로 감지했을 때 History POST (거리 6m 이내로 가정)
                         Log.d("beacon_near_by", beacon.id1.toString())
-                        val current = LocalDateTime.now()
-                        val formatter = DateTimeFormatter.ISO_DATE_TIME
-                        val formatted = current.format(formatter) // ex) 2020-07-31T22:21:51
+                        var naverPlaceID: String? = null
 
-                        //History POST API 활용
+                        // 모듈의 UUID 통해서 Naver Place ID 얻어옴
+                        retrofitService.requestNaverPlaceID(beacon.id1.toString())
+                            .enqueue(object : retrofit2.Callback<List<NaverPlaceID>> {
+                                override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
+                                    Log.e("Error", t.message)
+                                }
+                                override fun onResponse(call: Call<List<NaverPlaceID>>, response: Response<List<NaverPlaceID>>) {
+                                    var id = response.body()
+                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.get(0)?.naver_place_id)
+                                    // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
+                                    id?.get(0)?.naver_place_id?.let {
+                                        ShowPlaceInfo(applicationContext, it).notifyInfo("visitedPlace")
+                                        naverPlaceID = it
+                                    }
+                                }
+                            })
+                        //History POST API 대응 : NaverPlaceID와 사용자 ID로 History 생성
+                        naverPlaceID?.let {
+                            retrofitService.createRealVisitHistory(it, user.id).enqueue(object : retrofit2.Callback<History> {
+                                override fun onFailure(call: Call<History>, t: Throwable) {
+                                    Log.e("Error", t.message)
+                                }
+
+                                override fun onResponse(call: Call<History>, response: Response<History>) {
+                                    Log.d("Foreground_HistoryCreate", "업로드 된 장소 : $naverPlaceID")
+                                }
+                            })
+                        }
                     }
                 }
-                // 미 검증 코드
-//                if (HomeViewModel().scanMode.value == true) {
                 this.sendEmptyMessageDelayed(0, 1000)
-//                }
             }
         }
 

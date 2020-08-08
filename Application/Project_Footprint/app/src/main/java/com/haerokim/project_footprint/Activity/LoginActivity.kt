@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import com.google.gson.GsonBuilder
-import com.haerokim.project_footprint.Data.Login
 import com.haerokim.project_footprint.Data.User
 import com.haerokim.project_footprint.Data.Website
 import com.haerokim.project_footprint.R
@@ -20,8 +19,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
-import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -46,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
             .create()
 
         var retrofit = Retrofit.Builder()
-            .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
+            .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 

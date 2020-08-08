@@ -113,7 +113,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="24dp"
                 android:textSize="24dp"
-                android:text="오늘 하루,\n천천히 돌아보기"
+                android:text="오늘 남긴 발자취\n천천히 따라가보기"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
 

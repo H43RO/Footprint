@@ -30,7 +30,7 @@ class WithdrawActivity : AppCompatActivity() {
         text_caution.text = user.nickname + "님의 소중한 기록이 삭제됩니다."
 
         var retrofit = Retrofit.Builder()
-            .baseUrl(Website.baseUrl) //사이트 Base URL을 갖고있는 Companion Obejct
+            .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
