@@ -26,6 +26,7 @@ from rest_framework.generics import (
     DestroyAPIView,
     CreateAPIView,
 )
+from django.http import Http404
 
 
 class UserListView(viewsets.ModelViewSet):
@@ -60,11 +61,25 @@ class PlaceTitleFilter(filters.FilterSet):
         }
 
 
-class ApiPlaceId(viewsets.ModelViewSet):
+class ApiPlaceList(viewsets.ModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceIdSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('beacon_uuid', 'naver_place_id')
+
+
+class ApiPlaceId(APIView):
+    queryset = Place.objects.all()
+    serializer_class = PlaceIdSerializer
+
+    def get_object(self, pk):
+        try:
+            return Place.objects.get(beacon_uuid=pk)
+        except Place.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        places = self.get_object(pk)
+        serializer = PlaceIdSerializer(places)
+        return Response(serializer.data)
 
 
 class ApiPlaceTitle(viewsets.ModelViewSet):
