@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.hashers import check_password
 
+
 MOOD_POINT_CHOICES = (
     ('angry', "angry"),
     ('soso', "soso"),
@@ -26,7 +27,7 @@ class SignUpForm(UserCreationForm):
         label="비밀번호",
         strip=False,
         widget=forms.PasswordInput,
-        help_text='8~25글자 사이의 비밀번호를 입력해주세요.',
+        help_text="8~25글자 사이의 비밀번호를 입력해주세요. <br/>공통된 글자 또는 숫자를 사용할 수 없습니다. ex) 11111111,<br/> 반드시 숫자와 영문 조합으로 만들어져야 합니다."
     )
     password2 = forms.CharField(
         label="비밀번호 확인",
@@ -186,3 +187,14 @@ class UserPasswordUpdateForm(PasswordChangeForm):
     class Meta:
         model = User
         fields = ['old_password', 'new_password1', 'new_password2']
+
+
+class UserPasswordResetForm(forms.Form):
+    new_password1 = forms.CharField(label=_("변경할 비밀번호"), widget=forms.PasswordInput, max_length=25)
+    new_password2 = forms.CharField(label=_("변경할 비밀번호 재입력"), widget=forms.PasswordInput, max_length=25)
+    class Meta:
+        model = User
+        fields = ['password2']
+
+
+    

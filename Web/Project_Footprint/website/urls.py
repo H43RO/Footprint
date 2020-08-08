@@ -24,4 +24,5 @@ urlpatterns = [
     path('user_delete/', views.user_delete, name='user_delete'),
     path('myinfo/', views.myinfo, name='myinfo'),
     path('user_password_update/', views.user_password_update, name='user_password_update'),
+    path('api_password/', views.api_password_reset, name='api_password_reset'),
 ]
