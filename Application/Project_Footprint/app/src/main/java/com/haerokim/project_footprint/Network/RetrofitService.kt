@@ -17,7 +17,7 @@ interface RetrofitService {
 
     // 장소 정보 요청
     @GET("api/places")
-    fun requestPlaceInfo(
+    fun requestNaverPlaceID(
         @Query("beacon_uuid") UUID: String
     ): Call<List<NaverPlaceID>> //Response : NaverPlaceID
 
@@ -27,6 +27,22 @@ interface RetrofitService {
         @Path("userID") userID: Int,
         @Body body: UpdateProfile
     ): Call<UpdateProfile> //Response : User Object
+
+    // 실제 방문 히스토리 생성
+    @FormUrlEncoded
+    @POST("api/historys/")
+    fun createRealVisitHistory(
+        @Field("place") naverPlaceID: String,
+        @Field("user") userID: Int
+    ): Call<History> //Response : Status Code
+
+    // 사용자 임의 히스토리 생성 : 수정 예정
+    @FormUrlEncoded
+    @POST("api/historys/")
+    fun createVirtualHistory(
+        @Field("place") placeName: String
+    ): Call<History> //Response : Status Code
+
 
     // 사용자 탈퇴 : 수정 예정
     @FormUrlEncoded
@@ -56,12 +72,6 @@ interface RetrofitService {
         @Field("historyID") historyID: String
     ): Call<String> //Response : Status Code
 
-    // 히스토리 생성 : 수정 예정
-    @FormUrlEncoded
-    @POST("/api/create-history")
-    fun createHistory(
-        @Field("history") history: History
-    ): Call<String> //Response : Status Code
 
     // 회원 가입 : 수정 예정
     @FormUrlEncoded

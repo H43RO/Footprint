@@ -166,7 +166,7 @@ class EditProfileFragment : Fragment() {
             .create()
 
         var retrofit = Retrofit.Builder()
-            .baseUrl(Website.baseUrl) //사이트 Base URL
+            .baseUrl(Website.BASE_URL) //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 

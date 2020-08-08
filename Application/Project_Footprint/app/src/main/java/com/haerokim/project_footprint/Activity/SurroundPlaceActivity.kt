@@ -10,14 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.haerokim.project_footprint.Data.NaverPlaceID
 import com.haerokim.project_footprint.Data.Place
-import com.haerokim.project_footprint.ForegroundService
-import com.haerokim.project_footprint.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
-import com.haerokim.project_footprint.ShowPlaceInfo
 import kotlinx.android.synthetic.main.place_item.view.*
 import org.altbeacon.beacon.Beacon
 import retrofit2.Call
@@ -82,7 +78,7 @@ class SurroundPlaceActivity : AppCompatActivity() {
                 // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
                 // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
                 for (beacon in surroundBeaconList) {
-                    getPlaceInfoService.requestPlaceInfo(beacon.id1.toString())
+                    getPlaceInfoService.requestNaverPlaceID(beacon.id1.toString())
                         .enqueue(object : Callback<List<NaverPlaceID>> {
                             override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
                                 Log.d("GetPlaceInfo", "정보 얻기 실패")

@@ -13,12 +13,12 @@ import com.haerokim.project_footprint.Activity.PlaceDetailActivity
 import com.haerokim.project_footprint.Data.Place
 
 // Notification 형식으로 보여주는 메소드와, 액티비티 형식으로 보여주는 메소드를 가짐
-class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
+class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
     //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
     //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
     private var placeName = placeID
 
-    fun notifyInfo() {
+    fun notifyInfo(mode: String?) {
         var place = GetPlaceInfo(placeID).execute().get()
 
         var placeTitle = place.title
@@ -55,8 +55,16 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
             var mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val id = "channel_notify"
-            val name: CharSequence = "주변에 맛집 $placeTitle 가 있어요!"
-            val description = "탭하여 더 많은 정보 확인하기"
+            val name: CharSequence = if (mode == "nearPlace") {
+                "주변에 맛집 $placeTitle 가 있어요!"
+            } else {
+                "$placeTitle 를 방문하셨군요!"
+            }
+            val description = if (mode == "nearPlace") {
+                "탭하여 더 많은 정보 확인하기"
+            } else {
+                "좋은 추억 남기세요 :)"
+            }
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(id, name, importance)
 
@@ -69,29 +77,54 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
 
             val CHANNEL_ID = "channel_notify"
             val notification: Notification =
-                Notification.Builder(context)
-                    .setContentTitle("당신 주변의 맛집 ${placeTitle} 발견!")
-                    .setContentText("탭하여 더 많은 정보 확인하기")
-                    .setSmallIcon(R.drawable.ic_baseline_location_on_24)
-                    .setChannelId(CHANNEL_ID)
-                    .setAutoCancel(true)
-                    .setPriority(Notification.PRIORITY_HIGH)
-                    .setContentIntent(pendingIntent)
-                    .build()
+                if (mode == "nearPlace") {
+                    Notification.Builder(context)
+                        .setContentTitle("당신 주변의 맛집 ${placeTitle} 발견!")
+                        .setContentText("탭하여 더 많은 정보 확인하기")
+                        .setSmallIcon(R.drawable.ic_baseline_location_on_24)
+                        .setChannelId(CHANNEL_ID)
+                        .setAutoCancel(true)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent)
+                        .build()
+                } else {
+                    Notification.Builder(context)
+                        .setContentTitle("$placeTitle 를 방문하셨군요!")
+                        .setContentText("좋은 추억 남기세요 :)")
+                        .setSmallIcon(R.drawable.ic_baseline_location_on_24)
+                        .setChannelId(CHANNEL_ID)
+                        .setAutoCancel(true)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent)
+                        .build()
+                }
 
             mNotificationManager.notify(5603, notification)
 
         } else {
             val builder =
-                NotificationCompat.Builder(context, "channel_notify")
-                    .setSmallIcon(R.drawable.ic_baseline_location_on_24)
-                    .setContentTitle("당신 주변의 맛집 ${placeTitle} 발견!")
-                    .setContentText("탭하여 더 많은 정보 확인하기")
-                    .setPriority(Notification.PRIORITY_HIGH)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-                    .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
-                    .setAutoCancel(true)
+                if (mode == "nearPlace") {
+                    NotificationCompat.Builder(context, "channel_notify")
+                        .setSmallIcon(R.drawable.ic_baseline_location_on_24)
+                        .setContentTitle("당신 주변의 맛집 ${placeTitle} 발견!")
+                        .setContentText("탭하여 더 많은 정보 확인하기")
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+                        .setAutoCancel(true)
+                } else {
+                    NotificationCompat.Builder(context, "channel_notify")
+                        .setSmallIcon(R.drawable.ic_baseline_location_on_24)
+                        .setContentTitle("$placeTitle 를 방문하셨군요!")
+                        .setContentText("좋은 추억 남기세요 :)")
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+                        .setAutoCancel(true)
+                }
+
 
             val notificationManager =
                 NotificationManagerCompat.from(context)
@@ -101,7 +134,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity(){
         }
     }
 
-    fun showInfo(place: Place){
+    fun showInfo(place: Place) {
 
         var placeTitle = place.title
         var placeCategory = place.category
