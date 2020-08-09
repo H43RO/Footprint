@@ -162,6 +162,7 @@ class SurroundFragment : Fragment() {
             Glide.with(holder.view) // 확인 필요
                 .load(surroundPlaceList[position].imageSrc)
                 .centerCrop()
+                .override(600,400)
                 .into(holder.view.place_image)
         }
     }
