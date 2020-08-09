@@ -25,7 +25,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.haerokim.project_footprint.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_whole_history"
+            app:destination="@id/navigation_whole_history" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_menu"
@@ -54,5 +58,11 @@
         android:name="com.haerokim.project_footprint.ui.edit_profile.EditProfileFragment"
         android:label="프로필 수정"
         tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/navigation_whole_history"
+        android:name="com.haerokim.project_footprint.ui.WholeHistoryFragment"
+        android:label="전체 히스토리"
+        tools:layout="@layout/fragment_whole_history"/>
 
 </navigation>

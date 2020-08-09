@@ -84,16 +84,16 @@ class ForegroundService : Service(), BeaconConsumer {
 
                         // 모듈의 UUID 통해서 Naver Place ID 얻어옴
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
-                            .enqueue(object : retrofit2.Callback<List<NaverPlaceID>> {
-                                override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
+                            .enqueue(object : retrofit2.Callback<NaverPlaceID> {
+                                override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
                                     Log.e("Error", t.message)
                                 }
 
-                                override fun onResponse(call: Call<List<NaverPlaceID>>, response: Response<List<NaverPlaceID>>) {
+                                override fun onResponse(call: Call<NaverPlaceID>, response: Response<NaverPlaceID>) {
                                     var id = response.body()
-                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.get(0)?.naver_place_id)
+                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.naver_place_id)
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
-                                    id?.get(0)?.naver_place_id?.let {
+                                    id?.naver_place_id?.let {
                                         ShowPlaceInfo(applicationContext, it).notifyInfo("nearPlace")
                                     }
                                 }
@@ -108,15 +108,15 @@ class ForegroundService : Service(), BeaconConsumer {
 
                         // 모듈의 UUID 통해서 Naver Place ID 얻어옴
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
-                            .enqueue(object : retrofit2.Callback<List<NaverPlaceID>> {
-                                override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
+                            .enqueue(object : retrofit2.Callback<NaverPlaceID> {
+                                override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
                                     Log.e("Error", t.message)
                                 }
-                                override fun onResponse(call: Call<List<NaverPlaceID>>, response: Response<List<NaverPlaceID>>) {
+                                override fun onResponse(call: Call<NaverPlaceID>, response: Response<NaverPlaceID>) {
                                     var id = response.body()
-                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.get(0)?.naver_place_id)
+                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.naver_place_id)
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
-                                    id?.get(0)?.naver_place_id?.let {
+                                    id?.naver_place_id?.let {
                                         ShowPlaceInfo(applicationContext, it).notifyInfo("visitedPlace")
                                         naverPlaceID = it
                                     }

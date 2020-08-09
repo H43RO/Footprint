@@ -19,7 +19,7 @@ interface RetrofitService {
     @GET("api/places")
     fun requestNaverPlaceID(
         @Query("beacon_uuid") UUID: String
-    ): Call<List<NaverPlaceID>> //Response : NaverPlaceID
+    ): Call<NaverPlaceID> //Response : NaverPlaceID
 
     // 사용자 회원정보 수정
     @PUT("userinfo/{userID}/update/")
