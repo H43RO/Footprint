@@ -37,7 +37,7 @@ from website.viewsets import (
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
-router.register('historyies', HistoryViewSet)
+router.register('histories', HistoryViewSet)
 router.register('places', ApiPlaceList)
 router.register('placetitle',ApiPlaceTitle, basename='placetitle')
 router.register('userinfo', UserListView, basename='userinfo')
@@ -55,8 +55,8 @@ urlpatterns = [
     url('api/', include(router.urls)),
     url('userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
     url('userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
-    url('historyies/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
-    url('historyies/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
     path('places/(?P<pk>[^/.]+)/', ApiPlaceId.as_view(), name='placeid'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
