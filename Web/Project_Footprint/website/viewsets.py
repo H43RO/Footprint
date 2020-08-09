@@ -1,6 +1,5 @@
 from .models import User, Place, History, Notice
 from .place_info_serializers import PlaceSerializer
-from .history_date_serializer import HistoryDateSerializer
 from .history_serializer import HistorySerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
@@ -36,9 +35,6 @@ class UserListView(viewsets.ModelViewSet):
     filter_fields = ('id',)
 
 
-class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
-    serializer_class = HistorySerializer
 
 
 class HistoryUpdateAPIView(UpdateAPIView):
@@ -108,27 +104,20 @@ class UserDeleteView(DestroyAPIView):
     lookup_field = 'id'
 
 
-class HistoryFilter(FilterSet):
-    title = CharFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = History
-        fields = ('title', 'created_at')
-
-
-class HistoryDateFilter(filters.FilterSet):
+class HistoryFilter(filters.FilterSet):
     class Meta:
         model = History
         fields = {
             'title': ['icontains'],
-            'created_at': ['date', 'date__lte', 'date__gte']
+            'created_at': ['date', 'date__lte', 'date__gte'],
+            'user': ['exact'],
         }
 
 
-class HistoryDateViewSet(viewsets.ModelViewSet):
+class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
-    filterset_class = HistoryDateFilter
+    filterset_class = HistoryFilter
     filter_backends = [filters.DjangoFilterBackend]
 
     # filter_fields = ['title', 'created_at']
