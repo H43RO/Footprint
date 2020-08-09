@@ -42,12 +42,14 @@ interface RetrofitService {
         @Field("place") placeName: String
     ): Call<History> //Response : Status Code
 
+
     // 히스토리 조회 API (날짜별) : 수정 예정
     @FormUrlEncoded
     @GET("/api/diary-list")
     fun requestHistoryList(
         @Field("date") date: String
     ): Call<ArrayList<History>>
+
 
     // 사용자 탈퇴 : 수정 예정
     @FormUrlEncoded

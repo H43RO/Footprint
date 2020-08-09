@@ -13,9 +13,5 @@
         <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
         <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
         <item name="android:datePickerStyle">@style/customDatePickerFontStyle</item>
-
-
     </style>
-
-
 </resources>
