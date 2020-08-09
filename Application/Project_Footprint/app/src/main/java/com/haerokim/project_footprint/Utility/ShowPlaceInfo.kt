@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint
+package com.haerokim.project_footprint.Utility
 
 import android.app.*
 import android.content.Context
@@ -8,17 +8,18 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startActivity
 import com.haerokim.project_footprint.Activity.PlaceDetailActivity
-import com.haerokim.project_footprint.Data.Place
+import com.haerokim.project_footprint.DataClass.Place
+import com.haerokim.project_footprint.R
 
 // Notification 형식으로 보여주는 메소드와, 액티비티 형식으로 보여주는 메소드를 가짐
-class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
+class ShowPlaceInfo(var context: Context, var placeID: kotlin.String) : Activity() {
     //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
     //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
     private var placeName = placeID
 
-    fun notifyInfo(mode: String?) {
+
+    fun notifyInfo(mode: kotlin.String?) {
         var place = GetPlaceInfo(placeID).execute().get()
 
         var placeTitle = place.title

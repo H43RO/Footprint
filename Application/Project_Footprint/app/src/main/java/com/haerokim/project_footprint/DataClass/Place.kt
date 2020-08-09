@@ -1,4 +1,6 @@
-package com.haerokim.project_footprint.Data
+package com.haerokim.project_footprint.DataClass
+
+import kotlin.String
 
 data class Place(
     var naverPlaceID: String,

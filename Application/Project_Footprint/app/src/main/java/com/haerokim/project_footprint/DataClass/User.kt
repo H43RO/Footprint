@@ -1,6 +1,7 @@
-package com.haerokim.project_footprint.Data
+package com.haerokim.project_footprint.DataClass
 import com.google.gson.annotations.SerializedName
 import java.util.*
+import kotlin.String
 
 class User(
     val id: Int,

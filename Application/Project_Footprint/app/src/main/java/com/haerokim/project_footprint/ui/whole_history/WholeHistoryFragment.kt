@@ -1,18 +1,16 @@
-package com.haerokim.project_footprint.ui
+package com.haerokim.project_footprint.ui.whole_history
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.haerokim.project_footprint.Data.History
-import com.haerokim.project_footprint.Data.HistoryListAdapter
+import com.haerokim.project_footprint.DataClass.History
+import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.R
-import com.haerokim.project_footprint.ui.surround.SurroundFragment
-import kotlinx.android.synthetic.main.fragment_dashboard.*
+import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 
 class WholeHistoryFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
@@ -40,19 +38,24 @@ class WholeHistoryFragment : Fragment() {
         historyList.add(History(1,"https://search.pstatic.net/common/?autoRotate=true&quality=95&src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA3MTdfMjg1%2FMDAxNTk0OTk0MDUzOTg4.lq4A28aW911VkJju6oeNhz2FFoYBL8TFUZGAcZ9ZKEIg.SZqy9d2QkZYMzuq9HODsLfqQtsGS91ze-UUJesYq1Acg.JPEG.gg12200%2F1594994054392.jpg&type=m862_636",
             "그들의 수다떨기", 2, "맛있었당", "2020년 7월 25일 15시 08분", "", "어나더룸", 1))
 
+        // Adapter에 List를 넘기기 전에, List 내의 모든 장소들의 Title을 먼저 얻어야함
+
+        for(history in historyList){
+            history.place = GetPlaceTitleOnly(history.place).execute().get()
+        }
 
         viewManager = LinearLayoutManager(context)
         viewAdapter = HistoryListAdapter(
-                historyList,
-                requireContext()
-            )
+            historyList,
+            requireContext()
+        )
 
         recyclerView = view.findViewById<RecyclerView>(R.id.history_list).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
-
-
     }
+
+
 }

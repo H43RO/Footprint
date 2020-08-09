@@ -1,14 +1,13 @@
-package com.haerokim.project_footprint
+package com.haerokim.project_footprint.Utility
 
 import android.os.AsyncTask
-import android.util.Log
-import com.haerokim.project_footprint.Data.Place
+import com.haerokim.project_footprint.DataClass.Place
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
 
-class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
+class GetPlaceInfo(placeID: kotlin.String) : AsyncTask<Place, Void, Place>() {
     //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
     //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
     private lateinit var placeInfo: Place
@@ -19,14 +18,14 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
     override fun doInBackground(vararg params: Place?): Place {
 
         // 해당 데이터 처리하는 Activity에서 Null 대응하므로 Nullable 타입으로 지정
-        var placeTitle: String? = null
-        var placeCategory: String? = null
-        var placeDescription: String? = null
-        var placeTime: String? = null
-        var placeLocation: String? = null
-        var placeImageSrc: String? = null
-        var placeMenuName: ArrayList<String> = arrayListOf()
-        var placeMenuPrice: ArrayList<String> = arrayListOf()
+        var placeTitle: kotlin.String? = null
+        var placeCategory: kotlin.String? = null
+        var placeDescription: kotlin.String? = null
+        var placeTime: kotlin.String? = null
+        var placeLocation: kotlin.String? = null
+        var placeImageSrc: kotlin.String? = null
+        var placeMenuName: ArrayList<kotlin.String> = arrayListOf()
+        var placeMenuPrice: ArrayList<kotlin.String> = arrayListOf()
 
         try {
             // 네이버 플레이스 URL로 변경 예정 ( 아이디 SQL 쿼리로 얻어올 수 있게끔 매핑 예정 )
@@ -104,10 +103,5 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
 
 
         return placeInfo
-    }
-
-
-    override fun onPostExecute(result: Place) {
-        super.onPostExecute(result)
     }
 }
