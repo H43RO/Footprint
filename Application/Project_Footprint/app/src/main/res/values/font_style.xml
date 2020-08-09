@@ -6,6 +6,10 @@
         <item name="android:fontFamily">@font/custom</item>
     </style>
 
+    <style name="historyTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/history_content_font</item>
+    </style>
+
     <style name="customButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
         <item name="android:fontFamily">@font/custom</item>
     </style>

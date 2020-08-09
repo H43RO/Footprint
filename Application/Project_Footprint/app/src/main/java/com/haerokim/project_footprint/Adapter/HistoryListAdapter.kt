@@ -30,6 +30,7 @@ class HistoryListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.view.setOnClickListener {
+
         }
         holder.view.text_history_title.text = historyList[position].title ?: "탭 하여 작성하기"
         holder.view.text_history_detail.text = historyList[position].place + "에서, " + historyList[position].created_at
