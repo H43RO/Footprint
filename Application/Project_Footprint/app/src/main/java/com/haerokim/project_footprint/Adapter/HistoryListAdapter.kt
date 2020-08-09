@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Data
+package com.haerokim.project_footprint.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.R
+import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import kotlinx.android.synthetic.main.history_item.view.*
 
 class HistoryListAdapter(

@@ -50,7 +50,7 @@
             android:theme="@style/Base.Theme.AppCompat" />
 
         <service
-            android:name=".ForegroundService"
+            android:name=".Utility.ForegroundService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="true"

@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import com.google.gson.GsonBuilder
-import com.haerokim.project_footprint.Data.User
-import com.haerokim.project_footprint.Data.Website
+import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Network.RetrofitService
 import io.paperdb.Paper

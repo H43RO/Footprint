@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint
+package com.haerokim.project_footprint.Utility
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -8,11 +8,12 @@ import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.haerokim.project_footprint.Activity.HomeActivity
-import com.haerokim.project_footprint.Data.History
-import com.haerokim.project_footprint.Data.NaverPlaceID
-import com.haerokim.project_footprint.Data.User
-import com.haerokim.project_footprint.Data.Website
+import com.haerokim.project_footprint.DataClass.History
+import com.haerokim.project_footprint.DataClass.NaverPlaceID
+import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.Website
 import com.haerokim.project_footprint.Network.RetrofitService
+import com.haerokim.project_footprint.R
 import io.paperdb.Paper
 import org.altbeacon.beacon.*
 import org.altbeacon.beacon.service.ScanJobScheduler
@@ -94,7 +95,10 @@ class ForegroundService : Service(), BeaconConsumer {
                                     Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.naver_place_id)
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
                                     id?.naver_place_id?.let {
-                                        ShowPlaceInfo(applicationContext, it).notifyInfo("nearPlace")
+                                        ShowPlaceInfo(
+                                            applicationContext,
+                                            it
+                                        ).notifyInfo("nearPlace")
                                     }
                                 }
                             })
@@ -117,7 +121,10 @@ class ForegroundService : Service(), BeaconConsumer {
                                     Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.naver_place_id)
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
                                     id?.naver_place_id?.let {
-                                        ShowPlaceInfo(applicationContext, it).notifyInfo("visitedPlace")
+                                        ShowPlaceInfo(
+                                            applicationContext,
+                                            it
+                                        ).notifyInfo("visitedPlace")
                                         naverPlaceID = it
                                     }
                                 }

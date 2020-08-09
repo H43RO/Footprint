@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Data
+package com.haerokim.project_footprint.DataClass
 
 class Website {
     companion object{

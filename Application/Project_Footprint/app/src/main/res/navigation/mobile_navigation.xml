@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/navigation_notice"
-        android:name="com.haerokim.project_footprint.NoticeFragment"
+        android:name="com.haerokim.project_footprint.ui.notice.NoticeFragment"
         android:label="공지사항"
         tools:layout="@layout/fragment_blank" />
 
@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/navigation_whole_history"
-        android:name="com.haerokim.project_footprint.ui.WholeHistoryFragment"
+        android:name="com.haerokim.project_footprint.ui.whole_history.WholeHistoryFragment"
         android:label="전체 히스토리"
         tools:layout="@layout/fragment_whole_history"/>
 

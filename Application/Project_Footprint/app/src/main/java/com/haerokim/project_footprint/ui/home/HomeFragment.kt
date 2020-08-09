@@ -22,12 +22,11 @@ import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.haerokim.project_footprint.Data.User
-import com.haerokim.project_footprint.ForegroundService
+import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.Utility.ForegroundService
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.net.URI
 
 
 class HomeFragment : Fragment(), PermissionListener {

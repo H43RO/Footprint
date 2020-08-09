@@ -2,7 +2,6 @@ package com.haerokim.project_footprint.ui.menu
 
 import android.app.Activity
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
@@ -10,16 +9,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import com.haerokim.project_footprint.Data.User
+import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 
 class MenuFragment : Fragment() {

@@ -14,13 +14,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.haerokim.project_footprint.Data.NaverPlaceID
-import com.haerokim.project_footprint.Data.Place
-import com.haerokim.project_footprint.Data.Website
-import com.haerokim.project_footprint.GetPlaceInfo
+import com.haerokim.project_footprint.DataClass.NaverPlaceID
+import com.haerokim.project_footprint.DataClass.Place
+import com.haerokim.project_footprint.DataClass.Website
+import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
-import com.haerokim.project_footprint.ShowPlaceInfo
+import com.haerokim.project_footprint.Utility.ShowPlaceInfo
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import retrofit2.Call
@@ -31,8 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SurroundFragment : Fragment() {
 
-    var surroundBeaconList: ArrayList<String> = ArrayList()
-    var tempBeaconList:ArrayList<String> = ArrayList()
+    var surroundBeaconList: ArrayList<kotlin.String> = ArrayList()
+    var tempBeaconList:ArrayList<kotlin.String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
     var tempPlaceList: ArrayList<Place> = ArrayList()
     lateinit var recyclerView: RecyclerView
@@ -96,7 +96,9 @@ class SurroundFragment : Fragment() {
                             response.body()
                                 ?.let {
                                     tempPlaceList.add(
-                                        GetPlaceInfo(it.naver_place_id).executeOnExecutor(
+                                        GetPlaceInfo(
+                                            it.naver_place_id
+                                        ).executeOnExecutor(
                                             AsyncTask.THREAD_POOL_EXECUTOR
                                         ).get()
                                     )
@@ -150,7 +152,10 @@ class SurroundFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.view.setOnClickListener {
-                ShowPlaceInfo(context, surroundPlaceList[position].naverPlaceID).showInfo(surroundPlaceList[position])
+                ShowPlaceInfo(
+                    context,
+                    surroundPlaceList[position].naverPlaceID
+                ).showInfo(surroundPlaceList[position])
             }
             holder.view.text_place_title.text = surroundPlaceList[position].title
             holder.view.text_place_category.text = surroundPlaceList[position].category

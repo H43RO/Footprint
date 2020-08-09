@@ -1,9 +1,8 @@
 package com.haerokim.project_footprint.Network
 
-import com.haerokim.project_footprint.Data.*
+import com.haerokim.project_footprint.DataClass.*
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 interface RetrofitService {
@@ -43,6 +42,12 @@ interface RetrofitService {
         @Field("place") placeName: String
     ): Call<History> //Response : Status Code
 
+    // 히스토리 조회 API (날짜별) : 수정 예정
+    @FormUrlEncoded
+    @GET("/api/diary-list")
+    fun requestHistoryList(
+        @Field("date") date: String
+    ): Call<ArrayList<History>>
 
     // 사용자 탈퇴 : 수정 예정
     @FormUrlEncoded
@@ -58,12 +63,7 @@ interface RetrofitService {
         @Field("history") history : History
     ): Call<String> //Response : Status Code
 
-    // 히스토리 조회 API (날짜별) : 수정 예정
-    @FormUrlEncoded
-    @GET("/api/diary-list")
-    fun requestHistoryList(
-        @Field("date") date: String
-    ): Call<ArrayList<History>>
+
     
     // 히스토리 삭제 : 수정 예정
     @FormUrlEncoded

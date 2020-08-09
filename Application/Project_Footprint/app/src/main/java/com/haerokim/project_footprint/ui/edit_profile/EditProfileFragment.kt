@@ -22,9 +22,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.Activity.LoginActivity
 import com.haerokim.project_footprint.Activity.WithdrawActivity
-import com.haerokim.project_footprint.Data.UpdateProfile
-import com.haerokim.project_footprint.Data.User
-import com.haerokim.project_footprint.Data.Website
+import com.haerokim.project_footprint.DataClass.UpdateProfile
+import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.theartofdev.edmodo.cropper.CropImage
