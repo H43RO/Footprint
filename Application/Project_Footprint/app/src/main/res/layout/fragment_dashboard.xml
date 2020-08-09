@@ -206,7 +206,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_notice"
+                android:id="@+id/card_whole_history"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="16dp"

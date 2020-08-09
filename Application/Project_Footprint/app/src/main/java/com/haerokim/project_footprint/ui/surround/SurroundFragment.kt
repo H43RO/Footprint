@@ -82,21 +82,21 @@ class SurroundFragment : Fragment() {
             // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
             for (beacon in surroundBeaconList) {
                 getPlaceInfoService.requestNaverPlaceID(beacon)
-                    .enqueue(object : Callback<List<NaverPlaceID>> {
-                        override fun onFailure(call: Call<List<NaverPlaceID>>, t: Throwable) {
+                    .enqueue(object : Callback<NaverPlaceID> {
+                        override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
                             Log.d("GetPlaceInfo", "정보 얻기 실패")
                         }
 
                         // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
                         override fun onResponse(
-                            call: Call<List<NaverPlaceID>>,
-                            response: Response<List<NaverPlaceID>>
+                            call: Call<NaverPlaceID>,
+                            response: Response<NaverPlaceID>
                         ) {
                             Log.d("GetPlaceInfo", "정보 얻기 성공!")
                             response.body()
                                 ?.let {
                                     tempPlaceList.add(
-                                        GetPlaceInfo(it[0].naver_place_id).executeOnExecutor(
+                                        GetPlaceInfo(it.naver_place_id).executeOnExecutor(
                                             AsyncTask.THREAD_POOL_EXECUTOR
                                         ).get()
                                     )
@@ -149,7 +149,6 @@ class SurroundFragment : Fragment() {
         override fun getItemCount() = surroundPlaceList.size
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            // 검증 필요
             holder.view.setOnClickListener {
                 ShowPlaceInfo(context, surroundPlaceList[position].naverPlaceID).showInfo(surroundPlaceList[position])
             }
@@ -173,7 +172,6 @@ class SurroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewManager = LinearLayoutManager(context)
         viewAdapter =
