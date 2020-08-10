@@ -9,7 +9,7 @@ import android.util.Log
 import android.util.Patterns
 import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.User
-import com.haerokim.project_footprint.DataClass.Website
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Network.RetrofitService
 import io.paperdb.Paper

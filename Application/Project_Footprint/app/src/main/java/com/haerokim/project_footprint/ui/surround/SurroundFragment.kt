@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.DataClass.NaverPlaceID
 import com.haerokim.project_footprint.DataClass.Place
-import com.haerokim.project_footprint.DataClass.Website
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SurroundFragment : Fragment() {
 
     var surroundBeaconList: ArrayList<kotlin.String> = ArrayList()
-    var tempBeaconList:ArrayList<kotlin.String> = ArrayList()
+    var tempBeaconList: ArrayList<kotlin.String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
     var tempPlaceList: ArrayList<Place> = ArrayList()
     lateinit var recyclerView: RecyclerView
@@ -43,7 +43,8 @@ class SurroundFragment : Fragment() {
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
-                surroundBeaconList= intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
+                surroundBeaconList =
+                    intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
 
                 //기존 리스트와 다른 점이 없으면 새로고침하지 않음
                 //원소 순서와 상관 없이 원소가 같아야함 (Set 의 특성 이용)
@@ -51,7 +52,7 @@ class SurroundFragment : Fragment() {
                     Log.d("Surround", "AsyncTask 진입!")
                     PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
                     tempBeaconList = surroundBeaconList
-                }else{
+                } else {
                     Log.d("Surround", "변함 없음!")
                 }
             }
@@ -99,7 +100,7 @@ class SurroundFragment : Fragment() {
                                         GetPlaceInfo(
                                             it.naver_place_id
                                         ).executeOnExecutor(
-                                            AsyncTask.THREAD_POOL_EXECUTOR
+                                            THREAD_POOL_EXECUTOR
                                         ).get()
                                     )
                                 }
@@ -162,7 +163,7 @@ class SurroundFragment : Fragment() {
             Glide.with(holder.view) // 확인 필요
                 .load(surroundPlaceList[position].imageSrc)
                 .centerCrop()
-                .override(600,400)
+                .override(600, 400)
                 .into(holder.view.place_image)
         }
     }

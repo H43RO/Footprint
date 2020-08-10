@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.haerokim.project_footprint.DataClass.User
-import com.haerokim.project_footprint.DataClass.Website
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper

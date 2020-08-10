@@ -43,7 +43,7 @@ class HistoryListAdapter(
             var historyID = historyList[position].id
             var historyImage = historyList[position].img
             var historyTitle = historyList[position].title
-            var historyMood = historyList[position].mood ?: 0
+            var historyMood = historyList[position].mood ?: "Soso"
             var historyComment = historyList[position].comment
             var historyPlaceTitle = historyList[position].place
             var historyUserID = historyList[position].user
@@ -52,7 +52,7 @@ class HistoryListAdapter(
             bundle.putInt("id", historyID)
             bundle.putString("image", historyImage)
             bundle.putString("title", historyTitle)
-            bundle.putInt("mood", historyMood)
+            bundle.putString("mood", historyMood)
             bundle.putString("comment", historyComment)
             bundle.putString("createdAt", historyCreatedAt)
             bundle.putString("placeTitle", historyPlaceTitle)

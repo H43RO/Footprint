@@ -29,7 +29,7 @@ interface RetrofitService {
 
     // 실제 방문 히스토리 생성
     @FormUrlEncoded
-    @POST("api/historys/")
+    @POST("api/histories/")
     fun createRealVisitHistory(
         @Field("place") naverPlaceID: String,
         @Field("user") userID: Int
@@ -37,21 +37,28 @@ interface RetrofitService {
 
     // 사용자 임의 히스토리 생성 : 수정 예정
     @FormUrlEncoded
-    @POST("api/historys/")
+    @POST("api/histories/")
     fun createVirtualHistory(
         @Field("place") placeName: String
     ): Call<History> //Response : Status Code
 
-
-    // 히스토리 조회 API (날짜별) : 수정 예정
-    @FormUrlEncoded
-    @GET("/api/diary-list")
-    fun requestHistoryList(
-        @Field("date") date: String
+    // 히스토리 조회 API (* 오늘 히스토리)
+    @GET("api/histories")
+    fun requestTodayHistoryList(
+        @Query("user")userID: Int,
+        @Query("date__gte")today:String
     ): Call<ArrayList<History>>
 
+    // 히스토리 조회 API (* 전체 히스토리)
+    @GET("api/histories")
+    fun requestWholeHistoryList(
+        @Query("user")userID: Int
+    ): Call<ArrayList<History>>
 
-    // 사용자 탈퇴 : 수정 예정
+    @Multipart
+    // History Image Upload
+
+    // 사용자 탈퇴
     @FormUrlEncoded
     @DELETE("userinfo/{userID}/delete")
     fun withDrawUser(
@@ -65,15 +72,12 @@ interface RetrofitService {
         @Field("history") history : History
     ): Call<String> //Response : Status Code
 
-
-    
     // 히스토리 삭제 : 수정 예정
     @FormUrlEncoded
     @POST("/api/delete-history")
     fun deleteHistory(
         @Field("historyID") historyID: String
     ): Call<String> //Response : Status Code
-
 
     // 회원 가입 : 수정 예정
     @FormUrlEncoded
