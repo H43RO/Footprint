@@ -59,7 +59,6 @@ class ForegroundService : Service(), BeaconConsumer {
 
     override fun onCreate() {
         super.onCreate()
-
         beaconManager = BeaconManager.getInstanceForApplication(applicationContext!!)
         beaconManager.beaconParsers
             .add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
@@ -87,7 +86,7 @@ class ForegroundService : Service(), BeaconConsumer {
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
                             .enqueue(object : retrofit2.Callback<NaverPlaceID> {
                                 override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
-                                    Log.e("Error", t.message)
+                                    Log.e("Retrofit_Error", t.message)
                                 }
 
                                 override fun onResponse(call: Call<NaverPlaceID>, response: Response<NaverPlaceID>) {

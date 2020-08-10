@@ -108,7 +108,7 @@ class SurroundFragment : Fragment() {
                     })
             }
 
-            Thread.sleep(5000)
+            Thread.sleep(3000)
 
             return null
         }

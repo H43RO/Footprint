@@ -1,6 +1,7 @@
 package com.haerokim.project_footprint.Network
 
 import com.haerokim.project_footprint.DataClass.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import kotlin.collections.ArrayList
@@ -43,14 +44,14 @@ interface RetrofitService {
     ): Call<History> //Response : Status Code
 
     // 히스토리 조회 API (* 오늘 히스토리)
-    @GET("api/histories")
+    @GET("api/histories/")
     fun requestTodayHistoryList(
         @Query("user")userID: Int,
         @Query("date__gte")today:String
     ): Call<ArrayList<History>>
 
     // 히스토리 조회 API (* 전체 히스토리)
-    @GET("api/histories")
+    @GET("api/histories/")
     fun requestWholeHistoryList(
         @Query("user")userID: Int
     ): Call<ArrayList<History>>
