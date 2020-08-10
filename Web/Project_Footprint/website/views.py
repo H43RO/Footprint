@@ -17,7 +17,7 @@ from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
-    CheckPasswordForm, UserPasswordUpdateForm
+    CheckPasswordForm, UserPasswordUpdateForm, UserPasswordResetForm, UserPasswordAuthForm
 from .models import User, History, Place
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
@@ -244,7 +244,6 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user, request.POST)
         try:
             if form.is_valid():
-                user = form.save()
                 update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
                 return redirect('../index')
         except ValidationError as e:
@@ -254,3 +253,64 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
+
+def user_password_auth(request):
+    if request.method == 'POST':
+        form = UserPasswordAuthForm(data=request.POST)
+        try:
+            if form.is_valid():
+                email = form.cleaned_data.get('email')
+                user = User.objects.get(email=email)
+                if user is not None:
+                    # user = User.objects.get(email=user_email)
+                    current_site = get_current_site(request)
+                    domain = current_site.domain
+                    uid64 = urlsafe_base64_encode(force_bytes(user.pk))
+                    token = account_activation_token.make_token(user)
+                    message_data = message(domain, uid64, token)
+                    mail_title = _("비밀번호 재설정을 위한 인증 메일입니다.")
+                    mail_to = form.cleaned_data['email']
+                    email = EmailMessage(mail_title, message_data, to=[mail_to])
+                    email.send()
+                    return HttpResponseRedirect('../user_password_confirm/')
+        except:
+            messages.error(request, 'A user with this email is NOT exists.')
+            return HttpResponseRedirect('../user_password_auth/')
+    else:
+        form = UserPasswordAuthForm()
+    return render(request, 'user_password_auth.html', {'form': form})
+
+
+def user_password_confirm(request):
+    return render(request, 'user_password_confirm.html')
+
+
+def user_password_reset(request):
+    if request.method == 'POST':
+        form = UserPasswordResetForm(request.user, request.POST)
+        try:
+            if form.is_valid():
+                update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
+                return HttpResponseRedirect('../index')
+        except ValidationError as e:
+            messages.error(request, e)
+            return HttpResponseRedirect("../user_password_reset")
+    else:
+        form = UserPasswordResetForm()
+    return render(request, 'user_password_reset.html', {'form': form})
+
+
+def email_activate(request, uidb64, token):
+    # try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+
+        if account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+
+        form = UserPasswordResetForm(user)
+        return render(request, 'user_password_reset.html', {'form': form})
+
+    # except ValidationError:
+        return HttpResponse({"messge": "TYPE_ERROR"}, status=400)

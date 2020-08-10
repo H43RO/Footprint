@@ -2,7 +2,9 @@
 {% load static %}
 {% block content %}
 <form method="post" style="margin:30px 0px 0px 30px;">
+    <div class="container p-5">
     <h2> Sign In </h2><br>
+    <hr>
       {% csrf_token %}
       {% for field in form %}
         <p>
@@ -17,6 +19,8 @@
       {% endif %}
       <button type="submit">Sign In</button>
       If you don't have an account <a href="/signup" target="blank"><strong>Sign Up</strong></a> instead.
+    <p>비밀번호가 기억나지 않습니까? <a href="/user_password_auth" target="blank"><strong>비밀번호 찾기</strong></a></p>
+    </div>
     </form>
 {% endblock content %}
 
