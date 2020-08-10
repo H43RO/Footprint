@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/navigation_whole_history"
-        android:name="com.haerokim.project_footprint.ui.whole_history.WholeHistoryFragment"
+        android:name="com.haerokim.project_footprint.ui.history.WholeHistoryFragment"
         android:label="전체 히스토리"
         tools:layout="@layout/fragment_whole_history"/>
 

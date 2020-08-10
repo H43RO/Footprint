@@ -24,7 +24,7 @@ import com.haerokim.project_footprint.Activity.LoginActivity
 import com.haerokim.project_footprint.Activity.WithdrawActivity
 import com.haerokim.project_footprint.DataClass.UpdateProfile
 import com.haerokim.project_footprint.DataClass.User
-import com.haerokim.project_footprint.DataClass.Website
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.theartofdev.edmodo.cropper.CropImage

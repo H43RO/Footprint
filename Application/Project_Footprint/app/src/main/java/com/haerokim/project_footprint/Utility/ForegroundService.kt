@@ -11,7 +11,7 @@ import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.NaverPlaceID
 import com.haerokim.project_footprint.DataClass.User
-import com.haerokim.project_footprint.DataClass.Website
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper

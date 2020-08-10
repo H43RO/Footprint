@@ -6,8 +6,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.activity_history_detail.*
-import kotlinx.android.synthetic.main.activity_place_detail.*
-import kotlinx.android.synthetic.main.history_item.*
 
 class HistoryDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,9 +16,9 @@ class HistoryDetailActivity : AppCompatActivity() {
 
         var historyID = historyInfo?.getInt("id")
         var historyImage = historyInfo?.getString("image")
-        var historyTitle = historyInfo?.getString("title") ?: "발자취 : 제목 미상"
-        var historyMood = historyInfo?.getInt("mood") //기본 '0' (감정 - So So)
-        var historyComment = historyInfo?.getString("comment") ?: "발자취 : 내용 미상"
+        var historyTitle = historyInfo?.getString("title") ?: "어느 멋진 날"
+        var historyMood = historyInfo?.getString("mood") //기본 감정 - SoSo
+        var historyComment = historyInfo?.getString("comment") ?: "내용 미상"
         var historyPlaceTitle = historyInfo?.getString("placeTitle")
         var historyCreatedAt = historyInfo?.getString("createdAt") ?: "어느 멋진 날"
         var historyUserID = historyInfo?.getInt("userID")
