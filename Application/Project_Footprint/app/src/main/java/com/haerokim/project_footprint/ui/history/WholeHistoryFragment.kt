@@ -47,7 +47,7 @@ class WholeHistoryFragment : Fragment() {
         var user: User = Paper.book().read("user_profile")
 
         val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
 
         var retrofit = Retrofit.Builder()

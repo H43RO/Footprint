@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.User
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TodayHistoryList : Fragment() {
+class TodayHistoryFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
@@ -36,7 +37,7 @@ class TodayHistoryList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_today_history_list, container, false)
+        return inflater.inflate(R.layout.fragment_today_history, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,24 +45,25 @@ class TodayHistoryList : Fragment() {
 
         val user: User = Paper.book().read("user_profile")
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm")
+            .create()
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+        var getTodayHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
 
-        var getWholeHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-//        * 오늘의 History를 조회하기 위해 Query Params에 넣을 날짜 값을 구한다.
+//        * 오늘의 History를 조회하기 위해 Query Params에 넣을 오늘 날짜 값을 구한다.
         val todayDate: Date = Calendar.getInstance().time
         val historyCreatedFormat = SimpleDateFormat("yyyy-MM-dd")
         var historyCreatedAt =historyCreatedFormat.format(todayDate)
 
-        getWholeHistory.requestTodayHistoryList(user.id, historyCreatedAt)
+        getTodayHistory.requestTodayHistoryList(user.id, historyCreatedAt)
             .enqueue(object : Callback<ArrayList<History>> {
                 override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
                     Log.e("Error", t.message)
                 }
-
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
                     response: Response<ArrayList<History>>
@@ -71,23 +73,18 @@ class TodayHistoryList : Fragment() {
                         history.place = GetPlaceTitleOnly(history.place).execute().get()
                         Log.d("Today History 등록 완료", history.place)
                     }
+                    viewManager = LinearLayoutManager(context)
+                    viewAdapter = HistoryListAdapter(
+                        historyList,
+                        requireContext()
+                    )
+
+                    recyclerView = view.findViewById<RecyclerView>(R.id.today_history_list).apply {
+                        setHasFixedSize(true)
+                        layoutManager = viewManager
+                        adapter = viewAdapter
+                    }
                 }
             })
-
-//         Adapter에 List를 넘기기 전에, List 내의 모든 장소들의 Title을 먼저 얻어야함
-//         또한, created_at Format 재정의하여 어댑팅할 것
-
-        viewManager = LinearLayoutManager(context)
-        viewAdapter = HistoryListAdapter(
-            historyList,
-            requireContext()
-        )
-
-        recyclerView = view.findViewById<RecyclerView>(R.id.today_history_list).apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }
-
     }
 }
