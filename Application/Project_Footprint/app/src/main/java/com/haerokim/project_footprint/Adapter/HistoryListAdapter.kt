@@ -3,6 +3,7 @@ package com.haerokim.project_footprint.Adapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,6 @@ class HistoryListAdapter(
 ) :
     RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
 
-
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,11 +32,13 @@ class HistoryListAdapter(
             view
         )
     }
+
     override fun getItemCount() = historyList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val historyCreatedFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분")
         var historyCreatedAt = historyCreatedFormat.format(historyList[position].created_at)
+//        var historyCreatedAt = historyList[position].created_at
 
         holder.view.setOnClickListener {
             val intent: Intent = Intent(context, HistoryDetailActivity::class.java)
@@ -50,7 +52,7 @@ class HistoryListAdapter(
 
             val bundle: Bundle = Bundle()
             bundle.putInt("id", historyID)
-            bundle.putString("image", historyImage)
+//            bundle.putString("image", historyImage)
             bundle.putString("title", historyTitle)
             bundle.putString("mood", historyMood)
             bundle.putString("comment", historyComment)
@@ -63,11 +65,12 @@ class HistoryListAdapter(
             context.startActivity(intent)
         }
         holder.view.text_history_title.text = historyList[position].title ?: "탭 하여 작성하기"
-        holder.view.text_history_detail.text = historyList[position].place + "에서, " + historyCreatedAt
+        holder.view.text_history_detail.text =
+            historyList[position].place + "에서, " + historyCreatedAt
         Glide.with(holder.view) // 확인 필요
             .load(historyList[position].img)
             .centerCrop()
-            .override(600,400)
+            .override(600, 400)
             .thumbnail(0.1f)
             .into(holder.view.image_history)
     }

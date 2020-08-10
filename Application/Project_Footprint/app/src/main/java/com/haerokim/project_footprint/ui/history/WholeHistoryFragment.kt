@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.User
@@ -16,6 +17,7 @@ import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,17 +36,23 @@ class WholeHistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+
         return inflater.inflate(R.layout.fragment_whole_history, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user : User = Paper.book().read("user_profile")
+        var user: User = Paper.book().read("user_profile")
+
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd")
+            .create()
 
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         var getWholeHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
@@ -55,38 +63,38 @@ class WholeHistoryFragment : Fragment() {
 //        val historyCreatedFormat = SimpleDateFormat("yyyy-MM-dd")
 //        var historyCreatedAt =historyCreatedFormat.format(todayDate)
 
-        getWholeHistory.requestWholeHistoryList(user.id)
+        Log.d("User ID", user?.id.toString())
+        getWholeHistory.requestWholeHistoryList(user!!.id)
             .enqueue(object : Callback<ArrayList<History>>{
                 override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
-                    Log.e("Error", t.message)
+                    Log.e("Whole_history_Error", t.message)
                 }
 
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
                     response: Response<ArrayList<History>>
                 ) {
-                    historyList = response.body() ?: ArrayList()
+                    historyList = response.body()!!
                     for (history in historyList) {
                         history.place = GetPlaceTitleOnly(history.place).execute().get()
-                        Log.d("등록 완료", history.place)
+                        Log.d("정보 획득", "장소명" + history.place + ", 타이틀 : " + history.title)
+                    }
+
+                    viewManager = LinearLayoutManager(context)
+                    viewAdapter = HistoryListAdapter(
+                        historyList,
+                        requireContext()
+                    )
+
+                    recyclerView = view.findViewById<RecyclerView>(R.id.whole_history_list).apply {
+                        setHasFixedSize(true)
+                        layoutManager = viewManager
+                        adapter = viewAdapter
                     }
                 }
             })
 
-//         Adapter에 List를 넘기기 전에, List 내의 모든 장소들의 Title을 먼저 얻어야함
-//         또한, created_at Format 재정의하여 어댑팅할 것
 
-        viewManager = LinearLayoutManager(context)
-        viewAdapter = HistoryListAdapter(
-            historyList,
-            requireContext()
-        )
-
-        recyclerView = view.findViewById<RecyclerView>(R.id.whole_history_list).apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }
     }
 
 
