@@ -28,13 +28,9 @@ from rest_framework.generics import (
 from django.http import Http404
 
 
-class UserListView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('id',)
-
-
+class HistoryViewSet(viewsets.ModelViewSet):
+    queryset = History.objects.all()
+    serializer_class = HistorySerializer
 
 
 class HistoryUpdateAPIView(UpdateAPIView):

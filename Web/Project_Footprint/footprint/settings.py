@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rangefilter',
     'rest_registration',
     'rest_framework.authtoken',
+    'crispy_forms',
 ]
 
 REST_FRAMEWORK = {
@@ -47,7 +48,6 @@ REST_FRAMEWORK = {
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
     'VERIFICATION_FROM_EMAIL' : 'abcd@gmail.com',
-
     'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},
     # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
     'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
@@ -91,7 +91,11 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME':  os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': 'root',
+        'PASSWORD': 's9423093',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 # Password validation

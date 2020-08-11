@@ -2,6 +2,8 @@
 {% load static %}
 {% block content %}
 <form action="{% url 'user_delete' %}" method="post" novalidate>
+    <div class="container p-5">
+    <hr>
     {% csrf_token %}
     <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br>
     <div>
@@ -26,6 +28,7 @@
     </div>
 
     <button type="submit" name="bt" >탈퇴하기</button>
+    </div>
 </form>
 
 {% endblock %}

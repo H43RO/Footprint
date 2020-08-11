@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from . import viewsets
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -24,6 +25,10 @@ urlpatterns = [
     path('user_delete/', views.user_delete, name='user_delete'),
     path('myinfo/', views.myinfo, name='myinfo'),
     path('user_password_update/', views.user_password_update, name='user_password_update'),
+    path('user_password_find/', views.user_password_find, name='user_password_find'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_email_confirm.html'), name='password_email_confirm'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset.html'), name='password_reset'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
     path('notice/', views.noticelist, name='notice'),
     path('notice/notice_view/<int:id>', views.noticeview, name='notice_view'),
 ]
