@@ -81,7 +81,10 @@ class DateHistoryFragment : Fragment() {
                             date_history_list.visibility = View.GONE
                             text_date_no_data.visibility = View.VISIBLE
                             text_date_no_data.text = "기록이 없습니다"
+
+                            TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
                         } else {
+                            date_history_list.visibility = View.VISIBLE
                             historyList = response.body()!!
                             for (history in historyList) {
                                 history.place = GetPlaceTitleOnly(history.place).execute().get()

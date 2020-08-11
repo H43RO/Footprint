@@ -82,6 +82,7 @@ class TodayHistoryFragment : Fragment() {
                         text_today_no_data.visibility = View.VISIBLE
                         text_today_no_data.text = "기록이 없습니다"
                     } else {
+                        today_history_list.visibility = View.VISIBLE
                         historyList = response.body()!!
                         for (history in historyList) {
                             history.place = GetPlaceTitleOnly(history.place).execute().get()
