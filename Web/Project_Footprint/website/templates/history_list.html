@@ -1,36 +1,69 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<div class="container">
-    <h1>History</h1>
-    <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
-    {% for item in historys %}
-
-    <div class="row restaurant-item" style="margin:20px auto;">
-        <div class="col-sm-12">
-            <div class="card border-secondary">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ item.mood }}</h6>
-                    <p class="card-text">{{ item.place }}</p>
-                    <p class="card-text">{{ item.custom_place }}</p>
-                    <p class="card-text">{{item.comment|linebreaksbr}}</p>
+<div>
+    <div class="left">
+        <div class="container">
+            <h1>History</h1>
+            <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
+            {% for item in historys %}
+            <!--    {%if item.comment %}-->
+            <!--    <p class="card-text">{{item.comment|linebreaksbr}}</p>-->
+            <!--    {% endif %}-->
+            <div class="card-body">
+                <div class="card" style="width: 22rem;">
                     {% if item.img %}
-                    <img class="card-img" src="{{ item.img.url }}" , alt="">
+                    <img class="card-img-top" src="{{ item.img.url }}" , alt="">
                     {% endif %}
-                    <a href="{% url 'history-update' %}?id={{ item.id }}" class="card-link">수정하기</a>
-                    <form action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
-                        {% csrf_token %}
-                        <script>
-                            function myFunction() {
-                            alert("Really?");
-                            }
-                        </script>
-                        <button type="submit" onclick="myFunction()">삭제</button>
-                    </form>
+                    <p class="card-text">
+                        {%if item.title %}
+                    <h5 class="card-title">{{ item.title }}</h5>
+                    {% endif %}
+                    </p>
+                    {%if item.mood %}
+                    <h6 class="card-subtitle mb-2 text-muted">{{ item.mood }}</h6>
+                    {% endif %}
+                    {%if item.place %}
+                    <p class="card-text">{{ item.place }}</p>
+                    {% endif %}
+                    {%if item.custom_place %}
+                    <p class="card-text">{{ item.custom_place }}</p>
+                    {% endif %}
+                    <!--    <a href="{% url 'history-update' %}?id={{ item.id }}" class="card-link">수정하기</a>-->
+                    <!--    <form action="{% url 'history-delete' id=item.id %}" name="delete" method="post">-->
+                    <!--        {% csrf_token %}-->
+                    <!--        <script>-->
+                    <!--                            function myFunction() {-->
+                    <!--                            alert("Really?");-->
+                    <!--                            }-->
+                    <!--        </script>-->
+                    <!--        <button type="submit" onclick="myFunction()">삭제</button>-->
+                    <!--    </form>-->
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="card mb-3" style="max-width: 800px;">
+            <div class="row no-gutters">
+                <div class="col-md-4" style="height: 400px;">
+                    {% if item.img %}
+                    <img class="card-img" style="weight: 400px; height: 300px;" src="{{ item.img.url }}" , alt="">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% endblock %}
+</div>
+{% endblock %}
+
