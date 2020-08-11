@@ -10,9 +10,10 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        app:cardCornerRadius="16dp"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_gravity="center"
@@ -28,7 +29,7 @@
             <ImageView
                 android:id="@+id/image_history"
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
+                android:layout_height="190dp"
                 android:scaleType="centerCrop" />
 
             <RelativeLayout

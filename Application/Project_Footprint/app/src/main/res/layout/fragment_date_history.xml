@@ -3,27 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e8e8e8"
+    android:orientation="vertical"
     tools:context=".ui.history.DateHistoryFragment">
 
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="16dp"
+        app:cardCornerRadius="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/card_calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
 
-        <CalendarView
-            android:layout_margin="8dp"
-            android:layout_gravity="center"
-            android:id="@+id/calendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/button_show_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C1525B8E"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="24sp"
+                    android:text="날짜 선택하기"
+                    android:textColor="#fff"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/layout_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CalendarView
+                    android:id="@+id/calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 
     <FrameLayout
+        android:id="@+id/layout_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp">
 
         <TextView
             android:id="@+id/text_date_no_data"
@@ -40,8 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            tools:listitem="@layout/history_item"
-            android:layout_marginBottom="32dp"/>
+            tools:listitem="@layout/history_item" />
     </FrameLayout>
 
 </LinearLayout>
