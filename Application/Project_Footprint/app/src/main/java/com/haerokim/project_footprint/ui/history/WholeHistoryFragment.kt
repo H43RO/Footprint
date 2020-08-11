@@ -17,6 +17,8 @@ import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_keyword_history.*
+import kotlinx.android.synthetic.main.fragment_whole_history.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,25 +38,22 @@ class WholeHistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-
         return inflater.inflate(R.layout.fragment_whole_history, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var user: User = Paper.book().read("user_profile")
+        text_whole_no_data.visibility = View.GONE
 
+        var user: User = Paper.book().read("user_profile")
         val gson = GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
-
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-
         var getWholeHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
 
 
@@ -65,36 +64,44 @@ class WholeHistoryFragment : Fragment() {
 
         Log.d("User ID", user?.id.toString())
         getWholeHistory.requestWholeHistoryList(user!!.id)
-            .enqueue(object : Callback<ArrayList<History>>{
+            .enqueue(object : Callback<ArrayList<History>> {
                 override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
                     Log.e("Whole_history_Error", t.message)
+                    whole_history_list.visibility = View.GONE
+                    text_whole_no_data.visibility = View.VISIBLE
+                    text_whole_no_data.text = "정보를 가져오지 못했습니다"
                 }
-
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
                     response: Response<ArrayList<History>>
                 ) {
-                    historyList = response.body()!!
-                    for (history in historyList) {
-                        history.place = GetPlaceTitleOnly(history.place).execute().get()
-                        Log.d("정보 획득", "장소명" + history.place + ", 타이틀 : " + history.title)
-                    }
+                    if (response.body()?.size == 0) {
+                        keyword_history_list.visibility = View.GONE
+                        text_whole_no_data.visibility = View.VISIBLE
+                        text_whole_no_data.text = "기록이 없습니다"
+                    } else {
+                        text_whole_no_data.visibility = View.GONE
+                        historyList = response.body()!!
+                        for (history in historyList) {
+                            history.place = GetPlaceTitleOnly(history.place).execute().get()
+                            Log.d("정보 획득", "장소명" + history.place + ", 타이틀 : " + history.title)
+                        }
 
-                    viewManager = LinearLayoutManager(context)
-                    viewAdapter = HistoryListAdapter(
-                        historyList,
-                        requireContext()
-                    )
+                        viewManager = LinearLayoutManager(context)
+                        viewAdapter = HistoryListAdapter(
+                            historyList,
+                            requireContext()
+                        )
 
-                    recyclerView = view.findViewById<RecyclerView>(R.id.whole_history_list).apply {
-                        setHasFixedSize(true)
-                        layoutManager = viewManager
-                        adapter = viewAdapter
+                        recyclerView =
+                            view.findViewById<RecyclerView>(R.id.whole_history_list).apply {
+                                setHasFixedSize(true)
+                                layoutManager = viewManager
+                                adapter = viewAdapter
+                            }
                     }
                 }
             })
-
-
     }
 
 

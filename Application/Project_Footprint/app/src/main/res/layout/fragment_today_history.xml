@@ -4,14 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e8e8e8"
+    android:orientation="vertical"
     tools:context=".ui.history.WholeHistoryFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/today_history_list"
+    <TextView
+        android:textColor="#595959"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="70dp"
+        android:text="#오늘, 당신의 하루"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        tools:listitem="@layout/history_item"
-        android:layout_marginBottom="32dp"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_today_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="기록이 없습니다!"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/today_history_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="80dp"
+            tools:listitem="@layout/history_item" />
+
+    </FrameLayout>
 
 </LinearLayout>

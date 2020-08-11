@@ -46,6 +46,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_date_history"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="16dp"
@@ -153,7 +154,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_surround_place"
+                android:id="@+id/card_keyword_history"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="16dp"

@@ -19,7 +19,7 @@ interface RetrofitService {
     @GET("api/places")
     fun requestNaverPlaceID(
         @Query("beacon_uuid") UUID: String
-    ): Call<NaverPlaceID> //Response : NaverPlaceID
+    ): Call<ArrayList<NaverPlaceID>> //Response : NaverPlaceID
 
     // 사용자 회원정보 수정
     @PUT("userinfo/{userID}/update/")
@@ -46,14 +46,30 @@ interface RetrofitService {
     // 히스토리 조회 API (* 오늘 히스토리)
     @GET("api/histories/")
     fun requestTodayHistoryList(
-        @Query("user")userID: Int,
-        @Query("date__gte")today:String
+        @Query("user") userID: Int,
+        @Query("created_at__date__gte") today: String
     ): Call<ArrayList<History>>
 
     // 히스토리 조회 API (* 전체 히스토리)
     @GET("api/histories/")
     fun requestWholeHistoryList(
-        @Query("user")userID: Int
+        @Query("user") userID: Int
+    ): Call<ArrayList<History>>
+
+    // 히스토리 조회 API (* 기간별 히스토리)
+    @GET("api/histories/")
+    fun requestDateHistoryList(
+        @Query("user") userID: Int,
+        @Query("created_at__date__lte") minDate: String,
+        @Query("created_at__date__gte") maxDate: String
+    ): Call<ArrayList<History>>
+
+    // 히스토리 조회 API (* 키워드별 히스토리)
+    @Headers("charset: utf-8")
+    @GET("api/histories/")
+    fun requestKeywordHistoryList(
+        @Query("user") userID: Int,
+        @Query("title__icontains") keyword: String
     ): Call<ArrayList<History>>
 
     @Multipart
@@ -70,7 +86,7 @@ interface RetrofitService {
     @FormUrlEncoded
     @PUT("/api/diary-write")
     fun writeHistory(
-        @Field("history") history : History
+        @Field("history") history: History
     ): Call<String> //Response : Status Code
 
     // 히스토리 삭제 : 수정 예정

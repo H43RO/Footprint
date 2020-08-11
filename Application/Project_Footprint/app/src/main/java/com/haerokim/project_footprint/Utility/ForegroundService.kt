@@ -84,19 +84,28 @@ class ForegroundService : Service(), BeaconConsumer {
 
                         // 모듈의 UUID 통해서 Naver Place ID 얻어옴
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
-                            .enqueue(object : retrofit2.Callback<NaverPlaceID> {
-                                override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
+                            .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
+                                override fun onFailure(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    t: Throwable
+                                ) {
                                     Log.e("Retrofit_Error", t.message)
                                 }
 
-                                override fun onResponse(call: Call<NaverPlaceID>, response: Response<NaverPlaceID>) {
+                                override fun onResponse(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    response: Response<ArrayList<NaverPlaceID>>
+                                ) {
                                     var id = response.body()
-                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.naver_place_id)
+                                    Log.d(
+                                        "Foreground_GetPlaceInfo",
+                                        "감지된 장소 : " + id?.get(0)?.naver_place_id
+                                    )
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
-                                    id?.naver_place_id?.let {
+                                    id?.get(0)?.naver_place_id.let {
                                         ShowPlaceInfo(
                                             applicationContext,
-                                            it
+                                            it!!
                                         ).notifyInfo("nearPlace")
                                     }
                                 }
@@ -111,18 +120,28 @@ class ForegroundService : Service(), BeaconConsumer {
 
                         // 모듈의 UUID 통해서 Naver Place ID 얻어옴
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
-                            .enqueue(object : retrofit2.Callback<NaverPlaceID> {
-                                override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
+                            .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
+                                override fun onFailure(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    t: Throwable
+                                ) {
                                     Log.e("Error", t.message)
                                 }
-                                override fun onResponse(call: Call<NaverPlaceID>, response: Response<NaverPlaceID>) {
+
+                                override fun onResponse(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    response: Response<ArrayList<NaverPlaceID>>
+                                ) {
                                     var id = response.body()
-                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.naver_place_id)
+                                    Log.d(
+                                        "Foreground_GetPlaceInfo",
+                                        "감지된 장소 : " + id?.get(0)?.naver_place_id
+                                    )
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
-                                    id?.naver_place_id?.let {
+                                    id?.get(0)?.naver_place_id.let {
                                         ShowPlaceInfo(
                                             applicationContext,
-                                            it
+                                            it!!
                                         ).notifyInfo("visitedPlace")
                                         naverPlaceID = it
                                     }
@@ -130,15 +149,22 @@ class ForegroundService : Service(), BeaconConsumer {
                             })
                         //History POST API 대응 : NaverPlaceID와 사용자 ID로 History 생성
                         naverPlaceID?.let {
-                            retrofitService.createRealVisitHistory(it, user.id).enqueue(object : retrofit2.Callback<History> {
-                                override fun onFailure(call: Call<History>, t: Throwable) {
-                                    Log.e("Error", t.message)
-                                }
+                            retrofitService.createRealVisitHistory(it, user.id)
+                                .enqueue(object : retrofit2.Callback<History> {
+                                    override fun onFailure(call: Call<History>, t: Throwable) {
+                                        Log.e("Error", t.message)
+                                    }
 
-                                override fun onResponse(call: Call<History>, response: Response<History>) {
-                                    Log.d("Foreground_HistoryCreate", "업로드 된 장소 : $naverPlaceID")
-                                }
-                            })
+                                    override fun onResponse(
+                                        call: Call<History>,
+                                        response: Response<History>
+                                    ) {
+                                        Log.d(
+                                            "Foreground_HistoryCreate",
+                                            "업로드 된 장소 : $naverPlaceID"
+                                        )
+                                    }
+                                })
                         }
                     }
                 }

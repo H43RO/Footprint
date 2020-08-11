@@ -17,6 +17,9 @@ import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_keyword_history.*
+import kotlinx.android.synthetic.main.fragment_today_history.*
+import kotlinx.android.synthetic.main.fragment_whole_history.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,6 +45,7 @@ class TodayHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        text_today_no_data.visibility = View.GONE
 
         val user: User = Paper.book().read("user_profile")
 
@@ -57,33 +61,46 @@ class TodayHistoryFragment : Fragment() {
 //        * 오늘의 History를 조회하기 위해 Query Params에 넣을 오늘 날짜 값을 구한다.
         val todayDate: Date = Calendar.getInstance().time
         val historyCreatedFormat = SimpleDateFormat("yyyy-MM-dd")
-        var historyCreatedAt =historyCreatedFormat.format(todayDate)
+        var historyCreatedAt = historyCreatedFormat.format(todayDate)
 
         getTodayHistory.requestTodayHistoryList(user.id, historyCreatedAt)
             .enqueue(object : Callback<ArrayList<History>> {
                 override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
                     Log.e("Error", t.message)
+                    today_history_list.visibility = View.GONE
+                    text_today_no_data.visibility = View.VISIBLE
+                    text_today_no_data.text = "정보를 가져오지 못했습니다"
                 }
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
                     response: Response<ArrayList<History>>
                 ) {
-                    historyList = response.body() ?: ArrayList()
-                    for (history in historyList) {
-                        history.place = GetPlaceTitleOnly(history.place).execute().get()
-                        Log.d("Today History 등록 완료", history.place)
-                    }
-                    viewManager = LinearLayoutManager(context)
-                    viewAdapter = HistoryListAdapter(
-                        historyList,
-                        requireContext()
-                    )
+                    text_today_no_data.visibility = View.GONE
 
-                    recyclerView = view.findViewById<RecyclerView>(R.id.today_history_list).apply {
-                        setHasFixedSize(true)
-                        layoutManager = viewManager
-                        adapter = viewAdapter
+                    if (response.body()?.size == 0) {
+                        today_history_list.visibility = View.GONE
+                        text_today_no_data.visibility = View.VISIBLE
+                        text_today_no_data.text = "기록이 없습니다"
+                    } else {
+                        historyList = response.body()!!
+                        for (history in historyList) {
+                            history.place = GetPlaceTitleOnly(history.place).execute().get()
+                            Log.d("Today History 등록 완료", history.place)
+                        }
+                        viewManager = LinearLayoutManager(context)
+                        viewAdapter = HistoryListAdapter(
+                            historyList,
+                            requireContext()
+                        )
+                        recyclerView =
+                            view.findViewById<RecyclerView>(R.id.today_history_list).apply {
+                                setHasFixedSize(true)
+                                layoutManager = viewManager
+                                adapter = viewAdapter
+                            }
                     }
+
+
                 }
             })
     }

@@ -32,6 +32,12 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_today_history"
             app:destination="@id/navigation_today_history" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_keyword_history"
+            app:destination="@id/navigation_keyword_history" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_date_history"
+            app:destination="@id/navigation_date_history" />
     </fragment>
 
     <fragment
@@ -73,4 +79,16 @@
         android:name="com.haerokim.project_footprint.ui.history.TodayHistoryFragment"
         android:label="오늘 히스토리"
         tools:layout="@layout/fragment_today_history"/>
+
+    <fragment
+        android:id="@+id/navigation_keyword_history"
+        android:name="com.haerokim.project_footprint.ui.history.KeywordHistoryFragment"
+        android:label="키워드 히스토리"
+        tools:layout="@layout/fragment_keyword_history"/>
+
+    <fragment
+        android:id="@+id/navigation_date_history"
+        android:name="com.haerokim.project_footprint.ui.history.DateHistoryFragment"
+        android:label="날짜별 히스토리"
+        tools:layout="@layout/fragment_date_history"/>
 </navigation>
