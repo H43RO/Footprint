@@ -23,7 +23,6 @@ from django.conf import settings
 from rest_framework import routers
 from website.viewsets import (
     ApiPlaceId,
-    ApiPlaceTitle,
     UserUpdateView,
     UserDeleteView,
     UserListView,
@@ -31,15 +30,13 @@ from website.viewsets import (
     HistoryUpdateAPIView,
     HistoryDeleteAPIView,
     NoticeViewSet,
-    ApiPlaceList,
 
     )
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
 router.register('histories', HistoryViewSet)
-router.register('places', ApiPlaceList)
-router.register('placetitle',ApiPlaceTitle, basename='placetitle')
+router.register('places', ApiPlaceId)
 router.register('userinfo', UserListView, basename='userinfo')
 router.register('noticelist', NoticeViewSet)
 api_urlpatterns = [
@@ -58,6 +55,5 @@ urlpatterns = [
     url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
-    path('places/(?P<pk>[^/.]+)/', ApiPlaceId.as_view(), name='placeid'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -49,40 +49,20 @@ class HistoryDeleteAPIView(DestroyAPIView):
     lookup_field = 'id'
 
 
-class PlaceTitleFilter(filters.FilterSet):
+class PlaceFilter(filters.FilterSet):
     class Meta:
         model = Place
         fields = {
             'title': ['icontains'],
+            'beacon_uuid': ['exact'],
         }
 
 
-class ApiPlaceList(viewsets.ModelViewSet):
-    queryset = Place.objects.all()
-    serializer_class = PlaceIdSerializer
-
-
-class ApiPlaceId(APIView):
-    queryset = Place.objects.all()
-    serializer_class = PlaceIdSerializer
-
-    def get_object(self, pk):
-        try:
-            return Place.objects.get(beacon_uuid=pk)
-        except Place.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk):
-        places = self.get_object(pk)
-        serializer = PlaceIdSerializer(places)
-        return Response(serializer.data)
-
-
-class ApiPlaceTitle(viewsets.ModelViewSet):
+class ApiPlaceId(viewsets.ModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
     filter_backends = [filters.DjangoFilterBackend]
-    filterset_class = PlaceTitleFilter
+    filterset_class = PlaceFilter
 
 
 class UserListView(viewsets.ModelViewSet):
