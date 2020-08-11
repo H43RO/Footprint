@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rangefilter',
     'rest_registration',
     'rest_framework.authtoken',
+    'crispy_forms',
 ]
 
 REST_FRAMEWORK = {
