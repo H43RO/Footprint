@@ -77,7 +77,7 @@ class DateHistoryFragment : Fragment() {
                     ) {
                         text_date_no_data.visibility = View.GONE
 
-                        if (response.body()?.size == 0) {
+                        if (response.body()?.size == 0 || response.body() == null) {
                             date_history_list.visibility = View.GONE
                             text_date_no_data.visibility = View.VISIBLE
                             text_date_no_data.text = "기록이 없습니다"
@@ -102,6 +102,7 @@ class DateHistoryFragment : Fragment() {
 
                             TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
                             TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
+                            image_card_view_status.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24)
                             layout_calendar.visibility = View.GONE
                         }
                     }
@@ -111,10 +112,12 @@ class DateHistoryFragment : Fragment() {
         button_show_calendar.setOnClickListener {
             if(layout_calendar.visibility == View.GONE){
                 TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
+                image_card_view_status.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24)
                 layout_calendar.visibility = View.VISIBLE
             }else{
                 TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
                 TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
+                image_card_view_status.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24)
                 layout_calendar.visibility = View.GONE
             }
         }

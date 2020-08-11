@@ -8,14 +8,36 @@
     android:orientation="vertical"
     tools:context=".ui.history.DateHistoryFragment">
 
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/card_calendar"
+    <RelativeLayout
+        android:id="@+id/button_show_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp">
+        android:background="#C1495181">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="날짜 선택하기"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/image_card_view_status"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            android:src="@drawable/ic_baseline_keyboard_arrow_up_24" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_calendar"
+        app:cardElevation="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,21 +45,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/button_show_calendar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#C1525B8E"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="24sp"
-                    android:text="날짜 선택하기"
-                    android:textColor="#fff"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:padding="8dp"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/layout_calendar"
                 android:layout_width="wrap_content"
