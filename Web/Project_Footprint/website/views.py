@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
@@ -9,7 +8,6 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
-
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
@@ -18,7 +16,7 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
     CheckPasswordForm, UserPasswordUpdateForm
-from .models import User, History, Place
+from .models import User, History, Place, Notice
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
@@ -291,5 +289,15 @@ def user_password_find(request):
 
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="user_password_find.html", context={"password_reset_form": password_reset_form})
+
+
+def noticelist(request):
+    notices = Notice.objects.all()
+    return render(request, 'notice.html', {'notices' : notices})
+
+
+def noticeview(request, id):
+    notices = Notice.objects.get(id=id)
+    return render(request, 'notice_view.html', {'notices': notices})
 
 
