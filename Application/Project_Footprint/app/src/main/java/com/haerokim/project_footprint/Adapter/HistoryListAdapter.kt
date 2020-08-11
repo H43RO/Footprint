@@ -67,7 +67,7 @@ class HistoryListAdapter(
         holder.view.text_history_detail.text =
             historyList[position].place + "에서, " + historyCreatedAt
         Glide.with(holder.view) // 확인 필요
-            .load(historyList[position].img)
+            .load("https://images.unsplash.com/photo-1455894127589-22f75500213a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1579&q=80")
             .centerCrop()
             .override(600, 400)
             .thumbnail(0.1f)

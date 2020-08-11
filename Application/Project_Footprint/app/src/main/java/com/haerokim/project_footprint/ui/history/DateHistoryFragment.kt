@@ -1,6 +1,9 @@
 package com.haerokim.project_footprint.ui.history
 
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.Transition
+import android.transition.TransitionManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -96,9 +99,24 @@ class DateHistoryFragment : Fragment() {
                                     layoutManager = viewManager
                                     adapter = viewAdapter
                                 }
+
+                            TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
+                            TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
+                            layout_calendar.visibility = View.GONE
                         }
                     }
                 })
+        }
+
+        button_show_calendar.setOnClickListener {
+            if(layout_calendar.visibility == View.GONE){
+                TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
+                layout_calendar.visibility = View.VISIBLE
+            }else{
+                TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
+                TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
+                layout_calendar.visibility = View.GONE
+            }
         }
 
     }
