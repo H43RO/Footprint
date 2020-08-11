@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div>
-    <div class="left">
+    <div class="left" style="overflow-y: scroll;">
         <div class="container">
             <h1>History</h1>
             <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
@@ -46,9 +46,9 @@
     </div>
 
     <div class="right">
-        <div class="card mb-3" style="max-width: 800px;">
+        <div class="card mb-3" style="max-width: 850px;">
             <div class="row no-gutters">
-                <div class="col-md-4" style="height: 400px;">
+                <div class="col-md-4" style="height: 500px;">
                     {% if item.img %}
                     <img class="card-img" style="weight: 400px; height: 300px;" src="{{ item.img.url }}" , alt="">
                     {% endif %}
