@@ -99,8 +99,6 @@ class TodayHistoryFragment : Fragment() {
                                 adapter = viewAdapter
                             }
                     }
-
-
                 }
             })
     }
