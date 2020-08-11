@@ -1,7 +1,7 @@
 from django.urls import path
-from django.conf.urls import url
 from . import views
 from . import viewsets
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -25,8 +25,10 @@ urlpatterns = [
     path('user_delete/', views.user_delete, name='user_delete'),
     path('myinfo/', views.myinfo, name='myinfo'),
     path('user_password_update/', views.user_password_update, name='user_password_update'),
-    path('user_password_auth/', views.user_password_auth, name='user_password_auth'),
-    path('user_password_confirm/', views.user_password_confirm, name='user_password_confirm'),
-    path('user_password_reset/', views.user_password_reset, name='user_password_reset'),
-    path('email_activate/<str:uidb64>/<str:token>', views.email_activate, name='email_activate'),
+    path('user_password_find/', views.user_password_find, name='user_password_find'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_email_confirm.html'), name='password_email_confirm'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset.html'), name='password_reset'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
+    path('notice/', views.noticelist, name='notice'),
+    path('notice/notice_view/<int:id>', views.noticeview, name='notice_view'),
 ]

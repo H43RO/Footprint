@@ -1,10 +1,10 @@
-from .models import User, Place, History
+from .models import User, Place, History, Notice
 from .place_info_serializers import PlaceSerializer
-from .history_date_serializer import HistoryDateSerializer
 from .history_serializer import HistorySerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
 from .place_id_serializers import PlaceIdSerializer
+from .notice_serializers import NoticeSerializer
 from rest_framework import viewsets, permissions, generics, status, mixins
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -22,8 +22,10 @@ from rest_framework.generics import (
     ListAPIView,
     UpdateAPIView,
     RetrieveUpdateAPIView,
-    DestroyAPIView
+    DestroyAPIView,
+    CreateAPIView,
 )
+from django.http import Http404
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
@@ -43,26 +45,20 @@ class HistoryDeleteAPIView(DestroyAPIView):
     lookup_field = 'id'
 
 
-class PlaceTitleFilter(filters.FilterSet):
+class PlaceFilter(filters.FilterSet):
     class Meta:
         model = Place
         fields = {
             'title': ['icontains'],
+            'beacon_uuid': ['exact'],
         }
 
 
 class ApiPlaceId(viewsets.ModelViewSet):
     queryset = Place.objects.all()
-    serializer_class = PlaceIdSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('beacon_uuid', 'naver_place_id')
-
-
-class ApiPlaceTitle(viewsets.ModelViewSet):
-    queryset = Place.objects.all()
     serializer_class = PlaceSerializer
     filter_backends = [filters.DjangoFilterBackend]
-    filterset_class = PlaceTitleFilter
+    filterset_class = PlaceFilter
 
 
 class UserListView(viewsets.ModelViewSet):
@@ -84,27 +80,20 @@ class UserDeleteView(DestroyAPIView):
     lookup_field = 'id'
 
 
-class HistoryFilter(FilterSet):
-    title = CharFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = History
-        fields = ('title', 'created_at')
-
-
-class HistoryDateFilter(filters.FilterSet):
+class HistoryFilter(filters.FilterSet):
     class Meta:
         model = History
         fields = {
             'title': ['icontains'],
-            'created_at': ['date', 'date__lte', 'date__gte']
+            'created_at': ['date', 'date__lte', 'date__gte'],
+            'user': ['exact'],
         }
 
 
-class HistoryDateViewSet(viewsets.ModelViewSet):
+class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
-    filterset_class = HistoryDateFilter
+    filterset_class = HistoryFilter
     filter_backends = [filters.DjangoFilterBackend]
 
     # filter_fields = ['title', 'created_at']
@@ -114,3 +103,8 @@ class HistoryDateViewSet(viewsets.ModelViewSet):
         newest = self.get_queryset().order_by('created_at').last()
         serializer = self.get_serializer_class()(newest)
         return Response(serializer.data)
+
+
+class NoticeViewSet(viewsets.ModelViewSet):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
