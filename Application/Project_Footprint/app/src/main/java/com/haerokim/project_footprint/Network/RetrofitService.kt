@@ -34,7 +34,7 @@ interface RetrofitService {
     fun createRealVisitHistory(
         @Field("place") naverPlaceID: String,
         @Field("user") userID: Int
-    ): Call<History> //Response : Status Code
+    ): Call<History>
 
     // 사용자 임의 히스토리 생성 : 수정 예정
     @FormUrlEncoded
