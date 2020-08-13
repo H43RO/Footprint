@@ -12,15 +12,16 @@ import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.VisitedPlace
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_keyword_history.*
-import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.fragment_whole_history.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,6 +47,14 @@ class WholeHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         text_whole_no_data.visibility = View.GONE
+
+        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
+        Realm.init(context)
+        val config: RealmConfiguration = RealmConfiguration.Builder()
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(config)
+        var realm = Realm.getDefaultInstance()
 
         var user: User = Paper.book().read("user_profile")
         val gson = GsonBuilder()
@@ -88,8 +97,10 @@ class WholeHistoryFragment : Fragment() {
                         text_whole_no_data.visibility = View.GONE
                         historyList = response.body()!!
                         for (history in historyList) {
-                            history.place = GetPlaceTitleOnly(history.place).execute().get()
-                            Log.d("정보 획득", "장소명" + history.place + ", 타이틀 : " + history.title)
+                            realm.executeTransaction {
+                                val visitedPlace: VisitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                history.place = visitedPlace.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                            }
                         }
 
                         loading_whole_history.visibility = View.GONE

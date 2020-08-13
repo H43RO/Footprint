@@ -5,4 +5,5 @@ import io.realm.RealmObject
 open class VisitedPlace: RealmObject() {
     var beaconUUID: String? = null
     var naverPlaceID: String? = null
+    var placeTitle: String? = null
 }

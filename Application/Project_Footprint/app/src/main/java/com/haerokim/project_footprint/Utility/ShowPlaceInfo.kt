@@ -10,7 +10,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.haerokim.project_footprint.Activity.PlaceDetailActivity
 import com.haerokim.project_footprint.DataClass.Place
+import com.haerokim.project_footprint.DataClass.VisitedPlace
 import com.haerokim.project_footprint.R
+import io.realm.Realm
+import io.realm.RealmConfiguration
 
 // Notification 형식으로 보여주는 메소드와, 액티비티 형식으로 보여주는 메소드를 가짐
 class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
@@ -18,8 +21,15 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
     //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
     private var placeName = placeID
 
-
     fun notifyInfo(mode: String?) {
+        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
+        Realm.init(context)
+        val config: RealmConfiguration = RealmConfiguration.Builder()
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(config)
+        var realm = Realm.getDefaultInstance()
+
         var place = GetPlaceInfo(placeID).execute().get()
 
         var placeTitle = place.title
@@ -30,6 +40,13 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         var placeImageSrc = place.imageSrc
         var placeMenuName = place.menuName
         var placeMenuPrice = place.menuPrice
+
+        // Local에 장소의 이름을 저장함
+
+        realm.executeTransaction {
+            val visitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", placeID).findFirst()
+            visitedPlace.placeTitle = placeTitle
+        }
 
         //PlaceDetailActivity 로 보낼 장소 데이터 모두 번들에 담음
         val intent = Intent(context, PlaceDetailActivity::class.java)

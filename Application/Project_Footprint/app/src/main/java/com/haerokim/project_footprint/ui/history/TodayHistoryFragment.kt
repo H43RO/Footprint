@@ -12,14 +12,15 @@ import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.VisitedPlace
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
-import kotlinx.android.synthetic.main.fragment_keyword_history.*
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_today_history.*
-import kotlinx.android.synthetic.main.fragment_whole_history.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,6 +47,14 @@ class TodayHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         text_today_no_data.visibility = View.GONE
+
+        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
+        Realm.init(context)
+        val config: RealmConfiguration = RealmConfiguration.Builder()
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(config)
+        var realm = Realm.getDefaultInstance()
 
         val user: User = Paper.book().read("user_profile")
 
@@ -89,8 +98,10 @@ class TodayHistoryFragment : Fragment() {
                         today_history_list.visibility = View.VISIBLE
                         historyList = response.body()!!
                         for (history in historyList) {
-                            history.place = GetPlaceTitleOnly(history.place).execute().get()
-                            Log.d("Today History 등록 완료", history.place)
+                            realm.executeTransaction {
+                                val visitedPlace: VisitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                history.place = visitedPlace.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                            }
                         }
                         loading_today_history.visibility = View.GONE
 

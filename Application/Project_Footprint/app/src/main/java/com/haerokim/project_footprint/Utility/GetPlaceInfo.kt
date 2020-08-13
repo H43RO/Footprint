@@ -101,7 +101,6 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
             , placeTime, placeLocation, placeImageSrc, placeMenuName, placeMenuPrice
         )
 
-
         return placeInfo
     }
 }
