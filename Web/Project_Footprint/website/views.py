@@ -31,10 +31,9 @@ from django.contrib.auth.tokens import default_token_generator
 
 
 def index(request):
-    context = {
-        'items': '발자취'
-    }
-    return render(request, 'index.html', context)
+    sights = Place.objects.filter(place_div=0)
+    restaurants = Place.objects.filter(place_div=1)
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants})
 
 
 def list(request):

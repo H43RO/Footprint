@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
 
+
 DEFAULT_HISTORY = 1
 
 GENDER_CHOICES = (
@@ -87,6 +88,8 @@ class Place(models.Model):
     place_div = models.PositiveSmallIntegerField()
     naver_place_id = models.CharField(primary_key=True, max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
+    img = models.ImageField(blank=True, null=True, upload_to="place")
+    count = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return self.title + ': ' + self.naver_place_id
@@ -97,7 +100,7 @@ class History(models.Model):
     title = models.TextField(max_length=100, blank=True, null=True)
     mood = models.CharField(max_length=30, default=1)
     comment = models.TextField(max_length=1000, blank=True, null=True)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE,blank=True, null=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
     custom_place = models.TextField(max_length=500, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY)
     created_at = models.DateTimeField(auto_now=True)
@@ -105,6 +108,7 @@ class History(models.Model):
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
+
 
 
 class Notice(models.Model):
