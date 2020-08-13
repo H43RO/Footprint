@@ -18,6 +18,7 @@ import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_keyword_history.*
+import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.fragment_whole_history.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -56,6 +57,7 @@ class WholeHistoryFragment : Fragment() {
             .build()
         var getWholeHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
 
+        loading_whole_history.visibility = View.VISIBLE
 
 //        * 날짜별 조회시 필요
 //        val todayDate:Date = Calendar.getInstance().time
@@ -67,6 +69,8 @@ class WholeHistoryFragment : Fragment() {
             .enqueue(object : Callback<ArrayList<History>> {
                 override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
                     Log.e("Whole_history_Error", t.message)
+
+                    loading_whole_history.visibility = View.GONE
                     whole_history_list.visibility = View.GONE
                     text_whole_no_data.visibility = View.VISIBLE
                     text_whole_no_data.text = "정보를 가져오지 못했습니다"
@@ -78,6 +82,7 @@ class WholeHistoryFragment : Fragment() {
                     if (response.body()?.size == 0) {
                         keyword_history_list.visibility = View.GONE
                         text_whole_no_data.visibility = View.VISIBLE
+                        loading_whole_history.visibility = View.GONE
                         text_whole_no_data.text = "기록이 없습니다"
                     } else {
                         text_whole_no_data.visibility = View.GONE
@@ -86,6 +91,8 @@ class WholeHistoryFragment : Fragment() {
                             history.place = GetPlaceTitleOnly(history.place).execute().get()
                             Log.d("정보 획득", "장소명" + history.place + ", 타이틀 : " + history.title)
                         }
+
+                        loading_whole_history.visibility = View.GONE
 
                         viewManager = LinearLayoutManager(context)
                         viewAdapter = HistoryListAdapter(
@@ -99,6 +106,7 @@ class WholeHistoryFragment : Fragment() {
                                 layoutManager = viewManager
                                 adapter = viewAdapter
                             }
+
                     }
                 }
             })

@@ -21,6 +21,7 @@ import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_keyword_history.*
+import kotlinx.android.synthetic.main.fragment_today_history.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -65,12 +66,14 @@ class KeywordHistoryFragment : Fragment() {
 
         var getKeywordHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
 
+        loading_keyword_history.visibility = View.GONE
+
         edit_text_keyword.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN && edit_text_keyword.text.toString() != "") {
                 // Enter Action
                 userInputKeyword = edit_text_keyword.text.toString() + " "
 
-                Log.d("User Input Fucking", userInputKeyword)
+                loading_keyword_history.visibility = View.VISIBLE
 
                 getKeywordHistory.requestKeywordHistoryList(user.id, userInputKeyword)
                     .enqueue(object : Callback<ArrayList<History>> {
@@ -79,6 +82,7 @@ class KeywordHistoryFragment : Fragment() {
 
                             keyword_history_list.visibility = View.GONE
                             text_keyword_no_data.visibility = View.VISIBLE
+                            loading_keyword_history.visibility = View.GONE
                             text_keyword_no_data.text = "정보를 가져오지 못했습니다"
                         }
 
@@ -101,6 +105,7 @@ class KeywordHistoryFragment : Fragment() {
                                         "장소명 : " + history.place + ", 타이틀 : " + history.title
                                     )
                                 }
+                                loading_keyword_history.visibility = View.GONE
 
                                 viewManager = LinearLayoutManager(context)
                                 viewAdapter = HistoryListAdapter(

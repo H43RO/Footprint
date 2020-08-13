@@ -63,12 +63,15 @@ class TodayHistoryFragment : Fragment() {
         val historyCreatedFormat = SimpleDateFormat("yyyy-MM-dd")
         var historyCreatedAt = historyCreatedFormat.format(todayDate)
 
+        loading_today_history.visibility = View.VISIBLE
+
         getTodayHistory.requestTodayHistoryList(user.id, historyCreatedAt)
             .enqueue(object : Callback<ArrayList<History>> {
                 override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
                     Log.e("Error", t.message)
                     today_history_list.visibility = View.GONE
                     text_today_no_data.visibility = View.VISIBLE
+                    loading_today_history.visibility = View.GONE
                     text_today_no_data.text = "정보를 가져오지 못했습니다"
                 }
                 override fun onResponse(
@@ -80,6 +83,7 @@ class TodayHistoryFragment : Fragment() {
                     if (response.body()?.size == 0) {
                         today_history_list.visibility = View.GONE
                         text_today_no_data.visibility = View.VISIBLE
+                        loading_today_history.visibility = View.GONE
                         text_today_no_data.text = "기록이 없습니다"
                     } else {
                         today_history_list.visibility = View.VISIBLE
@@ -88,6 +92,8 @@ class TodayHistoryFragment : Fragment() {
                             history.place = GetPlaceTitleOnly(history.place).execute().get()
                             Log.d("Today History 등록 완료", history.place)
                         }
+                        loading_today_history.visibility = View.GONE
+
                         viewManager = LinearLayoutManager(context)
                         viewAdapter = HistoryListAdapter(
                             historyList,
@@ -99,6 +105,7 @@ class TodayHistoryFragment : Fragment() {
                                 layoutManager = viewManager
                                 adapter = viewAdapter
                             }
+
                     }
                 }
             })

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_menu"
             app:destination="@id/navigation_menu" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_today_history"
+            app:destination="@id/navigation_today_history" />
     </fragment>
 
     <fragment
@@ -91,4 +94,5 @@
         android:name="com.haerokim.project_footprint.ui.history.DateHistoryFragment"
         android:label="날짜별 히스토리"
         tools:layout="@layout/fragment_date_history"/>
+
 </navigation>
