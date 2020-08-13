@@ -99,7 +99,6 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", true)
                     commit()
                 }
-
                 homeViewModel.changeMode("on")
 
                 //위치 권한 허용 되어있으면 비콘 스캔 시작
