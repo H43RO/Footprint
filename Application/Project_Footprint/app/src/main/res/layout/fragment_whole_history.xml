@@ -43,6 +43,15 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
+        <ProgressBar
+            android:id="@+id/loading_whole_history"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:indeterminate="true"
+            android:layout_marginTop="150dp"
+            android:indeterminateTint="#ffffff"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/whole_history_list"
             android:layout_width="match_parent"

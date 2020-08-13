@@ -58,9 +58,14 @@ class DateHistoryFragment : Fragment() {
             .build()
         var getDateHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
 
+        loading_date_history.visibility = View.GONE
+
         calendar.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
             selectDate = "" + year + "-" + (month + 1) + "-" + dayOfMonth
             Log.d("Test", selectDate)
+
+            loading_date_history.visibility = View.VISIBLE
+            date_history_list.visibility = View.GONE
 
             getDateHistory.requestDateHistoryList(user.id, selectDate, selectDate)
                 .enqueue(object : Callback<ArrayList<History>> {
@@ -68,9 +73,9 @@ class DateHistoryFragment : Fragment() {
                         Log.e("Error", t.message)
                         date_history_list.visibility = View.GONE
                         text_date_no_data.visibility = View.VISIBLE
+                        loading_date_history.visibility = View.GONE
                         text_date_no_data.text = "정보를 가져오지 못했습니다"
                     }
-
                     override fun onResponse(
                         call: Call<ArrayList<History>>,
                         response: Response<ArrayList<History>>
@@ -80,6 +85,7 @@ class DateHistoryFragment : Fragment() {
                         if (response.body()?.size == 0 || response.body() == null) {
                             date_history_list.visibility = View.GONE
                             text_date_no_data.visibility = View.VISIBLE
+                            loading_date_history.visibility = View.GONE
                             text_date_no_data.text = "기록이 없습니다"
 
                             TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
@@ -90,6 +96,9 @@ class DateHistoryFragment : Fragment() {
                                 history.place = GetPlaceTitleOnly(history.place).execute().get()
                                 Log.d("Date History 등록 완료", history.place)
                             }
+
+                            loading_date_history.visibility = View.GONE
+
                             viewManager = LinearLayoutManager(context)
                             viewAdapter = HistoryListAdapter(
                                 historyList,
