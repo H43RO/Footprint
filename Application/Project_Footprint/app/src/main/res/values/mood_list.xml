@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="moode_list">
+
+        <item>기분 맑음</item>
+        <item>기분 흐림</item>
+        <item>기분 안좋음</item>
+        <item>기분 심각</item>
+        <item>기분 화창함</item>
+        <item>기분 최고조</item>
+
+    </string-array>
+
+</resources>
