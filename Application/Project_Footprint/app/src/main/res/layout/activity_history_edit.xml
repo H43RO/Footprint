@@ -75,7 +75,7 @@
 
 
                 <EditText
-                    android:id="@+id/text_history_detail_title"
+                    android:id="@+id/edit_history_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

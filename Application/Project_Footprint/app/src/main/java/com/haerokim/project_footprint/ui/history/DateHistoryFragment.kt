@@ -39,6 +39,9 @@ class DateHistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
+        Realm.init(context)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_date_history, container, false)
     }
@@ -47,8 +50,7 @@ class DateHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         text_date_no_data.visibility = View.GONE
 
-        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
-        Realm.init(context)
+
         val config: RealmConfiguration = RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
             .build()

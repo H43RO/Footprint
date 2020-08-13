@@ -6,6 +6,9 @@ import retrofit2.http.*
 import kotlin.collections.ArrayList
 
 interface RetrofitService {
+
+    /** 대응 완료 API**/
+
     // 로그인
     @FormUrlEncoded
     @POST("api/v1/accounts/login/")
@@ -71,6 +74,15 @@ interface RetrofitService {
         @Query("title__icontains") keyword: String
     ): Call<ArrayList<History>>
 
+    // 히스토리 수정
+    @PUT("api/histories/{historyID}/edit/")
+    fun updateHistory(
+        @Path("historyID") historyID: Int,
+        @Body body: UpdateHistory
+    ): Call<History>
+
+    /** 미 대응 API**/
+
     @Multipart
     // History Image Upload
 
@@ -81,12 +93,6 @@ interface RetrofitService {
         @Field("userID") userID: Int
     ): Call<String> //Response : Status Code
 
-    // 히스토리 작성 및 수정 : 수정 예정
-    @FormUrlEncoded
-    @PUT("/api/diary-write")
-    fun writeHistory(
-        @Field("history") history: History
-    ): Call<String> //Response : Status Code
 
     // 히스토리 삭제 : 수정 예정
     @FormUrlEncoded

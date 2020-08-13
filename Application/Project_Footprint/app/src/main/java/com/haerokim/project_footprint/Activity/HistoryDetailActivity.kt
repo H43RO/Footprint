@@ -1,5 +1,6 @@
 package com.haerokim.project_footprint.Activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,15 @@ import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.activity_history_detail.*
 
 class HistoryDetailActivity : AppCompatActivity() {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // 수정된 정보가 넘어오면 실행
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            text_history_detail_title.text = data?.getStringExtra("title")
+            text_history_detail_content.text = data?.getStringExtra("comment")
+//            TODO ("나머지 2개 Extra 미구현")
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_detail)
@@ -51,7 +61,7 @@ class HistoryDetailActivity : AppCompatActivity() {
                         val intent = Intent(this, HistoryEditActivity::class.java)
                         intent.putExtras(historyInfo!!)
                         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        startActivity(intent)
+                        startActivityForResult(intent, 1)
 //                        overridePendingTransition(R.anim.fadein, R.anim.fadeout)
                     }
 

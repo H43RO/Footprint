@@ -60,14 +60,19 @@ class HistoryListAdapter(
             intent.putExtras(bundle)
             context.startActivity(intent)
         }
-        holder.view.text_history_title.text = historyList[position].title ?: "탭 하여 작성하기"
+        holder.view.text_history_title.text = historyList[position].title ?: historyList[position].place + "에서의 추억"
         holder.view.text_history_detail.text =
             historyList[position].place + "에서, " + historyCreatedAt
-        Glide.with(holder.view) // 확인 필요
-            .load("https://images.unsplash.com/photo-1455894127589-22f75500213a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1579&q=80")
-            .centerCrop()
-            .override(600, 400)
-            .thumbnail(0.1f)
-            .into(holder.view.image_history)
+
+        if(historyList[position].img == null){
+            holder.view.image_history.visibility = View.GONE
+        }else{
+            Glide.with(holder.view) // 확인 필요
+                .load(historyList[position].img)
+                .centerCrop()
+                .override(600, 400)
+                .thumbnail(0.1f)
+                .into(holder.view.image_history)
+        }
     }
 }
