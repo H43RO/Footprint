@@ -14,14 +14,16 @@ import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.VisitedPlace
 import com.haerokim.project_footprint.Network.ResponseInterceptor
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_keyword_history.*
-import kotlinx.android.synthetic.main.fragment_today_history.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,6 +47,14 @@ class KeywordHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
+        Realm.init(context)
+        val config: RealmConfiguration = RealmConfiguration.Builder()
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(config)
+        var realm = Realm.getDefaultInstance()
 
         text_keyword_no_data.visibility = View.GONE
 
@@ -99,11 +109,10 @@ class KeywordHistoryFragment : Fragment() {
 
                                 historyList = response.body()!!
                                 for (history in historyList) {
-                                    history.place = GetPlaceTitleOnly(history.place).execute().get()
-                                    Log.d(
-                                        "정보 획득",
-                                        "장소명 : " + history.place + ", 타이틀 : " + history.title
-                                    )
+                                    realm.executeTransaction {
+                                        val visitedPlace: VisitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                        history.place = visitedPlace.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                                    }
                                 }
                                 loading_keyword_history.visibility = View.GONE
 

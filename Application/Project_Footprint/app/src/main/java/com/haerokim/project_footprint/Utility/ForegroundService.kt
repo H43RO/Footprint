@@ -1,7 +1,10 @@
 package com.haerokim.project_footprint.Utility
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.*
@@ -13,18 +16,20 @@ import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.NaverPlaceID
 import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.DataClass.VisitedPlace
-import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Network.RetrofitService
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.RealmResults
 import org.altbeacon.beacon.*
 import org.altbeacon.beacon.service.ScanJobScheduler
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class ForegroundService : Service(), BeaconConsumer {
 
@@ -78,6 +83,10 @@ class ForegroundService : Service(), BeaconConsumer {
 
         var realm = Realm.getDefaultInstance()
 
+
+        val result: RealmResults<VisitedPlace> =
+            realm.where(VisitedPlace::class.java).findAllAsync()
+
         val gson = GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
@@ -116,6 +125,13 @@ class ForegroundService : Service(), BeaconConsumer {
                                     response: Response<ArrayList<NaverPlaceID>>
                                 ) {
                                     var id = response.body()
+                                    realm.executeTransaction {
+                                        with(it.createObject(VisitedPlace::class.java)) {
+                                            this.beaconUUID = beacon.id1.toString()
+                                            this.naverPlaceID = id?.get(0)?.naver_place_id
+                                        }
+                                    }
+
                                     Log.d(
                                         "Foreground_GetPlaceInfo",
                                         "감지된 장소 : " + id?.get(0)?.naver_place_id
@@ -127,14 +143,6 @@ class ForegroundService : Service(), BeaconConsumer {
                                             it!!
                                         ).notifyInfo("nearPlace")
                                     }
-
-                                    realm.executeTransaction {
-                                        with(it.createObject(VisitedPlace::class.java)) {
-                                            this.beaconUUID = beacon.id1.toString()
-                                            this.naverPlaceID = id?.get(0)?.naver_place_id
-                                        }
-                                    }
-
                                 }
                             })
                     }
@@ -145,38 +153,11 @@ class ForegroundService : Service(), BeaconConsumer {
                         Log.d("beacon_near_by", beacon.id1.toString())
                         var naverPlaceID: String? = null
 
-//                        retrofitService.requestNaverPlaceID(beacon.id1.toString())
-//                            .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
-//                                override fun onFailure(
-//                                    call: Call<ArrayList<NaverPlaceID>>,
-//                                    t: Throwable
-//                                ) {
-//                                    Log.e("Error", t.message)
-//                                }
-//
-//                                override fun onResponse(
-//                                    call: Call<ArrayList<NaverPlaceID>>,
-//                                    response: Response<ArrayList<NaverPlaceID>>
-//                                ) {
-//                                    var id = response.body()
-//                                    Log.d(
-//                                        "Foreground_GetPlaceInfo",
-//                                        "감지된 장소 : " + id?.get(0)?.naver_place_id
-//                                    )
-//                                    // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
-//                                    id?.get(0)?.naver_place_id.let {
-//                                        ShowPlaceInfo(
-//                                            applicationContext,
-//                                            it!!
-//                                        ).notifyInfo("visitedPlace")
-//                                        naverPlaceID = it
-//                                    }
-//                                }
-//                            })
-
                         // Beacon UUID를 통해서 Naver Place ID를 가져옴
                         realm.executeTransaction {
-                            naverPlaceID = it.where(VisitedPlace::class.java).findFirst().naverPlaceID
+                            val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java)
+                                .equalTo("beaconUUID", beacon.id1.toString()).findFirst()
+                            naverPlaceID = visitedPlace!!.naverPlaceID
                         }
 
                         ShowPlaceInfo(applicationContext, naverPlaceID!!).notifyInfo("visitedPlace")

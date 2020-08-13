@@ -2,7 +2,6 @@ package com.haerokim.project_footprint.ui.history
 
 import android.os.Bundle
 import android.transition.AutoTransition
-import android.transition.Transition
 import android.transition.TransitionManager
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,13 +14,15 @@ import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.DataClass.VisitedPlace
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceTitleOnly
 import io.paperdb.Paper
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_date_history.*
-import kotlinx.android.synthetic.main.fragment_today_history.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,6 +46,14 @@ class DateHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         text_date_no_data.visibility = View.GONE
+
+        // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
+        Realm.init(context)
+        val config: RealmConfiguration = RealmConfiguration.Builder()
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(config)
+        var realm = Realm.getDefaultInstance()
 
         val user: User = Paper.book().read("user_profile")
 
@@ -93,10 +102,11 @@ class DateHistoryFragment : Fragment() {
                             date_history_list.visibility = View.VISIBLE
                             historyList = response.body()!!
                             for (history in historyList) {
-                                history.place = GetPlaceTitleOnly(history.place).execute().get()
-                                Log.d("Date History 등록 완료", history.place)
+                                realm.executeTransaction {
+                                    val visitedPlace: VisitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                    history.place = visitedPlace.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                                }
                             }
-
                             loading_date_history.visibility = View.GONE
 
                             viewManager = LinearLayoutManager(context)

@@ -26,7 +26,6 @@ import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.Utility.ForegroundService
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -68,7 +67,9 @@ class HomeFragment : Fragment(), PermissionListener {
         val switchStateSave = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val foregroundIntent = Intent(context, ForegroundService::class.java)
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
         Paper.init(context)
+
         val user: User = Paper.book().read("user_profile")
         text_home_user_nickname.text = user.nickname + " 님"
 

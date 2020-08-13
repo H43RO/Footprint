@@ -1,7 +1,6 @@
 package com.haerokim.project_footprint.Network
 
 import com.haerokim.project_footprint.DataClass.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import kotlin.collections.ArrayList
