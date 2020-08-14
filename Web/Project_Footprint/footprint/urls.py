@@ -22,24 +22,23 @@ from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
 from website.viewsets import (
-    HistoryDateViewSet,
     ApiPlaceId,
-    ApiPlaceTitle,
     UserUpdateView,
     UserDeleteView,
     UserListView,
     HistoryViewSet,
     HistoryUpdateAPIView,
     HistoryDeleteAPIView,
+    NoticeViewSet,
+
     )
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
-router.register('historys', HistoryViewSet)
+router.register('histories', HistoryViewSet)
 router.register('places', ApiPlaceId)
-router.register('placetitle',ApiPlaceTitle, basename='placetitle')
-router.register('historysdate', HistoryDateViewSet,basename='historydate')
 router.register('userinfo', UserListView, basename='userinfo')
+router.register('noticelist', NoticeViewSet)
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
@@ -53,8 +52,8 @@ urlpatterns = [
     url('api/', include(router.urls)),
     url('userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
     url('userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
-    url('historys/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
-    url('historys/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
     path('accounts/', include('django.contrib.auth.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

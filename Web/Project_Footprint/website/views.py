@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-
 from .backends import EmailAuthBackend
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.exceptions import ValidationError
@@ -9,28 +8,34 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.shortcuts import render, get_object_or_404, redirect
-
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm, UserPasswordResetForm, ApiPasswordResetForm, UserPasswordAuthForm
-from .models import User, History, Place
+
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm
+from .models import User, History, Place, Notice
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
-import requests, re
+
+import requests
+from django.template import loader
+from django.core.mail import send_mail, BadHeaderError
+from django.contrib.auth.forms import PasswordResetForm
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.contrib.auth.tokens import default_token_generator
 from django.template import loader
 
 
 def index(request):
-    context = {
-        'items': '발자취'
-    }
-    return render(request, 'index.html', context)
+    sights = Place.objects.filter(place_div=0)
+    restaurants = Place.objects.filter(place_div=1)
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants})
 
 
 def list(request):
@@ -243,7 +248,6 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user, request.POST)
         try:
             if form.is_valid():
-                user = form.save()
                 update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
                 return redirect('../index')
         except ValidationError as e:
@@ -253,6 +257,7 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
+<<<<<<< HEAD
 def api_password_reset(request):
     user_id = request.GET.get('user_id')
     timestamp = request.GET.get('timestamp')
@@ -271,99 +276,44 @@ def api_password_reset(request):
                 return HttpResponse(template.render({"data" : res_text}))
     return render(request, 'user_password_find.html', {'form' : form })
 
-
-# def user_password_auth(request):
-#     if request.method == 'POST':
-#         form = UserPasswordAuthForm(data=request.POST)
-#         try:
-#             if form.is_valid():
-#                 email = form.cleaned_data.get('email')
-#                 user = User.objects.get(email=email)
-#                 if user is not None:
-#                     current_site = get_current_site(request)
-#                     domain = current_site.domain
-#                     uid64 = urlsafe_base64_encode(force_bytes(user.pk))
-#                     token = account_activation_token.make_token(user)
-#                     message_data = message(domain, uid64, token)
-#                     mail_title = _("비밀번호 재설정을 위한 인증 메일입니다.")
-#                     mail_to = form.cleaned_data['email']
-#                     email = EmailMessage(mail_title, message_data, to=[mail_to])
-#                     email.send()
-#                     return HttpResponseRedirect('../user_password_confirm/')
-#         except:
-#             messages.error(request, 'A user with this email is NOT exists.')
-#             return HttpResponseRedirect('../user_password_auth/')
-#     else:
-#         form = UserPasswordAuthForm()
-#     return render(request, 'user_password_auth.html', {'form': form})
-
-
-def user_password_confirm(request):
-    return render(request, 'user_password_confirm.html')
-
-def user_password_reset(request, uidb64, token):
-    # form = UserPasswordResetForm(request.POST, user)
-    if request.method == 'POST':
-        form = UserPasswordResetForm(request.POST, user)
-        # try:
-        #     if form.is_valid():
-        #         if account_activation_token(user, token):
-        #             user.set_password('new_password2')
-        #             update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
-        #             return HttpResponseRedirect('../list')
-        # except ValidationError as e:
-        #     messages.error(request, e)
-        #     print(1)
-        #     return HttpResponseRedirect("../user_password_reset")
-        if form.is_valid():
-            print(1)
-        else :
-            print(form.error_messages)
-    else:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid) 
-        form = UserPasswordResetForm(user)
-    return render(request, 'user_password_reset.html', {'form': form})
-
-
-
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse
-from django.contrib.auth.forms import PasswordResetForm
-# from django.contrib.auth.models import User
-from django.template.loader import render_to_string
-from django.db.models.query_utils import Q
-from django.utils.http import urlsafe_base64_encode
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
-
-
-
-def user_password_auth(request):
-        if request.method == "POST":
-            password_reset_form = PasswordResetForm(request.POST)
-            if password_reset_form.is_valid():
-                data = password_reset_form.cleaned_data['email']
-                associated_users = User.objects.filter(Q(email=data))
-                if associated_users.exists():
-                    for user in associated_users:
-                        subject = "Password Reset Requested"
-                        email_template_name = "password_reset_email.txt"
-                        c = {
-                        "email":user.email,
-                        'domain':'127.0.0.1:8000',
+def user_password_find(request):
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = "password_reset_email.txt"
+                    c = {
+                        "email": user.email,
+                        'domain': '127.0.0.1:8000',
                         'site_name': 'Website',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
                         'token': default_token_generator.make_token(user),
                         'protocol': 'http',
-                        }
-                        email = render_to_string(email_template_name, c)
-                        try:
-                            send_mail(subject, email, 'pcj980@gmail.com' , [user.email], fail_silently=False)
-                        except BadHeaderError:
-                            return HttpResponse('Invalid header found.')
-                        return redirect ("/password_reset/done/")
-        password_reset_form = PasswordResetForm()
-        return render(request=request, template_name="user_password_auth.html", context={"password_reset_form":password_reset_form})
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, 'pcj980@gmail.com', [user.email], fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    return redirect("/password_reset/done/")
+                    # 이메일로 url을 성공적으로 잘 보냄
+            else:
+                messages.error(request, '유효하지 않은 이메일입니다.')
+
+    password_reset_form = PasswordResetForm()
+    return render(request=request, template_name="user_password_find.html", context={"password_reset_form": password_reset_form})
+
+
+def noticelist(request):
+    notices = Notice.objects.all()
+    return render(request, 'notice.html', {'notices' : notices})
+
+
+def noticeview(request, id):
+    notices = Notice.objects.get(id=id)
+    return render(request, 'notice_view.html', {'notices': notices})

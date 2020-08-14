@@ -8,11 +8,15 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.location.network" />
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:required="false" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -27,24 +31,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.HistoryEditActivity"></activity>
+        <activity android:name=".Activity.HistoryDetailActivity"></activity>
+        <activity android:name=".Activity.WithdrawActivity" />
         <activity android:name=".Activity.LoginActivity">
-
-        </activity>
-        <activity android:name=".Activity.SurroundPlaceActivity" />
-        <activity
-            android:name=".Activity.HomeActivity"
-            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.PlaceDetailActivity" />
-        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.MainActivity" /> <!-- 이미지 크롭 라이브러리 -->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <service
-            android:name=".ForegroundService"
+            android:name=".Utility.ForegroundService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="true"
@@ -54,13 +59,14 @@
                 android:value="true" />
         </service>
 
-        <receiver android:name=".ui.surround.SurroundFragment$SurroundBeaconReceiver"  android:exported="true">
+        <receiver
+            android:name=".ui.surround.SurroundFragment$SurroundBeaconReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="surround_beacon_list"/>
+                <action android:name="surround_beacon_list" />
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

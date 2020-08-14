@@ -7,7 +7,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
@@ -33,6 +32,7 @@ INSTALLED_APPS = [
     'rangefilter',
     'rest_registration',
     'rest_framework.authtoken',
+    'crispy_forms',
 ]
 
 REST_FRAMEWORK = {
@@ -45,7 +45,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]    
 }
-
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
@@ -60,6 +59,7 @@ REST_REGISTRATION = {
     'USER_LOGIN_FIELDS' :  ['email'],
     'SUCCESS_RESPONSE_BULIDER' : ('website.user_serializers.build_default_success_response'),
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
+    'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
     # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 }
 
@@ -94,14 +94,12 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME':  'footprintdatabase',
-        # 'USER': 'root',
-        # 'PASSWORD': '080799',
-        # 'HOST': 'localhost',
-        # 'PORT': '3306'
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME':  os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': 'root',
+        'PASSWORD': 's9423093',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 # Password validation
@@ -148,12 +146,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'pcj980@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'ckswhd123~' ## write your email password
+
+EMAIL_HOST_USER = 'abc@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'aaaa' ## write your email password
 EMAIL_USE_TLS = True
 
 #Maintain Session
-SESSION_COOKIE_AGE = 60 * 60
+SESSION_COOKIE_AGE = 60*60
 SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'

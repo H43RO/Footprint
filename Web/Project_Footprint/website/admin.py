@@ -27,7 +27,7 @@ class CustomUserAdmin(UserAdmin):
 class PlaceAdmin(admin.ModelAdmin):
     model = Place
     list_per_page = 10
-    list_display = ('beacon_uuid', 'title', 'place_div', 'naver_place_id', 'created_at' )
+    list_display = ('beacon_uuid', 'title', 'place_div', 'naver_place_id', 'count', 'created_at' )
     list_display_links = ('title', 'naver_place_id', 'beacon_uuid')
     list_filter = ('place_div',)
     search_fields = ('title', 'naver_place_id', 'beacon_uuid')
@@ -46,7 +46,13 @@ class HistoryAdmin(admin.ModelAdmin):
     search_fields = ('user', 'place')
 
 
+class NoticeAdmin(admin.ModelAdmin):
+    model = Notice
+    list_display = ('title', 'created_at', 'updated_at')
+    list_display_links = ('title',)
+
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Place, PlaceAdmin)
 admin.site.register(History, HistoryAdmin)
-
+admin.site.register(Notice, NoticeAdmin)

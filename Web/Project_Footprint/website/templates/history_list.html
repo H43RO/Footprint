@@ -13,6 +13,7 @@
                     <h5 class="card-title">{{ item.title }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ item.mood }}</h6>
                     <p class="card-text">{{ item.place }}</p>
+                    <p class="card-text">{{ item.custom_place }}</p>
                     <p class="card-text">{{item.comment|linebreaksbr}}</p>
                     {% if item.img %}
                     <img class="card-img" src="{{ item.img.url }}" , alt="">
