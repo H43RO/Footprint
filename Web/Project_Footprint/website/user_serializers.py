@@ -27,7 +27,7 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 def build_default_success_response(message, status, extra_data):
-    data = {"detail" : message}
+    data = message
     if extra_data:
         data.update(extra_data)
     return Response(data, status=status)

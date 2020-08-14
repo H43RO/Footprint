@@ -78,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                             //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
                             Paper.book().write("user_profile", response.body())
 
+                            Log.d("login success", response.body()?.nickname)
                             //자동 로그인을 위한 SharedPreference 적용
                             editor.putBoolean("auto_login_enable", true)
                             editor.commit()
