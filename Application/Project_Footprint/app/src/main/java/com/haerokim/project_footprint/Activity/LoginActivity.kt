@@ -54,12 +54,12 @@ class LoginActivity : AppCompatActivity() {
             var email = edit_text_email.text.toString()
             var password = edit_text_password.text.toString()
 
-            if (email.isEmpty() && password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty()) {
                 if (email.isEmpty()) {
                     edit_text_email.requestFocus()
                     edit_text_email.error = "이메일을 입력해주세요"
-
-                } else if (password.isEmpty()) {
+                }
+                if (password.isEmpty()) {
                     edit_text_password.requestFocus()
                     edit_text_password.error = "비밀번호를 입력해주세요"
                 }
@@ -74,12 +74,17 @@ class LoginActivity : AppCompatActivity() {
                         override fun onFailure(call: Call<User>, t: Throwable) {
                             Log.e("login error", t.message)
                         }
+
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
-                            if(response.body()?.token == null){
+                            if (response.body()?.token == null) {
                                 Log.e("login error", "실패")
-                                Toast.makeText(applicationContext, "이메일 및 비밀번호를 다시 확인해주세요", Toast.LENGTH_LONG).show()
-                            }else{
+                                Toast.makeText(
+                                    applicationContext,
+                                    "이메일 및 비밀번호를 다시 확인해주세요",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
                                 Paper.book().write("user_profile", response.body())
                                 Log.d("login success", response.body()?.nickname)
                                 //자동 로그인을 위한 SharedPreference 적용
@@ -98,8 +103,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         button_register.setOnClickListener {
-            val intent: Intent = Intent(this, RegisterActivity::class.java)
-            startActivityForResult(intent, 200)
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
 
     }

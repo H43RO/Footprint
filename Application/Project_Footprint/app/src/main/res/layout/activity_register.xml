@@ -32,7 +32,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="700dp"
         android:layout_marginTop="24dp"
         app:cardCornerRadius="20dp">
 
@@ -45,7 +45,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="24dp">
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -239,8 +238,8 @@
                     android:id="@+id/button_submit_register"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="250dp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginBottom="200dp"
                     android:background="@drawable/custom_button"
                     android:gravity="center"
                     android:text="회원가입"
