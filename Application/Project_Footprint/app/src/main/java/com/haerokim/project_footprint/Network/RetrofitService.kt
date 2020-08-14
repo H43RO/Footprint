@@ -86,14 +86,14 @@ interface RetrofitService {
 
     // 사용자 탈퇴
     @FormUrlEncoded
-    @DELETE("userinfo/{userID}/delete")
+    @DELETE("userinfo/{userID}/delete/")
     fun withDrawUser(
         @Field("userID") userID: Int
     ): Call<String> //Response : Status Code
 
     // 회원 가입 : 수정 예정
     @FormUrlEncoded
-    @POST("/api/v1/accounts/register")
+    @POST("/api/v1/accounts/register/")
     fun registerUser(
         @Body body: RegisterForm
     ): Call<User> //Response : Status Code
