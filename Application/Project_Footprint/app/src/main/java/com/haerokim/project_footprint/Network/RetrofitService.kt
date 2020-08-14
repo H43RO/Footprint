@@ -84,17 +84,24 @@ interface RetrofitService {
     @GET("api/noticelist/")
     fun requestNoticeList(): Call<ArrayList<Notice>>
 
-    /** 미 대응 API**/
-
-    @Multipart
-    // History Image Upload
-
     // 사용자 탈퇴
     @FormUrlEncoded
     @DELETE("userinfo/{userID}/delete")
     fun withDrawUser(
         @Field("userID") userID: Int
     ): Call<String> //Response : Status Code
+
+    // 회원 가입 : 수정 예정
+    @FormUrlEncoded
+    @POST("/api/v1/accounts/register")
+    fun registerUser(
+        @Body body: RegisterForm
+    ): Call<User> //Response : Status Code
+
+    /** 미 대응 API**/
+
+    @Multipart
+    // History Image Upload
 
 
     // 히스토리 삭제 : 수정 예정
@@ -104,10 +111,5 @@ interface RetrofitService {
         @Field("historyID") historyID: String
     ): Call<String> //Response : Status Code
 
-    // 회원 가입 : 수정 예정
-    @FormUrlEncoded
-    @POST("/api/register")
-    fun registerUser(
-        @Field("name") name: String
-    ): Call<String> //Response : Status Code
+
 }
