@@ -14,13 +14,14 @@ from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
-    CheckPasswordForm, UserPasswordUpdateForm
+
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place, Notice
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
+
 import requests
 from django.template import loader
 from django.core.mail import send_mail, BadHeaderError
@@ -28,6 +29,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.contrib.auth.tokens import default_token_generator
+from django.template import loader
 
 
 def index(request):
@@ -76,7 +78,6 @@ def signin(request):
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
-            print(0)
             messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
             return HttpResponseRedirect('../signin/')
 
@@ -256,6 +257,23 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
+def api_password_reset(request):
+    user_id = request.GET.get('user_id')
+    timestamp = request.GET.get('timestamp')
+    signature = request.GET.get('signature')
+    form_class = ApiPasswordResetForm
+    form = form_class(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            password = request.POST.get('new_password2')
+            response_message = requests.post('http://127.0.0.1:8000/api/v1/accounts/reset-password/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature, 'password' : password })  
+            if response_message.status_code == 200:
+                return HttpResponseRedirect('../signin/') 
+            else:
+                template = loader.get_template("user_password_find_error.html")
+                res_text = response_message.text
+                return HttpResponse(template.render({"data" : res_text}))
+    return render(request, 'user_password_find.html', {'form' : form })
 
 def user_password_find(request):
     if request.method == "POST":
@@ -298,5 +316,3 @@ def noticelist(request):
 def noticeview(request, id):
     notices = Notice.objects.get(id=id)
     return render(request, 'notice_view.html', {'notices': notices})
-
-
