@@ -50,7 +50,6 @@ class DateHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         text_date_no_data.visibility = View.GONE
 
-
         val config: RealmConfiguration = RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
             .build()
