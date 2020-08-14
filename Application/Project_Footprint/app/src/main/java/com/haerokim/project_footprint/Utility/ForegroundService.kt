@@ -106,24 +106,17 @@ class ForegroundService : Service(), BeaconConsumer {
                 for (beacon in beaconList) {
                     // 지나가는 장소 ( 주변에 있는 장소 )
                     if (beacon.distance in 0..80 && beacon.id1.toString() !in alreadyNotifiedPlace) {
-
                         alreadyNotifiedPlace.add(beacon.id1.toString()) //이미 Notification 한 장소 리스트에 등록
                         Log.d("beacon_scanned", beacon.id1.toString())
 
                         // 모듈의 UUID 통해서 Naver Place ID 얻어옴
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
                             .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
-                                override fun onFailure(
-                                    call: Call<ArrayList<NaverPlaceID>>,
-                                    t: Throwable
-                                ) {
+                                override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
                                     Log.e("Retrofit_Error", t.message)
                                 }
 
-                                override fun onResponse(
-                                    call: Call<ArrayList<NaverPlaceID>>,
-                                    response: Response<ArrayList<NaverPlaceID>>
-                                ) {
+                                override fun onResponse(call: Call<ArrayList<NaverPlaceID>>, response: Response<ArrayList<NaverPlaceID>>) {
                                     var id = response.body()
                                     realm.executeTransaction {
                                         with(it.createObject(VisitedPlace::class.java)) {
@@ -132,16 +125,10 @@ class ForegroundService : Service(), BeaconConsumer {
                                         }
                                     }
 
-                                    Log.d(
-                                        "Foreground_GetPlaceInfo",
-                                        "감지된 장소 : " + id?.get(0)?.naver_place_id
-                                    )
+                                    Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id?.get(0)?.naver_place_id)
                                     // 특정 장소 근접 시 해당 장소에 대한 정보 푸시알림
                                     id?.get(0)?.naver_place_id.let {
-                                        ShowPlaceInfo(
-                                            applicationContext,
-                                            it!!
-                                        ).notifyInfo("nearPlace")
+                                        ShowPlaceInfo(applicationContext, it!!).notifyInfo("nearPlace")
                                     }
                                 }
                             })
@@ -151,36 +138,35 @@ class ForegroundService : Service(), BeaconConsumer {
                         alreadyVisitedPlace.add(beacon.id1.toString()) //이미 방문한 장소 리스트에 등록
                         // '장소 방문'으로 감지했을 때 History POST (거리 6m 이내로 가정)
                         Log.d("beacon_near_by", beacon.id1.toString())
-                        var naverPlaceID: String? = null
+                        var naverPlaceID: String?
+                        retrofitService.requestNaverPlaceID(beacon.id1.toString())
+                            .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
+                                override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
+                                    Log.e("Retrofit_Error", t.message)
+                                }
 
-                        // Beacon UUID를 통해서 Naver Place ID를 가져옴
-                        realm.executeTransaction {
-                            val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java)
-                                .equalTo("beaconUUID", beacon.id1.toString()).findFirst()
-                            naverPlaceID = visitedPlace!!.naverPlaceID
-                        }
+                                override fun onResponse(call: Call<ArrayList<NaverPlaceID>>, response: Response<ArrayList<NaverPlaceID>>) {
+                                    var id = response.body()
 
-                        ShowPlaceInfo(applicationContext, naverPlaceID!!).notifyInfo("visitedPlace")
+                                    naverPlaceID = id?.get(0)?.naver_place_id
 
-                        //History POST API 대응 : NaverPlaceID와 사용자 ID로 History 생성
-                        naverPlaceID?.let {
-                            retrofitService.createRealVisitHistory(it, user.id)
-                                .enqueue(object : retrofit2.Callback<History> {
-                                    override fun onFailure(call: Call<History>, t: Throwable) {
-                                        Log.e("Upload Error", t.message)
+                                    ShowPlaceInfo(applicationContext, naverPlaceID!!).notifyInfo("visitedPlace")
+
+                                    //History POST API 대응 : NaverPlaceID와 사용자 ID로 History 생성
+                                    naverPlaceID?.let {
+                                        retrofitService.createRealVisitHistory(it, user.id)
+                                            .enqueue(object : retrofit2.Callback<History> {
+                                                override fun onFailure(call: Call<History>, t: Throwable) {
+                                                    Log.e("Upload Error", t.message)
+                                                }
+
+                                                override fun onResponse(call: Call<History>, response: Response<History>) {
+                                                    Log.d("Foreground_HistoryCreate", "업로드 된 장소 : $naverPlaceID")
+                                                }
+                                            })
                                     }
-
-                                    override fun onResponse(
-                                        call: Call<History>,
-                                        response: Response<History>
-                                    ) {
-                                        Log.d(
-                                            "Foreground_HistoryCreate",
-                                            "업로드 된 장소 : $naverPlaceID"
-                                        )
-                                    }
-                                })
-                        }
+                                }
+                            })
                     }
                 }
                 this.sendEmptyMessageDelayed(0, 1000)

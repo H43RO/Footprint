@@ -99,8 +99,8 @@ class TodayHistoryFragment : Fragment() {
                         historyList = response.body()!!
                         for (history in historyList) {
                             realm.executeTransaction {
-                                val visitedPlace: VisitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                history.place = visitedPlace.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                                val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
                             }
                         }
                         loading_today_history.visibility = View.GONE
