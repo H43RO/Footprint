@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.haerokim.project_footprint.Activity.HistoryDetailActivity
-import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.Notice
 import com.haerokim.project_footprint.R
-import kotlinx.android.synthetic.main.history_item.view.*
 import kotlinx.android.synthetic.main.notice_item.view.*
 import java.text.SimpleDateFormat
 
@@ -38,7 +36,14 @@ class NoticeListAdapter(private val noticeList: ArrayList<Notice>, private val c
         val noticeCreatedAt = noticeCreatedFormat.format(noticeList[position].created_at)
 
         holder.view.setOnClickListener {
+            var bundle = bundleOf(
+                "notice_title" to noticeList[position].title,
+                "notice_content" to noticeList[position].contents,
+                "notice_date" to noticeCreatedAt
+            )
 
+            it.findNavController()
+                .navigate(R.id.action_navigation_notice_to_navigation_notice_detail, bundle)
         }
 
         holder.view.text_notice_title.text = noticeList[position].title
