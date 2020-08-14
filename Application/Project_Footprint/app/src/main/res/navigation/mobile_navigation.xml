@@ -63,7 +63,7 @@
         android:id="@+id/navigation_notice"
         android:name="com.haerokim.project_footprint.ui.notice.NoticeFragment"
         android:label="공지사항"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_notice" />
 
     <fragment
         android:id="@+id/navigation_edit_profile"

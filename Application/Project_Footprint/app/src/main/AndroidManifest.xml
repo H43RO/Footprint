@@ -31,6 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".Activity.HistoryEditActivity"></activity>
         <activity android:name=".Activity.HistoryDetailActivity"></activity>
         <activity android:name=".Activity.WithdrawActivity" />

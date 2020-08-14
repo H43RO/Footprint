@@ -81,6 +81,9 @@ interface RetrofitService {
         @Body body: UpdateHistory
     ): Call<History>
 
+    @GET("api/noticelist/")
+    fun requestNoticeList(): Call<ArrayList<Notice>>
+
     /** 미 대응 API**/
 
     @Multipart

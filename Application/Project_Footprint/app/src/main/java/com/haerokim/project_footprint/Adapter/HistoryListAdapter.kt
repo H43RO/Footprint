@@ -15,11 +15,12 @@ import kotlinx.android.synthetic.main.history_item.view.*
 import java.text.SimpleDateFormat
 
 class HistoryListAdapter(
-    private val historyList: ArrayList<History>, private val context: Context
-) :
-    RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
+    private val historyList: ArrayList<History>,
+    private val context: Context
+) : RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.history_item, parent, false)
@@ -60,13 +61,14 @@ class HistoryListAdapter(
             intent.putExtras(bundle)
             context.startActivity(intent)
         }
-        holder.view.text_history_title.text = historyList[position].title ?: historyList[position].place + "에서의 추억"
+        holder.view.text_history_title.text =
+            historyList[position].title ?: historyList[position].place + "에서의 추억"
         holder.view.text_history_detail.text =
             historyList[position].place + "에서, " + historyCreatedAt
 
-        if(historyList[position].img == null){
+        if (historyList[position].img == null) {
             holder.view.image_history.visibility = View.GONE
-        }else{
+        } else {
             Glide.with(holder.view) // 확인 필요
                 .load(historyList[position].img)
                 .centerCrop()
