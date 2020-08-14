@@ -257,7 +257,6 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
-<<<<<<< HEAD
 def api_password_reset(request):
     user_id = request.GET.get('user_id')
     timestamp = request.GET.get('timestamp')
