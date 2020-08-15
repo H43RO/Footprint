@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.History
@@ -19,6 +20,7 @@ import com.haerokim.project_footprint.DataClass.UpdateHistory
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
+import com.haerokim.project_footprint.ui.history.WholeHistoryFragment
 import kotlinx.android.synthetic.main.activity_history_detail.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,6 +38,7 @@ class HistoryDetailActivity : AppCompatActivity() {
 //            TODO ("나머지 2개 Extra 미구현")
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_detail)
