@@ -31,7 +31,7 @@ class PlaceAdmin(admin.ModelAdmin):
     list_display_links = ('title', 'naver_place_id', 'beacon_uuid')
     list_filter = ('place_div',)
     search_fields = ('title', 'naver_place_id', 'beacon_uuid')
-    ordering = ('-beacon_uuid', 'title', )
+    ordering = ('-beacon_uuid', 'title', '-count',)
 
     actions = ['']
 
