@@ -37,6 +37,7 @@ class KeywordHistoryFragment : Fragment() {
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     var historyList: ArrayList<History> = ArrayList()
+    var responseBody: ArrayList<History> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +49,20 @@ class KeywordHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewManager = LinearLayoutManager(context)
+        viewAdapter = HistoryListAdapter(
+            historyList,
+            requireContext()
+        )
+
+        recyclerView =
+            view.findViewById<RecyclerView>(R.id.keyword_history_list)
+                .apply {
+                    setHasFixedSize(true)
+                    layoutManager = viewManager
+                    adapter = viewAdapter
+                }
+
         // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
         Realm.init(context)
         val config: RealmConfiguration = RealmConfiguration.Builder()
@@ -57,6 +72,7 @@ class KeywordHistoryFragment : Fragment() {
         var realm = Realm.getDefaultInstance()
 
         text_keyword_no_data.visibility = View.GONE
+        loading_keyword_history.visibility = View.GONE
 
         var userInputKeyword: String
         var user: User = Paper.book().read("user_profile")
@@ -75,8 +91,6 @@ class KeywordHistoryFragment : Fragment() {
             .build()
 
         var getKeywordHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-        loading_keyword_history.visibility = View.GONE
 
         edit_text_keyword.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN && edit_text_keyword.text.toString() != "") {
@@ -100,6 +114,7 @@ class KeywordHistoryFragment : Fragment() {
                             call: Call<ArrayList<History>>,
                             response: Response<ArrayList<History>>
                         ) {
+                            historyList.clear()
                             if (response.body()?.size == 0) {
                                 keyword_history_list.visibility = View.GONE
                                 text_keyword_no_data.visibility = View.VISIBLE
@@ -107,28 +122,16 @@ class KeywordHistoryFragment : Fragment() {
                             } else {
                                 text_keyword_no_data.visibility = View.GONE
 
-                                historyList = response.body()!!
-                                for (history in historyList) {
+                                responseBody = response.body()!!
+                                for (history in responseBody) {
                                     realm.executeTransaction {
                                         val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
                                         history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
                                     }
                                 }
+                                historyList.addAll(responseBody)
+                                viewAdapter.notifyDataSetChanged()
                                 loading_keyword_history.visibility = View.GONE
-
-                                viewManager = LinearLayoutManager(context)
-                                viewAdapter = HistoryListAdapter(
-                                    historyList,
-                                    requireContext()
-                                )
-
-                                recyclerView =
-                                    view.findViewById<RecyclerView>(R.id.keyword_history_list)
-                                        .apply {
-                                            setHasFixedSize(true)
-                                            layoutManager = viewManager
-                                            adapter = viewAdapter
-                                        }
                             }
                         }
                     })
@@ -139,9 +142,7 @@ class KeywordHistoryFragment : Fragment() {
             } else {
                 false
             }
-
         }
-
     }
 }
 
