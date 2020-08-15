@@ -79,7 +79,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (userGender == null) Toast.makeText(this, "성별을 선택해주세요", Toast.LENGTH_LONG).show()
                 if (register_nickname.text.isEmpty()) register_nickname.setError("닉네임을 입력해주세요")
 
-            } else if (register_password.text != register_password_confirm.text) {
+            } else if (register_password.text.toString() != register_password_confirm.text.toString()) {
                 register_password.setError("비밀번호가 서로 일치하지 않습니다")
                 register_password_confirm.setError("비밀번호가 서로 일치하지 않습니다")
 
@@ -124,7 +124,6 @@ class RegisterActivity : AppCompatActivity() {
                         Log.e("Register Error", t.message)
                     }
                     override fun onResponse(call: Call<User>, response: Response<User>) {
-                        val user: User = response.body()!!
                         if (response.code() == 400) {
                             register_email.setError("이미 가입된 이메일 입니다.")
                             Toast.makeText(applicationContext, "이미 가입된 이메일 입니다", Toast.LENGTH_LONG).show()

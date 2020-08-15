@@ -92,7 +92,6 @@ interface RetrofitService {
     ): Call<String> //Response : Status Code
 
     // 회원 가입 : 수정 예정
-    @FormUrlEncoded
     @POST("/api/v1/accounts/register/")
     fun registerUser(
         @Body body: RegisterForm

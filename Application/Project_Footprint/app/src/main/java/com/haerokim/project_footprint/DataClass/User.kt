@@ -11,5 +11,6 @@ class User(
     val nickname: String,
     val age: Int,
     val gender: Int,
-    val token: String
+    val token: String,
+    val detail: String? = null
 )
