@@ -74,17 +74,23 @@ class LoginActivity : AppCompatActivity() {
                         override fun onFailure(call: Call<User>, t: Throwable) {
                             Log.e("login error", t.message)
                         }
-
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
-                            if (response.body()?.token == null) {
-                                Log.e("login error", "실패")
+                            if (response.body()?.detail == "Login or password invalid." && response.code() == 400) {
+                                Log.e("login error", "Password Invalid")
                                 Toast.makeText(
                                     applicationContext,
                                     "이메일 및 비밀번호를 다시 확인해주세요",
                                     Toast.LENGTH_LONG
                                 ).show()
-                            } else {
+                            } else if(response.body()?.detail == "This user is not activated." && response.code() == 400){
+                                Log.e("login error", "Not activated")
+                                Toast.makeText(
+                                    applicationContext,
+                                    "이메일 인증을 완료해주세요",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }  else if(response.code() == 200) {
                                 Paper.book().write("user_profile", response.body())
                                 Log.d("login success", response.body()?.nickname)
                                 //자동 로그인을 위한 SharedPreference 적용
