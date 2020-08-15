@@ -89,18 +89,22 @@ interface RetrofitService {
     @DELETE("userinfo/{userID}/delete/")
     fun withDrawUser(
         @Field("userID") userID: Int
-    ): Call<String> //Response : Status Code
+    ): Call<String>
 
-    // 회원 가입 : 수정 예정
+    // 회원 가입
     @POST("/api/v1/accounts/register/")
     fun registerUser(
         @Body body: RegisterForm
-    ): Call<User> //Response : Status Code
+    ): Call<User>
+
+    @FormUrlEncoded
+    @POST("/api/v1/accounts/send-reset-password-link/")
+    fun resetPassword(
+        @Field("email") email: String
+    ): Call<String>
+
 
     /** 미 대응 API**/
-
-    @Multipart
-    // History Image Upload
 
 
     // 히스토리 삭제 : 수정 예정
