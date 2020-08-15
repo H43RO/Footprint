@@ -85,10 +85,9 @@ interface RetrofitService {
     fun requestNoticeList(): Call<ArrayList<Notice>>
 
     // 사용자 탈퇴
-    @FormUrlEncoded
     @DELETE("userinfo/{userID}/delete/")
     fun withDrawUser(
-        @Field("userID") userID: Int
+        @Path("userID") userID: Int
     ): Call<String>
 
     // 회원 가입
@@ -97,22 +96,18 @@ interface RetrofitService {
         @Body body: RegisterForm
     ): Call<User>
 
+    // 비밀번호 초기화
     @FormUrlEncoded
     @POST("/api/v1/accounts/send-reset-password-link/")
     fun resetPassword(
         @Field("email") email: String
     ): Call<String>
 
-
-    /** 미 대응 API**/
-
-
-    // 히스토리 삭제 : 수정 예정
-    @FormUrlEncoded
-    @POST("/api/delete-history")
+    // 히스토리 삭제
+    @DELETE("/api/histories/{historyID}/delete/")
     fun deleteHistory(
-        @Field("historyID") historyID: String
-    ): Call<String> //Response : Status Code
+        @Path("historyID") historyID: Int
+    ): Call<String>
 
 
 }
