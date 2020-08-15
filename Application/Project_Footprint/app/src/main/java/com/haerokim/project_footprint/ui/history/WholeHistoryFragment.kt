@@ -45,7 +45,7 @@ class WholeHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Paper.init(context)
         text_whole_no_data.visibility = View.GONE
 
         // Realm을 활용해 장소의 정보를 Local에 저장하게 됨
@@ -84,6 +84,7 @@ class WholeHistoryFragment : Fragment() {
                     text_whole_no_data.visibility = View.VISIBLE
                     text_whole_no_data.text = "정보를 가져오지 못했습니다"
                 }
+
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
                     response: Response<ArrayList<History>>
@@ -98,8 +99,11 @@ class WholeHistoryFragment : Fragment() {
                         historyList = response.body()!!
                         for (history in historyList) {
                             realm.executeTransaction {
-                                val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                                val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java)
+                                    .equalTo("naverPlaceID", history.place).findFirst()
+                                history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(
+                                    history.place
+                                ).execute().get()
                             }
                         }
 

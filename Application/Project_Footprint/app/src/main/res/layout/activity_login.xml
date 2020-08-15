@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/register_background"
-    android:padding="40dp"
     android:orientation="vertical"
+    android:padding="40dp"
     tools:context=".Activity.LoginActivity">
 
     <ImageView
@@ -61,20 +61,21 @@
 
     <TextView
         android:id="@+id/text_go_to_reset_password"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textColor="#fff"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="비밀번호를 잊으셨나요?"/>
+        android:text="비밀번호를 잊으셨나요?"
+        android:textColor="#fff" />
 
     <TextView
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:textColor="#fff"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="아직 계정이 없으신가요?"/>
+        android:layout_height="20dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="아직 계정이 없으신가요?"
+        android:textColor="#fff" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_register"
