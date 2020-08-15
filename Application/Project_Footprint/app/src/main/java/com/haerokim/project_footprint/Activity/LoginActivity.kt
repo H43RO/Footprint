@@ -76,14 +76,14 @@ class LoginActivity : AppCompatActivity() {
                         }
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
-                            if (response.body()?.detail == "Login or password invalid." && response.code() == 400) {
+                            if (response.code() == 400) {
                                 Log.e("login error", "Password Invalid")
                                 Toast.makeText(
                                     applicationContext,
                                     "이메일 및 비밀번호를 다시 확인해주세요",
                                     Toast.LENGTH_LONG
                                 ).show()
-                            } else if(response.body()?.detail == "This user is not activated." && response.code() == 400){
+                            } else if(response.code() == 404){
                                 Log.e("login error", "Not activated")
                                 Toast.makeText(
                                     applicationContext,
