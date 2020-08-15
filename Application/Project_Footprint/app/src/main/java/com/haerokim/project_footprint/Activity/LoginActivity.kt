@@ -108,6 +108,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        text_go_to_reset_password.setOnClickListener{
+            startActivity(Intent(this, PasswordResetActivity::class.java))
+        }
+
         button_register.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
