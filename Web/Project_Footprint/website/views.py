@@ -33,9 +33,12 @@ from django.template import loader
 
 
 def index(request):
-    sights = Place.objects.filter(place_div=0)
-    restaurants = Place.objects.filter(place_div=1)
-    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants})
+    sights = Place.objects.filter(place_div=0).order_by('-count')[:4]
+    restaurants = Place.objects.filter(place_div=1).order_by('-count')[:4]
+    places = Place.objects.all()
+    place_count = History.objects.all()
+
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'place_count': place_count, 'places': places})
 
 
 def list(request):
@@ -124,10 +127,17 @@ def myinfo(request):
 
 
 def place_list(request):
-    context = {
-        'places': Place.objects.all()
-    }
-    return render(request, 'place_list.html', context)
+    places = Place.objects.all()
+    histories = History.objects.all()
+    return render(request, 'place_list.html', {'places':places, 'histories': histories})
+
+
+def place_detail(request, id):
+    if id is not None:
+        item = get_object_or_404(Place, pk=id)
+        cnt = History.objects.filter(place=item).all()
+        return render(request, 'place_detail.html', {'item': item, 'cnt':cnt})
+    return HttpResponseRedirect('index/')
 
 
 def place_register(request):
@@ -155,14 +165,14 @@ def place_sights(request):
 
 
 def place_search(request):
-    place_search = Place.objects.all().order_by('-id')
+    place_search = Place.objects.all()
     q = request.POST.get('q', "")
 
     if q:
         place_search = place_search.filter(title__icontains=q)
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
-        return render(request,'place_search.html')
+        return render(request, 'place_search.html')
 
 
 def history(request):
