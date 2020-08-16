@@ -1,36 +1,123 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<div class="container">
-    <h1>History</h1>
-    <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
-    {% for item in historys %}
-
-    <div class="row restaurant-item" style="margin:20px auto;">
-        <div class="col-sm-12">
-            <div class="card border-secondary">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ item.mood }}</h6>
-                    <p class="card-text">{{ item.place }}</p>
-                    <p class="card-text">{{ item.custom_place }}</p>
-                    <p class="card-text">{{item.comment|linebreaksbr}}</p>
+<div class="history-list">
+    <div class="left" >
+        <div class="container">
+            <h1 style="margin-left:50px">History</h1>
+            <a href="{% url 'history-create' %}" class="card-link" style="margin-left:50px" >일기 작성</a>
+            {% for item in historys %}
+            <div class="card-body">
+                <div class="card" onclick="myFunction({{item.id}})" style="width: 22rem; margin:auto; border-radius: 30px;">
                     {% if item.img %}
-                    <img class="card-img" src="{{ item.img.url }}" , alt="">
+                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
                     {% endif %}
-                    <a href="{% url 'history-update' %}?id={{ item.id }}" class="card-link">수정하기</a>
+                    <div style="margin-left:20px">
+                    <p class="card-text">
+                        {%if item.title %}
+                    <h5 class="card-title" id="title{{item.id}}" style="font-family: 'Nanum Myeongjo', serif;">{{ item.title }}</h5>
+                    {% endif %}
+                    </p>
+                    {%if item.mood %}
+                    <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
+                    {% endif %}
+                    {%if item.place %}
+                    <p class="card-text" id="place{{item.id}}">{{ item.place }}</p>
+                    {% endif %}
+                    {%if item.custom_place %}
+                    <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
+                    {% endif %}
+                    {%if item.comment %}
+                    <p class="card-text" id="comment{{item.id}}" style="display: none">{{ item.comment|linebreaksbr }}</p>
+                    {% endif %}
+                    <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
+                        <form action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-light">수정</button>
+                        </form>
+
                     <form action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
                         {% csrf_token %}
                         <script>
-                            function myFunction() {
-                            alert("Really?");
-                            }
+                                                function Function() {
+                                                alert("Really?");
+                                                }
+
                         </script>
-                        <button type="submit" onclick="myFunction()">삭제</button>
+                        <button type="submit" class="btn btn-light" onclick="Function()">삭제</button>
                     </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="card mb-3" style="max-width: 550px; margin:auto; margin-top: 10%; border-radius: 30px;">
+            <div class="row no-gutters">
+                <img class="ard-img-top" style="width: 550px; height: 550px; margin:auto; border-top-left-radius: 2em; border-top-right-radius: 2em; " id=img src="../static/logo2.png" , alt="">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body" style="margin-left:20px; width: 480px;">
+                    <h5 class="card-title" style="font-family: 'Nanum Myeongjo', serif;">
+                        <p id="demo-title"></p>
+                    </h5>
+                    <p id="demo-mood"></p>
+                    <p class="card-text" id="demo-comment"></p>
+                    <p id="demo-place"></p>
+                    <p id="demo-custom-place"></p>
+                    <p class="card-text"><small class="text-muted" id="demo-create-at"></small></p>
+
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% endblock %}
+</div>
+                <script>
+                        function myFunction(id) {
+                            if(document.getElementById("title" + id) != null){
+                                var title = document.getElementById("title" + id).textContent;
+                            }
+                            var mood = document.getElementById("mood" + id).textContent;
+                            if(document.getElementById("image" + id) != null){
+                                var image = document.getElementById("image" + id).src;
+                                document.getElementById("img").src = image;
+                            }else{
+                                document.getElementById("img").src="../static/logo3.png";
+                            }
+                            if(document.getElementById("comment" + id) != null){
+                                var comment = document.getElementById("comment" + id).textContent;
+                            }
+                            if (document.getElementById("place" + id) != null){
+                                var place = document.getElementById("place" + id).textContent;
+                            }
+                            if (document.getElementById("custom-place" + id) != null){
+                                var customplace = document.getElementById("custom-place" + id).textContent;
+                            }
+                            var create = document.getElementById("created-at" + id).textContent;
+                            if(title != null){
+                                document.getElementById("demo-title").innerHTML = title;
+                            }else{
+                                document.getElementById("demo-title").innerHTML = " ";
+                            }
+                            document.getElementById("demo-mood").innerHTML = mood;
+                            if(comment != null){
+                                document.getElementById("demo-comment").innerHTML = comment;
+                            }else{
+                                document.getElementById("demo-comment").innerHTML = "";
+                            }
+                            if(place != null){
+                                document.getElementById("demo-place").innerHTML = place;
+                            }else{
+                                document.getElementById("demo-place").innerHTML = "";
+                            }
+                            if(customplace != null){
+                                document.getElementById("demo-custom-place").innerHTML = customplace;
+                            }else{
+                                document.getElementById("demo-comment").innerHTML = "";
+                            }
+                            document.getElementById("demo-create-at").innerHTML = create;
+                        }
+                </script>
+{% endblock %}

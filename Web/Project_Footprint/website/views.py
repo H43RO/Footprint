@@ -218,7 +218,7 @@ def history_update(request):
             item = form.save()
     elif 'id' in request.GET:
         item = get_object_or_404(History, pk=request.GET.get('id'))
-        form = HistoryForm(instance=item)
+        form = HistoryForm(request.FILES, instance=item)
         form.password = ''  # password 데이터를 비웁니다.
         return render(request, 'history_update.html', {'form': form})
     return HttpResponseRedirect("../")
