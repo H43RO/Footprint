@@ -258,6 +258,7 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user, request.POST)
         try:
             if form.is_valid():
+                user = form.save()
                 update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
                 return redirect('../index')
         except ValidationError as e:
