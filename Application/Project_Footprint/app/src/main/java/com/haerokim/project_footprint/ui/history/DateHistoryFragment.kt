@@ -34,6 +34,7 @@ class DateHistoryFragment : Fragment() {
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     var historyList: ArrayList<History> = ArrayList()
+    var responseBody: ArrayList<History> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +49,22 @@ class DateHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        text_date_no_data.visibility = View.GONE
 
+        viewManager = LinearLayoutManager(context)
+        viewAdapter = HistoryListAdapter(
+            historyList,
+            requireContext()
+        )
+
+        recyclerView =
+            view.findViewById<RecyclerView>(R.id.date_history_list).apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+
+        text_date_no_data.visibility = View.GONE
+        loading_date_history.visibility = View.GONE
 
         val config: RealmConfiguration = RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
@@ -68,8 +83,6 @@ class DateHistoryFragment : Fragment() {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         var getDateHistory: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-        loading_date_history.visibility = View.GONE
 
         calendar.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
             selectDate = "" + year + "-" + (month + 1) + "-" + dayOfMonth
@@ -91,6 +104,7 @@ class DateHistoryFragment : Fragment() {
                         call: Call<ArrayList<History>>,
                         response: Response<ArrayList<History>>
                     ) {
+                        historyList.clear()
                         text_date_no_data.visibility = View.GONE
 
                         if (response.body()?.size == 0 || response.body() == null) {
@@ -102,27 +116,18 @@ class DateHistoryFragment : Fragment() {
                             TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
                         } else {
                             date_history_list.visibility = View.VISIBLE
-                            historyList = response.body()!!
-                            for (history in historyList) {
-                                realm.executeTransaction {
-                                    val visitedPlace: VisitedPlace = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                    history.place = visitedPlace.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                            responseBody = response.body()!!
+                            for (history in responseBody) {
+                                if(history.place != null) { // place가 null이면 임의로 생성한 history이므로 이름 변환 과정을 건너뜀
+                                    realm.executeTransaction {
+                                        val visitedPlace: VisitedPlace? =
+                                            it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                        history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place!!).execute().get()
+                                    }
                                 }
                             }
+                            historyList.addAll(responseBody)
                             loading_date_history.visibility = View.GONE
-
-                            viewManager = LinearLayoutManager(context)
-                            viewAdapter = HistoryListAdapter(
-                                historyList,
-                                requireContext()
-                            )
-
-                            recyclerView =
-                                view.findViewById<RecyclerView>(R.id.date_history_list).apply {
-                                    setHasFixedSize(true)
-                                    layoutManager = viewManager
-                                    adapter = viewAdapter
-                                }
 
                             TransitionManager.beginDelayedTransition(card_calendar, AutoTransition())
                             TransitionManager.beginDelayedTransition(layout_list, AutoTransition())

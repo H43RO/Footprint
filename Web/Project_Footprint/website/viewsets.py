@@ -108,3 +108,8 @@ class HistoryViewSet(viewsets.ModelViewSet):
 class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
+
+
+class ApiHotPlace(viewsets.ModelViewSet):
+    queryset = Place.objects.order_by('-count')[:5]
+    serializer_class = PlaceSerializer

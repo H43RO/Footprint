@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/register_background"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="24dp"
+    android:paddingRight="16dp"
+    tools:context=".Activity.RegisterActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="50dp"
+        android:text="회원가입"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"
+        android:text="하루를 기록하고, 하루를 돌아보며\n당신만의 기록을 남겨보세요."
+        android:textColor="#B3FFFFFF"
+        android:textSize="20sp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="20dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="이메일"
+                    android:textColor="#434343"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="로그인 시 사용할 이메일 주소를 입력해주세요"
+                    android:textColor="#434343"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_input_register"
+                    android:ems="10"
+                    android:hint="이메일을 입력해주세요"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="24dp"
+                    android:text="비밀번호"
+                    android:textColor="#434343"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="8 ~ 25자 이내의 비밀번호를 설정해주세요"
+                    android:textColor="#434343"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/register_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_input_register"
+                    android:ems="10"
+                    android:hint="비밀번호를 입력해주세요"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/register_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/custom_input_register"
+                    android:ems="10"
+                    android:hint="비밀번호를 다시 한 번 입력해주세요"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="24dp"
+                    android:text="생년월일"
+                    android:textColor="#434343"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="YYYY-MM-DD 형식으로 입력해주세요"
+                    android:textColor="#434343"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/register_birth_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_input_register"
+                    android:ems="10"
+                    android:hint="생년월일을 입력해주세요"
+                    android:paddingStart="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="24dp"
+                    android:text="성별"
+                    android:textColor="#434343"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="성별을 선택해주세요"
+                    android:textColor="#434343"
+                    android:textSize="15sp" />
+
+                <RadioGroup
+                    android:id="@+id/register_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/male"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="남자" />
+
+                    <RadioButton
+                        android:id="@+id/female"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="여자" />
+
+                    <RadioButton
+                        android:id="@+id/non_specified"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="중성" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="닉네임"
+                    android:textColor="#434343"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="귀엽고 멋진 닉네임을 설정해주세요"
+                    android:textColor="#434343"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/register_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_input_register"
+                    android:ems="10"
+                    android:hint="닉네임을 입력해주세요"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="16dp"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_submit_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginBottom="200dp"
+                    android:background="@drawable/custom_button"
+                    android:gravity="center"
+                    android:text="회원가입"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

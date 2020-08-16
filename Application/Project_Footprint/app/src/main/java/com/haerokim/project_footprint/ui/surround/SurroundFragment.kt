@@ -31,7 +31,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SurroundFragment : Fragment() {
-
     var surroundBeaconList: ArrayList<kotlin.String> = ArrayList()
     var tempBeaconList: ArrayList<kotlin.String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()

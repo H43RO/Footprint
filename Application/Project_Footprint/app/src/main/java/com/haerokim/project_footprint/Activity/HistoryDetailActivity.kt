@@ -1,14 +1,32 @@
 package com.haerokim.project_footprint.Activity
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.gson.GsonBuilder
+import com.haerokim.project_footprint.DataClass.History
+import com.haerokim.project_footprint.DataClass.UpdateHistory
+import com.haerokim.project_footprint.Network.RetrofitService
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
+import com.haerokim.project_footprint.ui.history.WholeHistoryFragment
 import kotlinx.android.synthetic.main.activity_history_detail.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class HistoryDetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -20,10 +38,10 @@ class HistoryDetailActivity : AppCompatActivity() {
 //            TODO ("나머지 2개 Extra 미구현")
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_detail)
-
         val historyInfo: Bundle? = intent.extras
 
         var historyID = historyInfo?.getInt("id")
@@ -47,14 +65,25 @@ class HistoryDetailActivity : AppCompatActivity() {
         }
 
         text_history_detail_title.text = historyTitle
-        text_history_detail_place.text = historyPlaceTitle
+        text_history_detail_place.text = historyPlaceTitle + "에서"
         text_history_detail_time.text = historyCreatedAt
         text_history_detail_content.text = historyComment
+
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd")
+            .create()
+
+        var retrofit = Retrofit.Builder()
+            .baseUrl(Website.BASE_URL) //사이트 Base URL
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        var deleteHistoryService: RetrofitService =
+            retrofit.create(RetrofitService::class.java)
 
         button_history_detail_action.setOnClickListener {
             val popup: PopupMenu = PopupMenu(this, it)
             popup.inflate(R.menu.history_menu)
-            // 기본 이미지로 변경할 건지, 갤러리 및 촬영 사진으로 변경할 것인
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.edit_history -> {
@@ -70,7 +99,41 @@ class HistoryDetailActivity : AppCompatActivity() {
                     }
 
                     R.id.delete_history -> {
+                        val builder: AlertDialog.Builder =
+                            AlertDialog.Builder(this)
+                        builder.setTitle("발자취 삭제")
+                        builder.setMessage("정말 삭제하겠습니까?")
+                        builder.setPositiveButton("예",
+                            DialogInterface.OnClickListener { dialog, which ->
+                                deleteHistoryService.deleteHistory(historyID!!).enqueue(object: Callback<String>{
+                                    override fun onFailure(call: Call<String>, t: Throwable) {
+                                        Log.e("Delete History Error", t.message)
+                                    }
 
+                                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                                        if(response.code() == 204){
+                                            Toast.makeText(applicationContext, "삭제되었습니다", Toast.LENGTH_LONG).show()
+                                            finish()
+                                        }else{
+                                            Log.d("Delete History Error", "삭제 실패")
+                                            Toast.makeText(applicationContext, "삭제에 실패했습니다", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                })
+
+                            })
+                        builder.setNegativeButton("아니오",
+                            DialogInterface.OnClickListener { dialog, which ->
+                            })
+                        val alertDialog = builder.create()
+                        alertDialog.show()
+                        val view: ViewGroup.MarginLayoutParams =
+                            alertDialog.getButton(Dialog.BUTTON_POSITIVE).layoutParams as ViewGroup.MarginLayoutParams
+                        view.leftMargin = 16
+                        alertDialog.getButton(Dialog.BUTTON_NEGATIVE)
+                            .setBackgroundColor(Color.parseColor("#e8e8e8"))
+                        alertDialog.getButton(Dialog.BUTTON_NEGATIVE)
+                            .setTextColor(Color.parseColor("#000000"))
                     }
                 }
                 true
