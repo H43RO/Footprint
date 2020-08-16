@@ -1,5 +1,6 @@
 package com.haerokim.project_footprint.ui.history
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
+import com.haerokim.project_footprint.Activity.HistoryWriteActivity
 import com.haerokim.project_footprint.Adapter.HistoryListAdapter
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.User
@@ -67,6 +69,10 @@ class TodayHistoryFragment : Fragment() {
                 layoutManager = viewManager
                 adapter = viewAdapter
             }
+
+        button_write_history.setOnClickListener {
+            startActivity(Intent(requireContext(), HistoryWriteActivity::class.java))
+        }
     }
 
     fun getTodayHistoryList(){
@@ -120,9 +126,12 @@ class TodayHistoryFragment : Fragment() {
                         today_history_list.visibility = View.VISIBLE
                         responseBody = response.body()!!
                         for (history in responseBody) {
-                            realm.executeTransaction {
-                                val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                            if(history.place != null) { // place가 null이면 임의로 생성한 history이므로 이름 변환 과정을 건너뜀
+                                realm.executeTransaction {
+                                    val visitedPlace: VisitedPlace? =
+                                        it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                    history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place!!).execute().get()
+                                }
                             }
                         }
                         historyList.addAll(responseBody)

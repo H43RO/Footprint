@@ -124,9 +124,12 @@ class KeywordHistoryFragment : Fragment() {
 
                                 responseBody = response.body()!!
                                 for (history in responseBody) {
-                                    realm.executeTransaction {
-                                        val visitedPlace: VisitedPlace? = it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                        history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place).execute().get()
+                                    if(history.place != null) { // place가 null이면 임의로 생성한 history이므로 이름 변환 과정을 건너뜀
+                                        realm.executeTransaction {
+                                            val visitedPlace: VisitedPlace? =
+                                                it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
+                                            history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place!!).execute().get()
+                                        }
                                     }
                                 }
                                 historyList.addAll(responseBody)

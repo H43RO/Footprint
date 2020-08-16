@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".Activity.HistoryEditActivity">
+    tools:context=".Activity.HistoryWriteActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="편집하기"
+            android:text="작성하기"
             android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -34,46 +34,47 @@
             android:tint="#fff" />
     </RelativeLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="250dp">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/history_detail_image"
                 android:layout_width="match_parent"
-                android:layout_height="250dp">
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
 
-                <ImageView
-                    android:id="@+id/history_detail_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder" />
+            <ImageView
+                android:id="@+id/button_change_history_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_baseline_edit_24"
+                android:tint="#A9FFFFFF" />
 
-                <ImageView
-                    android:id="@+id/button_change_history_image"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/ic_baseline_edit_24"
-                    android:tint="#A9FFFFFF" />
+        </RelativeLayout>
 
-            </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/history_content_section"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp">
 
                 <EditText
-                    android:id="@+id/edit_history_detail_title"
+                    android:id="@+id/register_email"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/custom_input_register"
@@ -83,41 +84,47 @@
                     android:inputType="textEmailAddress"
                     android:paddingStart="16dp"
                     android:textColor="#5C5C5C"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/edit_history_detail_place"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="카페 리프에서"
-                        android:textSize="16dp" />
+                        android:layout_width="220dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/custom_input_register"
+                        android:backgroundTint="#F6F6F6"
+                        android:ems="10"
+                        android:hint="장소명을 입력해주세요"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="16dp"
+                        android:textColor="#5C5C5C"
+                        android:textSize="16sp" />
 
                     <Spinner
                         android:id="@+id/spinner_select_mood"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:layout_margin="16dp"
                         android:theme="@style/customTextViewFontStyle" />
-
-
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/edit_history_detail_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="4dp"
-                    android:text="2020년 7월 26일 13시 36분"
+                    android:layout_width="220dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/custom_button"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="날짜 정보를 입력해주세요"
+                    android:textColor="#fff"
                     android:textSize="16dp" />
 
                 <ImageView
@@ -142,12 +149,14 @@
                     android:textColor="#3C3C3C"
                     android:textSize="18dp" />
 
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:src="@drawable/line" />
+
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

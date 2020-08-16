@@ -65,7 +65,7 @@ class HistoryDetailActivity : AppCompatActivity() {
         }
 
         text_history_detail_title.text = historyTitle
-        text_history_detail_place.text = historyPlaceTitle
+        text_history_detail_place.text = historyPlaceTitle + "에서"
         text_history_detail_time.text = historyCreatedAt
         text_history_detail_content.text = historyComment
 
