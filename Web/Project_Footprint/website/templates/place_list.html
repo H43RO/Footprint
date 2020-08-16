@@ -17,8 +17,8 @@
             <div class="card border-secondary">
             <div class="card-body">
                 <h5 class="card-title">{{ item.title }}</h5>
-                <p class class="card-text">음식점 설명</p>
-                <a href="#" class="card-link">자세히</a>
+                    <p class="card-text">좋아요: {{ item.count }}</p>
+                <a href="{% url 'place-detail' id=item.naver_place_id %}" class="card-link">자세히</a>
              </div>
             </div>
         </div>

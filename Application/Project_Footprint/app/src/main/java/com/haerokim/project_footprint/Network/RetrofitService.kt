@@ -1,12 +1,14 @@
 package com.haerokim.project_footprint.Network
 
 import com.haerokim.project_footprint.DataClass.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import kotlin.collections.ArrayList
 
 interface RetrofitService {
+
+    /** 대응 완료 API**/
+
     // 로그인
     @FormUrlEncoded
     @POST("api/v1/accounts/login/")
@@ -34,7 +36,7 @@ interface RetrofitService {
     fun createRealVisitHistory(
         @Field("place") naverPlaceID: String,
         @Field("user") userID: Int
-    ): Call<History> //Response : Status Code
+    ): Call<History>
 
     // 사용자 임의 히스토리 생성 : 수정 예정
     @FormUrlEncoded
@@ -72,34 +74,40 @@ interface RetrofitService {
         @Query("title__icontains") keyword: String
     ): Call<ArrayList<History>>
 
-    @Multipart
-    // History Image Upload
+    // 히스토리 수정
+    @PUT("api/histories/{historyID}/edit/")
+    fun updateHistory(
+        @Path("historyID") historyID: Int,
+        @Body body: UpdateHistory
+    ): Call<History>
+
+    @GET("api/noticelist/")
+    fun requestNoticeList(): Call<ArrayList<Notice>>
 
     // 사용자 탈퇴
-    @FormUrlEncoded
-    @DELETE("userinfo/{userID}/delete")
+    @DELETE("userinfo/{userID}/delete/")
     fun withDrawUser(
-        @Field("userID") userID: Int
-    ): Call<String> //Response : Status Code
+        @Path("userID") userID: Int
+    ): Call<String>
 
-    // 히스토리 작성 및 수정 : 수정 예정
-    @FormUrlEncoded
-    @PUT("/api/diary-write")
-    fun writeHistory(
-        @Field("history") history: History
-    ): Call<String> //Response : Status Code
-
-    // 히스토리 삭제 : 수정 예정
-    @FormUrlEncoded
-    @POST("/api/delete-history")
-    fun deleteHistory(
-        @Field("historyID") historyID: String
-    ): Call<String> //Response : Status Code
-
-    // 회원 가입 : 수정 예정
-    @FormUrlEncoded
-    @POST("/api/register")
+    // 회원 가입
+    @POST("/api/v1/accounts/register/")
     fun registerUser(
-        @Field("name") name: String
-    ): Call<String> //Response : Status Code
+        @Body body: RegisterForm
+    ): Call<User>
+
+    // 비밀번호 초기화
+    @FormUrlEncoded
+    @POST("/api/v1/accounts/send-reset-password-link/")
+    fun resetPassword(
+        @Field("email") email: String
+    ): Call<String>
+
+    // 히스토리 삭제
+    @DELETE("/api/histories/{historyID}/delete/")
+    fun deleteHistory(
+        @Path("historyID") historyID: Int
+    ): Call<String>
+
+
 }

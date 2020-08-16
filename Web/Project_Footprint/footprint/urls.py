@@ -30,7 +30,7 @@ from website.viewsets import (
     HistoryUpdateAPIView,
     HistoryDeleteAPIView,
     NoticeViewSet,
-
+    ApiHotPlace,
     )
 from django_filters.views import FilterView
 
@@ -39,6 +39,7 @@ router.register('histories', HistoryViewSet)
 router.register('places', ApiPlaceId)
 router.register('userinfo', UserListView, basename='userinfo')
 router.register('noticelist', NoticeViewSet)
+router.register('hotplaces', ApiHotPlace)
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
@@ -55,5 +56,6 @@ urlpatterns = [
     url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
     url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
+    path('accounts/', include('django.contrib.auth.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

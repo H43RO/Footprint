@@ -14,13 +14,14 @@ from django.contrib import messages, auth
 from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
-    CheckPasswordForm, UserPasswordUpdateForm
+
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place, Notice
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
 from django.utils.translation import gettext_lazy as _
+
 import requests
 from django.template import loader
 from django.core.mail import send_mail, BadHeaderError
@@ -28,13 +29,16 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.contrib.auth.tokens import default_token_generator
+from django.template import loader
 
 
 def index(request):
-    context = {
-        'items': '발자취'
-    }
-    return render(request, 'index.html', context)
+    sights = Place.objects.filter(place_div=0).order_by('-count')[:4]
+    restaurants = Place.objects.filter(place_div=1).order_by('-count')[:4]
+    places = Place.objects.all()
+    place_count = History.objects.all()
+
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'place_count': place_count, 'places': places})
 
 
 def list(request):
@@ -77,7 +81,6 @@ def signin(request):
                 login(request, user)
                 return HttpResponseRedirect('../index/')
         else:
-            print(0)
             messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
             return HttpResponseRedirect('../signin/')
 
@@ -124,10 +127,17 @@ def myinfo(request):
 
 
 def place_list(request):
-    context = {
-        'places': Place.objects.all()
-    }
-    return render(request, 'place_list.html', context)
+    places = Place.objects.all()
+    histories = History.objects.all()
+    return render(request, 'place_list.html', {'places':places, 'histories': histories})
+
+
+def place_detail(request, id):
+    if id is not None:
+        item = get_object_or_404(Place, pk=id)
+        cnt = History.objects.filter(place=item).all()
+        return render(request, 'place_detail.html', {'item': item, 'cnt':cnt})
+    return HttpResponseRedirect('index/')
 
 
 def place_register(request):
@@ -155,14 +165,14 @@ def place_sights(request):
 
 
 def place_search(request):
-    place_search = Place.objects.all().order_by('-id')
+    place_search = Place.objects.all()
     q = request.POST.get('q', "")
 
     if q:
         place_search = place_search.filter(title__icontains=q)
         return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
     else:
-        return render(request,'place_search.html')
+        return render(request, 'place_search.html')
 
 
 def history(request):
@@ -258,6 +268,23 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
+def api_password_reset(request):
+    user_id = request.GET.get('user_id')
+    timestamp = request.GET.get('timestamp')
+    signature = request.GET.get('signature')
+    form_class = ApiPasswordResetForm
+    form = form_class(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            password = request.POST.get('new_password2')
+            response_message = requests.post('http://127.0.0.1:8000/api/v1/accounts/reset-password/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature, 'password' : password })  
+            if response_message.status_code == 200:
+                return HttpResponseRedirect('../signin/') 
+            else:
+                template = loader.get_template("user_password_find_error.html")
+                res_text = response_message.text
+                return HttpResponse(template.render({"data" : res_text}))
+    return render(request, 'user_password_find.html', {'form' : form })
 
 def user_password_find(request):
     if request.method == "POST":
@@ -300,5 +327,3 @@ def noticelist(request):
 def noticeview(request, id):
     notices = Notice.objects.get(id=id)
     return render(request, 'notice_view.html', {'notices': notices})
-
-

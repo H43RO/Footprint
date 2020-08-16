@@ -47,13 +47,17 @@ REST_FRAMEWORK = {
 }
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
-    'VERIFICATION_FROM_EMAIL' : 'abcd@gmail.com',
-    'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},
-    # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
-    'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
-    'RESET_PASSWORD_VERIFICATION_ENABLED': False, 
+    'RESET_PASSWORD_VERIFICATION_ENABLED': True,
+    'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},  
+    'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
+    'VERIFICATION_FROM_EMAIL' : 'pcj980@gmail.com',
+    # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
+    'SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL' : True,
+    'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
+    'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
     'USER_LOGIN_FIELDS' :  ['email'],
+    'SUCCESS_RESPONSE_BULIDER' : ('website.user_serializers.build_default_success_response'),
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
     'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
     # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
@@ -142,6 +146,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
+
 EMAIL_HOST_USER = 'abc@gmail.com' ## write your Google email : abcd@gmail.com
 EMAIL_HOST_PASSWORD = 'aaaa' ## write your email password
 EMAIL_USE_TLS = True

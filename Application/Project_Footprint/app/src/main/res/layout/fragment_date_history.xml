@@ -1,9 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#e8e8e8"
+    android:orientation="vertical"
     tools:context=".ui.history.DateHistoryFragment">
 
+    <RelativeLayout
+        android:id="@+id/button_show_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#C1495181">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="날짜 선택하기"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/image_card_view_status"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            android:src="@drawable/ic_baseline_keyboard_arrow_up_24" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_calendar"
+        app:cardElevation="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/layout_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CalendarView
+                    android:id="@+id/calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <FrameLayout
+        android:id="@+id/layout_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp">
+
+        <TextView
+            android:id="@+id/text_date_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="기록이 없습니다!"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/loading_date_history"
+            android:layout_gravity="center"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:indeterminate="true"
+            android:indeterminateTint="#ffffff"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/date_history_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            tools:listitem="@layout/history_item" />
+    </FrameLayout>
+
+</LinearLayout>

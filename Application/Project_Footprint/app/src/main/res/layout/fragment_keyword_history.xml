@@ -31,10 +31,20 @@
             android:id="@+id/text_keyword_no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:text="기록이 없습니다!"
+            android:layout_marginTop="150dp"
             android:textSize="15sp"
             android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/loading_keyword_history"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:indeterminate="true"
+            android:layout_marginTop="150dp"
+            android:indeterminateTint="#ffffff"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/keyword_history_list"
