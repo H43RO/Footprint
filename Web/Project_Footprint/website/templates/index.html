@@ -30,48 +30,53 @@
     </style>
     	<section id="banner">
             <div></div>
-            <h2><div>오늘 내가 가는 이 발자취가 </div>뒷 사람의 이정표가 되리라.</h2>
+            <h2>오늘 내가 가는 이 발자취가 <br>뒷 사람의 이정표가 되리라.</h2>
              <ul class="actions">
               <li>
-                <a href="#"> 발자취 남기기 &#9654;</a>
+                <a href="/history"> 발자취 남기기 &#9654;</a>
               </li>
             </ul>
             <p>-서산대사, &lt;답설야중기&gt; </p>
       </section>
-      <!-- <section id="one" class="wrapper style1 special">
-            <div><h1>당신만의 이정표를 만들어보세요.</h1></div>
-            <div><h2> 누군가는 당신의 발자취를 따라갑니다.</h2></div>
-            
-      </section> -->
+      <section id="two" class="wrapper style2 special">
+          <header class="text">
+            <!-- <hr> -->
+            <h2>당신만의 이정표를 만들어보세요.</h2>
+            <h3>누군가는 당신의 발자취를 따라갑니다.</h3>        
+          </header>
+      </section>
 
 
       <section id="one" class="wrapper style1 special">
       <div class="album py-5 bg-white">
-        <div class="album-title">
-            <h2>요즘 뜨는 핫플레이스 &#x2728;</h2>
-        </div>
+        <header class="major">
+          <h3>요즘 뜨는 핫플레이스 &#x2728;</h3>
+        </header>
         <div class="container">
         <div>
-          <div class="row">
-            <div id="slider-div" style="margin: 0 auto; width:1200px"  >
+          <div class="row 100%">
+            <div id="slider-div" style="margin: 0 auto; width:1200px; height:500px;"  >
               {% for item in sights %}
                 <div class="col-md-4">
                   <div class="card mb-4 shadow-sm">
-                    <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}" xmlns="http://www.w3.org/2000/svg"
-                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                        <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect></img>
-                    <div class="card-body">
-                      <h5>{{ item.title }}</h5>
-<!--                      <p class="card-text" style="font-size:12px">#여수밤바다 #여수바다한눈에 #속이뻥 </p>-->
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                    <section class="box">
+                      <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}" xmlns="http://www.w3.org/2000/svg"
+                          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                          <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect></img>
+                      <div class="card-body">
+                        <h5>{{ item.title }}</h5>
+  <!--                      <p class="card-text" style="font-size:12px">#여수밤바다 #여수바다한눈에 #속이뻥 </p>-->
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                          </div>
+                          <small class="text-muted">★★★★</small>
                         </div>
-                        <small class="text-muted">★★★★</small>
                       </div>
-                    </div>
+                    </section>
                   </div>
                 </div>
+                
               {% endfor %}
             </div>
           </div>
@@ -80,28 +85,32 @@
         <div class="album-title">
         </section>
          <section id="one" class="wrapper style1 special">  
-           <h2>요즘 핫한 그 맛집 &#x1F35C;</h2>
+          <header class="major">
+            <h3>요즘 핫한 그 맛집 &#x1F35C;</h3>
+          </header>
         </div>
         <div class="container">
         <div>
           <div class="row">
-            <div id="slider-div2" style="margin: 0 auto; width:1200px"  >
+            <div id="slider-div2" style="margin: 0 auto; width:1200px; height: 500px;"  >
               {% for item in restaurants %}
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
-                <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}"
-                     xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                     aria-label="Placeholder: Thumbnail"><title>Placeholder</title></img>
-                <div class="card-body">
-                  <h5>{{ item.title }}</h5>
-<!--                  <p class="card-text" style="font-size:12px">#닭수육 #달인맛집 #가성비최고 </p>-->
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                <section class="box">
+                  <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}"
+                      xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                      aria-label="Placeholder: Thumbnail"><title>Placeholder</title></img>
+                  <div class="card-body">
+                    <h5>{{ item.title }}</h5>
+  <!--                  <p class="card-text" style="font-size:12px">#닭수육 #달인맛집 #가성비최고 </p>-->
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                      </div>
+                      <small class="text-muted">★★★</small>
                     </div>
-                    <small class="text-muted">★★★</small>
                   </div>
-                </div>
+                </section>
               </div>
             </div>
             {% endfor %}

@@ -1,6 +1,6 @@
 @charset "UTF-8";
 @import url(font-awesome.min.css);
-@import url(http://fonts.googleapis.com/css?family=Raleway:700,400);
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
 /*
 	Transit by TEMPLATED
@@ -77,6 +77,7 @@
 	h3 {
 		font-size: 1.35em;
 		line-height: 1.5em;
+		padding-left: 3.3em;
 	}
 
 	h4 {
@@ -163,6 +164,7 @@
 
 	section.special, article.special {
 		text-align: center;
+		/* padding-left: 1.8em; */
 	}
 	
 	header p {
@@ -192,7 +194,7 @@
 	}
 
 	header.major {
-		text-align: center;
+		text-align: left;
 		margin-bottom: 4em;
 	}
 
@@ -204,7 +206,23 @@
 		header.major p {
 			font-size: 1.5em;
 		}
-
+	
+	header.text {
+		@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+		font-family: 'Nanum Myeongjo', serif;
+		font-style : normal;
+	}
+		/* header.text hr {
+			
+			border-style: solid;
+			width: 5%;
+			margin : auto;
+		} */
+		header.text h3 {
+			margin-top: -20px;
+			color: #a9a9a9;
+			text-align: center;
+		}
 /* Form */
 
 	form {
@@ -942,6 +960,8 @@
 		}
 
 	#header {
+		@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+		font-family: 'NanumSquare', sans-serif;
 		background-color: #383b43;
 		color: #ffffff;
 		cursor: default;
@@ -1053,10 +1073,6 @@
 		}
 
 		#banner h2 {
-			@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
-			/* @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css); */
-			font-family: 'Nanum Myeongjo', serif;
-			font-style : bold;
 			font-weight: 200;	
 			color: #ffffff;
 			font-size: 3em;
@@ -1067,6 +1083,8 @@
 		}
 
 		#banner ul {
+			@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+			font-family: 'NanumSquare', sans-serif;
 			color: #ffffff;
 			font-size: 1.5em;
 			margin-bottom: 5.0em;
