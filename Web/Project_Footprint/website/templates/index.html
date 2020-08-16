@@ -1,8 +1,202 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-    <div>
-        {{ items }}
-    </div>
+<head>
+    <meta name="viewport" content="width=device-width", initial-scale="1">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+</head>
+
+<body>
+    <style type="text/css">
+
+        div.col-md-4{
+            flex: 0 0 25%;
+        }
+        div.album.py-5.bg-light{
+            margin-top: 55px;
+            background-color: white;
+        }
+       h2{
+            display: inline-block;
+            margin-left: 80px;
+            margin-bottom: 25px;
+       }
+       .slick-prev:before,
+       .slick-next:before {
+          color: black;
+        }
+
+    </style>
+    	<section id="banner">
+            <div></div>
+            <h2>오늘 내가 가는 이 발자취가 <br>뒷 사람의 이정표가 되리라.</h2>
+             <ul class="actions">
+              <li>
+                <a href="/history"> 발자취 남기기 &#9654;</a>
+              </li>
+            </ul>
+            <p>-서산대사, &lt;답설야중기&gt; </p>
+      </section>
+      <section id="two" class="wrapper style2 special">
+          <header class="text">
+            <!-- <hr> -->
+            <h2>당신만의 이정표를 만들어보세요.</h2>
+            <h3>누군가는 당신의 발자취를 따라갑니다.</h3>        
+          </header>
+      </section>
+
+
+      <section id="one" class="wrapper style1 special">
+      <div class="album py-5 bg-white">
+        <header class="major">
+          <h3>요즘 뜨는 핫플레이스 &#x2728;</h3>
+        </header>
+        <div class="container">
+        <div>
+          <div class="row 100%">
+            <div id="slider-div" style="margin: 0 auto; width:1200px; height:500px;"  >
+              {% for item in sights %}
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                    <section class="box">
+                      <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}" xmlns="http://www.w3.org/2000/svg"
+                          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                          <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect></img>
+                      <div class="card-body">
+                        <h5>{{ item.title }}</h5>
+  <!--                      <p class="card-text" style="font-size:12px">#여수밤바다 #여수바다한눈에 #속이뻥 </p>-->
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                          </div>
+                          <small class="text-muted">
+                            {{ item.count }}번 방문
+                          </small>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+                
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="album-title">
+        </section>
+         <section id="one" class="wrapper style1 special">  
+          <header class="major">
+            <h3>요즘 핫한 그 맛집 &#x1F35C;</h3>
+          </header>
+        </div>
+        <div class="container">
+        <div>
+          <div class="row">
+            <div id="slider-div2" style="margin: 0 auto; width:1200px; height: 500px;"  >
+              {% for item in restaurants %}
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <section class="box">
+                  <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}"
+                      xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                      aria-label="Placeholder: Thumbnail"><title>Placeholder</title></img>
+                  <div class="card-body">
+                    <h5>{{ item.title }}</h5>
+  <!--                  <p class="card-text" style="font-size:12px">#닭수육 #달인맛집 #가성비최고 </p>-->
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                      </div>
+                      <small class="text-muted">
+                        {{ item.count }}번 방문
+                      </small>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <script>
+            $(function(){
+                $('#slider-div').slick({
+                    slide: 'div',
+                    infinite : true,
+                    slidesToShow : 4,
+                    slidesToScroll : 4,
+                    speed : 100,
+                    arrows : true,
+                    dots : false,
+                    autoplay : true,
+                    autoplaySpeed : 10000,
+                    pauseOnHover : true,
+                    vertical : false,
+                    prevArrow : "<button type='button' class='slick-prev'>Previous</button>",
+                    nextArrow : "<button type='button' class='slick-next'>Next</button>",
+                    dotsClass : "slick-dots",
+                    draggable : true,
+
+                    responsive: [
+                        {
+                            breakpoint: 780,
+                            settings: {
+                                slidesToShow:3
+                            }
+                        },
+                        {
+                            breakpoint: 460,
+                            settings: {
+                                slidesToShow:2
+                            }
+                        }
+                    ]
+
+                });
+            })
+            $(function(){
+                $('#slider-div2').slick({
+                    slide: 'div',
+                    infinite : true,
+                    slidesToShow : 4,
+                    slidesToScroll : 4,
+                    speed : 100,
+                    arrows : true,
+                    dots : false,
+                    autoplay : true,
+                    autoplaySpeed : 10000,
+                    pauseOnHover : true,
+                    vertical : false,
+                    prevArrow : "<button type='button' class='slick-prev'>Previous</button>",
+                    nextArrow : "<button type='button' class='slick-next'>Next</button>",
+                    dotsClass : "slick-dots",
+                    draggable : true,
+
+                    responsive: [
+                        {
+                            breakpoint: 780,
+                            settings: {
+                                slidesToShow:3
+                            }
+                        },
+                        {
+                            breakpoint: 460,
+                            settings: {
+                                slidesToShow:2
+                            }
+                        }
+                    ]
+
+                });
+            })
+        </script>
+        </section> 
+</body>
 {% endblock %}
 

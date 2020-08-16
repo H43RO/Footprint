@@ -38,5 +38,13 @@ class DashboardFragment : Fragment() {
             it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_today_history)
         }
 
+        card_date_history.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_date_history)
+        }
+
+        card_keyword_history.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_keyword_history)
+        }
+
     }
 }

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_menu"
             app:destination="@id/navigation_menu" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_today_history"
+            app:destination="@id/navigation_today_history" />
     </fragment>
 
     <fragment
@@ -28,10 +31,32 @@
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_whole_history"
-            app:destination="@id/navigation_whole_history" />
+            app:destination="@id/navigation_whole_history"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_today_history"
-            app:destination="@id/navigation_today_history" />
+            app:destination="@id/navigation_today_history"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_keyword_history"
+            app:destination="@id/navigation_keyword_history"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_date_history"
+            app:destination="@id/navigation_date_history"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
 
     <fragment
@@ -41,7 +66,11 @@
         tools:layout="@layout/fragment_menu" >
         <action
             android:id="@+id/action_navigation_menu_to_navigation_edit_profile"
-            app:destination="@id/navigation_edit_profile" />
+            app:destination="@id/navigation_edit_profile"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
 
     <fragment
@@ -54,7 +83,16 @@
         android:id="@+id/navigation_notice"
         android:name="com.haerokim.project_footprint.ui.notice.NoticeFragment"
         android:label="공지사항"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_notice" >
+        <action
+            android:id="@+id/action_navigation_notice_to_navigation_notice_detail"
+            app:destination="@id/navigation_notice_detail"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_edit_profile"
@@ -73,4 +111,35 @@
         android:name="com.haerokim.project_footprint.ui.history.TodayHistoryFragment"
         android:label="오늘 히스토리"
         tools:layout="@layout/fragment_today_history"/>
+
+    <fragment
+        android:id="@+id/navigation_keyword_history"
+        android:name="com.haerokim.project_footprint.ui.history.KeywordHistoryFragment"
+        android:label="키워드 히스토리"
+        tools:layout="@layout/fragment_keyword_history"/>
+
+    <fragment
+        android:id="@+id/navigation_date_history"
+        android:name="com.haerokim.project_footprint.ui.history.DateHistoryFragment"
+        android:label="날짜별 히스토리"
+        tools:layout="@layout/fragment_date_history"/>
+
+    <fragment
+        android:id="@+id/navigation_notice_detail"
+        android:name="com.haerokim.project_footprint.ui.notice.NoticeDetailFragment"
+        android:label="공지사항 자세히보기"
+        tools:layout="@layout/fragment_notcie_detail">
+        <argument
+            android:name="notice_title"
+            app:argType="string"/>
+
+        <argument
+            android:name="notice_content"
+            app:argType="string"/>
+
+        <argument
+            android:name="notice_date"
+            app:argType="string"/>
+    </fragment>
+
 </navigation>

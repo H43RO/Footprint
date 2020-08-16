@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e8e8e8"
+    android:orientation="vertical"
+    tools:context=".ui.history.KeywordHistoryFragment">
+
+    <EditText
+        android:id="@+id/edit_text_keyword"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_baseline_search_24"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="검색어를 입력해주세요"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_keyword_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="기록이 없습니다!"
+            android:layout_marginTop="150dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/loading_keyword_history"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:indeterminate="true"
+            android:layout_marginTop="150dp"
+            android:indeterminateTint="#ffffff"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/keyword_history_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
+            tools:listitem="@layout/history_item" />
+
+    </FrameLayout>
+
+</LinearLayout>

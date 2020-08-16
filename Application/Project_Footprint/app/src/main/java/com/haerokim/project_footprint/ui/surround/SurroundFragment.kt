@@ -21,6 +21,7 @@ import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.ShowPlaceInfo
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import retrofit2.Call
@@ -30,7 +31,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SurroundFragment : Fragment() {
-
     var surroundBeaconList: ArrayList<kotlin.String> = ArrayList()
     var tempBeaconList: ArrayList<kotlin.String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
@@ -83,22 +83,22 @@ class SurroundFragment : Fragment() {
             // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
             for (beacon in surroundBeaconList) {
                 getPlaceInfoService.requestNaverPlaceID(beacon)
-                    .enqueue(object : Callback<NaverPlaceID> {
-                        override fun onFailure(call: Call<NaverPlaceID>, t: Throwable) {
+                    .enqueue(object : Callback<ArrayList<NaverPlaceID>> {
+                        override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
                             Log.d("GetPlaceInfo", "정보 얻기 실패")
                         }
 
                         // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
                         override fun onResponse(
-                            call: Call<NaverPlaceID>,
-                            response: Response<NaverPlaceID>
+                            call: Call<ArrayList<NaverPlaceID>>,
+                            response: Response<ArrayList<NaverPlaceID>>
                         ) {
                             Log.d("GetPlaceInfo", "정보 얻기 성공!")
                             response.body()
                                 ?.let {
                                     tempPlaceList.add(
                                         GetPlaceInfo(
-                                            it.naver_place_id
+                                            it.get(0).naver_place_id
                                         ).executeOnExecutor(
                                             THREAD_POOL_EXECUTOR
                                         ).get()

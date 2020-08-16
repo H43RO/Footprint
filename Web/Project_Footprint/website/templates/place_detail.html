@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", initial-scale="1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FootPrint_main</title>
+    <link rel="stylesheet" href="../bootstrap-4.5.2-dist/bootstrap-4.5.2-dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+</head>
+<body>
+<style>
+    img{
+        width:500px;
+        height:300px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12" style="margin-top:20px;">
+            <h3>{{ item.title }}</h3>
+            <img class="card-img" src="{{ item.img.url }}" , alt="">
+
+            <p>{{ cnt.count }}번 방문</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/history_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,9 +8,8 @@
     android:background="#e8e8e8"
     tools:context=".Activity.HistoryDetailActivity">
 
-
-
     <androidx.cardview.widget.CardView
+        app:cardCornerRadius="16dp"
         android:id="@+id/card_history_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="30dp"
         android:background="#ffffff"
-        app:cardElevation="8dp">
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,34 +55,24 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <TextView
+                        android:textColor="#353535"
                         android:id="@+id/text_history_detail_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="멈추어버린 세상, 그 순간"
                         android:textSize="25dp"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/image_history_emotion"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:src="@drawable/ic_baseline_insert_emoticon_24" />
-
-                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/text_history_detail_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="카페 리프에서"
+                    android:text="카페 리프에서, 기분 맑음"
                     android:textSize="16dp" />
 
                 <TextView

@@ -1,17 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/whole_history_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e8e8e8"
+    android:orientation="vertical"
     tools:context=".ui.history.WholeHistoryFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/whole_history_list"
+
+    <TextView
+        style="@style/historyTextViewFontStyle"
+        android:textColor="#595959"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="70dp"
+        android:text="지금까지의 발자취"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        style="@style/historyTextViewFontStyle"
+        android:textColor="#595959"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="4dp"
+        android:text="지난 추억들을 돌아봅니다"
+        android:textSize="16sp" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        tools:listitem="@layout/history_item"
-        android:layout_marginBottom="32dp"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_whole_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="150dp"
+            android:text="기록이 없습니다!"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/loading_whole_history"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:indeterminate="true"
+            android:layout_marginTop="150dp"
+            android:indeterminateTint="#ffffff"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/whole_history_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                tools:listitem="@layout/history_item"
+                android:layout_marginBottom="32dp"/>
+
+
+    </FrameLayout>
 
 </LinearLayout>

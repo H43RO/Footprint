@@ -59,8 +59,6 @@ class HomeFragment : Fragment(), PermissionListener {
         homeViewModel.scanMode.observe(viewLifecycleOwner, Observer<Boolean> {
             scanning_mode_switch.isChecked = it
         })
-
-
         return root
     }
 
@@ -69,6 +67,8 @@ class HomeFragment : Fragment(), PermissionListener {
         val switchStateSave = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val foregroundIntent = Intent(context, ForegroundService::class.java)
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
+        Paper.init(context)
 
         val user: User = Paper.book().read("user_profile")
         text_home_user_nickname.text = user.nickname + " 님"
@@ -100,7 +100,6 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", true)
                     commit()
                 }
-
                 homeViewModel.changeMode("on")
 
                 //위치 권한 허용 되어있으면 비콘 스캔 시작
@@ -156,6 +155,14 @@ class HomeFragment : Fragment(), PermissionListener {
 
         image_home_user_profile.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_menu)
+        }
+
+        card_today_history_list.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_today_history)
+        }
+
+        card_notice.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_notice)
         }
 
     }

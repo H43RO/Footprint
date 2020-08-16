@@ -31,10 +31,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.HistoryDetailActivity">
-
-        </activity>
-        <activity android:name=".Activity.WithdrawActivity"></activity>
+        <activity android:name=".Activity.HistoryWriteActivity"></activity>
+        <activity android:name=".Activity.PasswordResetActivity" />
+        <activity android:name=".Activity.RegisterConfirmActivity" />
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.HistoryEditActivity" />
+        <activity android:name=".Activity.HistoryDetailActivity" />
+        <activity android:name=".Activity.WithdrawActivity" />
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.HomeActivity"></activity>
+        <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.PlaceDetailActivity" />
         <activity android:name=".Activity.MainActivity" /> <!-- 이미지 크롭 라이브러리 -->
         <activity
