@@ -15,7 +15,7 @@ from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm, ApiPasswordResetForm
 from .models import User, History, Place, Notice
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
