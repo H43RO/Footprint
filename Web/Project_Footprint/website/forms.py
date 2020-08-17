@@ -26,13 +26,13 @@ class SignUpForm(UserCreationForm):
         label="비밀번호",
         strip=False,
         widget=forms.PasswordInput,
-        help_text="8~25글자 사이의 비밀번호를 입력해주세요. <br/>공통된 글자 또는 숫자를 사용할 수 없습니다. ex) 11111111,<br/> 반드시 숫자와 영문 조합으로 만들어져야 합니다."
+        help_text="8~25글자 사이의 비밀번호를 입력해주세요"
     )
     password2 = forms.CharField(
         label="비밀번호 확인",
         strip=False,
         widget=forms.PasswordInput,
-        help_text='비밀번호를 재입력해주세요.',
+        help_text='비밀번호를 재입력해주세요',
     )
     class Meta:
         model = User
@@ -46,7 +46,7 @@ class SignUpForm(UserCreationForm):
         }
         help_texts = {
             'email': _('이메일을 입력해주세요'),
-            'birth_date': _('생년월일을 입력해주세요 (Format : YYYY-MM-DD)'),
+            'birth_date': _('생년월일을 입력해주세요 (YYYY-MM-DD)'),
             'nickname': _('10자 이내의 닉네임을 입력해주세요'),
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
