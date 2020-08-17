@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.UpdateHistory
+import com.haerokim.project_footprint.DataClass.UpdateHistoryNoImage
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
@@ -111,38 +112,77 @@ class HistoryEditActivity : AppCompatActivity() {
         button_save_history.setOnClickListener {
             historyTitle = edit_history_detail_title.text.toString()
             historyComment = edit_history_detail_content.text.toString()
+
             val builder: AlertDialog.Builder =
                 AlertDialog.Builder(this)
             builder.setTitle("편집하기")
             builder.setMessage("모두 작성하셨나요?")
             builder.setPositiveButton("예",
                 DialogInterface.OnClickListener { dialog, which ->
-                    val updateHistory =
-                        UpdateHistory(historyImage, historyTitle, historyMood, historyComment)
-                    updateHistoryService.updateHistory(historyID!!, updateHistory)
-                        .enqueue(object : Callback<History> {
-                            override fun onFailure(call: Call<History>, t: Throwable) {
-                                Log.e("Update History Error", t.message)
-                            }
 
-                            override fun onResponse(
-                                call: Call<History>,
-                                response: Response<History>
-                            ) {
-                                Log.d("Update History", "History 수정 완료")
+                    // 이미지 수정을 하지 않았을 때 다른 메소드 호출함
+                    if(historyImage == historyInfo?.getString("image")) {
+                        val updateHistory =
+                            UpdateHistoryNoImage(historyTitle, historyMood, historyComment)
+                        updateHistoryService.updateHistoryWithoutImage(historyID!!, updateHistory)
+                            .enqueue(object : Callback<History> {
+                                override fun onFailure(call: Call<History>, t: Throwable) {
+                                    Log.e("Update History Error", t.message)
 
-                                val resultHistory = response.body()
-                                val intent = Intent()
+                                }
+                                override fun onResponse(
+                                    call: Call<History>,
+                                    response: Response<History>
+                                ) {
+                                    if(response.code() == 400){
+                                        Log.e("Update History Error", response.message())
+                                    }else{
+                                        Log.d("Update History", "History 수정 완료")
 
-                                intent.putExtra("image", resultHistory?.img)
-                                intent.putExtra("title", resultHistory?.title)
-                                intent.putExtra("mood", resultHistory?.mood)
-                                intent.putExtra("comment", resultHistory?.comment)
+                                        val resultHistory = response.body()
+                                        val intent = Intent()
 
-                                setResult(Activity.RESULT_OK, intent)
-                                finish()
-                            }
-                        })
+                                        intent.putExtra("image", resultHistory?.img)
+                                        intent.putExtra("title", resultHistory?.title)
+                                        intent.putExtra("mood", resultHistory?.mood)
+                                        intent.putExtra("comment", resultHistory?.comment)
+
+                                        setResult(Activity.RESULT_OK, intent)
+                                        finish()
+                                    }
+                                }
+                            })
+                    }else{
+                        val updateHistory =
+                            UpdateHistory(historyImage, historyTitle, historyMood, historyComment)
+                        updateHistoryService.updateHistory(historyID!!, updateHistory)
+                            .enqueue(object : Callback<History> {
+                                override fun onFailure(call: Call<History>, t: Throwable) {
+                                    Log.e("Update History Error", t.message)
+                                }
+                                override fun onResponse(
+                                    call: Call<History>,
+                                    response: Response<History>
+                                ) {
+                                    if(response.code() == 400){
+                                        Log.e("Update History Error", response.message())
+                                    }else{
+                                        Log.d("Update History", "History 수정 완료")
+
+                                        val resultHistory = response.body()
+                                        val intent = Intent()
+
+                                        intent.putExtra("image", resultHistory?.img)
+                                        intent.putExtra("title", resultHistory?.title)
+                                        intent.putExtra("mood", resultHistory?.mood)
+                                        intent.putExtra("comment", resultHistory?.comment)
+
+                                        setResult(Activity.RESULT_OK, intent)
+                                        finish()
+                                    }
+                                }
+                            })
+                    }
                 })
             builder.setNegativeButton("아니오",
                 DialogInterface.OnClickListener { dialog, which ->

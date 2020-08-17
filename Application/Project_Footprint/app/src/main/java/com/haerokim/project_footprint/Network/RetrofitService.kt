@@ -81,6 +81,13 @@ interface RetrofitService {
         @Body body: UpdateHistory
     ): Call<History>
 
+    // 히스토리 수정
+    @PUT("api/histories/{historyID}/edit/")
+    fun updateHistoryWithoutImage(
+        @Path("historyID") historyID: Int,
+        @Body body: UpdateHistoryNoImage
+    ): Call<History>
+
     @GET("api/noticelist/")
     fun requestNoticeList(): Call<ArrayList<Notice>>
 
@@ -109,5 +116,10 @@ interface RetrofitService {
         @Path("historyID") historyID: Int
     ): Call<String>
 
+    // 임의 히스토리 생성
+    @POST("/api/histories/")
+    fun writeHistory(
+        @Body history: WriteHistory
+    ): Call<History>
 
 }

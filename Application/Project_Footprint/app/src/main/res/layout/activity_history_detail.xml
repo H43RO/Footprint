@@ -33,8 +33,7 @@
                     android:id="@+id/history_detail_image"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/colorPrimary" />
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/button_history_detail_action"

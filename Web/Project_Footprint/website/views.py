@@ -180,7 +180,7 @@ def history(request):
         item = get_object_or_404(History, id=id)
         item.delete()
         return redirect('history-delete')
-    historys = History.objects.all()
+    historys = History.objects.all().order_by('created_at')
     # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
 
     # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
@@ -218,7 +218,7 @@ def history_update(request):
             item = form.save()
     elif 'id' in request.GET:
         item = get_object_or_404(History, pk=request.GET.get('id'))
-        form = HistoryForm(instance=item)
+        form = HistoryForm(request.FILES, instance=item)
         form.password = ''  # password 데이터를 비웁니다.
         return render(request, 'history_update.html', {'form': form})
     return HttpResponseRedirect("../")
