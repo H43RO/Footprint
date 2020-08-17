@@ -6,27 +6,26 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
-import com.haerokim.project_footprint.DataClass.History
-import com.haerokim.project_footprint.DataClass.UpdateHistory
+import com.haerokim.project_footprint.Network.ImageDownloader
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
-import com.haerokim.project_footprint.ui.history.WholeHistoryFragment
 import kotlinx.android.synthetic.main.activity_history_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 
 class HistoryDetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -95,7 +94,39 @@ class HistoryDetailActivity : AppCompatActivity() {
                     }
 
                     R.id.share_history -> {
+                        var sns = arrayOf("인스타그램 피드", "인스타그램 스토리", "페이스북 피드")
+                        val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
+                        alertDialog.setTitle("SNS 공유하기")
+                            .setItems(sns, DialogInterface.OnClickListener { dialog, which ->
+                                when(which){
+                                    0->{  // 인스타그램 피드
+                                        val snsIntent = Intent(Intent.ACTION_SEND)
+                                        val localPath: String = ImageDownloader().execute(historyImage).get()
+                                        val uri = FileProvider.getUriForFile(applicationContext, "com.haerokim.project_footprint", File(localPath))
 
+                                        snsIntent.setPackage("com.instagram.android")
+                                        snsIntent.setType("image/*")
+                                        snsIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                                        startActivity(snsIntent)
+                                    }
+                                    1->{  // 인스타그램 스토리
+                                        val snsIntent = Intent("com.instagram.share.ADD_TO_STORY")
+                                        val localPath: String = ImageDownloader().execute(historyImage).get()
+                                        val uri = FileProvider.getUriForFile(applicationContext, "com.haerokim.project_footprint", File(localPath))
+                                        snsIntent.setType("image/*")
+                                        snsIntent.putExtra("top_background_color", "#e8e8e8")
+                                        snsIntent.putExtra("bottom_background_color", "#e8e8e8")
+                                        snsIntent.putExtra("interactive_asset_uri", uri)
+                                        this.grantUriPermission("com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        this.startActivityForResult(snsIntent, 0)
+                                    }
+                                    2->{  // 페이스북 피드
+
+                                    }
+                                }
+                            })
+                            .setCancelable(true)
+                            .show()
                     }
 
                     R.id.delete_history -> {

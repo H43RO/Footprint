@@ -31,6 +31,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.haerokim.project_footprint"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+
         <activity android:name=".Activity.HistoryWriteActivity"></activity>
         <activity android:name=".Activity.PasswordResetActivity" />
         <activity android:name=".Activity.RegisterConfirmActivity" />
