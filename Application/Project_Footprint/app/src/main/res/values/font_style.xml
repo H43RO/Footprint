@@ -26,10 +26,4 @@
         <item name="android:fontFamily">@font/custom</item>
     </style>
 
-    <style name="customDatePickerFontStyle" parent="@android:style/Widget.DeviceDefault.DatePicker">
-        <item name="android:fontFamily">@font/custom</item>
-    </style>
-
-
-
 </resources>
