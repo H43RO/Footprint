@@ -1,13 +1,13 @@
 {% extends './base.html' %}
+
 {% load static %}
-{% block content %}
-<head>
+{% block extrahead %}
     <meta name="viewport" content="width=device-width", initial-scale="1">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-</head>
+{% endblock %}
 
-<body>
+{% block content %}
     <style type="text/css">
 
         div.col-md-4{
@@ -197,6 +197,5 @@
             })
         </script>
         </section> 
-</body>
 {% endblock %}
 
