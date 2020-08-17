@@ -1,7 +1,6 @@
 @charset "UTF-8";
 @import url(font-awesome.min.css);
 @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-
 /*
 	Transit by TEMPLATED
 	templated.co @templatedco
@@ -62,6 +61,7 @@
 		font-weight: 700;
 		line-height: 1em;
 		margin: 0 0 1em 0;
+		
 	}
 
 		h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
@@ -1051,7 +1051,6 @@
 			}
 
 /* Banner */
-
 	#banner {
 		@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 		/* @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css); */
@@ -1264,3 +1263,71 @@
 		.grid-demo .row.flush > div:last-child span {
 			border-radius: 0 4px 4px 0;
 		}
+
+/* Signin */
+
+	
+body.landing #signin {
+	background-image: url('../static/background.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 100%;
+	font-family: 'NanumSquare', sans-serif;
+	}
+	#signin .ontainer{
+	height: 100%;
+	align-content: center;
+	border-style: none;
+	}
+
+
+	#signin .form-control {
+	height: 45px;
+	padding: 20px;
+	border-style: none;
+	border-radius: 10px 10px 10px 10px;
+	color: white;
+	background-color: #d9dbd9;
+	opacity:0.5;
+	}
+
+	#signin .card{
+	height: 370px;
+	margin-top: 140px;
+	margin-bottom: 50px;
+	width: 310px;
+	border-style: none;
+	background-color: rgba(255,255,255,0.0);
+	}
+
+	#signin .card-header {
+	text-align : center ;
+	border-style: none;
+	}
+
+	#signin .card-footer {
+	border-style: none;
+	color: white;
+	}
+
+	#signin .card-footer a{
+	color: white;
+	}
+
+	#signin .login_btn{
+	margin-top: 15px;
+	color: white;
+	font-weight:bold;
+	background-color: #293263;
+	width: 270px;
+	height: 45px;
+	border-style: none;
+	border-radius: 10px 10px 10px 10px;
+	}
+
+	#signin input::placeholder {
+	color:white;
+	font-weight:bold;
+	font-size: 90%;
+	}
+	

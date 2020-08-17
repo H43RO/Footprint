@@ -1,23 +1,35 @@
-{% load static %}
+
 <html lang="ko">
 	<head>
+		{% load static %}
 		<meta charset="UTF-8">
 		<title>FootPrint</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<!-- <script type="text/javascript" charset="utf-8">var css_skel = "{% static 'css/style.css' %}"</script> -->
+		<script type="text/javascript" charset="utf-8">css_skel = "{% static 'css/skel.css' %}" </script>
+		<script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
+		<script type="text/javascript" charset="utf-8">css_style_xlarge = "{% static 'css/style-xlarge.css' %}"  </script>
+		<script type="text/javascript" charset="utf-8">css_style_large = "{% static 'css/style-large.css' %}"  </script>
+		<script type="text/javascript" charset="utf-8">css_style_medium = "{% static 'css/style-medium.css' %}"  </script>
+		<script type="text/javascript" charset="utf-8">css_style_small = "{% static 'css/style-small.css' %}"  </script>
+		<script type="text/javascript" charset="utf-8">css_style_xsmall = "{% static 'css/style-xsmall.css' %}"  </script>
+		
 		<script src="{% static 'js/jquery.min.js' %}"></script>
 		<script src="{% static 'js/skel.min.js' %}"></script>
 		<script src="{% static 'js/skel-layers.min.js' %}"></script>
 		<script src="{% static 'js/init.js' %}"></script>
-		<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+		<!-- <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
-		<!-- <link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
+	 	<link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style-small.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" /> -->
+		{% block extrahead %}
+		{% endblock %}
 	</head>
 	<body class="landing">
 
@@ -50,7 +62,8 @@
 					</ul>
 				</nav>
       </header>
-      {% block content %}
+	  {% block content %}
+	  
       {% endblock %}
   </body>
   </html>
