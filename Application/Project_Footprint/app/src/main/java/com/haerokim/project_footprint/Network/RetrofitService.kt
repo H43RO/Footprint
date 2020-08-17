@@ -109,5 +109,9 @@ interface RetrofitService {
         @Path("historyID") historyID: Int
     ): Call<String>
 
+    @POST("/api/histories/")
+    fun writeHistory(
+        @Body history: WriteHistory
+    ): Call<History>
 
 }
