@@ -180,7 +180,7 @@ def history(request):
         item = get_object_or_404(History, id=id)
         item.delete()
         return redirect('history-delete')
-    historys = History.objects.all()
+    historys = History.objects.all().order_by('created_at')
     # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
 
     # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
