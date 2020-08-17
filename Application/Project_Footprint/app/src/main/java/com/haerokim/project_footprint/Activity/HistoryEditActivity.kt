@@ -111,6 +111,8 @@ class HistoryEditActivity : AppCompatActivity() {
         button_save_history.setOnClickListener {
             historyTitle = edit_history_detail_title.text.toString()
             historyComment = edit_history_detail_content.text.toString()
+
+
             val builder: AlertDialog.Builder =
                 AlertDialog.Builder(this)
             builder.setTitle("편집하기")
@@ -129,18 +131,26 @@ class HistoryEditActivity : AppCompatActivity() {
                                 call: Call<History>,
                                 response: Response<History>
                             ) {
-                                Log.d("Update History", "History 수정 완료")
+                                if(response.code() == 400){
+                                    Log.d("Error", historyImage)
+                                    Log.d("Error", historyTitle)
+                                    Log.d("Error", historyMood)
+                                    Log.d("Error", historyComment)
+                                    Log.e("Update History Error", response.message())
+                                }else{
+                                    Log.d("Update History", "History 수정 완료")
 
-                                val resultHistory = response.body()
-                                val intent = Intent()
+                                    val resultHistory = response.body()
+                                    val intent = Intent()
 
-                                intent.putExtra("image", resultHistory?.img)
-                                intent.putExtra("title", resultHistory?.title)
-                                intent.putExtra("mood", resultHistory?.mood)
-                                intent.putExtra("comment", resultHistory?.comment)
+                                    intent.putExtra("image", resultHistory?.img)
+                                    intent.putExtra("title", resultHistory?.title)
+                                    intent.putExtra("mood", resultHistory?.mood)
+                                    intent.putExtra("comment", resultHistory?.comment)
 
-                                setResult(Activity.RESULT_OK, intent)
-                                finish()
+                                    setResult(Activity.RESULT_OK, intent)
+                                    finish()
+                                }
                             }
                         })
                 })

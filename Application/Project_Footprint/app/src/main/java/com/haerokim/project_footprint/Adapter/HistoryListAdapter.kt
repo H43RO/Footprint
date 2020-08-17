@@ -47,7 +47,7 @@ class HistoryListAdapter(
 
             val bundle: Bundle = Bundle()
             bundle.putInt("id", historyID)
-//            bundle.putString("image", historyImage)
+            bundle.putString("image", historyImage)
             bundle.putString("title", historyTitle)
             bundle.putString("mood", historyMood)
             bundle.putString("comment", historyComment)
