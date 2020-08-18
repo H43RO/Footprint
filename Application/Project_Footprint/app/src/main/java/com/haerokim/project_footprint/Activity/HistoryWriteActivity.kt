@@ -29,7 +29,6 @@ import com.haerokim.project_footprint.R
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import io.paperdb.Paper
-import kotlinx.android.synthetic.main.activity_history_detail.*
 import kotlinx.android.synthetic.main.activity_history_write.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -45,7 +44,6 @@ import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class HistoryWriteActivity : AppCompatActivity() {
     var imageUri: Uri? = null
@@ -148,6 +146,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     historyDate =
                         year.toString() + "-" + (month + 1).toString() + "-" + dayOfMonth.toString()
+                    edit_history_date.text = historyDate
                     Log.d("HistoryCreatedAt", historyDate)
                 }, year, month, day
             )
@@ -160,6 +159,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                     historyTime = "T" + hourOfDay + ":" + minute + ":00.000000"
                     Log.d("HistoryCreatedAt", historyTime)
+                    edit_history_time.text = hourOfDay.toString() + "시 " + minute.toString() + "분"
                 }, hour, minute, false
             )
             timePicker.show()
@@ -233,11 +233,15 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 RequestBody.create(MediaType.parse("multipart/data"), image)
                             val uploadImage: MultipartBody.Part =
                                 MultipartBody.Part.createFormData("img", image.name, requestFile)
-                            val title = RequestBody.create(MediaType.parse("text/plain"), historyTitle)
+                            val title =
+                                RequestBody.create(MediaType.parse("text/plain"), historyTitle)
                             val comment =
                                 RequestBody.create(MediaType.parse("text/plain"), historyTitle)
                             val mood =
-                                RequestBody.create(MediaType.parse("text/plain"), historyMood ?: "1")
+                                RequestBody.create(
+                                    MediaType.parse("text/plain"),
+                                    historyMood ?: "1"
+                                )
                             val customPlace = RequestBody.create(
                                 MediaType.parse("text/plain"),
                                 historyPlaceTitle
@@ -258,10 +262,17 @@ class HistoryWriteActivity : AppCompatActivity() {
                                     Log.e("History Create Failed", t.message)
                                 }
 
-                                override fun onResponse(call: Call<History>, response: Response<History>) {
+                                override fun onResponse(
+                                    call: Call<History>,
+                                    response: Response<History>
+                                ) {
                                     if (response.code() == 201) {
                                         Log.d("History Create Success", "임의 히스토리 생성완료")
-                                        Toast.makeText(applicationContext, "발자취를 남겼습니다!", Toast.LENGTH_LONG)
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "발자취를 남겼습니다!",
+                                            Toast.LENGTH_LONG
+                                        )
                                             .show()
                                         finish()
                                     } else {
@@ -307,6 +318,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 })
                         }
                     })
+
                 builder.setNegativeButton("아니오",
                     DialogInterface.OnClickListener { dialog, which ->
                     })
