@@ -177,7 +177,7 @@ def place_search(request):
 
 def history(request):
     if request.method == 'POST' and 'id' in request.POST:
-        item = get_object_or_404(History, id=id)
+        item = get_object_or_404(History, id=id, user=request.user)
         item.delete()
         return redirect('history-delete')
     historys = History.objects.all().order_by('created_at')
