@@ -4,13 +4,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<!DOCTYPE html>
 <html>
 <head>
-	<title>발자취</title>
+	<title>FootPrint</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+
     <style>
         @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
@@ -78,43 +78,43 @@
 		font-weight:bold;
 		font-size: 90%;
 		}
-	</style>
 
+	</style>
 </head>
 <body>
-<div class="container">
-	<div class="d-flex justify-content-center h-100">
-		<div class="card">
-			<div class="card-header">
-				<img src="../static/logo.png" width="130px">
-			</div>
-			<div class="card-body">
-				<form method="post" >
-					{% csrf_token %}
-					<div class="input-group form-group">
-    					<input class="form-control" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" type="text" placeholder="이메일" />
-  					</div>
-					<div class="input-group form-group">
-						<input class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" type="password" placeholder="비밀번호" />
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<img src="../static/logo.png" width="130px">
+				</div>
+				<div class="card-body">
+					<form method="post" >
+						{% csrf_token %}
+						<div class="input-group form-group">
+							<input class="form-control" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" type="text" placeholder="이메일" />
+						</div>
+						<div class="input-group form-group">
+							<input class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" type="password" placeholder="비밀번호" />
+						</div>
+						 {% if messages %}
+							{% for message in messages %}
+							<small style="color: red">{{ message.message }}</small><br>
+							{% endfor %}
+						 {% endif %}
+						<div class="form-group">
+							<input type="submit" value="로그인" class="btn float login_btn">
+						</div>
+					</form>
+				</div>
+				<div class="card-footer">
+					<div class="d-flex justify-content-center">
+						<a href="/user_password_find" ><b>비밀번호를 잊으셨나요?</b></a>
 					</div>
-					 {% if messages %}
-            			{% for message in messages %}
-              			<small style="color: red">{{ message.message }}</small><br><br>
-           				{% endfor %}
-					 {% endif %}
-					<div class="form-group">
-						<input type="submit" value="로그인" class="btn float login_btn">
-					</div>
-				</form>
-			</div>
-			<div class="card-footer">
-				<div class="d-flex justify-content-center">
-					<a href="/user_password_find" ><b>비밀번호를 잊으셨나요?</b></a>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </body>
 </html>
 
