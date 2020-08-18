@@ -94,7 +94,7 @@ class HistoryDetailActivity : AppCompatActivity() {
                     }
 
                     R.id.share_history -> {
-                        var sns = arrayOf("인스타그램 피드", "인스타그램 스토리", "페이스북 피드")
+                        var sns = arrayOf("인스타그램 피드 및 DM", "인스타그램 스토리", "페이스북 피드")
                         val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                         alertDialog.setTitle("SNS 공유하기")
                             .setItems(sns, DialogInterface.OnClickListener { dialog, which ->

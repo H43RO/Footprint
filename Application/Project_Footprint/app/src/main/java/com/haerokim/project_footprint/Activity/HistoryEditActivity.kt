@@ -3,40 +3,89 @@ package com.haerokim.project_footprint.Activity
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
+import android.graphics.Bitmap
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.UpdateHistory
-import com.haerokim.project_footprint.DataClass.UpdateHistoryNoImage
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
-import io.paperdb.Paper
-import kotlinx.android.synthetic.main.activity_history_detail.*
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_history_detail.history_detail_image
-import kotlinx.android.synthetic.main.activity_history_detail.text_history_detail_content
-import kotlinx.android.synthetic.main.activity_history_detail.text_history_detail_place
-import kotlinx.android.synthetic.main.activity_history_detail.text_history_detail_time
-import kotlinx.android.synthetic.main.activity_history_detail.text_history_detail_title
 import kotlinx.android.synthetic.main.activity_history_edit.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 class HistoryEditActivity : AppCompatActivity() {
+    var imageUri: Uri? = null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // 업로드를 위한 사진이 선택 및 편집되면 Uri 형태로 결과가 반환됨
+        if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+
+            if (resultCode === Activity.RESULT_OK) {
+                val resultUri = result.uri
+
+                val bitmap =
+                    MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
+
+                imageUri = bitmapToFile(bitmap!!) // Uri
+                history_detail_image.setImageURI(imageUri)
+
+            } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
+            }
+        }
+    }
+
+    private fun bitmapToFile(bitmap: Bitmap): Uri {
+        // Get the context wrapper
+        val wrapper = ContextWrapper(this)
+
+        // Initialize a new file instance to save bitmap object
+        var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
+        file = File(file, "profile_image.jpg")
+        try {
+            // Compress the bitmap and save in jpg format
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("Error Saving Image", e.message)
+        }
+        return Uri.parse(file.absolutePath)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_edit)
@@ -80,6 +129,17 @@ class HistoryEditActivity : AppCompatActivity() {
         edit_history_detail_time.text = historyCreatedAt
         edit_history_detail_content.setText(historyComment)
 
+        history_detail_image.setOnClickListener {
+            CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setActivityTitle("이미지 추가")
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .setCropMenuCropButtonTitle("완료")
+                .setAspectRatio(2, 1)
+                .setRequestedSize(600, 400)
+                .start(this)
+        }
+
         val items = resources.getStringArray(R.array.moode_list)
         val spinnerAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
@@ -119,24 +179,24 @@ class HistoryEditActivity : AppCompatActivity() {
             builder.setMessage("모두 작성하셨나요?")
             builder.setPositiveButton("예",
                 DialogInterface.OnClickListener { dialog, which ->
-
                     // 이미지 수정을 하지 않았을 때 다른 메소드 호출함
-                    if(historyImage == historyInfo?.getString("image")) {
+                    if (imageUri == null) {
                         val updateHistory =
-                            UpdateHistoryNoImage(historyTitle, historyMood, historyComment)
+                            UpdateHistory(historyTitle, historyMood, historyComment)
                         updateHistoryService.updateHistoryWithoutImage(historyID!!, updateHistory)
                             .enqueue(object : Callback<History> {
                                 override fun onFailure(call: Call<History>, t: Throwable) {
                                     Log.e("Update History Error", t.message)
 
                                 }
+
                                 override fun onResponse(
                                     call: Call<History>,
                                     response: Response<History>
                                 ) {
-                                    if(response.code() == 400){
+                                    if (response.code() == 400) {
                                         Log.e("Update History Error", response.message())
-                                    }else{
+                                    } else {
                                         Log.d("Update History", "History 수정 완료")
 
                                         val resultHistory = response.body()
@@ -152,21 +212,37 @@ class HistoryEditActivity : AppCompatActivity() {
                                     }
                                 }
                             })
-                    }else{
-                        val updateHistory =
-                            UpdateHistory(historyImage, historyTitle, historyMood, historyComment)
-                        updateHistoryService.updateHistory(historyID!!, updateHistory)
+                    } else {  // 이미지 수정했을 시
+                        val image = File(imageUri!!.path.toString())
+                        val requestFile: RequestBody =
+                            RequestBody.create(MediaType.parse("multipart/data"), image)
+                        val uploadImage: MultipartBody.Part =
+                            MultipartBody.Part.createFormData("img", image.name, requestFile)
+                        val title = RequestBody.create(MediaType.parse("text/plain"), historyTitle)
+                        val comment =
+                            RequestBody.create(MediaType.parse("text/plain"), historyTitle)
+                        val mood =
+                            RequestBody.create(MediaType.parse("text/plain"), historyMood ?: "1")
+
+                        updateHistoryService.updateHistoryWithImage(
+                            historyID = historyID!!,
+                            title = title,
+                            content = comment,
+                            mood = mood,
+                            img = uploadImage
+                        )
                             .enqueue(object : Callback<History> {
                                 override fun onFailure(call: Call<History>, t: Throwable) {
                                     Log.e("Update History Error", t.message)
                                 }
+
                                 override fun onResponse(
                                     call: Call<History>,
                                     response: Response<History>
                                 ) {
-                                    if(response.code() == 400){
+                                    if (response.code() == 400) {
                                         Log.e("Update History Error", response.message())
-                                    }else{
+                                    } else if(response.code() == 200){
                                         Log.d("Update History", "History 수정 완료")
 
                                         val resultHistory = response.body()
