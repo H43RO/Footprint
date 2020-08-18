@@ -2,50 +2,55 @@
 {% load static %}
 {% block content %}
 <div class="history-list">
-    <div class="left" >
-        <div class="container">
-            <h1 style="margin-left:50px">History</h1>
-            <a href="{% url 'history-create' %}" class="card-link" style="margin-left:50px" >일기 작성</a>
+    <div class="left">
+        <div class="history">
+            <a href="{% url 'history-create' %}" class="card-link" style="margin-left:50px">일기 작성</a>
             {% for item in historys %}
             <div class="card-body">
-                <div class="card" onclick="myFunction({{item.id}})" style="width: 22rem; margin:auto; border-radius: 30px;">
+                <div class="card" onclick="myFunction({{item.id}})"
+                     style="width: 22rem; margin:auto; border-radius: 30px;">
                     {% if item.img %}
-                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt=""
+                         style="border-top-left-radius: 30px; border-top-right-radius: 30px;">
                     {% endif %}
                     <div style="margin-left:20px">
-                    <p class="card-text">
-                        {%if item.title %}
-                    <h5 class="card-title" id="title{{item.id}}" style="font-family: 'Nanum Myeongjo', serif;">{{ item.title }}</h5>
-                    {% endif %}
-                    </p>
-                    {%if item.mood %}
-                    <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
-                    {% endif %}
-                    {%if item.place %}
-                    <p class="card-text" id="place{{item.id}}">{{ item.place }}</p>
-                    {% endif %}
-                    {%if item.custom_place %}
-                    <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
-                    {% endif %}
-                    {%if item.comment %}
-                    <p class="card-text" id="comment{{item.id}}" style="display: none">{{ item.comment|linebreaksbr }}</p>
-                    {% endif %}
-                    <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
+                        <p class="card-text">
+                            {%if item.title %}
+                        <h5 class="card-title" id="title{{item.id}}" style="font-family: 'Nanum Myeongjo', serif;">
+                        {{item.title }}</h5>
+                        {% endif %}
+                        </p>
+                        {%if item.mood %}
+                        <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
+                        {% endif %}
+                        {%if item.place %}
+                        <p class="card-text" id="place{{item.id}}">{{ item.place }}</p>
+                        {% endif %}
+                        {%if item.custom_place %}
+                        <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
+                        {% endif %}
+                        {%if item.comment %}
+                        <p class="card-text" id="comment{{item.id}}" style="display: none">
+                            {{ item.comment|linebreaksbr}}</p>
+                        {% endif %}
+                        <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
+
                         <form action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-light">수정</button>
                         </form>
 
-                    <form action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
-                        {% csrf_token %}
-                        <script>
+                        <form action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
+                            {% csrf_token %}
+                            <script>
                                                 function Function() {
                                                 alert("Really?");
                                                 }
 
-                        </script>
-                        <button type="submit" class="btn btn-light" onclick="Function()">삭제</button>
-                    </form>
+
+                            </script>
+                            <button type="submit" class="btn btn-light" onclick="Function()">삭제</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -56,7 +61,9 @@
     <div class="right">
         <div class="card mb-3" style="max-width: 550px; margin:auto; margin-top: 10%; border-radius: 30px;">
             <div class="row no-gutters">
-                <img class="ard-img-top" style="width: 550px; height: 550px; margin:auto; border-top-left-radius: 2em; border-top-right-radius: 2em; " id=img src="../static/logo2.png" , alt="">
+                <img class="history-img"
+                     style="width: 550px; height: 550px; border-top-right-radius:30px; margin:auto; border-top-left-radius: 30px;"
+                     id=img src="../static/logo2.png" , alt="">
             </div>
             <div class="col-md-8">
                 <div class="card-body" style="margin-left:20px; width: 480px;">
@@ -74,12 +81,14 @@
         </div>
     </div>
 </div>
-                <script>
+<script>
                         function myFunction(id) {
                             if(document.getElementById("title" + id) != null){
                                 var title = document.getElementById("title" + id).textContent;
                             }
-                            var mood = document.getElementById("mood" + id).textContent;
+                            if(mood = document.getElementById("mood" + id) != null){
+                                var mood = document.getElementById("mood" + id).textContent;
+                            }
                             if(document.getElementById("image" + id) != null){
                                 var image = document.getElementById("image" + id).src;
                                 document.getElementById("img").src = image;
@@ -95,13 +104,19 @@
                             if (document.getElementById("custom-place" + id) != null){
                                 var customplace = document.getElementById("custom-place" + id).textContent;
                             }
-                            var create = document.getElementById("created-at" + id).textContent;
+                            if(document.getElementById("created-at" + id) != null){
+                                var create = document.getElementById("created-at" + id).textContent;
+                            }
                             if(title != null){
                                 document.getElementById("demo-title").innerHTML = title;
                             }else{
                                 document.getElementById("demo-title").innerHTML = " ";
                             }
-                            document.getElementById("demo-mood").innerHTML = mood;
+                            if(mood != null){
+                                document.getElementById("demo-mood").innerHTML = mood;
+                            }else{
+                                document.getElementById("demo-mood").innerHTML = "";
+                            }
                             if(comment != null){
                                 document.getElementById("demo-comment").innerHTML = comment;
                             }else{
@@ -117,7 +132,12 @@
                             }else{
                                 document.getElementById("demo-comment").innerHTML = "";
                             }
-                            document.getElementById("demo-create-at").innerHTML = create;
+                            if(create != null){
+                                document.getElementById("demo-create-at").innerHTML = create;
+                            }else{
+                                document.getElementById("demo-create-at").innerHTML = "";
+                            }
                         }
-                </script>
+
+</script>
 {% endblock %}

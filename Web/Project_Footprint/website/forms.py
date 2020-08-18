@@ -92,7 +92,7 @@ class PlaceRegisterForm(ModelForm):
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'created_at', 'user']
+        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'created_at']
         labels = {
             'title': _('제목'),
             'mood':_('내 기분'),
@@ -100,7 +100,6 @@ class HistoryForm(forms.ModelForm):
             'comment': _('코멘트'),
             'place': _('장소'),
             'custom_place': _('임의 장소'),
-            'user': _('사용자'),
             'created_at':_('작성 시간'),
         }
         widgets = {
@@ -111,10 +110,14 @@ class HistoryForm(forms.ModelForm):
         }
 
 
+
 class UpdateHistoryForm(HistoryForm):
     class Meta:
         model = History
-        exclude = [' ']
+        exclude = ['user']
+
+
+
 
 
 class UpdateUserInfoForm(UserChangeForm):
