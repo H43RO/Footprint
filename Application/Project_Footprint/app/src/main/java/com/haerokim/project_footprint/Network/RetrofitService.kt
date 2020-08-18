@@ -76,18 +76,18 @@ interface RetrofitService {
         @Query("title__icontains") keyword: String
     ): Call<ArrayList<History>>
 
-    // 히스토리 수정
+    // 히스토리 수정 (이미지 포함)
     @Multipart
     @PUT("api/histories/{historyID}/edit/")
     fun updateHistoryWithImage(
         @Path("historyID") historyID: Int,
-        @Part ("title") title: RequestBody,
-        @Part ("comment") content: RequestBody,
-        @Part ("mood") mood: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("comment") content: RequestBody,
+        @Part("mood") mood: RequestBody,
         @Part img: MultipartBody.Part
     ): Call<History>
 
-    // 히스토리 수정
+    // 히스토리 수정 (이미지 미포함)
     @PUT("api/histories/{historyID}/edit/")
     fun updateHistoryWithoutImage(
         @Path("historyID") historyID: Int,
@@ -122,10 +122,22 @@ interface RetrofitService {
         @Path("historyID") historyID: Int
     ): Call<String>
 
-    // 임의 히스토리 생성
+    // 임의 히스토리 생성 (이미지 포함)
+    @Multipart
     @POST("/api/histories/")
-    fun writeHistory(
-        @Body history: WriteHistory
+    fun writeHistoryWithImage(
+        @Part("user") userID: Int,
+        @Part img: MultipartBody.Part,
+        @Part("title") title: RequestBody,
+        @Part("comment") content: RequestBody,
+        @Part("mood") mood: RequestBody,
+        @Part("custom_place") customPlace: RequestBody,
+        @Part("created_at") createdAt: RequestBody
     ): Call<History>
 
+    // 임의 히스토리 생성 (이미지 미포함)
+    @POST("/api/histories/")
+    fun writeHistoryNoImage(
+        @Body body: WriteHistory
+    ): Call<History>
 }
