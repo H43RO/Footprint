@@ -1,4 +1,4 @@
-from .models import User, Place, History, Notice
+from .models import User, Place, History, Post
 from .place_info_serializers import PlaceSerializer
 from .history_serializer import HistorySerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
@@ -29,12 +29,12 @@ from django.http import Http404
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
+    queryset = History.objects.all().order_by('created_at')
     serializer_class = HistorySerializer
 
 
 class HistoryUpdateAPIView(UpdateAPIView):
-    queryset = History.objects.all()
+    queryset = History.objects.all().order_by('created_at')
     serializer_class = HistorySerializer
     lookup_field = 'id'
 
@@ -91,7 +91,7 @@ class HistoryFilter(filters.FilterSet):
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
+    queryset = History.objects.all().order_by('created_at')
     serializer_class = HistorySerializer
     filterset_class = HistoryFilter
     filter_backends = [filters.DjangoFilterBackend]
@@ -106,7 +106,7 @@ class HistoryViewSet(viewsets.ModelViewSet):
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
-    queryset = Notice.objects.all()
+    queryset = Post.objects.filter(post_div=1)
     serializer_class = NoticeSerializer
 
 

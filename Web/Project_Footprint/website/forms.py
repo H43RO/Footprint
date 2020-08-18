@@ -92,7 +92,7 @@ class PlaceRegisterForm(ModelForm):
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'user']
+        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'created_at', 'user']
         labels = {
             'title': _('제목'),
             'mood':_('내 기분'),
@@ -101,6 +101,7 @@ class HistoryForm(forms.ModelForm):
             'place': _('장소'),
             'custom_place': _('임의 장소'),
             'user': _('사용자'),
+            'created_at':_('작성 시간'),
         }
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),

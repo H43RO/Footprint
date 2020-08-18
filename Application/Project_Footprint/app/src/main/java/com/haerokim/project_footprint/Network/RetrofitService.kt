@@ -1,6 +1,8 @@
 package com.haerokim.project_footprint.Network
 
 import com.haerokim.project_footprint.DataClass.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 import kotlin.collections.ArrayList
@@ -75,17 +77,21 @@ interface RetrofitService {
     ): Call<ArrayList<History>>
 
     // 히스토리 수정
+    @Multipart
     @PUT("api/histories/{historyID}/edit/")
-    fun updateHistory(
+    fun updateHistoryWithImage(
         @Path("historyID") historyID: Int,
-        @Body body: UpdateHistory
+        @Part ("title") title: RequestBody,
+        @Part ("comment") content: RequestBody,
+        @Part ("mood") mood: RequestBody,
+        @Part img: MultipartBody.Part
     ): Call<History>
 
     // 히스토리 수정
     @PUT("api/histories/{historyID}/edit/")
     fun updateHistoryWithoutImage(
         @Path("historyID") historyID: Int,
-        @Body body: UpdateHistoryNoImage
+        @Body body: UpdateHistory
     ): Call<History>
 
     @GET("api/noticelist/")

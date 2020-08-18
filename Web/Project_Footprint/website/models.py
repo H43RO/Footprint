@@ -99,12 +99,12 @@ class Place(models.Model):
 class History(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
     title = models.TextField(max_length=100, blank=True, null=True)
-    mood = models.CharField(max_length=30, default=1)
+    mood = models.CharField(max_length=30, default=DEFAULT_HISTORY)
     comment = models.TextField(max_length=1000, blank=True, null=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
     custom_place = models.TextField(max_length=500, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=False)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
@@ -116,8 +116,10 @@ class History(models.Model):
         return self.title + ': ' + self.comment[:3]
 
 
-class Notice(models.Model):
+class Post(models.Model):
     contents = models.CharField(max_length=5000)
     title = models.CharField(max_length=30)
+    img = models.ImageField(blank=True, null=True, upload_to="Post/%Y/%m/")
+    post_div = models.PositiveSmallIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

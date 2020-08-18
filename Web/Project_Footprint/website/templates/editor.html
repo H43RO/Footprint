@@ -1,0 +1,219 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+        body{
+            font-family: "나눔명조";
+        }
+        div.container {
+            margin-top: 100px;
+        }
+        th,
+        td {
+            width : 200px;
+            border-bottom: 1px solid #444444;
+            padding: 10px;
+        }
+        section{
+            position:relative;
+            margin:0 auto;
+            display:block;
+            max-width:1100px;width:1100px
+        }
+        div.board_aside {
+            width: 200px;
+            float: left;
+        }
+        div.contentTitle{
+            display: block;
+<!--            float: left;-->
+            margin-top: 100px;
+            width: 800px;
+
+           }
+        .tit_cont {
+            position: relative;
+            padding-right: 20px;
+        }
+        .tit_cont .tag {
+            position: relative;
+            width: 600px;
+            padding-right: 30px;
+            box-sizing: border-box;
+        }
+        .tit_cont h2 {
+			color: #333;
+			letter-spacing: -1px;
+			word-break: keep-all;
+			word-break: break-all;
+
+		}
+		h2{
+			height: 700px;
+			font-size: 2.5rem;
+			font-weight: 800;
+
+
+		}
+		img{
+			width: 100px;
+			height: 100px;
+		}
+		.total_check .btn_txt {
+			position: absolute;
+			top: 15px;
+			right: 0;
+			color: #999;
+		}
+		.total_check {
+			position: relative;
+			width: 600px;
+			padding: 15px 0 13px;
+			font-weight: 700;
+			border-top: 1px solid #999;
+		}
+		.total_check .btn_mPop {
+			display: none;
+			position: absolute;
+			top: 50%;
+			right: 0;
+			margin-top: -11px;
+			width: 65px;
+			height: 22px;
+			line-height: 20px;
+			font-size: 14px;
+			color: #fff;
+			background: #13294b;
+			border-radius: 5px;
+		}
+		.total_check .btn_txt button {
+			display: inline-block;
+			padding: 0 15px;
+			background: url(../images/sub/line_topbtn.png) 0 5px no-repeat;
+			font-size: 16px;
+			line-height: 22px;
+			    border: 0 none;
+		}
+		.list_thumType {
+			width: 600px;
+			list-style:none;
+			padding-left:0px;
+		}
+		.list_thumType > li {
+			position: relative;
+			padding: 20px 0;
+			border-bottom: 1px solid #e6e6e6;
+		}
+		.list_thumType > li.bdr_nor {
+			border-top: 1px solid #e6e6e6;
+		}
+		.list_thumType > li .photo {
+			position: absolute;
+			left: 0;
+			top: 20px;
+			width: 140px;
+			height: 94px;
+		}
+		.list_thumType > li .photo a {
+			display: block;
+		}
+		.list_thumType > li .photo img {
+			width: 140px;
+			height: 94px;
+		}
+		.list_thumType > li .area_txt {
+			min-height: 94px;
+			padding-left: 160px;
+			padding-right: 20px;
+		}
+		.list_thumType > li .area_txt .tit {
+			margin-top: -5px;
+			padding-bottom: 5px;
+		}
+		.list_thumType > li .area_txt .tit a {
+			overflow: hidden;
+			display: inline-block;
+			width: 100%;
+			font-weight: bold;
+			font-size: 20px;
+			color: #000;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.list_thumType > li .area_txt .tag {
+			overflow: hidden;
+			width: 100%;
+			padding-top: 5px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.list_thumType > li .area_txt .tag > span {
+			padding-right: 5px;
+			font-size: 14px;
+		}
+		.box_leftType1 {
+			width: 600px;
+			margin-left: 250px;
+		}
+		.list_thumType > li .btn_view {
+			overflow: hidden;
+			position: absolute;
+			top: 24px;
+			right: 0;
+			z-index: 90;
+			width: 14px;
+			height: 16px;
+			text-indent: -9999px;
+		}
+
+
+	</style>
+    <div class="container">
+        <div class="board_aside">
+			<h2 class="tag">Editor Pick</h2>
+            <span class="aside-st"></span>
+        </div>
+	<div id="contents">
+		<div class="wrap_contView clfix">
+			<!-- 썸네일 리스트 -->
+			<div class="box_leftType1">
+				<p style="display:contents">contents</p>
+				<div class="total_check">
+					<strong>총<span>{{ editors.count }}</span>건</strong>
+					<div class="btn_txt">
+						<button type="button" class="on" id="1">최신순</button><button type="button" id="3">인기순</button>
+					</div>
+					<button type="button" class="btn_mPop">상세조회</button>
+				</div>
+				<ul class="list_thumType flnon">
+					{% for item in editors %}
+					<li class="bdr_nor">
+						<div class="photo"><a href="editor_view/{{ item.id }}">
+							<img src="{{ item.img.url }}" alt="{{ item.title }}"></a>
+						</div>
+						<div class="area_txt">
+							<div class="tit">
+								<a href="editor_view/{{ item.id }}">
+									{{ item.title }}</a>
+							</div>
+							<p> </p>
+							<p class="tag">
+								<span>
+									{{ item.contents }}
+								</span>
+<!--						<span>#감성여행지</span><span>#여름휴가</span><span>#여름휴가지추천</span><span>#인생샷여행지</span><span>#테마여행</span><span>#핫플레이스</span><span>#해외여행대체지</span>-->
+							</p></div>
+<!--						<button type="button" title="열기" class="btn_view"-->
+<!--								style="background:url('../static/image/dot2.png') 0 0 no-repeat;">더보기</button>-->
+					</li>
+					{% endfor %}
+			</div>
+			<!-- //썸네일 리스트 -->
+		</div>
+
+	</div>
+	<!-- //contents -->
+    </div>
+{% endblock %}
+

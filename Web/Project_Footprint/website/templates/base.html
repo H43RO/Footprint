@@ -1,31 +1,36 @@
-{% load static %}
-
 <html lang="ko">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="description" content="" />
-		<meta name="keywords" content="" />
+	<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
     <title>FootPrint</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'website/style.css' %}">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+	<!-- <script type="text/javascript" charset="utf-8">var css_skel = "{% static 'css/style.css' %}"</script> -->
+	<script type="text/javascript" charset="utf-8">css_skel = "{% static 'css/skel.css' %}" </script>
+	<script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_xlarge = "{% static 'css/style-xlarge.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_large = "{% static 'css/style-large.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_medium = "{% static 'css/style-medium.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_small = "{% static 'css/style-small.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_xsmall = "{% static 'css/style-xsmall.css' %}"  </script>
 
-		
-		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-		<script src="{% static 'js/jquery.min.js' %}"></script>
-		<script src="{% static 'js/skel.min.js' %}"></script>
-		<script src="{% static 'js/skel-layers.min.js' %}"></script>
-		<script src="{% static 'js/init.js' %}"></script>
-		<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
-		<!-- <link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/style-small.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" /> -->
-  
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/skel.min.js' %}"></script>
+	<script src="{% static 'js/skel-layers.min.js' %}"></script>
+	<script src="{% static 'js/init.js' %}"></script>
+	<!-- <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-small.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" /> -->
+	{% block extrahead %}
+	{% endblock %}
+
+<!--
    <style>
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
@@ -55,7 +60,7 @@
     #history-create{
         margin-left:50px"
     }
-    </style>
+    </style> -->
 	</head>
 	<body class="landing">
 
@@ -70,6 +75,7 @@
 						</li>
 						<li><a href="/place_register">장소 등록</a></li>
 						<li><a href="/notice">공지사항</a></li>
+                        <li><a href="/editor">Editor</a></li>
 						<li class="nav-item">
 							{% if request.user.is_authenticated %}
 								<a href="/myinfo">내 정보</a>
@@ -88,7 +94,7 @@
 					</ul>
 				</nav>
       </header>
-      {% block content %}
+	  {% block content %}
       {% endblock %}
   </body>
   </html>
