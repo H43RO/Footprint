@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "894201981897",
+    "firebase_url": "https://projectfootprint-2b0e2.firebaseio.com",
+    "project_id": "projectfootprint-2b0e2",
+    "storage_bucket": "projectfootprint-2b0e2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894201981897:android:e3f79d3a46ef99cda7d618",
+        "android_client_info": {
+          "package_name": "com.haerokim.project_footprint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894201981897-7vk75hsc6t12rtbopclifukq0vt3o15r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrsVUd4IDs_j2IBb8bB_MwGBmDAydUHcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894201981897-7vk75hsc6t12rtbopclifukq0vt3o15r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -32,7 +32,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -44,8 +46,9 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider5603"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider5603"
             android:exported="true" />
 
         <activity android:name=".Activity.HistoryWriteActivity"></activity>
@@ -78,6 +81,14 @@
             <meta-data
                 android:name="longScanForcingEnabled"
                 android:value="true" />
+        </service>
+
+        <service
+            android:name=".Network.FCMService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
         </service>
 
         <receiver
