@@ -32,6 +32,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.haerokim.project_footprint"
@@ -42,6 +44,9 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <provider android:authorities="com.facebook.app.FacebookContentProvider5603"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
 
         <activity android:name=".Activity.HistoryWriteActivity"></activity>
         <activity android:name=".Activity.PasswordResetActivity" />
