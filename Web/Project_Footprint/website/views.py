@@ -16,7 +16,7 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 
 from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm
-from .models import User, History, Place, Notice
+from .models import User, History, Place, Post
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
@@ -35,10 +35,7 @@ from django.template import loader
 def index(request):
     sights = Place.objects.filter(place_div=0).order_by('-count')[:4]
     restaurants = Place.objects.filter(place_div=1).order_by('-count')[:4]
-    places = Place.objects.all()
-    place_count = History.objects.all()
-
-    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'place_count': place_count, 'places': places})
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants})
 
 
 def list(request):
@@ -319,10 +316,20 @@ def user_password_find(request):
 
 
 def noticelist(request):
-    notices = Notice.objects.all()
-    return render(request, 'notice.html', {'notices' : notices})
+    notices = Post.objects.filter(post_div=1)
+    return render(request, 'notice.html', {'notices': notices})
 
 
 def noticeview(request, id):
-    notices = Notice.objects.get(id=id)
+    notices = Post.objects.get(id=id)
     return render(request, 'notice_view.html', {'notices': notices})
+
+
+def editor(request):
+    editors = Post.objects.filter(post_div=0)
+    return render(request, 'editor.html', {'editors' : editors})
+
+
+def editorview(request, id):
+    editors = Post.objects.get(id=id)
+    return render(request, 'editor_view.html', {'editors': editors})

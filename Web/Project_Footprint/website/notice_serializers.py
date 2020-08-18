@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Notice
+from .models import Post
 
 
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Notice
+        model = Post
         fields = '__all__'

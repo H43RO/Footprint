@@ -1,4 +1,4 @@
-from .models import User, Place, History, Notice
+from .models import User, Place, History, Post
 from .place_info_serializers import PlaceSerializer
 from .history_serializer import HistorySerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
@@ -106,7 +106,7 @@ class HistoryViewSet(viewsets.ModelViewSet):
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
-    queryset = Notice.objects.all()
+    queryset = Post.objects.filter(post_div=1)
     serializer_class = NoticeSerializer
 
 

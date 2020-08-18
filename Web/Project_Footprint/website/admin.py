@@ -46,13 +46,16 @@ class HistoryAdmin(admin.ModelAdmin):
     search_fields = ('user', 'place')
 
 
-class NoticeAdmin(admin.ModelAdmin):
-    model = Notice
-    list_display = ('title', 'created_at', 'updated_at')
+class PostAdmin(admin.ModelAdmin):
+    model = Post
+    list_display = ('title', 'created_at', 'updated_at', 'post_div')
     list_display_links = ('title',)
+    list_filter = ('post_div',
+                   ('created_at', DateRangeFilter),
+                   ('updated_at', DateRangeFilter),)
 
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Place, PlaceAdmin)
 admin.site.register(History, HistoryAdmin)
-admin.site.register(Notice, NoticeAdmin)
+admin.site.register(Post, PostAdmin)
