@@ -116,8 +116,10 @@ class History(models.Model):
         return self.title + ': ' + self.comment[:3]
 
 
-class Notice(models.Model):
+class Post(models.Model):
     contents = models.CharField(max_length=5000)
     title = models.CharField(max_length=30)
+    img = models.ImageField(blank=True, null=True, upload_to="Post/%Y/%m/")
+    post_div = models.PositiveSmallIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
