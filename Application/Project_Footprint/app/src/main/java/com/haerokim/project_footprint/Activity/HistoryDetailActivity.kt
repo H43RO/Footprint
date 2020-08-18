@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
@@ -34,7 +35,10 @@ class HistoryDetailActivity : AppCompatActivity() {
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             text_history_detail_title.text = data?.getStringExtra("title")
             text_history_detail_content.text = data?.getStringExtra("comment")
-//            TODO ("나머지 2개 Extra 미구현")
+            if(data?.getStringExtra("image") != null){
+                history_detail_image.setImageURI(Uri.parse(data?.getStringExtra("image")))
+            }
+//            TODO ("나머지 1개 Extra 미구현 Mood")
         }
     }
 

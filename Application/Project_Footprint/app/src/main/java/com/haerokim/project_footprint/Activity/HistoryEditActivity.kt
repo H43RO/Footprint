@@ -202,7 +202,6 @@ class HistoryEditActivity : AppCompatActivity() {
                                         val resultHistory = response.body()
                                         val intent = Intent()
 
-                                        intent.putExtra("image", resultHistory?.img)
                                         intent.putExtra("title", resultHistory?.title)
                                         intent.putExtra("mood", resultHistory?.mood)
                                         intent.putExtra("comment", resultHistory?.comment)
@@ -242,13 +241,13 @@ class HistoryEditActivity : AppCompatActivity() {
                                 ) {
                                     if (response.code() == 400) {
                                         Log.e("Update History Error", response.message())
-                                    } else if(response.code() == 200){
+                                    } else if (response.code() == 200) {
                                         Log.d("Update History", "History 수정 완료")
 
                                         val resultHistory = response.body()
                                         val intent = Intent()
 
-                                        intent.putExtra("image", resultHistory?.img)
+                                        intent.putExtra("image", imageUri.toString())
                                         intent.putExtra("title", resultHistory?.title)
                                         intent.putExtra("mood", resultHistory?.mood)
                                         intent.putExtra("comment", resultHistory?.comment)
@@ -260,6 +259,7 @@ class HistoryEditActivity : AppCompatActivity() {
                             })
                     }
                 })
+
             builder.setNegativeButton("아니오",
                 DialogInterface.OnClickListener { dialog, which ->
                 })
