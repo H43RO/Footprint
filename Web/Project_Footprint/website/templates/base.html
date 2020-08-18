@@ -15,6 +15,7 @@
 	<script type="text/javascript" charset="utf-8">css_style_medium = "{% static 'css/style-medium.css' %}"  </script>
 	<script type="text/javascript" charset="utf-8">css_style_small = "{% static 'css/style-small.css' %}"  </script>
 	<script type="text/javascript" charset="utf-8">css_style_xsmall = "{% static 'css/style-xsmall.css' %}"  </script>
+
 	<script src="{% static 'js/jquery.min.js' %}"></script>
 	<script src="{% static 'js/skel.min.js' %}"></script>
 	<script src="{% static 'js/skel-layers.min.js' %}"></script>
@@ -29,7 +30,7 @@
 	{% block extrahead %}
 	{% endblock %}
 
-<!--   
+<!--
    <style>
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
@@ -91,7 +92,7 @@
 								<a href="/signin">로그인</a>
 							{% endif %}
 							</li>
-						<li><a href="#" class="button special">회원가입</a></li>
+						<li><a href="/signup" class="button special">회원가입</a></li>
 					</ul>
 				</nav>
       </header>

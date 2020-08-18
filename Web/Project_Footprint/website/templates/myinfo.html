@@ -1,9 +1,58 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
+
+<style>
+    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
+    .container{
+    width: 100%;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    margin-top: 100px;
+    }
+
+    .card-title{
+    margin-top: 20px;
+    margin-left: 25px;
+    font-family: 'NanumSquare', sans-serif;
+<!--    font-family: 'Nanum Myeongjo', serif;-->
+    font-weight:bold;
+    }
+
+    .user-info{
+    font-size: 130%;
+    font-weight:bold;
+    text-align: left;
+    margin-left: 25px;
+    padding: 12px;
+    padding-left: 18px;
+    width: 400px;
+    height: 50px;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    color: black;
+    background-color: #f2f2f2;
+    }
+
+    .update-btn{
+    width: 130px;
+    height: 45px;
+    margin-top: 20px;
+    margin-left: 25px;
+    font-size: 145%;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+</style>
+
+
 <div class="container p-5">
 <div class="containter">
-    <h2> My Info </h2>
     <div class="filter_content section--search_category">
         <div class="section--category_group">
             <ul class="list--category depth1" style="list-style:none">
@@ -12,24 +61,55 @@
     </div>
     </div>
     {% for user in users %}
-    <div class="row restaurant-item" style="margin:20px auto;">
+    <div class="row userinfo" style="margin:20px auto;">
         <div class="col-sm-12">
             <div class="card border-secondary">
             <div class="card-body">
-                <h5 class="card-title">{{ user.email }}님의 회원정보</h5>
-                <p class="card-text">이메일 : {{ user.email }}</p>
-                <p class="card-text">닉네임 : {{ user.nickname }}</p>
-                <p class="card-text">생년월일 : {{ user.birth_date }}</p>
-                <p class="card-text">나이 : {{ user.age }}</p>
+                <h2 class="card-title">{{ user.email }}님의 회원정보</h2>
+                <hr>
+                <div class="input-group form-group">
+                    <div class="user-info">
+                        이메일  :  {{ user.email }}
+                    </div>
+                </div>
+                <div class="input-group form-group">
+                    <div class="user-info">
+                        닉네임  :  {{ user.nickname }}
+                    </div>
+                </div>
+                <div class="input-group form-group">
+                    <div class="user-info">
+                        생년월일  :  {{ user.birth_date }}
+                    </div>
+                </div>
+                <div class="input-group form-group">
+                    <div class="user-info">
+                        나이  :  {{ user.age }}
+                    </div>
+                </div>
                 {% if user.gender == 0 %}
-                    <p class="card-text">성별 : 남자</p>
+                    <div class="input-group form-group">
+                        <div class="user-info">
+                            성별  :  남자
+                        </div>
+                    </div>
                 {% elif user.gender == 1 %}
-                    <p class="card-text">성별 : 여자</p>
+                    <div class="input-group form-group">
+                        <div class="user-info">
+                            성별  :  여자
+                        </div>
+                    </div>
                 {% else %}
-                    <p class="card-text">성별 : not specified</p>
+                     <div class="input-group form-group">
+                        <div class="user-info">
+                            성별  :  not specified
+                        </div>
+                     </div>
                 {% endif %}
-                <a href = "{% url 'user_info_update' %}?id={{ user.id }}" class="card-link">수정하기</a>
-             </div>
+<!--                <button class="update-btn" type="submit" >-->
+                <a href = "{% url 'user_info_update' %}?id={{ user.id }}" class="btn float update-btn">수정하기</a>
+<!--                </button>-->
+                </div>
             </div>
         </div>
     </div>
