@@ -1,7 +1,6 @@
 {% extends './base.html' %}
 {% load static %}
-{% block content %}
-
+{% block extrahead %}
 <style>
         body{
             font-family: "나눔명조";
@@ -9,66 +8,44 @@
         div.container {
             margin-top: 100px;
         }
-        table {
-            border-collapse: collapse;
-            display: block;
-            width: 700px;
-            min-height: 700px;
-            float: left;
-            position: relative;
-            margin-bottom: 20px;
-
-        }
-        th,
-        td {
-            width : 200px;
-            border-bottom: 1px solid #444444;
-            padding: 10px;
-        }
-        section{
-            position:relative;margin:0 auto;display:block;max-width:1100px;width:1100px
-        }
-        /*
-        caption {
-            padding-top: $table-cell-padding;
-            padding-bottom: $table-cell-padding;
-            color: $table-caption-color;
-            text-align: left;
-            caption-side: bottom;
-        } */
-
         div.board_aside {
             width: 200px;
             float: left;
         }
-        h1{
-            height: 700;
+        h1.editor_head {
+			height: 700px;
+			font-size: 2.5rem;
+			font-weight: 800;
 
            }
         div.board_contents{
             margin-left: 350px;
-            }
-    </style>
-
-<div class="container">
-        <div class="board_aside">
-            <h1>
-                Editor Pick <br>
-                <span class="small-gray"> </span>
-            </h1>
-            <span class="aside-st"></span>
-        </div>
-        <div class="board_contents">
-            <h4>
-                {{ editors.title }}
-            </h4>{{ editors.created_at }}
-            <br><br>
-            <img src="{{ editors.img.url }}" style="width:500px; height: 350px"/>
-                        <br><br>
-            <p>
-                {{ editors.contents }}
-            </p>
-        </div>
-    </div>
+        }
+        h4.editor_tit {
+			font-size: 2.0rem;
+			font-weight: 800;
+        }
+</style>
+{% endblock %}
+{% block content %}
+        <div class="container">
+                <div class="board_aside">
+                    <h1 class="editor_head">
+                        Editor Pick <br>
+                        <span class="small-gray"> </span>
+                    </h1>
+                    <span class="aside-st"></span>
+                </div>
+                <div class="board_contents">
+                    <h4 class="editor_tit">
+                        {{ editors.title }}
+                    </h4>{{ editors.created_at }}
+                    <br><br>
+                    <img class="editor_img" src="{{ editors.img.url }}" style="width:500px; height: 350px"/>
+                                <br><br>
+                    <p class="edtior_contents">
+                        {{ editors.description|safe }}</p>
+                </div>
+            </div>
 
 {% endblock %}

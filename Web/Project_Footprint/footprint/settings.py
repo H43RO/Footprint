@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'rest_registration',
     'rest_framework.authtoken',
     'crispy_forms',
+    'ckeditor_uploader',
+    'ckeditor'
 ]
 
 REST_FRAMEWORK = {
@@ -153,3 +155,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CKEDITOR_UPLOAD_PATH = "uploads/"

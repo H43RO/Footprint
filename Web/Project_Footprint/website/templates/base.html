@@ -7,7 +7,6 @@
 	<meta name="keywords" content="" />
     <title>FootPrint</title>
 	<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-	<!-- <script type="text/javascript" charset="utf-8">var css_skel = "{% static 'css/style.css' %}"</script> -->
 	<script type="text/javascript" charset="utf-8">css_skel = "{% static 'css/skel.css' %}" </script>
 	<script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
 	<script type="text/javascript" charset="utf-8">css_style_xlarge = "{% static 'css/style-xlarge.css' %}"  </script>
@@ -60,14 +59,22 @@
         margin-left:50px"
     }
     </style> -->
+	<style type="text/css">
+		h1.base_head{
+			font-size: 1.25em;
+			font-weight: 700;
+		}
+
+	</style>
+
 	</head>
 	<body class="landing">
 
 		<!-- Header -->
 			<header id="header">
-				<h1><a href="/index">발자취</a></h1>
+				<h1 class="base_head"><a href="/index">발자취</a></h1>
 				<nav id="nav">
-					<ul>
+					<ul class="navbar">
 						<li class="nav-item">
 						  </li>				
 						<li><a href="/place_list">장소</a>
