@@ -9,57 +9,68 @@
         div.container {
             margin-top: 100px;
         }
-        table {
+        div.board_contents{
+            margin-left: 100px;
+        }
+
+        table.notice {
             border-collapse: collapse;
-            display: block;
-            width: 700px;
+            width: 850px;
             min-height: 700px;
             float: left;
             position: relative;
             margin-bottom: 20px;
             margin-left: 100px;
-
         }
-        th,
-        td {
+
+        th.notice, td.notice {
+            height: 20px;
             width : 200px;
             border-bottom: 1px solid #444444;
             padding: 10px;
         }
+        tr.notice{
+            height: 20px;
+        }
         section{
             position:relative;margin:0 auto;display:block;max-width:1100px;width:1100px
         }
-
         div.board_aside {
             width: 200px;
             float: left;
         }
+        h1.notice_head{
+            height: 700px;
+            font-size: 2.5rem;
+            font-weight: 800;
+
+        }
+
     </style>
 
     <div class="container">
         <div class="board_aside">
-            <h1>
-                공지사항<br>
-                <span class="small-gray">Notice</span>
+            <h1 class="notice_head">
+                Notice<br>
             </h1>
             <span class="aside-st"></span>
         </div>
         <div class="board_contents">
             <section>
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">제목</th>
-                            <th scope="col">작성일</th>
+                <table class="notice">
+                    <thead class="notice">
+                        <tr class="notice">
+                            <th class="notice" scope="col">No.</th>
+                            <th class="notice" scope="col">제목</th>
+                            <th class="notice" scope="col">작성일</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="notice">
                         {% for item in notices %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td><a href="notice_view/{{ item.id }}">{{ item.title }}</a></td>
-                            <td>{{ item.created_at }}</td>
+                        <tr class="notice">
+                            <th class="notice" scope="row">{{ forloop.counter }}</th>
+                            <td class="notice" ><a href="notice_view/{{ item.id }}">{{ item.title }}</a></td>
+                            <td class="notice" >{{ item.created_at }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

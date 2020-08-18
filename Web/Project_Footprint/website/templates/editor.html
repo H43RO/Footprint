@@ -9,12 +9,6 @@
         div.container {
             margin-top: 100px;
         }
-        th,
-        td {
-            width : 200px;
-            border-bottom: 1px solid #444444;
-            padding: 10px;
-        }
         section{
             position:relative;
             margin:0 auto;
@@ -38,7 +32,7 @@
         }
         .tit_cont .tag {
             position: relative;
-            width: 600px;
+            width: 800px;
             padding-right: 30px;
             box-sizing: border-box;
         }
@@ -49,14 +43,12 @@
 			word-break: break-all;
 
 		}
-		h2{
+		h2.tag {
 			height: 700px;
 			font-size: 2.5rem;
 			font-weight: 800;
-
-
 		}
-		img{
+		img.editor{
 			width: 100px;
 			height: 100px;
 		}
@@ -68,7 +60,7 @@
 		}
 		.total_check {
 			position: relative;
-			width: 600px;
+			width: 800px;
 			padding: 15px 0 13px;
 			font-weight: 700;
 			border-top: 1px solid #999;
@@ -96,7 +88,7 @@
 			    border: 0 none;
 		}
 		.list_thumType {
-			width: 600px;
+			width: 800px;
 			list-style:none;
 			padding-left:0px;
 		}
@@ -112,27 +104,30 @@
 			position: absolute;
 			left: 0;
 			top: 20px;
-			width: 140px;
-			height: 94px;
+			width: 200px;
+			height: 100px;
 		}
 		.list_thumType > li .photo a {
 			display: block;
 		}
 		.list_thumType > li .photo img {
-			width: 140px;
-			height: 94px;
+			width: 200px;
+			height: 100px;
+			margin-top: -8;
 		}
 		.list_thumType > li .area_txt {
 			min-height: 94px;
 			padding-left: 160px;
 			padding-right: 20px;
+			margin-left: 95px;
 		}
 		.list_thumType > li .area_txt .tit {
 			margin-top: -5px;
 			padding-bottom: 5px;
+			height: 40px;
+    		width: 530px;
 		}
 		.list_thumType > li .area_txt .tit a {
-			overflow: hidden;
 			display: inline-block;
 			width: 100%;
 			font-weight: bold;
@@ -144,17 +139,16 @@
 		.list_thumType > li .area_txt .tag {
 			overflow: hidden;
 			width: 100%;
-			padding-top: 5px;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
 		.list_thumType > li .area_txt .tag > span {
-			padding-right: 5px;
-			font-size: 14px;
+			padding-left: 8px;
+			font-size: 17px;
 		}
 		.box_leftType1 {
-			width: 600px;
-			margin-left: 250px;
+			width: 800px;
+			margin-left: 350px;
 		}
 		.list_thumType > li .btn_view {
 			overflow: hidden;
@@ -166,7 +160,9 @@
 			height: 16px;
 			text-indent: -9999px;
 		}
-
+		p.tag_null{
+			margin: 0 0 1em 0;
+		}
 
 	</style>
     <div class="container">
@@ -190,14 +186,14 @@
 					{% for item in editors %}
 					<li class="bdr_nor">
 						<div class="photo"><a href="editor_view/{{ item.id }}">
-							<img src="{{ item.img.url }}" alt="{{ item.title }}"></a>
+							<img class="editor" src="{{ item.img.url }}" alt="{{ item.title }}"></a>
 						</div>
 						<div class="area_txt">
 							<div class="tit">
 								<a href="editor_view/{{ item.id }}">
 									{{ item.title }}</a>
 							</div>
-							<p> </p>
+							<p class="tag_null"> </p>
 							<p class="tag">
 								<span>
 									{{ item.contents }}

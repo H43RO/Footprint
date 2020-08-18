@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, SetPasswordForm
-from .models import User, Place, History
+from .models import User, Place, History, Post
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.hashers import check_password
@@ -249,8 +249,6 @@ class UserPasswordResetForm(SetPasswordForm):
         return self.user       
 
 
-
-
 class UserPasswordAuthForm(forms.Form):
     email = forms.EmailField(
         label=_("가입 시 사용한 이메일을 입력해주세요."),
@@ -260,3 +258,9 @@ class UserPasswordAuthForm(forms.Form):
     class Meta:
         model = User
         fields = ['email']
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'description']

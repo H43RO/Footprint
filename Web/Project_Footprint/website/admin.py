@@ -48,7 +48,7 @@ class HistoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     model = Post
-    list_display = ('title', 'created_at', 'updated_at', 'post_div')
+    list_display = ('title', 'created_at', 'updated_at', 'post_div', 'description')
     list_display_links = ('title',)
     list_filter = ('post_div',
                    ('created_at', DateRangeFilter),
