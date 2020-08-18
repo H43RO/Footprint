@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <form action="{% url 'history-update' %}" method="post">
+    <form enctype="multipart/form-data" action="{% url 'history-update' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ form.instance.id }}"/>
         <table>

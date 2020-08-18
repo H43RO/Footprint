@@ -1,71 +1,101 @@
-{% load static %}
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>발자취</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'website/style.css' %}">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<html lang="ko">
+	<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+    <title>FootPrint</title>
+	<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+	<!-- <script type="text/javascript" charset="utf-8">var css_skel = "{% static 'css/style.css' %}"</script> -->
+	<script type="text/javascript" charset="utf-8">css_skel = "{% static 'css/skel.css' %}" </script>
+	<script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_xlarge = "{% static 'css/style-xlarge.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_large = "{% static 'css/style-large.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_medium = "{% static 'css/style-medium.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_small = "{% static 'css/style-small.css' %}"  </script>
+	<script type="text/javascript" charset="utf-8">css_style_xsmall = "{% static 'css/style-xsmall.css' %}"  </script>
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/skel.min.js' %}"></script>
+	<script src="{% static 'js/skel-layers.min.js' %}"></script>
+	<script src="{% static 'js/init.js' %}"></script>
+	<!-- <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-small.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" /> -->
+	{% block extrahead %}
+	{% endblock %}
 
-</head>
-<body>
+<!--   
+   <style>
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/index">발자취</a>
-      <form class="form-inline my-2 my-lg-0" action="{% url 'place_search' %}" method="post">
-        {% csrf_token %}
-          <input class="form-control mr-sm-2" type="search" placeholder="place_search" aria-label="Search" name="q" value="{{q}}">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/place_list">Place</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/place_register">Place Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/history">History</a>
-          </li>
-          <li class="nav-item">
-            {% if request.user.is_authenticated %}
-                <a class="nav-link" href="/myinfo">My Info</a>
-            {% endif %}
-          </li>
-          <li class="nav-item">
-            {% if not request.user.is_authenticated %}
-                <a class="nav-link" href="/signup">Sign Up</a>
-            {% endif %}
-          </li>
-          <li class="nav-item">
-            {% if request.user.is_authenticated %}
-                <a class="nav-link" href="/signout">Sign Out</a>
-            {% else %}
-                <a class="nav-link" href="/signin">Sign In</a>
-            {% endif %}
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/editor">Editor</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/notice">Notice</a>
-          </li>
-        </ul>
-        {% if request.user.is_authenticated %}
-          <p class="nav navbar-nav navbar-right">
-            안녕하세요, {{user.nickname}} 님. 좋은 하루 되세요!
-          </p>
-        {% endif %}
+    div.history-list {
+        width: 100%;
+    }
+    div.left {
+        width: 40%;
+        height: 1145px;
+        float: left;
+        box-sizing: border-box;
+        background: #e8e8e8;
+        overflow-y:scroll;
+        font-family: 'NanumSquare', sans-serif;
+        margin:auto;
+    }
+    div.right {
 
-      </div>
-    </nav>
-    {% block content %}
-    {% endblock %}
-</body>
-</html>
+        width: 60%;
+        float: right;
+        box-sizing: border-box;
+        background: #e8e8e8;
+        font-family: 'NanumSquare', sans-serif;
+
+    }
+    #history-create{
+        margin-left:50px"
+    }
+    </style> -->
+	</head>
+	<body class="landing">
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="/index">발자취</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="nav-item">
+						  </li>				
+						<li><a href="/place_list">장소</a>
+						</li>
+						<li><a href="/place_register">장소 등록</a></li>
+						<li><a href="/notice">공지사항</a></li>
+                        <li><a href="/editor">Editor</a></li>
+						<li class="nav-item">
+							{% if request.user.is_authenticated %}
+								<a href="/myinfo">내 정보</a>
+							{% else %}
+								<a href="/signin">내 정보</a>
+							{% endif %}
+						</li>
+						<li>
+							{% if request.user.is_authenticated %}
+								<a href="/signout">로그아웃</a>
+							{% else %}
+								<a href="/signin">로그인</a>
+							{% endif %}
+							</li>
+						<li><a href="#" class="button special">회원가입</a></li>
+					</ul>
+				</nav>
+      </header>
+	  {% block content %}
+      {% endblock %}
+  </body>
+  </html>
+
+

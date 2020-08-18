@@ -11,23 +11,23 @@
 
     <TextView
         style="@style/historyTextViewFontStyle"
-        android:textColor="#595959"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="70dp"
         android:text="지금까지의 발자취"
+        android:textColor="#595959"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
         style="@style/historyTextViewFontStyle"
-        android:textColor="#595959"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="4dp"
         android:text="지난 추억들을 돌아봅니다"
+        android:textColor="#595959"
         android:textSize="16sp" />
 
     <FrameLayout
@@ -46,19 +46,20 @@
 
         <ProgressBar
             android:id="@+id/loading_whole_history"
-            android:layout_gravity="center_horizontal"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:indeterminate="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="150dp"
-            android:indeterminateTint="#ffffff"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/whole_history_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                tools:listitem="@layout/history_item"
-                android:layout_marginBottom="32dp"/>
+            android:indeterminate="true"
+            android:indeterminateTint="#ffffff" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/whole_history_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            tools:listitem="@layout/history_item" />
 
 
     </FrameLayout>

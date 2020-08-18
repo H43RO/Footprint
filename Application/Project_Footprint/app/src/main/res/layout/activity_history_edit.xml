@@ -26,12 +26,12 @@
 
         <ImageView
             android:id="@+id/button_save_history"
-            android:layout_alignParentRight="true"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_baseline_check_24"
-            android:tint="#fff"/>
+            android:tint="#fff" />
     </RelativeLayout>
 
     <ScrollView
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="centerCrop"
-                    android:src="@color/colorPrimary" />
+                    android:src="@drawable/placeholder" />
 
                 <ImageView
                     android:id="@+id/button_change_history_image"
@@ -65,7 +65,6 @@
 
             </RelativeLayout>
 
-
             <LinearLayout
                 android:id="@+id/history_content_section"
                 android:layout_width="match_parent"
@@ -73,22 +72,24 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-
                 <EditText
                     android:id="@+id/edit_history_detail_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:backgroundTint="@color/colorAccent"
-                    android:paddingRight="8dp"
-                    android:text="멈추어버린 세상, 그 순간"
-                    android:textSize="22dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/custom_input_register"
+                    android:backgroundTint="#F6F6F6"
+                    android:ems="10"
+                    android:hint="제목을 입력해주세요"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="16dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
@@ -97,7 +98,7 @@
                         android:id="@+id/edit_history_detail_place"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="카페 리프에서, 기분 맑음"
+                        android:text="카페 리프에서"
                         android:textSize="16dp" />
 
                     <Spinner
@@ -114,20 +115,38 @@
                     android:id="@+id/edit_history_detail_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="4dp"
                     android:text="2020년 7월 26일 13시 36분"
                     android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/line" />
 
                 <EditText
                     android:id="@+id/edit_history_detail_content"
                     style="@style/historyTextViewFontStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/colorAccent"
-                    android:text="가끔 기억은 선명하지 않더라도 그 순간에 느껴야만 했던 감정들은 또 다시 내게 풀어내야만 하는 문제처럼 다가오곤 한다. 그건 어찌보면 모든 사람들이 견뎌야만 하는 과제일지도 모른다.\n\n그래서 나는 이 감정들을 글로 풀어내본다. 도저히 다른 사람들은 알 수 없을 나만의 생각. 나만의 느낌. 그때 그 순간은 너무 외로웠고 힘들었다고.\n\n아무도 이해하지 못해도 나는 날 이해할 수 있다고, 그렇게 나를 위로해줄 수 있다."
+                    android:layout_gravity="top"
+                    android:layout_marginTop="16dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:hint="여러분만의 이야기를 적어주세요"
+                    android:minHeight="80dp"
+                    android:padding="16dp"
+                    android:textColor="#3C3C3C"
                     android:textSize="18dp" />
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/line" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

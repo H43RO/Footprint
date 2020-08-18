@@ -15,8 +15,8 @@ from django.db import transaction
 from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm
 from .models import User, History, Place, Post
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm, ApiPasswordResetForm
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
@@ -33,8 +33,8 @@ from django.template import loader
 
 
 def index(request):
-    sights = Place.objects.filter(place_div=0).order_by('-count')[:4]
-    restaurants = Place.objects.filter(place_div=1).order_by('-count')[:4]
+    sights = Place.objects.filter(place_div=0).order_by('-count')[:6]
+    restaurants = Place.objects.filter(place_div=1).order_by('-count')[:6]
     return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants})
 
 
@@ -177,7 +177,7 @@ def history(request):
         item = get_object_or_404(History, id=id)
         item.delete()
         return redirect('history-delete')
-    historys = History.objects.all()
+    historys = History.objects.all().order_by('created_at')
     # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
 
     # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
@@ -215,7 +215,7 @@ def history_update(request):
             item = form.save()
     elif 'id' in request.GET:
         item = get_object_or_404(History, pk=request.GET.get('id'))
-        form = HistoryForm(instance=item)
+        form = HistoryForm(request.FILES, instance=item)
         form.password = ''  # password 데이터를 비웁니다.
         return render(request, 'history_update.html', {'form': form})
     return HttpResponseRedirect("../")
@@ -255,6 +255,7 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user, request.POST)
         try:
             if form.is_valid():
+                user = form.save()
                 update_session_auth_hash(request, user)  # 변경된 비밀번호로 자동으로 로그인 시켜줌, 중요!
                 return redirect('../index')
         except ValidationError as e:

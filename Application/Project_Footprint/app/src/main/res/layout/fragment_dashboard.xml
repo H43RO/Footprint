@@ -43,6 +43,59 @@
 
             </LinearLayout>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_today_history"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                app:cardBackgroundColor="#777EA3"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="32dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:text="오늘의 발자취 따라가보기"
+                            android:textColor="#FFFFFF"
+                            android:textSize="22dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:text="오늘 하루를 천천히 돌아봅니다."
+                            android:textColor="#D7FFFFFF"
+                            android:textSize="16dp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="24dp"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:tint="#ffffff" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_date_history"
@@ -81,60 +134,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="24dp"
                             android:text="지정한 날짜의 발자취를 둘러봅니다."
-                            android:textColor="#D7FFFFFF"
-                            android:textSize="16dp" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="24dp"
-                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:tint="#ffffff" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_today_history"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                app:cardBackgroundColor="#777EA3"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="32dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical">
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:text="오늘의 발자취 따라가보기"
-                            android:textColor="#FFFFFF"
-                            android:textSize="22dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_marginTop="4dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:text="오늘 하루를 천천히 돌아봅니다."
                             android:textColor="#D7FFFFFF"
                             android:textSize="16dp" />
 
