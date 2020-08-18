@@ -132,7 +132,6 @@ class HistoryDetailActivity : AppCompatActivity() {
                             .setCancelable(true)
                             .show()
                     }
-
                     R.id.delete_history -> {
                         val builder: AlertDialog.Builder =
                             AlertDialog.Builder(this)
@@ -155,7 +154,6 @@ class HistoryDetailActivity : AppCompatActivity() {
                                         }
                                     }
                                 })
-
                             })
                         builder.setNegativeButton("아니오",
                             DialogInterface.OnClickListener { dialog, which ->

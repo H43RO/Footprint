@@ -48,19 +48,17 @@ class HistoryEditActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // 업로드를 위한 사진이 선택 및 편집되면 Uri 형태로 결과가 반환됨
-        if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
-
-            if (resultCode === Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
-
                 val bitmap =
                     MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
 
                 imageUri = bitmapToFile(bitmap!!) // Uri
                 history_detail_image.setImageURI(imageUri)
 
-            } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
 
             }
         }
@@ -135,8 +133,7 @@ class HistoryEditActivity : AppCompatActivity() {
                 .setActivityTitle("이미지 추가")
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setCropMenuCropButtonTitle("완료")
-                .setAspectRatio(2, 1)
-                .setRequestedSize(600, 400)
+                .setRequestedSize(1280, 900)
                 .start(this)
         }
 
