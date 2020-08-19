@@ -29,7 +29,7 @@ from django.http import Http404
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all().order_by('created_at')
+    queryset = History.objects.all()
     serializer_class = HistorySerializer
 
 
@@ -91,7 +91,7 @@ class HistoryFilter(filters.FilterSet):
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all().order_by('created_at')
+    queryset = History.objects.all()
     serializer_class = HistorySerializer
     filterset_class = HistoryFilter
     filter_backends = [filters.DjangoFilterBackend]
