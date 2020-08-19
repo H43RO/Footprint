@@ -1,6 +1,7 @@
 package com.haerokim.project_footprint.ui.history
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -23,6 +24,7 @@ import io.paperdb.Paper
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_today_history.*
+import kotlinx.android.synthetic.main.fragment_whole_history.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,6 +51,7 @@ class TodayHistoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         getTodayHistoryList()
     }
 
@@ -73,6 +76,12 @@ class TodayHistoryFragment : Fragment() {
         button_write_history.setOnClickListener {
             startActivity(Intent(requireContext(), HistoryWriteActivity::class.java))
         }
+
+        today_history_swipe.setColorSchemeColors(Color.GRAY)
+        today_history_swipe.setOnRefreshListener {
+            getTodayHistoryList()
+        }
+
     }
 
     fun getTodayHistoryList(){
@@ -109,6 +118,7 @@ class TodayHistoryFragment : Fragment() {
                     text_today_no_data.visibility = View.VISIBLE
                     loading_today_history.visibility = View.GONE
                     text_today_no_data.text = "정보를 가져오지 못했습니다"
+                    today_history_swipe.isRefreshing = false
                 }
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
@@ -122,6 +132,7 @@ class TodayHistoryFragment : Fragment() {
                         text_today_no_data.visibility = View.VISIBLE
                         loading_today_history.visibility = View.GONE
                         text_today_no_data.text = "기록이 없습니다"
+                        today_history_swipe.isRefreshing = false
                     } else {
                         today_history_list.visibility = View.VISIBLE
                         responseBody = response.body()!!
@@ -136,6 +147,7 @@ class TodayHistoryFragment : Fragment() {
                         }
                         historyList.addAll(responseBody)
                         viewAdapter.notifyDataSetChanged()
+                        today_history_swipe.isRefreshing = false
                         loading_today_history.visibility = View.GONE
                     }
                 }

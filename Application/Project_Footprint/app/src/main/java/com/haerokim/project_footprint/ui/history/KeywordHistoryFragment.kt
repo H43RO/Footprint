@@ -118,6 +118,7 @@ class KeywordHistoryFragment : Fragment() {
                             if (response.body()?.size == 0) {
                                 keyword_history_list.visibility = View.GONE
                                 text_keyword_no_data.visibility = View.VISIBLE
+                                loading_keyword_history.visibility = View.GONE
                                 text_keyword_no_data.text = "기록이 없습니다"
                             } else {
                                 text_keyword_no_data.visibility = View.GONE

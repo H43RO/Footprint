@@ -33,7 +33,6 @@ class HistoryListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val historyCreatedFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분")
         var historyCreatedAt = historyCreatedFormat.format(historyList[position].created_at)
-//        var historyCreatedAt = historyList[position].created_at
 
         holder.view.setOnClickListener {
             val intent: Intent = Intent(context, HistoryDetailActivity::class.java)

@@ -184,7 +184,6 @@ class HistoryEditActivity : AppCompatActivity() {
                             .enqueue(object : Callback<History> {
                                 override fun onFailure(call: Call<History>, t: Throwable) {
                                     Log.e("Update History Error", t.message)
-
                                 }
 
                                 override fun onResponse(

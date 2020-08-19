@@ -82,12 +82,8 @@ class ForegroundService : Service(), BeaconConsumer {
 
         var realm = Realm.getDefaultInstance()
 
-
-        val result: RealmResults<VisitedPlace> =
-            realm.where(VisitedPlace::class.java).findAllAsync()
-
         val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             .create()
 
         var retrofit = Retrofit.Builder()
@@ -215,7 +211,6 @@ class ForegroundService : Service(), BeaconConsumer {
         beaconManager.removeAllRangeNotifiers()
         beaconManager.removeAllMonitorNotifiers()
         beaconManager.unbind(this)
-
     }
 
     override fun onBind(intent: Intent): IBinder? {
