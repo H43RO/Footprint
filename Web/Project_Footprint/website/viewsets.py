@@ -1,6 +1,6 @@
 from .models import User, Place, History, Post
 from .place_info_serializers import PlaceSerializer
-from .history_serializer import HistorySerializer
+from .history_serializer import HistorySerializer, HistoryPutSerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
 from .place_id_serializers import PlaceIdSerializer
@@ -34,8 +34,8 @@ class HistoryViewSet(viewsets.ModelViewSet):
 
 
 class HistoryUpdateAPIView(UpdateAPIView):
-    queryset = History.objects.all().order_by('created_at')
-    serializer_class = HistorySerializer
+    queryset = History.objects.all()
+    serializer_class = HistoryPutSerializer
     lookup_field = 'id'
 
 
