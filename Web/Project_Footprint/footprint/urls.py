@@ -31,6 +31,7 @@ from website.viewsets import (
     HistoryDeleteAPIView,
     NoticeViewSet,
     ApiHotPlace,
+    EditorViewSet,
     )
 from django_filters.views import FilterView
 
@@ -40,6 +41,7 @@ router.register('places', ApiPlaceId)
 router.register('userinfo', UserListView, basename='userinfo')
 router.register('noticelist', NoticeViewSet)
 router.register('hotplaces', ApiHotPlace)
+router.register('editorlist', EditorViewSet)
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
