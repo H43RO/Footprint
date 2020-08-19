@@ -1,34 +1,104 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<form action="{% url 'user_delete' %}" method="post" novalidate>
-    <div class="container p-5">
-    <hr>
-    {% csrf_token %}
-    <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br>
-    <div>
-        <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
-        {{ password_form.password }}
-        {% if messages %}
-            {% for message in messages %}
-              <small style="color: red">{{ message.message }}</small><br><br>
-	        {% endfor %}
-        {% endif %}
-<!--        {% if password_form.password.error %}-->
-<!--            <script type="text/javascript">-->
-<!--                document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')-->
-<!--            </script>-->
-<!--            {% for error in password_form.password.error %}-->
-<!--            <div class="invalid-feedback">{{ error }}</div>-->
-<!--            {% endfor %}-->
-<!--        {% endif %}-->
-        <small>
-            본인인증을 위해 비밀번호를 입력해주세요.
-        </small>
-    </div>
 
-    <button type="submit" name="bt" >탈퇴하기</button>
-    </div>
-</form>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+<style>
+    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
+    .container{
+    width: 100%;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    margin-top: 80px;
+    }
+
+    .card-title{
+    margin-top: 5px;
+    margin-left: 25px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    text-align: center;
+    }
+
+    .card-body{
+    font-weight:bold;
+    text-align: center;
+    }
+
+    .user-info {
+<!--    align-content: center;-->
+    height: 60px;
+    width: 370px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 280px;
+    font-weight:bold;
+    font-size: 140%;
+    text-align: center;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    color: black;
+    background-color: #f3f3f3;
+    }
+
+    .delete_btn{
+    color: black;
+    width: 115px;
+    height: 45px;
+    margin-top: 20px;
+    font-size: 100%;
+    font-weight:bold;
+    background-color: #f56042;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+    label {
+    width:200px;
+    display: block;
+    }
+</style>
+
+
+<div class="container p-5">
+<div class="container">
+    <div class="filter_content section--search_category">
+        <div class="section--category_group">
+            <ul class="list--category depth1" style="list-style:none">
+            </ul>
+        </div>
+    </div>
+    <div class="row userinfo" style="margin:20px auto;">
+        <div class="col-sm-12">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.email }}님의 회원 탈퇴</h2>
+                    <hr>
+                    <form action="{% url 'user_delete' %}" method="post" novalidate>
+                        {% csrf_token %}
+                        <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br><br>
+                        <h5><strong>본인인증을 위해 비밀번호를 다시 입력해주세요.</strong></h5>
+<!--                            <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>-->
+                                <div class="user-info">
+                                    <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>
+                                    {{ password_form.password }}
+                                </div>
+                            {% if messages %}
+                                {% for message in messages %}
+                                  <p style="color: red">{{ message.message }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        <button class="btn delete_btn" type="submit" >탈퇴하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 {% endblock %}

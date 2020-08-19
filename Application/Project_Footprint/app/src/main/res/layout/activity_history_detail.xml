@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e8e8e8"
+    android:background="#E8E8E8"
     tools:context=".Activity.HistoryDetailActivity">
 
     <androidx.cardview.widget.CardView
@@ -46,14 +46,12 @@
 
             </RelativeLayout>
 
-
             <LinearLayout
                 android:id="@+id/history_content_section"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="24dp">
-
 
                     <TextView
                         android:textColor="#353535"
@@ -65,13 +63,12 @@
                         android:textSize="25dp"
                         android:textStyle="bold" />
 
-
                 <TextView
-                    android:id="@+id/text_history_detail_place"
+                    android:id="@+id/text_history_detail_place_mood"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="카페 리프에서, 기분 맑음"
+                    android:text="카페 리프에서, 기분 좋았던 순간"
                     android:textSize="16dp" />
 
                 <TextView

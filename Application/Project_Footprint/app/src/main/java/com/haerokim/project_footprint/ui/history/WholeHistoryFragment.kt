@@ -1,5 +1,6 @@
 package com.haerokim.project_footprint.ui.history
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -29,7 +30,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
 
-class WholeHistoryFragment : Fragment(){
+class WholeHistoryFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
@@ -38,7 +39,6 @@ class WholeHistoryFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-        getWholeHistoryList()
     }
 
     override fun onCreateView(
@@ -69,10 +69,15 @@ class WholeHistoryFragment : Fragment(){
                 adapter = viewAdapter
             }
 
+        whole_history_swipe.setColorSchemeColors(Color.GRAY)
+        whole_history_swipe.setOnRefreshListener {
+            getWholeHistoryList()
+        }
+
         getWholeHistoryList()
     }
 
-    fun getWholeHistoryList(){
+    fun getWholeHistoryList() {
         text_whole_no_data.visibility = View.GONE
         loading_whole_history.visibility = View.VISIBLE
 
@@ -103,34 +108,39 @@ class WholeHistoryFragment : Fragment(){
                     whole_history_list.visibility = View.GONE
                     text_whole_no_data.visibility = View.VISIBLE
                     text_whole_no_data.text = "정보를 가져오지 못했습니다"
+                    whole_history_swipe.isRefreshing = false
                 }
 
                 override fun onResponse(
                     call: Call<ArrayList<History>>,
                     response: Response<ArrayList<History>>
                 ) {
-                    historyList.clear()
-                    if (response.body()?.size == 0) {
-                        keyword_history_list.visibility = View.GONE
-                        text_whole_no_data.visibility = View.VISIBLE
-                        loading_whole_history.visibility = View.GONE
-                        text_whole_no_data.text = "기록이 없습니다"
-                    } else {
-                        text_whole_no_data.visibility = View.GONE
-                        responseBody = response.body()!!
-                        for (history in responseBody) {
-                            if(history.place != null) { // place가 null이면 임의로 생성한 history이므로 이름 변환 과정을 건너뜀
-                                realm.executeTransaction {
-                                    val visitedPlace: VisitedPlace? =
-                                        it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                    history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place!!).execute().get()
+                        historyList.clear()
+                        if (response.body()?.size == 0) {
+                            keyword_history_list.visibility = View.GONE
+                            text_whole_no_data.visibility = View.VISIBLE
+                            loading_whole_history.visibility = View.GONE
+                            text_whole_no_data.text = "기록이 없습니다"
+                            whole_history_swipe.isRefreshing = false
+                        } else {
+                            text_whole_no_data.visibility = View.GONE
+                            responseBody = response.body()!!
+                            for (history in responseBody) {
+                                if (history.place != null) { // place가 null이면 임의로 생성한 history이므로 이름 변환 과정을 건너뜀
+                                    realm.executeTransaction {
+                                        val visitedPlace: VisitedPlace? =
+                                            it.where(VisitedPlace::class.java)
+                                                .equalTo("naverPlaceID", history.place).findFirst()
+                                        history.place = visitedPlace?.placeTitle
+                                            ?: GetPlaceTitleOnly(history.place!!).execute().get()
+                                    }
                                 }
                             }
+                            historyList.addAll(responseBody)
+                            viewAdapter.notifyDataSetChanged()
+                            whole_history_swipe.isRefreshing = false
+                            loading_whole_history.visibility = View.GONE
                         }
-                        historyList.addAll(responseBody)
-                        viewAdapter.notifyDataSetChanged()
-                        loading_whole_history.visibility = View.GONE
-                    }
                 }
             })
     }

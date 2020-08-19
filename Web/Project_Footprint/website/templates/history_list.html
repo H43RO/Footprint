@@ -1,6 +1,40 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
+
+   <style>
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+
+    div.history-list {
+        width: 100%;
+        background: #e8e8e8;
+    }
+    div.left {
+        width: 40%;
+        height: 1150px;
+        float: left;
+        box-sizing: border-box;
+        background: #e8e8e8;
+        overflow-y:scroll;
+        font-family: 'NanumSquare', sans-serif;
+        margin:auto;
+        margin-top:0px;
+    }
+    div.right {
+        width: 60%;
+        float: right;
+        box-sizing: border-box;
+        background: #e8e8e8;
+        font-family: 'NanumSquare', sans-serif;
+
+    }
+    #history-create{
+        margin-left:50px"
+    }
+    </style>
+
+
 <div class="history-list">
     <div class="left">
         <div class="history">
@@ -15,7 +49,7 @@
                     {% endif %}
                     <div style="margin-left:20px">
                         <p class="card-text">
-                            {%if item.title %}
+                            {%if item.title %}ze
                         <h5 class="card-title" id="title{{item.id}}" style="font-family: 'Nanum Myeongjo', serif;">
                         {{item.title }}</h5>
                         {% endif %}
@@ -59,10 +93,10 @@
     </div>
 
     <div class="right">
-        <div class="card mb-3" style="max-width: 550px; margin:auto; margin-top: 10%; border-radius: 30px;">
+        <div class="card mb-3" style=" max-width: 550px; max-heightL 800px; margin:auto; margin-top: 10%; border-radius: 15px;">
             <div class="row no-gutters">
                 <img class="history-img"
-                     style="width: 550px; height: 550px; border-top-right-radius:30px; margin:auto; border-top-left-radius: 30px;"
+                     style=" max-width:100%; max-height: 100%; object-fit: contain;"
                      id=img src="../static/logo2.png" , alt="">
             </div>
             <div class="col-md-8">

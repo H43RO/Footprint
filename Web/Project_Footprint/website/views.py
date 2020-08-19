@@ -242,7 +242,7 @@ def user_delete(request):
             logout(request)
             return redirect('../list')
         else:
-            messages.error(request, '비밀번호를 다시 입력해주세요')
+            messages.error(request, '비밀번호가 일치하지 않습니다. 다시 입력해주세요')
             return HttpResponseRedirect('../user_delete/')
     else:
         password_form = CheckPasswordForm(request.user)
