@@ -19,6 +19,7 @@
 	<script src="{% static 'js/skel.min.js' %}"></script>
 	<script src="{% static 'js/skel-layers.min.js' %}"></script>
 	<script src="{% static 'js/init.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 	<!-- <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
@@ -67,7 +68,9 @@
 			font-size: 1.25em;
 			font-weight: 700;
 		}
-
+		body{
+		   background-color : #f9f9f9;
+		}
 	</style>
 
 	</head>
@@ -77,29 +80,26 @@
 			<header id="header">
 				<h1 class="base_head"><a href="/index">발자취</a></h1>
 				<nav id="nav">
-					<ul class="navbar">
+					<ul>
 						<li class="nav-item">
 						  </li>				
-						<li><a href="/place_list">장소</a>
-						</li>
-						<li><a href="/place_register">장소 등록</a></li>
-						<li><a href="/notice">공지사항</a></li>
-                        <li><a href="/editor">Editor</a></li>
+						<li><a href="/notice">NOTICE</a></li>
+                        <li><a href="/editor">EDITOR</a></li>
 						<li class="nav-item">
 							{% if request.user.is_authenticated %}
-								<a href="/myinfo">내 정보</a>
+								<a href="/myinfo">MY INFO</a>
 							{% else %}
-								<a href="/signin">내 정보</a>
+								<a href="/signin">MY INFO</a>
 							{% endif %}
 						</li>
 						<li>
 							{% if request.user.is_authenticated %}
-								<a href="/signout">로그아웃</a>
+								<a href="/signout">LOGOUT</a>
 							{% else %}
-								<a href="/signin">로그인</a>
+								<a href="/signin">LOGIN</a>
 							{% endif %}
 							</li>
-						<li><a href="/signup" class="button special">회원가입</a></li>
+						<li><a href="/signup" class="button special">SIGNUP</a></li>
 					</ul>
 				</nav>
       </header>

@@ -4,24 +4,26 @@
 
 <style>
         body{
-            font-family: "나눔명조";
+            font-family: "나눔스퀘어";
         }
         div.container {
             margin-top: 100px;
+            margin-left: 170px;
         }
         section{
             position:relative;margin:0 auto;display:block;max-width:1100px;width:1100px
         }
         div.board_aside {
-            width: 200px;
+            width: 250px;
             float: left;
         }
         div.board_contents{
-            margin-left: 350px;
+            width : 1056px;
+            margin: 0 auto;
         }
         h1.notice_head{
             height: 700px;
-            font-size: 2.5rem;
+            font-size: 3.0rem;
             font-weight: 800;
 
            }
@@ -29,24 +31,55 @@
 			font-size: 2.0rem;
 			font-weight: 800;
         }
-
+        p.notice_date{
+            padding-top : 20px;
+            padding-bottom : 20px;
+        }
+        div.editor_head{
+            height: 80px;
+            border-bottom: 2px solid #a9a9a9;
+            margin-left : -150px;
+        }
+        hr{
+            width: 100px;
+            margin-top: -630px;
+            color: #3cadd4;
+        }
+        .notices_contents{
+            padding-top: 60px;
+        }
+        h4.notice_tit {
+            font-size: 2.3rem;
+ 			font-weight: 550;
+ 			font-family: "나눔명조";
+        }
+        .notice{
+            margin-top: 60px;
+        }
     </style>
 
 <div class="container">
-        <div class="board_aside">
+        <div class="board_contents">
             <h1 class="notice_head">
-                공지사항<br>
+                Notice<br>
             </h1>
+            <hr>
             <span class="aside-st"></span>
         </div>
         <div class="board_contents">
-            <h4 class="notice">
-                {{ notices.title }}
-            </h4>{{ notices.created_at }}
+            <div class="notice_contents">
+                <div class="notice">
+                    <h4 class="notice_tit">
+                        {{ notices.title }}
+                    </h4>
+                </div>
+
+            <p class="notice_date"> {{ notices.created_at|date:"Y-m-d" }}</p>
             <br><br>
-            <p class="notice">
+            <div class="notice_desc">
                  {{ notices.description|safe }}
-            </p>
+            </div>
+            </div>
         </div>
     </div>
 {% endblock %}
