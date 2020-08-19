@@ -8,8 +8,11 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
 from django.db.models import F
 from ckeditor_uploader.fields import RichTextUploadingField
+from datetime import date
+from django.utils import timezone
 
 DEFAULT_HISTORY = 1
+
 
 GENDER_CHOICES = (
     (0, 'male'),
@@ -93,7 +96,7 @@ class Place(models.Model):
     count = models.IntegerField(null=True, default=0)
 
     def __str__(self):
-        return self.title + ': ' + self.naver_place_id
+        return self.title
 
 
 class History(models.Model):
@@ -104,13 +107,14 @@ class History(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
     custom_place = models.TextField(max_length=500, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY)
-    created_at = models.DateTimeField(auto_now_add=False)
+    created_at = models.DateTimeField(auto_now_add=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:
             Place.objects.filter(pk=self.place_id).update(count=F('count')+1)
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
