@@ -5,20 +5,15 @@ from .models import User, Place, History, Post
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.hashers import check_password
-
-
-MOOD_POINT_CHOICES = (
-    ('angry', "angry"),
-    ('soso', "soso"),
-    ('happy', "happy"),
-)
-
+from django.utils import timezone
 
 MOOD_POINT_CHOICES = (
     ('angry', "angry"),
     ('soso', "soso"),
     ('happy', "happy"),
 )
+
+
 
 
 class SignUpForm(UserCreationForm):
@@ -104,10 +99,15 @@ class HistoryForm(forms.ModelForm):
         }
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),
+
         }
         help_texts = {
             'comment': _('일기를 작성해주세요.'),
         }
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['created_at'] = timezone.now()
 
 
 

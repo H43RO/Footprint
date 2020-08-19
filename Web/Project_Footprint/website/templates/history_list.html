@@ -8,10 +8,9 @@
 
     div.history-list {
         width: 100%;
-        background: #e8e8e8;
     }
     div.left {
-        width: 40%;
+        width: 35%;
         height: 1150px;
         float: left;
         box-sizing: border-box;
@@ -22,35 +21,113 @@
         margin-top:0px;
     }
     div.right {
-        width: 60%;
+        width: 65%;
+        height: 1150px;
         float: right;
         box-sizing: border-box;
         background: #e8e8e8;
         font-family: 'NanumSquare', sans-serif;
 
     }
-    #history-create{
-        margin-left:50px"
+    a.card-link {
+        margin-left:50px;
     }
+
+    div.card {
+        width: 600px;
+        margin:auto;
+        border-radius: 15px;
+    }
+
+
+    div.card-left {
+        width: 280px;
+        margin:auto;
+        border-radius: 15px;
+        background:#ffffff;
+    }
+
+
+    div.history-text{
+        margin-left:20px;
+    }
+
+    h5.card-title {
+        font-family: 'Nanum Myeongjo', serif;
+    }
+
+    #history-card-3 {
+        max-width: 550px;
+        max-height: 900;
+        margin:auto;
+        margin-top: 10%;
+        border-radius: 15px;
+    }
+
+    img.card-img-top{
+        max-width: 100%;
+        max-height: 100%;
+        margin:auto;
+        object-fit: contain;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    img.history-img{
+        max-width:100%;
+        max-height: 100%;
+        margin:auto;
+        object-fit: contain;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    div.card-body{
+        margin-top:10px;
+        margin-left:20px;
+        margin:auto;
+    }
+
+    #right-body{
+        margin-left:20px;
+        margin-top:400px;
+        width: 480px;
+    }
+
+    h5.card-title{
+        font-family: 'Nanum Myeongjo', serif;
+    }
+
+    div.col-md-8{
+        margin-top:30%;
+    }
+
+    button.btn btn-light{
+        width:50px;
+        height:20px;
+
+    }
+    form.button-history{
+        float:left;
+    }
+
     </style>
 
 
 <div class="history-list">
     <div class="left">
         <div class="history">
-            <a href="{% url 'history-create' %}" class="card-link" style="margin-left:50px">일기 작성</a>
+            <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
             {% for item in historys %}
             <div class="card-body">
-                <div class="card" onclick="myFunction({{item.id}})"
-                     style="width: 22rem; margin:auto; border-radius: 30px;">
+                <div class="card-left" onclick="myFunction({{item.id}})">
                     {% if item.img %}
-                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt=""
-                         style="border-top-left-radius: 30px; border-top-right-radius: 30px;">
+                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="">
                     {% endif %}
-                    <div style="margin-left:20px">
+                    <div class="history-text">
                         <p class="card-text">
-                            {%if item.title %}ze
-                        <h5 class="card-title" id="title{{item.id}}" style="font-family: 'Nanum Myeongjo', serif;">
+                            {%if item.title %}
+                        <h5 class="card-title" id="title{{item.id}}">
                         {{item.title }}</h5>
                         {% endif %}
                         </p>
@@ -69,12 +146,12 @@
                         {% endif %}
                         <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
 
-                        <form action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
+                        <form class="button-history" action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-light">수정</button>
                         </form>
 
-                        <form action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
+                        <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
                             {% csrf_token %}
                             <script>
                                                 function Function() {
@@ -93,15 +170,13 @@
     </div>
 
     <div class="right">
-        <div class="card mb-3" style=" max-width: 550px; max-heightL 800px; margin:auto; margin-top: 10%; border-radius: 15px;">
+        <div class="card mb-3" id="history-card-3">
             <div class="row no-gutters">
-                <img class="history-img"
-                     style=" max-width:100%; max-height: 100%; object-fit: contain;"
-                     id=img src="../static/logo2.png" , alt="">
+                <img class="history-img" id="img" src="../static/logo2.png" , alt="">
             </div>
             <div class="col-md-8">
-                <div class="card-body" style="margin-left:20px; width: 480px;">
-                    <h5 class="card-title" style="font-family: 'Nanum Myeongjo', serif;">
+                <div class="card-body" id="right-body">
+                    <h5 class="card-title">
                         <p id="demo-title"></p>
                     </h5>
                     <p id="demo-mood"></p>
@@ -164,7 +239,7 @@
                             if(customplace != null){
                                 document.getElementById("demo-custom-place").innerHTML = customplace;
                             }else{
-                                document.getElementById("demo-comment").innerHTML = "";
+                                document.getElementById("demo-custom-place").innerHTML = "";
                             }
                             if(create != null){
                                 document.getElementById("demo-create-at").innerHTML = create;

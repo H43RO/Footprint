@@ -30,7 +30,7 @@ from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.contrib.auth.tokens import default_token_generator
 from django.template import loader
-
+from django.utils import timezone, dateformat
 
 def index(request):
     sights = Place.objects.filter(place_div=0).order_by('-count')[:6]
@@ -178,10 +178,6 @@ def history(request):
         item.delete()
         return redirect('history-delete')
     historys = History.objects.all().order_by('created_at')
-    # paginator = Paginator(historys, 5)  # 한 페이지에 5개씩 표시
-
-    # page = request.GET.get('page')  # query params에서 page 데이터를 가져옴
-    # items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링
     context = {
         'historys': historys,
     }
@@ -190,11 +186,20 @@ def history(request):
 
 def history_create(request):
     if request.method == 'POST':
-        form = HistoryForm(request.POST, request.FILES)  # request의 POST 데이터들을 바로 PostForm에 담을 수 있습니다.
-        if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
-            new_item = form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
-        return HttpResponseRedirect('../')  # 리스트 화면으로 이동합니다.
-    form = HistoryForm(request.FILES)  # 만약에 POST방식이 아니라면
+        if request.POST['created_at'] == '':
+            request.POST._mutable = True
+            formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
+            request.POST['created_at'] = formatted_date
+            form = HistoryForm(request.POST, request.FILES)
+            if form.is_valid():
+                new_item = form.save()
+            return HttpResponseRedirect('../')
+        else:
+            form = HistoryForm(request.POST, request.FILES)
+            if form.is_valid():
+                new_item = form.save()
+            return HttpResponseRedirect('../')
+    form = HistoryForm(request.FILES)
     return render(request, 'history_create.html', {'form': form})
 
 
