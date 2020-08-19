@@ -126,7 +126,7 @@ interface RetrofitService {
     @Multipart
     @POST("/api/histories/")
     fun writeHistoryWithImage(
-        @Part("user") userID: Int,
+        @Part("user") userID: RequestBody,
         @Part img: MultipartBody.Part,
         @Part("title") title: RequestBody,
         @Part("comment") content: RequestBody,
