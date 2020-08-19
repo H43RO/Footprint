@@ -113,3 +113,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
 class ApiHotPlace(viewsets.ModelViewSet):
     queryset = Place.objects.order_by('-count')[:5]
     serializer_class = PlaceSerializer
+
+
+class EditorViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.filter(post_div=0)
+    serializer_class = NoticeSerializer

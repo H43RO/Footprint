@@ -2,7 +2,7 @@
 {% load static %}
 {% block extrahead %}
     <meta name="viewport" content="width=device-width", initial-scale="1">
-	<script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
+   <script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -14,10 +14,12 @@
         }
         div.album.py-5{
             margin-top: 55px;
-
         }
-        .bg-white {
-            background-color: #f9f9f9!important;
+        body {
+            background-color: #f9f9f9
+        }
+        .card-body{
+            padding-top: 20px;
         }
         h3.place_tit{
             display: inline-block;
@@ -33,10 +35,20 @@
             color: #a9a9a9;
             text-align: center;
        }
-       div.card.mb-4.shadow-sm{
-
+        div.card.mb-4.shadow-sm{
+            overflow: hidden;
+            float: left;
+            width: 270px;
+            height: 350px;
+            line-height: 22px;
             border-radius: 15px;
         }
+       img.card-img{
+            display: block;
+            max-width:100%;
+            max-height: 100%;
+            object-fit: contain;
+       }
     </style>
     <section id="banner">
             <div></div>
@@ -55,7 +67,7 @@
             <h4 class="index_subtit">누군가는 당신의 발자취를 따라갑니다.</h4>
           </header>
       </section>
-    <div class="album py-5 bg-white">
+    <div class="album py-5">
         <header class="major">
           <h3 class="place_tit">요즘 뜨는 핫플레이스 &#x2728;</h3>
         </header>
@@ -63,24 +75,25 @@
           <div class="row">
             <div id="slider-div" style="margin: 0 auto; width:1200px; height:400px;"  >
               {% for item in sights %}
-                <div class="col-md-4">
-                  <div class="card mb-4 shadow-sm">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
                     <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ item.img.url }}" xmlns="http://www.w3.org/2000/svg"
                          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
                         <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect></img>
                     <div class="card-body">
-                      <h5>{{ item.title }}</h5>
-<!--                      <p class="card-text" style="font-size:12px">#여수밤바다 #여수바다한눈에 #속이뻥 </p>-->
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
-                        </div>
+                    <h5>{{ item.title }}</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
+                    </div>
                         <small class="text-muted">{{ item.count }}번 방문 </small>
                       </div>
                     </div>
                   </div>
                 </div>
-              {% endfor %}
+                      {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
         </div>
@@ -102,7 +115,6 @@
                         <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect></img>
                     <div class="card-body">
                     <h5>{{ item.title }}</h5>
-<!--                    <p class="card-text" style="font-size:12px">#여수밤바다 #여수바다한눈에 #속이뻥 </p>-->
                     <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary">자세히</button>
@@ -191,6 +203,5 @@
                 });
             })
         </script>
-        </section> 
+        </section>
 {% endblock %}
-
