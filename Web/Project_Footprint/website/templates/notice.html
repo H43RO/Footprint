@@ -1,81 +1,94 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-<style>
+<style type="text/css" >
         body{
-            font-family: "나눔명조";
+            font-family: "나눔스퀘어";
+            background-color: #f9f9f9;
         }
         div.container {
             margin-top: 100px;
+            margin-left: 200px;
+        }
+        .notices_contents{
+            padding-top: 45px;
         }
         div.board_contents{
-            margin-left: 100px;
-        }
-
-        table.notice {
-            border-collapse: collapse;
-            width: 850px;
-            min-height: 700px;
-            float: left;
-            position: relative;
-            margin-bottom: 20px;
-            margin-left: 100px;
-        }
-
-        th.notice, td.notice {
-            height: 20px;
-            width : 200px;
-            border-bottom: 1px solid #444444;
-            padding: 10px;
-        }
-        tr.notice{
-            height: 20px;
-        }
-        section{
-            position:relative;margin:0 auto;display:block;max-width:1100px;width:1100px
+            width : 1056px;
+            margin: 0 auto;
         }
         div.board_aside {
-            width: 200px;
+            width: 250px;
             float: left;
         }
         h1.notice_head{
-            height: 700px;
-            font-size: 2.5rem;
+            font-size: 3.0rem;
             font-weight: 800;
 
+        }
+        hr{
+            width: 85px;
+            color: #3cadd4;
+        }
+        .row{
+            padding-top: 15px;
+        }
+        .card{
+            border-radius: 15px;
+            width:1000px;
+        }
+
+        .card-title{
+            padding-left: 10px;
+            font-weight: 600;
+            font-size: 1.5rem;
+            font-family: "나눔명조"
+        }
+        p.card_date{
+            padding-left: 15px;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+        }
+        p.card_desc{
+            font-size: 1.0rem;
+            padding-left: 15px;
+            margin-bottom: 5px;
+        }
+        a{
+            text-decoration: none;
+            color: black;
         }
 
     </style>
 
     <div class="container">
-        <div class="board_aside">
+        <div class="board_contents">
             <h1 class="notice_head">
                 Notice<br>
             </h1>
+            <hr>
             <span class="aside-st"></span>
         </div>
         <div class="board_contents">
-            <section>
-                <table class="notice">
-                    <thead class="notice">
-                        <tr class="notice">
-                            <th class="notice" scope="col">No.</th>
-                            <th class="notice" scope="col">제목</th>
-                            <th class="notice" scope="col">작성일</th>
-                        </tr>
-                    </thead>
-                    <tbody class="notice">
-                        {% for item in notices %}
-                        <tr class="notice">
-                            <th class="notice" scope="row">{{ forloop.counter }}</th>
-                            <td class="notice" ><a href="notice_view/{{ item.id }}">{{ item.title }}</a></td>
-                            <td class="notice" >{{ item.created_at }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </section>
+            <div class="notices_contents">
+            {% for item in notices %}
+                <div class="row">
+                      <div class="col-sm-6">
+                        <div class="card">
+                          <div class="card-body">
+                            <a href="notice_view/{{ item.id }}" >
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card_date">{{ item.created_at|date:"Y-m-d" }}</p>
+                            <p class="card_desc">{{ item.contents }}</p>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

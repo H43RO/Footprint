@@ -19,6 +19,7 @@
 	<script src="{% static 'js/skel.min.js' %}"></script>
 	<script src="{% static 'js/skel-layers.min.js' %}"></script>
 	<script src="{% static 'js/init.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 	<!-- <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
@@ -28,8 +29,18 @@
 	<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" /> -->
 	{% block extrahead %}
 	{% endblock %}
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+	<style type="text/css">
+		h1.base_head{
+			font-size: 1.25em;
+			font-weight: 700;
+		}
+		body{
+		   background-color : #f9f9f9;
+		}
+	</style>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
@@ -40,29 +51,26 @@
 			<header id="header">
 				<h1 class="base_head"><a href="/index">발자취</a></h1>
 				<nav id="nav">
-					<ul class="navbar">
+					<ul>
 						<li class="nav-item">
 						  </li>				
-						<li><a href="/place_list">장소</a>
-						</li>
-						<li><a href="/place_register">장소 등록</a></li>
-						<li><a href="/notice">공지사항</a></li>
-                        <li><a href="/editor">Editor</a></li>
+						<li><a href="/notice">NOTICE</a></li>
+                        <li><a href="/editor">EDITOR</a></li>
 						<li class="nav-item">
 							{% if request.user.is_authenticated %}
-								<a href="/myinfo">내 정보</a>
+								<a href="/myinfo">MY INFO</a>
 							{% else %}
-								<a href="/signin">내 정보</a>
+								<a href="/signin">MY INFO</a>
 							{% endif %}
 						</li>
 						<li>
 							{% if request.user.is_authenticated %}
-								<a href="/signout">로그아웃</a>
+								<a href="/signout">LOGOUT</a>
 							{% else %}
-								<a href="/signin">로그인</a>
+								<a href="/signin">LOGIN</a>
 							{% endif %}
 							</li>
-						<li><a href="/signup" class="button special">회원가입</a></li>
+						<li><a href="/signup" class="button special">SIGNUP</a></li>
 					</ul>
 				</nav>
       </header>
