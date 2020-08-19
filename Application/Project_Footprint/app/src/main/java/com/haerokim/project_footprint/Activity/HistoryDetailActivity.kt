@@ -32,13 +32,12 @@ class HistoryDetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // 수정된 정보가 넘어오면 실행
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             text_history_detail_title.text = data?.getStringExtra("title")
             text_history_detail_content.text = data?.getStringExtra("comment")
-            if(data?.getStringExtra("image") != null){
+            if (data?.getStringExtra("image") != null) {
                 history_detail_image.setImageURI(Uri.parse(data?.getStringExtra("image")))
             }
-//            TODO ("나머지 1개 Extra 미구현 Mood")
         }
     }
 
@@ -68,9 +67,46 @@ class HistoryDetailActivity : AppCompatActivity() {
         }
 
         text_history_detail_title.text = historyTitle
-        text_history_detail_place.text = historyPlaceTitle + "에서"
+        text_history_detail_place_mood.text = historyPlaceTitle + "에서, "
         text_history_detail_time.text = historyCreatedAt
         text_history_detail_content.text = historyComment
+
+        when (historyMood) {
+            "10" -> {
+                text_history_detail_place_mood.append("기분 좋았던 순간")
+            }
+            "1" -> {
+                text_history_detail_place_mood.append("기뻤던 순간")
+            }
+            "2" -> {
+                text_history_detail_place_mood.append("평화로웠던 순간")
+            }
+            "3" -> {
+                text_history_detail_place_mood.append("황홀했던 순간")
+            }
+            "4" -> {
+                text_history_detail_place_mood.append("행복했던 순간")
+            }
+            "5" -> {
+                text_history_detail_place_mood.append("뭉클했던 순간")
+            }
+            "6" -> {
+                text_history_detail_place_mood.append("우울했던 순간")
+            }
+            "7" -> {
+                text_history_detail_place_mood.append("당황했던 순간")
+            }
+            "8" -> {
+                text_history_detail_place_mood.append("화났던 순간")
+            }
+            "9" -> {
+                text_history_detail_place_mood.append("아쉬웠던 순간")
+            }
+            "10" -> {
+                text_history_detail_place_mood.append("최악이었던 순간")
+            }
+        }
+
 
         val gson = GsonBuilder()
             .setDateFormat("yyyy-MM-dd")
@@ -99,32 +135,49 @@ class HistoryDetailActivity : AppCompatActivity() {
 
                     R.id.share_history -> {
                         var sns = arrayOf("인스타그램 피드 및 DM", "인스타그램 스토리", "페이스북 피드")
-                        val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
+                        val alertDialog = AlertDialog.Builder(
+                            this,
+                            android.R.style.Theme_DeviceDefault_Light_Dialog_Alert
+                        )
                         alertDialog.setTitle("SNS 공유하기")
                             .setItems(sns, DialogInterface.OnClickListener { dialog, which ->
-                                when(which){
-                                    0->{  // 인스타그램 피드
+                                when (which) {
+                                    0 -> {  // 인스타그램 피드
                                         val snsIntent = Intent(Intent.ACTION_SEND)
-                                        val localPath: String = ImageDownloader().execute(historyImage).get()
-                                        val uri = FileProvider.getUriForFile(applicationContext, "com.haerokim.project_footprint", File(localPath))
+                                        val localPath: String =
+                                            ImageDownloader().execute(historyImage).get()
+                                        val uri = FileProvider.getUriForFile(
+                                            applicationContext,
+                                            "com.haerokim.project_footprint",
+                                            File(localPath)
+                                        )
 
                                         snsIntent.setPackage("com.instagram.android")
                                         snsIntent.setType("image/*")
                                         snsIntent.putExtra(Intent.EXTRA_STREAM, uri)
                                         startActivity(snsIntent)
                                     }
-                                    1->{  // 인스타그램 스토리
+                                    1 -> {  // 인스타그램 스토리
                                         val snsIntent = Intent("com.instagram.share.ADD_TO_STORY")
-                                        val localPath: String = ImageDownloader().execute(historyImage).get()
-                                        val uri = FileProvider.getUriForFile(applicationContext, "com.haerokim.project_footprint", File(localPath))
+                                        val localPath: String =
+                                            ImageDownloader().execute(historyImage).get()
+                                        val uri = FileProvider.getUriForFile(
+                                            applicationContext,
+                                            "com.haerokim.project_footprint",
+                                            File(localPath)
+                                        )
                                         snsIntent.setType("image/*")
                                         snsIntent.putExtra("top_background_color", "#e8e8e8")
                                         snsIntent.putExtra("bottom_background_color", "#e8e8e8")
                                         snsIntent.putExtra("interactive_asset_uri", uri)
-                                        this.grantUriPermission("com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        this.grantUriPermission(
+                                            "com.instagram.android",
+                                            uri,
+                                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                        )
                                         this.startActivityForResult(snsIntent, 0)
                                     }
-                                    2->{  // 페이스북 피드
+                                    2 -> {  // 페이스북 피드
 
                                     }
                                 }
@@ -139,21 +192,33 @@ class HistoryDetailActivity : AppCompatActivity() {
                         builder.setMessage("정말 삭제하겠습니까?")
                         builder.setPositiveButton("예",
                             DialogInterface.OnClickListener { dialog, which ->
-                                deleteHistoryService.deleteHistory(historyID!!).enqueue(object: Callback<String>{
-                                    override fun onFailure(call: Call<String>, t: Throwable) {
-                                        Log.e("Delete History Error", t.message)
-                                    }
-
-                                    override fun onResponse(call: Call<String>, response: Response<String>) {
-                                        if(response.code() == 204){
-                                            Toast.makeText(applicationContext, "삭제되었습니다", Toast.LENGTH_LONG).show()
-                                            finish()
-                                        }else{
-                                            Log.d("Delete History Error", "삭제 실패")
-                                            Toast.makeText(applicationContext, "삭제에 실패했습니다", Toast.LENGTH_LONG).show()
+                                deleteHistoryService.deleteHistory(historyID!!)
+                                    .enqueue(object : Callback<String> {
+                                        override fun onFailure(call: Call<String>, t: Throwable) {
+                                            Log.e("Delete History Error", t.message)
                                         }
-                                    }
-                                })
+
+                                        override fun onResponse(
+                                            call: Call<String>,
+                                            response: Response<String>
+                                        ) {
+                                            if (response.code() == 204) {
+                                                Toast.makeText(
+                                                    applicationContext,
+                                                    "삭제되었습니다",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                                finish()
+                                            } else {
+                                                Log.d("Delete History Error", "삭제 실패")
+                                                Toast.makeText(
+                                                    applicationContext,
+                                                    "삭제에 실패했습니다",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                        }
+                                    })
                             })
                         builder.setNegativeButton("아니오",
                             DialogInterface.OnClickListener { dialog, which ->

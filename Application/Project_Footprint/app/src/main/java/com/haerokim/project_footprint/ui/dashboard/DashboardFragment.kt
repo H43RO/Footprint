@@ -33,6 +33,7 @@ class DashboardFragment : Fragment() {
         card_whole_history.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_whole_history)
         }
+        card_whole_history.visibility = View.GONE
 
         card_today_history.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_today_history)

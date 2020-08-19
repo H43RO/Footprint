@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="moode_list">
-
-        <item>기분 맑음</item>
-        <item>기분 흐림</item>
-        <item>기분 안좋음</item>
-        <item>기분 심각</item>
-        <item>기분 화창함</item>
-        <item>기분 최고조</item>
-
+        <item>기분 좋았던 순간</item>
+        <item>기뻤던 순간</item>
+        <item>평화로웠던 순간</item>
+        <item>황홀했던 순간</item>
+        <item>행복했던 순간</item>
+        <item>뭉클했던 순간</item>
+        <item>우울했던 순간</item>
+        <item>당황했던 순간</item>
+        <item>화났던 순간</item>
+        <item>아쉬웠던 순간</item>
+        <item>최악이었던 순간</item>
     </string-array>
-
 </resources>

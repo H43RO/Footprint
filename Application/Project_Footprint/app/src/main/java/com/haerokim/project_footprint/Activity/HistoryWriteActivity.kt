@@ -96,7 +96,7 @@ class HistoryWriteActivity : AppCompatActivity() {
         var user: User = Paper.book().read("user_profile")
 
         val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             .create()
 
         var retrofit = Retrofit.Builder()
@@ -157,7 +157,7 @@ class HistoryWriteActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this, R.style.DatePicker,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                    historyTime = "T" + hourOfDay + ":" + minute + ":00.000000"
+                    historyTime = "T" + hourOfDay + ":" + minute + ":00"
                     Log.d("HistoryCreatedAt", historyTime)
                     edit_history_time.text = hourOfDay.toString() + "시 " + minute.toString() + "분"
                 }, hour, minute, false
@@ -218,7 +218,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                 historyCreatedAt = historyDate + historyTime
                 historyUserID = user.id
 
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 val result: Date = format.parse(historyCreatedAt)
 
                 val builder: AlertDialog.Builder =
@@ -233,6 +233,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 RequestBody.create(MediaType.parse("multipart/data"), image)
                             val uploadImage: MultipartBody.Part =
                                 MultipartBody.Part.createFormData("img", image.name, requestFile)
+
                             val title =
                                 RequestBody.create(MediaType.parse("text/plain"), historyTitle)
                             val comment =
@@ -268,12 +269,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 ) {
                                     if (response.code() == 201) {
                                         Log.d("History Create Success", "임의 히스토리 생성완료")
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "발자취를 남겼습니다!",
-                                            Toast.LENGTH_LONG
-                                        )
-                                            .show()
+                                        Toast.makeText(applicationContext, "발자취를 남겼습니다!", Toast.LENGTH_LONG).show()
                                         finish()
                                     } else {
                                         Log.d("History Create Failed", "임의 히스토리 생성실패")

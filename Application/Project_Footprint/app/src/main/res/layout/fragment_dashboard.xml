@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
                 app:cardBackgroundColor="#9096B6"
                 app:cardCornerRadius="24dp"

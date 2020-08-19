@@ -52,13 +52,19 @@
             android:indeterminate="true"
             android:indeterminateTint="#ffffff" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/today_history_list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/today_history_swipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            tools:listitem="@layout/history_item" />
+            android:layout_marginTop="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/today_history_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/history_item" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_write_history"
