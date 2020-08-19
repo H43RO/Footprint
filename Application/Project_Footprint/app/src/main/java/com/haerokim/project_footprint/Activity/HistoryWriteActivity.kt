@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.LongDef
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
@@ -43,6 +44,10 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 
 class HistoryWriteActivity : AppCompatActivity() {
@@ -74,7 +79,7 @@ class HistoryWriteActivity : AppCompatActivity() {
 
         // Initialize a new file instance to save bitmap object
         var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
-        file = File(file, "profile_image.jpg")
+        file = File(file, "write_image.jpg")
         try {
             // Compress the bitmap and save in jpg format
             val stream: OutputStream = FileOutputStream(file)
@@ -96,7 +101,7 @@ class HistoryWriteActivity : AppCompatActivity() {
         var user: User = Paper.book().read("user_profile")
 
         val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
 
         var retrofit = Retrofit.Builder()
@@ -107,7 +112,6 @@ class HistoryWriteActivity : AppCompatActivity() {
         var writeHistoryService: RetrofitService =
             retrofit.create(RetrofitService::class.java)
 
-        var historyImage: String? = null
         var historyTitle: String
         var historyMood: String? = null
         var historyComment: String
@@ -145,7 +149,20 @@ class HistoryWriteActivity : AppCompatActivity() {
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     historyDate =
-                        year.toString() + "-" + (month + 1).toString() + "-" + dayOfMonth.toString()
+                        year.toString() + "-"
+                    historyDate +=
+                        if ((monthOfYear + 1) < 10) {
+                            "0" + (monthOfYear + 1).toString() + "-"
+                        } else {
+                            (monthOfYear + 1).toString() + "-"
+                        }
+                    historyDate +=
+                        if (dayOfMonth < 10) {
+                            "0$dayOfMonth"
+                        } else {
+                            "$dayOfMonth"
+                        }
+                    historyDate += "T"
                     edit_history_date.text = historyDate
                     Log.d("HistoryCreatedAt", historyDate)
                 }, year, month, day
@@ -157,9 +174,15 @@ class HistoryWriteActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this, R.style.DatePicker,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                    historyTime = "T" + hourOfDay + ":" + minute + ":00"
+                    historyTime = "$hourOfDay:"
+
+                    historyTime += if (minute < 10) {
+                        "0$minute"
+                    } else {
+                        minute.toString()
+                    }
                     Log.d("HistoryCreatedAt", historyTime)
-                    edit_history_time.text = hourOfDay.toString() + "시 " + minute.toString() + "분"
+                    edit_history_time.text = historyTime
                 }, hour, minute, false
             )
             timePicker.show()
@@ -218,8 +241,8 @@ class HistoryWriteActivity : AppCompatActivity() {
                 historyCreatedAt = historyDate + historyTime
                 historyUserID = user.id
 
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                val result: Date = format.parse(historyCreatedAt)
+                val localTime = LocalDateTime.parse(historyCreatedAt)
+                Log.d("resultDate", localTime.toString())
 
                 val builder: AlertDialog.Builder =
                     AlertDialog.Builder(this)
@@ -234,10 +257,14 @@ class HistoryWriteActivity : AppCompatActivity() {
                             val uploadImage: MultipartBody.Part =
                                 MultipartBody.Part.createFormData("img", image.name, requestFile)
 
+                            val userID = RequestBody.create(
+                                MediaType.parse("text/plain"),
+                                historyUserID.toString()
+                            )
                             val title =
                                 RequestBody.create(MediaType.parse("text/plain"), historyTitle)
                             val comment =
-                                RequestBody.create(MediaType.parse("text/plain"), historyTitle)
+                                RequestBody.create(MediaType.parse("text/plain"), historyComment)
                             val mood =
                                 RequestBody.create(
                                     MediaType.parse("text/plain"),
@@ -248,10 +275,21 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 historyPlaceTitle
                             )
                             val createdAt =
-                                RequestBody.create(MediaType.parse("text/plain"), result.toString())
+                                RequestBody.create(
+                                    MediaType.parse("text/plain"),
+                                    localTime.toString()
+                                )
+
+                            Log.d("Written History", historyUserID.toString())
+                            Log.d("Written History", image.toString())
+                            Log.d("Written History", historyTitle)
+                            Log.d("Written History", historyComment)
+                            Log.d("Written History", historyMood ?: "1")
+                            Log.d("Written History", historyPlaceTitle)
+                            Log.d("Written History", localTime.toString())
 
                             writeHistoryService.writeHistoryWithImage(
-                                userID = user.id,
+                                userID = userID,
                                 img = uploadImage,
                                 title = title,
                                 content = comment,
@@ -269,10 +307,15 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 ) {
                                     if (response.code() == 201) {
                                         Log.d("History Create Success", "임의 히스토리 생성완료")
-                                        Toast.makeText(applicationContext, "발자취를 남겼습니다!", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "발자취를 남겼습니다!",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                         finish()
                                     } else {
-                                        Log.d("History Create Failed", "임의 히스토리 생성실패")
+                                        Log.e("History Create Failed", "임의 히스토리 생성실패")
+                                        Log.e("History Create Failed", response.body().toString())
                                     }
                                 }
                             })
@@ -283,8 +326,8 @@ class HistoryWriteActivity : AppCompatActivity() {
                                 mood = historyMood,
                                 comment = historyComment,
                                 custom_place = historyPlaceTitle,
-                                created_at = result,
-                                updated_at = result,
+                                created_at = localTime,
+                                updated_at = localTime,
                                 user = user.id
                             )
 

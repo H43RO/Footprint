@@ -70,7 +70,7 @@ class HistoryEditActivity : AppCompatActivity() {
 
         // Initialize a new file instance to save bitmap object
         var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
-        file = File(file, "profile_image.jpg")
+        file = File(file, "edit_image.jpg")
         try {
             // Compress the bitmap and save in jpg format
             val stream: OutputStream = FileOutputStream(file)
