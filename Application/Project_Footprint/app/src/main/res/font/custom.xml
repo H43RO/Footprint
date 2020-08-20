@@ -16,7 +16,7 @@
     <font
         android:font="@font/nanumsquare_bold"
         android:fontStyle="normal"
-        android:fontWeight="700"
+        android:fontWeight="600"
         app:font="@font/nanumsquare"
         app:fontStyle="normal"
         app:fontWeight="1000" />

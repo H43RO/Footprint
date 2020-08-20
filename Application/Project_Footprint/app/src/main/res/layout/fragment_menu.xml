@@ -1,197 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e8e8e8"
+    android:background="#EFEFEF"
+    android:orientation="vertical"
     tools:context=".ui.menu.MenuFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:background="@drawable/layout_background"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="180dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="24dp">
 
-        <FrameLayout
-            android:id="@+id/frame_profile_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/image_user_profile"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/basic_profile" />
 
-            <ImageView
-                android:id="@+id/image_user_profile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/basic_profile" />
-
-            <ImageView
-                android:id="@+id/icon_edit_profile"
-                android:layout_gravity="bottom|right"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/icon_edit_profile"/>
-
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/text_menu_user_nickname"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image_user_profile"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="Nickname"
-            android:textColor="#ffffff"
-            android:textSize="30dp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:background="@drawable/text_background"
-            android:padding="12dp"
-            android:layout_marginTop="6dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:textSize="16dp"
-            android:text="초보 방랑객"
-            android:textColor="#ffffff"/>
+            <LinearLayout
+                android:id="@+id/button_change_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_menu_user_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:paddingTop="2dp"
+                    android:text="Nickname"
+                    android:textColor="#ffffff"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="12dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    android:tint="#34FFFFFF" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/text_background"
+                    android:padding="12dp"
+                    android:text="초보 방랑객"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/text_background"
+                    android:backgroundTint="#414A7A"
+                    android:padding="12dp"
+                    android:text="맛집 탐방러"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_notice"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
             app:cardBackgroundColor="#ffffff"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="24dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="24dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="방문했던\n장소들"
-                        android:textSize="18dp" />
-
-                    <TextView
-                        android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="24곳"
-                        android:textSize="40dp" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_weight="0.01"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/line" />
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="24dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="내가 남긴\n발자취"
-                        android:textSize="18dp" />
-
-                    <TextView
-                        android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="13개"
-                        android:textSize="40dp" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            app:cardBackgroundColor="#ffffff"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp">
+            app:cardElevation="0dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-<!--                <ImageView-->
-<!--                    android:tint="@color/colorAccent"-->
-<!--                    android:src="@drawable/ic_baseline_notifications_24"-->
-<!--                    android:layout_marginLeft="24dp"-->
-<!--                    android:layout_width="40dp"-->
-<!--                    android:layout_height="40dp"/>-->
+                <ImageView
+                    android:id="@+id/notice_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="24dp"
+                    android:src="@drawable/ic_baseline_notifications_none_24"
+                    android:tint="#888888" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/notice_icon"
+                    android:gravity="center"
+                    android:text="공지사항"
+                    android:textColor="#676767"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    android:tint="#9C9C9C" />
 
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@drawable/line" />
+
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
             app:cardBackgroundColor="#ffffff"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp">
+            app:cardElevation="0dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/contact_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="24dp"
+                    android:src="@drawable/ic_outline_headset_mic_24"
+                    android:tint="#888888" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contact_icon"
+                    android:gravity="center"
+                    android:text="고객 지원"
+                    android:textColor="#676767"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    android:tint="#9C9C9C" />
+
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@drawable/line" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardElevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/info_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="24dp"
+                    android:src="@drawable/ic_outline_info_24"
+                    android:tint="#888888" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/info_icon"
+                    android:gravity="center"
+                    android:text="발자취 소개"
+                    android:textColor="#676767"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    android:tint="#9C9C9C" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

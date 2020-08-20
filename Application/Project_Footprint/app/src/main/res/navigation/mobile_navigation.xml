@@ -14,9 +14,10 @@
             android:id="@+id/action_navigation_home_to_navigation_surround"
             app:destination="@id/navigation_surround" />
         <action
-            android:id="@+id/action_navigation_home_to_navigation_notice"
-            app:destination="@id/navigation_notice" />
-        <action
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             android:id="@+id/action_navigation_home_to_navigation_menu"
             app:destination="@id/navigation_menu" />
         <action
@@ -71,6 +72,9 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_navigation_menu_to_navigation_notice"
+            app:destination="@id/navigation_notice" />
     </fragment>
 
     <fragment
