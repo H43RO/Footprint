@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.Activity.HistoryDetailActivity
@@ -19,30 +20,26 @@ class HistoryListAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.history_item, parent, false)
+        init {
+            view.setOnClickListener(this)
+        }
 
-        return ViewHolder(
-            view
-        )
-    }
-    override fun getItemCount() = historyList.size
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val historyCreatedFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분")
-        var historyCreatedAt = historyCreatedFormat.format(historyList[position].created_at)
+        override fun onClick(v: View?) {
+            val historyCreatedFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분")
+            var historyCreatedAt = historyCreatedFormat.format(historyList.get(adapterPosition-1).created_at)
 
-        holder.view.setOnClickListener {
             val intent: Intent = Intent(context, HistoryDetailActivity::class.java)
-            var historyID = historyList[position].id
-            var historyImage = historyList[position].img
-            var historyTitle = historyList[position].title
-            var historyMood = historyList[position].mood ?: "Soso"
-            var historyComment = historyList[position].comment
-            var historyPlaceTitle = if(historyList[position].place == null) historyList[position].custom_place else historyList[position].place
-            var historyUserID = historyList[position].user
+            var historyID = historyList[adapterPosition-1].id
+            var historyImage = historyList[adapterPosition-1].img
+            var historyTitle = historyList[adapterPosition-1].title
+            var historyMood = historyList[adapterPosition-1].mood ?: "Soso"
+            var historyComment = historyList[adapterPosition-1].comment
+            var historyPlaceTitle =
+                if (historyList[adapterPosition-1].place == null) historyList[adapterPosition-1].custom_place else historyList.get(adapterPosition-1).place
+            var historyUserID = historyList[adapterPosition-1].user
 
             val bundle: Bundle = Bundle()
             bundle.putInt("id", historyID)
@@ -58,10 +55,25 @@ class HistoryListAdapter(
             intent.putExtras(bundle)
             context.startActivity(intent)
         }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.history_item, parent, false)
+
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount() = historyList.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val historyCreatedFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분")
+        var historyCreatedAt = historyCreatedFormat.format(historyList[position].created_at)
+
         holder.view.text_history_title.text =
             historyList[position].title ?: historyList[position].place + "에서의 추억"
         holder.view.text_history_detail.text =
-            if(historyList[position].place == null) historyList[position].custom_place + "에서, " + historyCreatedAt else historyList[position].place + "에서, " + historyCreatedAt
+            if (historyList[position].place == null) historyList[position].custom_place + "에서, " + historyCreatedAt else historyList[position].place + "에서, " + historyCreatedAt
 
         if (historyList[position].img == null) {
             holder.view.image_history.visibility = View.GONE
@@ -75,3 +87,4 @@ class HistoryListAdapter(
         }
     }
 }
+
