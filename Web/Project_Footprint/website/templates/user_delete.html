@@ -10,11 +10,15 @@
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 
+    .html,body{
+    background-color: #f9f9f9;
+    }
+
     .container{
     width: 100%;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
-    margin-top: 80px;
+    margin-top: 20px;
     }
 
     .card-title{
@@ -28,6 +32,7 @@
     .card-body{
     font-weight:bold;
     text-align: center;
+    border-radius: 20px;
     }
 
     .user-info {
@@ -81,7 +86,7 @@
                     <hr>
                     <form action="{% url 'user_delete' %}" method="post" novalidate>
                         {% csrf_token %}
-                        <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br><br>
+                        <p style="color: red"><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br><br>
                         <h5><strong>본인인증을 위해 비밀번호를 다시 입력해주세요.</strong></h5>
 <!--                            <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>-->
                                 <div class="user-info">

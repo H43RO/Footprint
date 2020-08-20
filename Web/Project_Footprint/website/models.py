@@ -76,6 +76,7 @@ class User(AbstractUser):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    image = models.ImageField(blank=True, null=True, upload_to="profile/%Y/%m/%d")
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'

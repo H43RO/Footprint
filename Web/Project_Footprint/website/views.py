@@ -232,7 +232,7 @@ def history_update(request):
 @login_required
 def user_info_update(request):
     if request.method == 'POST':
-        form = UpdateUserInfoForm(request.POST, instance=request.user)
+        form = UpdateUserInfoForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
     elif 'id' in request.GET:
