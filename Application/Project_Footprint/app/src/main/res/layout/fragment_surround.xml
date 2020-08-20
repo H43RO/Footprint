@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/layout_background"
     android:orientation="vertical"
     tools:context=".ui.surround.SurroundFragment">
@@ -50,12 +51,17 @@
     </RelativeLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.chauthai.overscroll.RecyclerViewBouncy
         android:id="@+id/surround_place_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
+        app:friction="200"
+        app:gapLimit="220"
+        app:maxAdapterSizeToEstimate="20"
+        app:speedFactor="5"
+        app:tension="1000"
+        app:viewCountEstimateSize="5"
         tools:listitem="@layout/place_item" />
-
 
 </LinearLayout>

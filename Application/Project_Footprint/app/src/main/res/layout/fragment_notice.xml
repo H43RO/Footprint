@@ -43,6 +43,7 @@
             android:indeterminateTint="#ffffff"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/notice_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
