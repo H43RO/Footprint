@@ -124,8 +124,9 @@ class UpdateUserInfoForm(UserChangeForm):
     password = None
 
     class Meta:
-        model = get_user_model()
-        fields = ['birth_date', 'nickname', 'age', 'gender']
+        # model = get_user_model()
+        model = User
+        fields = ['birth_date', 'nickname', 'age', 'gender', 'image']
         # exclude = ['password']
         # 검증을 위해 넣어놓은 것, 패스워드 틀리면 저장 안되게 하려고(이게 수정된 정보에 올라가서는 안됨)
         labels = {
@@ -133,6 +134,7 @@ class UpdateUserInfoForm(UserChangeForm):
             'nickname': _('닉네임'),
             'age': _('나이'),
             'gender': _('성별'),
+            'image': _('프로필 이미지')
         }
 
 

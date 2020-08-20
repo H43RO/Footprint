@@ -9,11 +9,18 @@
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 
+    .html,body{
+    background-color: #f9f9f9;
+    }
     .container{
     width: 100%;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
-    margin-top: 100px;
+    }
+
+    .card-body{
+    border-radius: 15px;
+    text-align: center;
     }
 
     .card-title{
@@ -28,23 +35,35 @@
     font-weight:bold;
     text-align: left;
     margin-left: 25px;
+    margin-bottom: 20px;
     padding: 12px;
     padding-left: 18px;
-    width: 400px;
-    height: 50px;
+    width: 430px;
+    height: 55px;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
     color: black;
     background-color: #f2f2f2;
     }
 
+    .user-img{
+    margin-right: 50px;
+    padding: 12px;
+    padding-left: 18px;
+    width: 400px;
+    height: 355px;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #f2f2f2;
+    float : right;
+    }
+
     .update-btn{
     color: black;
     width: 130px;
     height: 45px;
-    margin-top: 20px;
     margin-left: 25px;
-    font-size: 145%;
+    font-size: 155%;
     font-weight:bold;
     background-color: #c4c4c4;
     border-style: none;
@@ -70,48 +89,37 @@
             <div class="card-body">
                 <h2 class="card-title">{{ user.email }}님의 회원정보</h2>
                 <hr>
-                <div class="input-group form-group">
+                    {% if user.image %}
+                    <img class="user-img" id="image{{user.id}}" src="{{user.image.url }}" >
+                    {% else %}
+                    <img class="user-img" src="{% static '../static/profile_default.png' %}" >
+                    {% endif %}
                     <div class="user-info">
                         이메일  :  {{ user.email }}
                     </div>
-                </div>
-                <div class="input-group form-group">
                     <div class="user-info">
                         닉네임  :  {{ user.nickname }}
                     </div>
-                </div>
-                <div class="input-group form-group">
                     <div class="user-info">
                         생년월일  :  {{ user.birth_date }}
                     </div>
-                </div>
-                <div class="input-group form-group">
                     <div class="user-info">
                         나이  :  {{ user.age }}
                     </div>
-                </div>
                 {% if user.gender == 0 %}
-                    <div class="input-group form-group">
-                        <div class="user-info">
+                    <div class="user-info">
                             성별  :  남자
-                        </div>
                     </div>
                 {% elif user.gender == 1 %}
-                    <div class="input-group form-group">
                         <div class="user-info">
                             성별  :  여자
                         </div>
-                    </div>
                 {% else %}
-                     <div class="input-group form-group">
                         <div class="user-info">
                             성별  :  not specified
                         </div>
-                     </div>
                 {% endif %}
-<!--                <button class="update-btn" type="submit" >-->
                 <a href = "{% url 'user_info_update' %}?id={{ user.id }}" class="btn float update-btn">수정하기</a>
-<!--                </button>-->
                 </div>
             </div>
         </div>

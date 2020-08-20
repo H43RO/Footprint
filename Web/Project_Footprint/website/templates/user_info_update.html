@@ -10,16 +10,20 @@
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 
+    .html,body{
+    background-color: #f9f9f9;
+    }
+
     .container{
     width: 100%;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
-    margin-top: 50px;
     }
 
     .card-body{
     font-weight:bold;
     text-align: center;
+    border-radius: 20px;
     }
 
     .card-title{
@@ -49,6 +53,21 @@
     border-radius: 10px 10px 10px 10px;
     color: black;
     background-color: #f3f3f3;
+    float: left;
+    }
+
+    .user-img {
+    height: 300px;
+    width: 300px;
+    margin-top: 5px;
+    font-weight:bold;
+    font-size: 140%;
+    text-align: center;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    color: black;
+    background-color: #f3f3f3;
+    float: right;
     }
 
     .confirm_btn{
@@ -91,11 +110,19 @@
                     <div class="card-body">
                         <h2 class="card-title">{{ user.email }}님의 회원정보 수정</h2>
                         <hr>
-                        <form action="{% url 'user_info_update' %}" method="post">
+                        <form action="{% url 'user_info_update' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{ form.instance.id }}"/>
                             {% for field in form %}
-                                {% if field.label == '나이' %}
+                                {% if field.label == '프로필 이미지' %}
+                                    <div class="input-group form-group">
+                                        <div class="user-tag">
+                                        {{ field.label }}
+                                        </div>
+                                        <img class="user-img" id="image{{field.id}}" src="{{ field.image.url }}" type="file">
+                                        {{ field }}
+                                    </div>
+                                {% elif field.label == '나이' %}
                                     <div class="input-group form-group">
                                         <div class="user-tag">
                                         {{ field.label }}
