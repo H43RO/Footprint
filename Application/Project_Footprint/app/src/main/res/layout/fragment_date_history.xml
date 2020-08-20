@@ -68,8 +68,7 @@
     <FrameLayout
         android:id="@+id/layout_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/text_date_no_data"
@@ -88,12 +87,19 @@
             android:indeterminate="true"
             android:indeterminateTint="#ffffff"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.chauthai.overscroll.RecyclerViewBouncy
+            android:paddingTop="8dp"
             android:id="@+id/date_history_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            app:friction="200"
+            app:gapLimit="220"
+            app:maxAdapterSizeToEstimate="20"
+            app:speedFactor="5"
+            app:tension="1000"
+            app:viewCountEstimateSize="5"
             tools:listitem="@layout/history_item" />
+
     </FrameLayout>
 
 </LinearLayout>

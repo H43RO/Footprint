@@ -37,6 +37,7 @@
         app:cardCornerRadius="20dp">
 
         <ScrollView
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

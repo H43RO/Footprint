@@ -6,8 +6,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,17 +18,35 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
+import com.haerokim.project_footprint.DataClass.NaverPlaceID
+import com.haerokim.project_footprint.DataClass.Place
 import com.haerokim.project_footprint.DataClass.User
+import com.haerokim.project_footprint.Network.RetrofitService
+import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Utility.ForegroundService
 import com.haerokim.project_footprint.R
+import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_home.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class HomeFragment : Fragment(), PermissionListener {
+    lateinit var recyclerView: RecyclerView
+    lateinit var viewAdapter: RecyclerView.Adapter<*>
+    lateinit var viewManager: RecyclerView.LayoutManager
+    var hotPlaceList: ArrayList<Place> = ArrayList()
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -71,20 +88,58 @@ class HomeFragment : Fragment(), PermissionListener {
         Paper.init(context)
 
         val user: User = Paper.book().read("user_profile")
-        text_home_user_nickname.text = user.nickname + " 님"
+        text_home_user_nickname.setText(user.nickname + "님")
 
-        image_home_user_profile.setBackground(ShapeDrawable(OvalShape()))
-        image_home_user_profile.setClipToOutline(true)
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm")
+            .create()
+        var retrofit = Retrofit.Builder()
+            .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        var getPlaceList: RetrofitService = retrofit.create(RetrofitService::class.java)
+
+        getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<NaverPlaceID>> {
+            override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
+                Log.e("Error Hot Place", t.message)
+            }
+            override fun onResponse(
+                call: Call<ArrayList<NaverPlaceID>>,
+                response: Response<ArrayList<NaverPlaceID>>
+            ) {
+                if (response.body() != null && response.code() == 200) {
+                    // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
+                    for (hotNaverPlaceID in response.body()!!) {
+                        hotPlaceList.add(GetPlaceInfo(hotNaverPlaceID.naver_place_id).execute().get())
+                    }
+
+                    viewManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    viewAdapter = HotPlaceListAdapter(
+                        hotPlaceList,
+                        requireContext()
+                    )
+                    recyclerView =
+                        view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
+                            setHasFixedSize(true)
+                            layoutManager = viewManager
+                            adapter = viewAdapter
+                        }
+                }
+            }
+        })
+
+
 
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
 
-        val pref: SharedPreferences? = context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
+        val pref: SharedPreferences? =
+            context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
         val profileImageUri = Uri.parse(pref?.getString("profile_image", ""))
 
-        if(profileImageUri.toString() != ""){
+        if (profileImageUri.toString() != "") {
             image_home_user_profile.setImageURI(profileImageUri)
-        }else{
+        } else {
             image_home_user_profile.setImageResource(R.drawable.basic_profile)
         }
 
@@ -100,7 +155,9 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", true)
                     commit()
                 }
-                homeViewModel.changeMode("on")
+
+                card_switch_state.setCardBackgroundColor(Color.parseColor("#CC59628F"))
+                text_switch_state.text = "발자취를 따라갑니다"
 
                 //위치 권한 허용 되어있으면 비콘 스캔 시작
                 if (TedPermission.isGranted(context)) {
@@ -138,13 +195,16 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", false)
                     commit()
                 }
+
+                card_switch_state.setCardBackgroundColor(Color.parseColor("#6659628F"))
+                text_switch_state.text = "발자취를 따라가지 않습니다"
+
                 Snackbar.make(
                     requireActivity().findViewById(android.R.id.content),
                     "더 이상 발자취를 따라가지 않습니다.",
                     Snackbar.LENGTH_LONG
                 ).show()
 
-                homeViewModel.changeMode("off")
                 context?.stopService(foregroundIntent)
             }
         }
@@ -160,7 +220,6 @@ class HomeFragment : Fragment(), PermissionListener {
         card_today_history_list.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_today_history)
         }
-
     }
-
 }
+

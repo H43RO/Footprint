@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/whole_history_container"
     android:layout_width="match_parent"
@@ -59,10 +60,19 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.chauthai.overscroll.RecyclerViewBouncy
                 android:id="@+id/whole_history_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:overScrollMode="never"
+
+                app:friction="200"
+                app:gapLimit="220"
+                app:maxAdapterSizeToEstimate="20"
+                app:speedFactor="5"
+                app:tension="1000"
+                app:viewCountEstimateSize="5"
+
                 tools:listitem="@layout/history_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

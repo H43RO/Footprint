@@ -9,15 +9,7 @@ import kotlin.collections.ArrayList
 
 interface RetrofitService {
 
-    /** 대응 완료 API**/
-
-    // 로그인
-    @FormUrlEncoded
-    @POST("api/v1/accounts/login/")
-    fun requestLogin(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): Call<User>
+    /** PLACE 관련 API**/
 
     // 장소 정보 요청
     @GET("api/places")
@@ -25,12 +17,54 @@ interface RetrofitService {
         @Query("beacon_uuid") UUID: String
     ): Call<ArrayList<NaverPlaceID>> //Response : NaverPlaceID
 
+    // 핫 플레이스 정보 요청
+    @GET("api/hotplaces/")
+    fun requestHotPlaceList(): Call<ArrayList<NaverPlaceID>>
+
+    /** 부수기능 관련 API**/
+
+    // 공지사항 요청
+    @GET("api/noticelist/")
+    fun requestNoticeList(): Call<ArrayList<Notice>>
+
+    /** USER 관련 API**/
+
+    // 로그인 요청
+    @FormUrlEncoded
+    @POST("api/v1/accounts/login/")
+    fun requestLogin(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Call<User>
+
     // 사용자 회원정보 수정
     @PUT("userinfo/{userID}/update/")
     fun updateUserInfo(
         @Path("userID") userID: Int,
         @Body body: UpdateProfile
     ): Call<UpdateProfile> //Response : User Object
+
+    // 사용자 탈퇴
+    @DELETE("userinfo/{userID}/delete/")
+    fun withDrawUser(
+        @Path("userID") userID: Int
+    ): Call<String>
+
+    // 회원 가입
+    @POST("/api/v1/accounts/register/")
+    fun registerUser(
+        @Body body: RegisterForm
+    ): Call<User>
+
+    // 비밀번호 초기화
+    @FormUrlEncoded
+    @POST("/api/v1/accounts/send-reset-password-link/")
+    fun resetPassword(
+        @Field("email") email: String
+    ): Call<String>
+
+
+    /** HISTORY 관련 API **/
 
     // 실제 방문 히스토리 생성
     @FormUrlEncoded
@@ -93,28 +127,6 @@ interface RetrofitService {
         @Path("historyID") historyID: Int,
         @Body body: UpdateHistory
     ): Call<History>
-
-    @GET("api/noticelist/")
-    fun requestNoticeList(): Call<ArrayList<Notice>>
-
-    // 사용자 탈퇴
-    @DELETE("userinfo/{userID}/delete/")
-    fun withDrawUser(
-        @Path("userID") userID: Int
-    ): Call<String>
-
-    // 회원 가입
-    @POST("/api/v1/accounts/register/")
-    fun registerUser(
-        @Body body: RegisterForm
-    ): Call<User>
-
-    // 비밀번호 초기화
-    @FormUrlEncoded
-    @POST("/api/v1/accounts/send-reset-password-link/")
-    fun resetPassword(
-        @Field("email") email: String
-    ): Call<String>
 
     // 히스토리 삭제
     @DELETE("/api/histories/{historyID}/delete/")

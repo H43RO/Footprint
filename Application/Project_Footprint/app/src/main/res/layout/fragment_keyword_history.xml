@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e8e8e8"
     android:orientation="vertical"
     tools:context=".ui.history.KeywordHistoryFragment">
@@ -46,12 +47,17 @@
             android:layout_marginTop="150dp"
             android:indeterminateTint="#ffffff"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.chauthai.overscroll.RecyclerViewBouncy
             android:id="@+id/keyword_history_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            app:friction="200"
+            app:gapLimit="220"
+            app:maxAdapterSizeToEstimate="20"
+            app:speedFactor="5"
+            app:tension="1000"
+            app:viewCountEstimateSize="5"
             tools:listitem="@layout/history_item" />
 
     </FrameLayout>

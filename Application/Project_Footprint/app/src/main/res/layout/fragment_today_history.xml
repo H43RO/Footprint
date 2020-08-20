@@ -56,13 +56,20 @@
             android:id="@+id/today_history_swipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="16dp">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.chauthai.overscroll.RecyclerViewBouncy
                 android:id="@+id/today_history_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:friction="200"
+                app:gapLimit="220"
+                app:maxAdapterSizeToEstimate="20"
+                app:speedFactor="5"
+                app:tension="1000"
+                app:viewCountEstimateSize="5"
                 tools:listitem="@layout/history_item" />
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
