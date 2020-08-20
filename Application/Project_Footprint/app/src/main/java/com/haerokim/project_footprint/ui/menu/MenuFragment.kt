@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 
 class MenuFragment : Fragment() {
@@ -39,8 +40,6 @@ class MenuFragment : Fragment() {
         val user: User = Paper.book().read("user_profile")
         text_menu_user_nickname.text = user.nickname
 
-        frame_profile_edit.bringChildToFront(icon_edit_profile)
-
         image_user_profile.setBackground(ShapeDrawable(OvalShape()))
         image_user_profile.setClipToOutline(true)
 
@@ -53,10 +52,16 @@ class MenuFragment : Fragment() {
             image_user_profile.setImageResource(R.drawable.basic_profile)
         }
 
-        frame_profile_edit.setOnClickListener {
+        image_user_profile.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_menu_to_navigation_edit_profile)
         }
 
+        button_change_profile.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_menu_to_navigation_edit_profile)
+        }
 
+        card_notice.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_menu_to_navigation_notice)
+        }
     }
 }

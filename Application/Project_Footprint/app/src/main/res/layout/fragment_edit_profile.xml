@@ -15,12 +15,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="60dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="16dp"
         app:cardElevation="4dp">
 
         <ScrollView
@@ -112,8 +112,8 @@
                         android:id="@+id/edit_profile_birth_date"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:inputType="datetime"
-                        android:hint="생년월일" />
+                        android:hint="생년월일"
+                        android:inputType="datetime" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,8 +127,8 @@
                         android:id="@+id/edit_profile_age"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:inputType="number"
                         android:hint="나이"
+                        android:inputType="number"
                         android:text="99" />
 
                 </com.google.android.material.textfield.TextInputLayout>

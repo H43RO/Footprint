@@ -161,10 +161,6 @@ class HomeFragment : Fragment(), PermissionListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_today_history)
         }
 
-        card_notice.setOnClickListener {
-            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_notice)
-        }
-
     }
 
 }
