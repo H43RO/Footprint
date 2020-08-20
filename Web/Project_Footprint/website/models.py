@@ -101,11 +101,11 @@ class Place(models.Model):
 
 class History(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
-    title = models.TextField(max_length=100, blank=True, null=True)
-    mood = models.CharField(max_length=30, default=DEFAULT_HISTORY)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    mood = models.CharField(max_length=30, default=DEFAULT_HISTORY, blank=True)
     comment = models.TextField(max_length=1000, blank=True, null=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
-    custom_place = models.TextField(max_length=500, blank=True, null=True)
+    custom_place = models.CharField(max_length=500, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY)
     created_at = models.DateTimeField(auto_now_add=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True)

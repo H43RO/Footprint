@@ -1,14 +1,23 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
+<style>
+    table.history-form {
+        margin: auto;
+        margin-top : 70px;
+
+    }
+
+</style>
+
 <div class="container">
     <form enctype="multipart/form-data" action="{% url 'history-update' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ form.instance.id }}"/>
-        <table>
+        <table class="history-form">
             {{ form.as_table }}
         </table>
-        <button type="submit" >수정완료</button>
+        <button type="submit" class="btn btn-light" >수정완료</button>
     </form>
 </div>
 {% endblock %}

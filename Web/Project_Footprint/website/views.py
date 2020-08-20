@@ -214,14 +214,17 @@ def history_delete(request, id):
 
 def history_update(request):
     if request.method == 'POST' and 'id' in request.POST:
+        if request.POST['created_at'] == '':
+            request.POST._mutable = True
+            formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
+            request.POST['created_at'] = formatted_date
         item = get_object_or_404(History, pk=request.POST.get('id'))
         form = UpdateHistoryForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             item = form.save()
     elif 'id' in request.GET:
         item = get_object_or_404(History, pk=request.GET.get('id'))
-        form = HistoryForm(request.FILES, instance=item)
-        form.password = ''  # password 데이터를 비웁니다.
+        form = HistoryForm(instance=item)
         return render(request, 'history_update.html', {'form': form})
     return HttpResponseRedirect("../")
 
