@@ -8,12 +8,19 @@ from django.contrib.auth.hashers import check_password
 from django.utils import timezone
 
 MOOD_POINT_CHOICES = (
-    ('angry', "angry"),
-    ('soso', "soso"),
-    ('happy', "happy"),
+    ('기분 좋았던 순간', "기분 좋았던 순간"),
+    ('기뻤던 순간', "기뻤던 순간"),
+    ('평화로웠던 순간', "평화로웠던 순간"),
+    ('황홀했던 순간', "황홀했던 순간"),
+    ('행복했던 순간', "행복했던 순간"),
+    ('뭉클했던 순간', "뭉클했던 순간"),
+    ('우울했던 순간', "우울했던 순간"),
+    ('당황했던 순간', "당황했던 순간"),
+    ('화났던 순간', "화났던 순간"),
+    ('아쉬웠던 순간', "아쉬웠던 순간"),
+    ('최악이었던 순간', "최악이었던 순간"),
+
 )
-
-
 
 
 class SignUpForm(UserCreationForm):
@@ -105,17 +112,22 @@ class HistoryForm(forms.ModelForm):
             'comment': _('일기를 작성해주세요.'),
         }
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['created_at'] = timezone.now()
-
-
 
 class UpdateHistoryForm(HistoryForm):
     class Meta:
         model = History
         exclude = ['user']
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(HistoryForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(HistoryForm, self).save(commit=False)
+
+        if commit:
+            instance.save()
+        return instance
 
 
 
