@@ -12,17 +12,24 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_navigation_surround"
-            app:destination="@id/navigation_surround" />
+            app:destination="@id/navigation_surround"
+            app:launchSingleTop="true" />
         <action
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             android:id="@+id/action_navigation_home_to_navigation_menu"
-            app:destination="@id/navigation_menu" />
+            app:destination="@id/navigation_menu"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_navigation_home_to_navigation_today_history"
-            app:destination="@id/navigation_today_history" />
+            app:destination="@id/navigation_today_history"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_editor_pick"
+            app:destination="@id/navigation_editor_pick"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment
@@ -144,6 +151,18 @@
         <argument
             android:name="notice_date"
             app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_editor_pick"
+        android:name="com.haerokim.project_footprint.ui.editor_pick.EditorPickFragment"
+        android:label="에디터픽 자세히 보기"
+        tools:layout="@layout/fragment_editor_pick">
+
+
+        <argument
+            android:name="editor_pick_list"
+            app:argType="com.haerokim.project_footprint.DataClass.EditorPick[]" />
     </fragment>
 
 </navigation>

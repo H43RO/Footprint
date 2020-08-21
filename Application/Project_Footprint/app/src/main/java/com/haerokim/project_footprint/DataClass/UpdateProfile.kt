@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 import kotlin.String
 
-class UpdateProfile(
+data class UpdateProfile(
     val nickname: String,
     @SerializedName("birth_date")
     val birthDate: Date,

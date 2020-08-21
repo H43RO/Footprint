@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -49,13 +50,13 @@ import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class HomeFragment : Fragment(), PermissionListener {
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     var hotPlaceList: ArrayList<Place> = ArrayList()
     var editorPickList: ArrayList<EditorPick> = ArrayList()
+    var timer = Timer()
 
     var currentPage: Int = 0
     private val DELAY_MS : Long = 500
@@ -171,7 +172,7 @@ class HomeFragment : Fragment(), PermissionListener {
                             home_editor_place_pager.setCurrentItem(currentPage++, true)
                         }
                     }
-                    val timer = Timer()
+                    // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
                     timer.schedule(object: TimerTask(){
                         override fun run() {
                             handler.post(updateTask)
@@ -271,6 +272,24 @@ class HomeFragment : Fragment(), PermissionListener {
         card_today_history_list.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_today_history)
         }
+
+        button_go_editor_detail.setOnClickListener {
+            val bundle = bundleOf("editorPickList" to editorPickList)
+            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        timer = Timer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        timer.cancel()
+    }
+
 }
 

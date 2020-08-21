@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 import kotlin.String
 
-class User(
+data class User(
     val id: Int,
     val email: String,
     @SerializedName("birth_date")

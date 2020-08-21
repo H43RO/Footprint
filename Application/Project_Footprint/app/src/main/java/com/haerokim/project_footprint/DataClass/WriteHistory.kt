@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
-class WriteHistory(
+data class WriteHistory(
     var title: String?,
     var mood: String?,
     var comment: String?,
