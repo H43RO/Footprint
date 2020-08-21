@@ -1,6 +1,7 @@
 {% extends './base.html' %}
 {% load static %}
-{% block extrahead %}
+{% block content %}
+
 <style>
         body{
             font-family: "나눔스퀘어";
@@ -8,64 +9,69 @@
         }
         div.container {
             margin-top: 100px;
-            margin-left: 170px;
+            margin-left: 200px;
         }
         div.board_aside {
             width: 250px;
-        }
-        h1.editor_head {
-			height: 700px;
-			font-size: 3.0rem;
-			font-weight: 800;
-
+            float: left;
         }
         div.board_contents{
             width : 1056px;
             margin: 0 auto;
         }
-        h4.editor_tit {
-            font-size: 2.3rem;
- 			font-weight: 550;
- 			font-family: "나눔명조";
+        h1.editor_head{
+            height: 700px;
+            font-size: 3.0rem;
+            font-weight: 800;
+
+        }
+        .editor_contents{
+            padding-top: 60px;
+        }
+        h4.editor {
+			font-size: 2.0rem;
+			font-weight: 800;
         }
         p.editor_date{
             padding-top : 20px;
             padding-bottom : 20px;
-        }
-        div.editor_head{
-            height: 80px;
-            border-bottom: 2px solid #a9a9a9;
-            margin-left : -150px;
         }
         hr{
             width: 100px;
             margin-top: -630px;
             color: #3cadd4;
         }
+        h4.editor_tit {
+            font-size: 2.3rem;
+ 			font-weight: 550;
+ 			font-family: "나눔명조";
+        }
+        .notice{
+            margin-top: 60px;
+        }
+    </style>
 
-</style>
-{% endblock %}
-{% block content %}
-        <div class="container">
-                <div class="board_contents">
-                    <div class="edtior_head">
-                    <h1 class="editor_head">
-                        Editor Pick <br>
-                    </h1>
-                        <hr>
-                    </div>
-                    <div class="board_contents">
+<div class="container">
+        <div class="board_contents">
+            <h1 class="editor_head">
+                Editor Pick<br>
+            </h1>
+            <hr>
+        </div>
+        <div class="board_contents">
+            <div class="editor_contents">
+                <div class="editor">
                     <h4 class="editor_tit">
                         {{ editors.title }}
                     </h4>
-                    <p class="editor_date">{{ editors.created_at|date:"Y-m-d" }}</p>
-                    <br><br>
-                    <img class="editor_img" src="{{ editors.img.url }}" style="width:500px; height: 350px"/>
-                                <br><br>
-                    <p class="edtior_contents">
-                        {{ editors.description|safe }}</p>
-                    </div>
                 </div>
-            </div>
 
+            <p class="editor_date"> {{ editors.created_at|date:"Y-m-d" }}</p>
+            <br><br>
+            <div class="editro_desc">
+                 {{ editors.description|safe }}
+            </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
