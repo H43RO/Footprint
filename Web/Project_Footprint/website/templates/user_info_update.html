@@ -33,19 +33,25 @@
     font-weight:bold;
     }
 
-    .user-tag {
-    height: 60px;
-    width: 120px;
+    .input-group form-group {
+    flex-shrink:2;
+    }
+
+    .user-tag{
+    height: 30px;
+    width: 300px;
     padding: 15px;
-    font-size: 150%;
+    font-size: 120%;
     color: black;
     background-color: white;
     }
 
     .user-info {
     height: 60px;
-    width: 300px;
+    width: 430px;
     margin-top: 5px;
+    margin-left: 25px;
+    margin-bottom: 20px;
     font-weight:bold;
     font-size: 140%;
     text-align: center;
@@ -57,12 +63,10 @@
     }
 
     .user-img {
-    height: 300px;
-    width: 300px;
+    height: 320px;
+    width: 400px;
     margin-top: 5px;
-    font-weight:bold;
-    font-size: 140%;
-    text-align: center;
+    margin-right: 30px;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
     color: black;
@@ -115,37 +119,40 @@
                             <input type="hidden" name="id" value="{{ form.instance.id }}"/>
                             {% for field in form %}
                                 {% if field.label == '프로필 이미지' %}
-                                    <div class="input-group form-group">
-                                        <div class="user-tag">
-                                        {{ field.label }}
-                                        </div>
-                                        <img class="user-img" id="image{{field.id}}" src="{{ field.image.url }}" type="file">
+<!--                                    <div class="input-group form-group">-->
+<!--                                        <div class="user-tag">-->
+<!--                                        {{ field.label }}-->
+<!--                                        </div>-->
+                                        <div class = "user-img">
+                                        <img id="image{{field.id}}" src="{{ field.image.url }}" type="file">
                                         {{ field }}
-                                    </div>
+                                        </div>
                                 {% elif field.label == '나이' %}
-                                    <div class="input-group form-group">
-                                        <div class="user-tag">
-                                        {{ field.label }}
-                                        </div>
+<!--                                    <div class="input-group form-group" >-->
+<!--                                        <div class="user-tag">-->
+<!--                                        {{ field.label }}-->
+<!--                                        </div>-->
                                         <div class="user-info">
                                         {{ field }}
                                         </div>
-                                    </div>
+<!--                                    </div>-->
                                 {% else %}
-                                    <div class="input-group form-group">
-                                        <div class="user-tag">
-                                        {{ field.label }}
-                                        </div>
+<!--                                    <div class="input-group form-group">-->
+<!--                                        <div class="user-tag">-->
+<!--                                        {{ field.label }}-->
+<!--                                        </div>-->
                                         <div class="user-info">
                                         {{ field }}
                                         </div>
-                                    </div>
+<!--                                    </div>-->
                                 {% endif %}
                                 {% for error in field.errors %}
                                     <p style="color: red">{{ error }}</p>
                                 {% endfor %}
                             {% endfor %}
-                            <h5><strong>비밀번호 변경을 원하십니까? <a href="/user_password_update" target="blank"><strong><em>비밀번호 변경</em></strong></a></h5>
+                            <div class="user-tag">
+                            <h5>비밀번호 변경을 원하십니까? <a href="/user_password_update" target="blank"><strong><em>비밀번호 변경</em></strong></a></h5>
+                            </div>
                             <button class="btn confirm_btn" type="submit" >수정완료</button>
                         </form>
                         <form action="{% url 'user_delete' %}" >
