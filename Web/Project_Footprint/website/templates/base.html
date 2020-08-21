@@ -20,13 +20,12 @@
 	<script src="{% static 'js/skel-layers.min.js' %}"></script>
 	<script src="{% static 'js/init.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
-	<!-- <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
+	<!-- <link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style-small.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" /> -->
+	<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" />  -->
 	{% block extrahead %}
 	{% endblock %}
 
@@ -70,7 +69,9 @@
 								<a href="/signin">LOGIN</a>
 							{% endif %}
 							</li>
-						<li><a href="/signup" class="button special">SIGNUP</a></li>
+							{% if not request.user.is_authenticated %}
+							<li><a href="/signup" class="button special">SIGNUP</a></li>
+							{% endif %}	
 					</ul>
 				</nav>
       </header>

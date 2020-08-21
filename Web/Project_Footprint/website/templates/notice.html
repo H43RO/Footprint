@@ -9,9 +9,9 @@
             background-color: #f9f9f9;
         }
         div.container {
-            margin-top: 100px;
-            margin-left: 200px;
+            padding-top: 130px;
         }
+
         .notices_contents{
             padding-top: 45px;
         }
@@ -64,32 +64,33 @@
     </style>
 
     <div class="container">
-        <div class="board_contents">
-            <h1 class="notice_head">
-                Notice<br>
-            </h1>
-            <hr>
-            <span class="aside-st"></span>
-        </div>
-        <div class="board_contents">
-            <div class="notices_contents">
-            {% for item in notices %}
-                <div class="row">
-                      <div class="col-sm-6">
-                        <div class="card">
-                          <div class="card-body">
-                            <a href="notice_view/{{ item.id }}" >
-                            <h5 class="card-title">{{ item.title }}</h5>
-                            <p class="card_date">{{ item.created_at|date:"Y-m-d" }}</p>
-                            <p class="card_desc">{{ item.contents }}</p>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-            {% endfor %}
+            <div class="board_contents">
+                <h1 class="notice_head">
+                    Notice<br>
+                </h1>
+                <hr>
+                <span class="aside-st"></span>
             </div>
-        </div>
+            <div class="board_contents">
+                <div class="notices_contents">
+                {% for item in notices %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                            <div class="card-body">
+                                <a href="notice_view/{{ item.id }}" >
+                                <h5 class="card-title">{{ item.title }}</h5>
+                                <p class="card_date">{{ item.created_at|date:"Y-m-d" }}</p>
+                                <p class="card_desc">{{ item.contents }}</p>
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                {% endfor %}
+                </div>
+            </div>
+    
     </div>
 {% endblock %}
 

@@ -6,7 +6,7 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<style>
+<!-- <style>
 
     html,body{
     background-image: url('../static/background.jpg');
@@ -16,7 +16,7 @@
     font-family: 'NanumSquare', sans-serif;
     }
 
-</style>
+</style> -->
 {% endblock %}
 <!------ Include the above in your HEAD tag ---------->
 
@@ -98,7 +98,7 @@
 </head>-->
 
 {% block content %}
-<section id = "signin">
+<div id = "signin">
 	<div class="container">
 		<div class="d-flex justify-content-center h-100">
 			<div class="card">
@@ -126,12 +126,12 @@
 				</div>
 				<div class="card-footer">
 					<div class="d-flex justify-content-center">
-						<a href="/user_password_find" ><b>비밀번호를 잊으셨나요?</b></a>
+						<a href="/user_password_find" class = "password_find"><b class="password_find">비밀번호를 잊으셨나요?</b></a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</section>
+</div>
 {% endblock %}
 
