@@ -32,8 +32,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.template import loader
 from django.utils import timezone, dateformat
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+# from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
 
 
 def index(request):

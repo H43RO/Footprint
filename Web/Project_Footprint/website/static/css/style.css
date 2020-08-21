@@ -8,9 +8,15 @@
 */
 
 /* Basic */
-
+	.introduce-header h1{
+		margin-top: 190px;
+		text-align : left ;
+		border-style: none;
+		color: white;
+		font-weight:bold;
+		}
 	body {
-		background: #fff;
+		background: #f9f9f9;
 	}
 
 		body.is-loading *, body.is-loading *:before, body.is-loading *:after {
@@ -884,6 +890,7 @@
 	body.landing #header {
 		background-color: transparent;
 		background-image: url(../images/dark_tint.png);
+		position: absolute;
 		left: 0;
 		top: 0;
 
@@ -992,8 +999,10 @@
 		font-style : normal;
 		font-weight: 100;
 		background-image: url(../images/dark_tint.png), url(../images/main.jpg);
-		background-position: center center;
+		background-position: center;
+
 		background-size: cover;
+		/* float: unset; */
 		color: #ffffff;
 		padding: 14em 0em 14em;
 		/* text-align: ; */
@@ -1201,14 +1210,15 @@
 /* Signin */
 
 
-body.landing #signin {
-	background-image: url('../static/background.jpg');
+ #signin {
+	background-image: url('../background.jpg');
+	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 100%;
 	font-family: 'NanumSquare', sans-serif;
 	}
-	#signin .ontainer{
+	#signin .container{
 	height: 100%;
 	align-content: center;
 	border-style: none;
@@ -1241,11 +1251,7 @@ body.landing #signin {
 
 	#signin .card-footer {
 	border-style: none;
-	color: white;
-	}
-
-	#signin .card-footer a{
-	color: white;
+	margin-top: 12em;
 	}
 
 	#signin .login_btn{
@@ -1264,3 +1270,103 @@ body.landing #signin {
 	font-weight:bold;
 	font-size: 90%;
 	}
+
+	#signin .password_find {
+		color:white;
+	}
+
+/* Signup */
+
+
+    #signup {
+		background-image: url('../background.jpg');
+		background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		height: 100%;
+		}
+	
+		#signup .container1{
+		font-family: 'NanumSquare', sans-serif;
+		float: right;
+		margin-right: 300px;
+		width: 400px;
+		height: 100%;
+		padding-top: 50px;
+		align-content: center;
+		border-style: none;
+		}
+		
+		#signup .container2{
+		font-family: 'Nanum Myeongjo', serif;
+		float: left;
+		margin-left: 250px;
+		width: 400px;
+		height: 100%;
+		align-content: right;
+		border-style: none;
+		}
+
+		#signup .introduce{
+		height: 370px;
+		margin-top: 20px;
+		border-style: none;
+		background-color: rgba(255,255,255,0.0);
+		color: white;
+		}
+		
+		
+		#signup .introduce-header h1{
+		margin-top: 190px;
+		  text-align : left ;
+		  border-style: none;
+		  color: white;
+		  font-weight:bold;
+		}
+	
+		#signup .introduce-body h3{
+		margin-top: 50px;
+		text-align : left ;
+		border-style: none;
+		color: white;
+		margin-left: -88px;
+		}
+	
+		#signup select:invalid {
+		color: gray;
+		}
+	
+		#signup .card{
+		height: 580px;
+		margin-top: 130px;
+		padding: 50px;
+		width: 500px;
+		border-style: none;
+		background-color: rgba(255,255,255,0.4);
+		}
+	
+		#signup .form-control {
+		height: 40px;
+		width: 100px;
+		border-style: none;
+		border-radius: 10px 10px 10px 10px;
+		color: black;
+		background-color: #d9dbd9;
+		opacity:0.7;
+		}
+	
+		#signup .signup_btn{
+		margin-top: 10px;
+		color: white;
+		font-weight:bold;
+		background-color: #293263;
+		width: 300px;
+		height: 40px;
+		border-style: none;
+		border-radius: 10px 10px 10px 10px;
+		}
+	
+		#signup input::placeholder {
+		font-weight:bold;
+		font-size: 95%;
+		}
