@@ -1,7 +1,7 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
    <style>
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
@@ -112,6 +112,7 @@
 
     button.btn-light {
         margin-bottom: 8px;
+        margin-right: 5px;
     }
     form.button-history{
         float:left;
@@ -133,7 +134,7 @@
     </style>
 
 
-<div class="history-list">
+<body class="history-list">
     <div class="left">
         <div class="history">
             <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
@@ -168,7 +169,7 @@
                         <form class="button-history" action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-light btn-sm">수정</button>
-                            <br>
+                            <br />
                         </form>
                         <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
                             {% csrf_token %}
@@ -208,8 +209,10 @@
         </div>
     </div>
 </div>
-<script>
-                        function myFunction(id) {
+
+    <script type="text/javascript">
+
+                        window.myFunction = function(id) {
                             if(document.getElementById("title" + id) != null){
                                 var title = document.getElementById("title" + id).textContent;
                             }
@@ -224,7 +227,7 @@
                             }
                             if(document.getElementById("comment" + id) != null){
                                 var comment = document.getElementById("comment" + id).textContent;
-                                comment = comment.replaceAll("\n", "<br>");
+                                comment = comment.replace(/(?:\r\n|\r|\n)/g, '<br />');
                             }
                             if (document.getElementById("place" + id) != null){
                                 var place = document.getElementById("place" + id).textContent;
@@ -267,5 +270,6 @@
                             }
                         }
 
-</script>
+    </script>
+    </body>
 {% endblock %}
