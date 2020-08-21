@@ -20,6 +20,7 @@
         margin:auto;
         margin-top:0px;
     }
+
     div.right {
         width: 65%;
         height: 1150px;
@@ -29,6 +30,25 @@
         font-family: 'NanumSquare', sans-serif;
 
     }
+
+        div.left::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    div.left::-webkit-scrollbar-thumb {
+        background-color: #2f3542;
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+
+    div.left::-webkit-scrollbar-thumb {
+        background-color: grey;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px white;
+    }
+
+
     a.card-link {
         margin-left:50px;
     }
@@ -82,18 +102,6 @@
         border-top-right-radius: 15px;
     }
 
-    div.card-body{
-        margin-top:10px;
-        margin-left:20px;
-        margin:auto;
-    }
-
-    #right-body{
-        margin-left:20px;
-        margin-top:400px;
-        width: 480px;
-    }
-
     h5.card-title{
         font-family: 'Nanum Myeongjo', serif;
     }
@@ -102,15 +110,26 @@
         margin-top:30%;
     }
 
-    button.btn btn-light{
-        width:50px;
-        height:20px;
-
+    button.btn-light {
+        margin-bottom: 8px;
     }
     form.button-history{
         float:left;
     }
 
+    h5.card-title {
+        padding-top: 10px;
+    }
+
+    #demo-place{
+        font-size:14;
+        color:#636160;
+    }
+
+    #demo-custom-place{
+        font-size:14;
+        color:#636160;
+    }
     </style>
 
 
@@ -135,22 +154,22 @@
                         <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
                         {% endif %}
                         {%if item.place %}
-                        <p class="card-text" id="place{{item.id}}">{{ item.place }}</p>
+                        <p class="card-text" id="place{{item.id}}" >{{ item.place }}</p>
                         {% endif %}
                         {%if item.custom_place %}
                         <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
                         {% endif %}
                         {%if item.comment %}
                         <p class="card-text" id="comment{{item.id}}" style="display: none">
-                            {{ item.comment|linebreaksbr}}</p>
+                            {{ item.comment }}</p>
                         {% endif %}
-                        <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
 
+                        <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
                         <form class="button-history" action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-light">수정</button>
+                            <button type="submit" class="btn btn-light btn-sm">수정</button>
+                            <br>
                         </form>
-
                         <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
                             {% csrf_token %}
                             <script>
@@ -160,7 +179,8 @@
 
 
                             </script>
-                            <button type="submit" class="btn btn-light" onclick="Function()">삭제</button>
+                            <button type="submit" class="btn btn-light btn-sm" onclick="Function()">삭제</button>
+
                         </form>
                     </div>
                 </div>
@@ -170,22 +190,20 @@
     </div>
 
     <div class="right">
+        <div class="containor">
         <div class="card mb-3" id="history-card-3">
-            <div class="row no-gutters">
-                <img class="history-img" id="img" src="../static/logo2.png" , alt="">
-            </div>
-            <div class="col-md-8">
+                <img class="history-img" id="img" src="../static/logo2.png" , alt="" style="">
+
                 <div class="card-body" id="right-body">
                     <h5 class="card-title">
                         <p id="demo-title"></p>
                     </h5>
                     <p id="demo-mood"></p>
                     <p class="card-text" id="demo-comment"></p>
-                    <p id="demo-place"></p>
+                    <p id="demo-place" ></p>
                     <p id="demo-custom-place"></p>
                     <p class="card-text"><small class="text-muted" id="demo-create-at"></small></p>
 
-                </div>
             </div>
         </div>
     </div>
@@ -206,6 +224,7 @@
                             }
                             if(document.getElementById("comment" + id) != null){
                                 var comment = document.getElementById("comment" + id).textContent;
+                                comment = comment.replaceAll("\n", "<br>");
                             }
                             if (document.getElementById("place" + id) != null){
                                 var place = document.getElementById("place" + id).textContent;
@@ -227,7 +246,7 @@
                                 document.getElementById("demo-mood").innerHTML = "";
                             }
                             if(comment != null){
-                                document.getElementById("demo-comment").innerHTML = comment;
+                                document.getElementById("demo-comment").innerHTML = comment
                             }else{
                                 document.getElementById("demo-comment").innerHTML = "";
                             }

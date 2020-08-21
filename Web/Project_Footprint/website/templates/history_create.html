@@ -2,23 +2,27 @@
 {% load static %}
 {% block content %}
 <style>
-    table.history-form{
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+
+
+    div.history-form {
+        font-size: 15px;
+        font-family: 'NanumSquare', sans-serif;
         margin: auto;
-        margin-top : 70px;
     }
 
-    form.history-form {
-        margin: auto;
-    }
+
+
 </style>
 
-<div class="container">
+<div class="container" style="margin-top:50px;">
     <form enctype="multipart/form-data" class="history-form" action="{% url 'history-create' %}" method="post">
         {% csrf_token %}
-        <table class="history-form">
-            {{ form.as_table }}
-        </table>
-        <button type="submit" class="btn btn-light" >등록</button>
+        <div class="history-form">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block">등록</button>
     </form>
 </div>
 {% endblock %}
