@@ -2,10 +2,15 @@
 {% load static %}
 {% block content %}
 <style>
-    table.history-form {
-        margin: auto;
-        margin-top : 70px;
 
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+
+
+    div.history-form {
+        font-size: 15px;
+        font-family: 'NanumSquare', sans-serif;
+        margin: auto;
     }
 
 </style>
@@ -14,10 +19,10 @@
     <form enctype="multipart/form-data" action="{% url 'history-update' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ form.instance.id }}"/>
-        <table class="history-form">
-            {{ form.as_table }}
-        </table>
-        <button type="submit" class="btn btn-light" >수정완료</button>
+        <div class="history-form">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block" >수정완료</button>
     </form>
 </div>
 {% endblock %}
