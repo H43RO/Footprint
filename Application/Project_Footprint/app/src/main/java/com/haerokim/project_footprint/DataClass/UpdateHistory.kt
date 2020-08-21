@@ -1,6 +1,6 @@
 package com.haerokim.project_footprint.DataClass
 
-class UpdateHistory(
+data class UpdateHistory(
     val title:String?,
     val mood:String?,
     val comment:String?

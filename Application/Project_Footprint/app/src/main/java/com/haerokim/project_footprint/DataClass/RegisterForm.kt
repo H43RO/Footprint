@@ -1,6 +1,6 @@
 package com.haerokim.project_footprint.DataClass
 
-class RegisterForm(
+data class RegisterForm(
     val email: String,
     val birth_date: String,
     val nickname: String,

@@ -31,11 +31,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-<!--        <meta-data-->
-<!--            android:name="com.facebook.sdk.ApplicationId"-->
-<!--            android:value="@string/facebook_app_id" />-->
-
+        <activity android:name=".Activity.EditorPickDeatilActivity"></activity>
+        <!-- <meta-data -->
+        <!-- android:name="com.facebook.sdk.ApplicationId" -->
+        <!-- android:value="@string/facebook_app_id" /> -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.haerokim.project_footprint"
@@ -44,14 +43,11 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider>
-
-<!--        <provider-->
-<!--            android:name="com.facebook.FacebookContentProvider"-->
-<!--            android:authorities="com.facebook.app.FacebookContentProvider5603"-->
-<!--            android:exported="true" />-->
-
-        <activity android:name=".Activity.HistoryWriteActivity"></activity>
+        </provider> <!-- <provider -->
+        <!-- android:name="com.facebook.FacebookContentProvider" -->
+        <!-- android:authorities="com.facebook.app.FacebookContentProvider5603" -->
+        <!-- android:exported="true" /> -->
+        <activity android:name=".Activity.HistoryWriteActivity" />
         <activity android:name=".Activity.PasswordResetActivity" />
         <activity android:name=".Activity.RegisterConfirmActivity" />
         <activity android:name=".Activity.RegisterActivity" />
@@ -82,7 +78,6 @@
                 android:name="longScanForcingEnabled"
                 android:value="true" />
         </service>
-
         <service
             android:name=".Network.FCMService"
             android:stopWithTask="false">

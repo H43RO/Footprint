@@ -2,7 +2,7 @@ package com.haerokim.project_footprint.DataClass
 
 import java.util.*
 
-class Notice(
+data class Notice(
     val id: Int,
     val title: String,
     val contents: String,

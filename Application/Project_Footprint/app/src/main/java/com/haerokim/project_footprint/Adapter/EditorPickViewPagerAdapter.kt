@@ -8,7 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.DataClass.EditorPick
 import com.haerokim.project_footprint.R
-import kotlinx.android.synthetic.main.editor_item.view.*
+import kotlinx.android.synthetic.main.home_editor_item.view.*
 
 class EditorPickViewPagerAdapter(val context: Context, val editorPickList: ArrayList<EditorPick>): PagerAdapter() {
     override fun isViewFromObject(view: View, obj: Any): Boolean {
@@ -17,16 +17,16 @@ class EditorPickViewPagerAdapter(val context: Context, val editorPickList: Array
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.editor_item, container, false)
+        val view = inflater.inflate(R.layout.home_editor_item, container, false)
 
-        view.text_editor_title.text = editorPickList[position].title
-        view.text_editor_content.text = editorPickList[position].contents
+        view.home_text_editor_title.text = editorPickList[position].title
+        view.home_text_editor_content.text = editorPickList[position].contents
 
         Glide.with(context)
             .load(editorPickList[position].img)
             .centerCrop()
             .thumbnail(0.1f)
-            .into(view.image_editor_pick)
+            .into(view.home_image_editor_pick)
 
         container.addView(view)
         return view

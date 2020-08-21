@@ -1,8 +1,11 @@
 package com.haerokim.project_footprint.DataClass
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
-class EditorPick(
+@Parcelize
+data class EditorPick(
     val id: Int,
     val contents: String,
     val title: String,
@@ -11,4 +14,4 @@ class EditorPick(
     val description: String,
     val created_at: Date,
     val updated_at: Date
-)
+): Parcelable
