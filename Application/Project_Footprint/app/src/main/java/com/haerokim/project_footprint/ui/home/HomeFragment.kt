@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.haerokim.project_footprint.Adapter.EditorPickViewPagerAdapter
 import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
+import com.haerokim.project_footprint.DataClass.EditorPick
 import com.haerokim.project_footprint.DataClass.NaverPlaceID
 import com.haerokim.project_footprint.DataClass.Place
 import com.haerokim.project_footprint.DataClass.User
@@ -47,6 +50,7 @@ class HomeFragment : Fragment(), PermissionListener {
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     var hotPlaceList: ArrayList<Place> = ArrayList()
+    var editorPickList: ArrayList<EditorPick> = ArrayList()
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -118,10 +122,7 @@ class HomeFragment : Fragment(), PermissionListener {
 
                     viewManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    viewAdapter = HotPlaceListAdapter(
-                        hotPlaceList,
-                        requireContext()
-                    )
+                    viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
 
                     viewAdapter.setHasStableIds(true)
 
@@ -135,6 +136,24 @@ class HomeFragment : Fragment(), PermissionListener {
             }
         })
 
+        getPlaceList.requestEditorPickList().enqueue(object : Callback<ArrayList<EditorPick>> {
+            override fun onFailure(call: Call<ArrayList<EditorPick>>, t: Throwable) {
+                Log.e("EditorPickList Error", t.message)
+            }
+
+            override fun onResponse(
+                call: Call<ArrayList<EditorPick>>,
+                response: Response<ArrayList<EditorPick>>
+            ) {
+                editorPickList.clear()
+                if (response.body() != null && response.code() == 200) {
+                    editorPickList.addAll(response.body()!!)
+
+                    home_editor_place_pager.adapter = EditorPickViewPagerAdapter(context!!, editorPickList)
+                    home_editor_place_pager.currentItem = 0
+                }
+            }
+        })
 
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)

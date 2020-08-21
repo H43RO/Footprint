@@ -45,7 +45,6 @@ class HistoryDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_detail)
         val historyInfo: Bundle? = intent.extras
-
         var historyID = historyInfo?.getInt("id")
         var historyImage = historyInfo?.getString("image")
         var historyTitle = historyInfo?.getString("title") ?: "어느 멋진 날"

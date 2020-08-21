@@ -28,7 +28,6 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
         var placeMenuPrice: ArrayList<String> = arrayListOf()
 
         try {
-            // 네이버 플레이스 URL로 변경 예정 ( 아이디 SQL 쿼리로 얻어올 수 있게끔 매핑 예정 )
             val doc: Document =
                 Jsoup.connect("https://store.naver.com/restaurants/detail?id=$placeNaverID").get()
             val titleElement: Elements = doc.select("div[class=biz_name_area]").select("strong")
