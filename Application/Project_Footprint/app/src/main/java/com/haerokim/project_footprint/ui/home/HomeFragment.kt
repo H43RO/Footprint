@@ -10,10 +10,12 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -24,7 +26,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.haerokim.project_footprint.Adapter.EditorPickViewPagerAdapter
 import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
+import com.haerokim.project_footprint.DataClass.EditorPick
 import com.haerokim.project_footprint.DataClass.NaverPlaceID
 import com.haerokim.project_footprint.DataClass.Place
 import com.haerokim.project_footprint.DataClass.User
@@ -33,6 +37,7 @@ import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Utility.ForegroundService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceInfo
+import kotlin.concurrent.timer
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
@@ -40,6 +45,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.sql.Time
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), PermissionListener {
@@ -47,6 +55,11 @@ class HomeFragment : Fragment(), PermissionListener {
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     var hotPlaceList: ArrayList<Place> = ArrayList()
+    var editorPickList: ArrayList<EditorPick> = ArrayList()
+
+    var currentPage: Int = 0
+    private val DELAY_MS : Long = 500
+    private val PERIOD_MS : Long = 3000
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -103,6 +116,7 @@ class HomeFragment : Fragment(), PermissionListener {
             override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
                 Log.e("Error Hot Place", t.message)
             }
+
             override fun onResponse(
                 call: Call<ArrayList<NaverPlaceID>>,
                 response: Response<ArrayList<NaverPlaceID>>
@@ -110,14 +124,17 @@ class HomeFragment : Fragment(), PermissionListener {
                 if (response.body() != null && response.code() == 200) {
                     // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
                     for (hotNaverPlaceID in response.body()!!) {
-                        hotPlaceList.add(GetPlaceInfo(hotNaverPlaceID.naver_place_id).execute().get())
+                        hotPlaceList.add(
+                            GetPlaceInfo(hotNaverPlaceID.naver_place_id).execute().get()
+                        )
                     }
 
-                    viewManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    viewAdapter = HotPlaceListAdapter(
-                        hotPlaceList,
-                        requireContext()
-                    )
+                    viewManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
+
+                    viewAdapter.setHasStableIds(true)
+
                     recyclerView =
                         view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
                             setHasFixedSize(true)
@@ -128,7 +145,41 @@ class HomeFragment : Fragment(), PermissionListener {
             }
         })
 
+        getPlaceList.requestEditorPickList().enqueue(object : Callback<ArrayList<EditorPick>> {
+            override fun onFailure(call: Call<ArrayList<EditorPick>>, t: Throwable) {
+                Log.e("EditorPickList Error", t.message)
+            }
 
+            override fun onResponse(
+                call: Call<ArrayList<EditorPick>>,
+                response: Response<ArrayList<EditorPick>>
+            ) {
+                editorPickList.clear()
+                if (response.body() != null && response.code() == 200) {
+                    editorPickList.addAll(response.body()!!)
+
+                    home_editor_place_pager.adapter =
+                        EditorPickViewPagerAdapter(context!!, editorPickList)
+                    home_editor_place_pager.currentItem = 0
+
+                    val handler = Handler()
+                    val updateTask: Runnable = object : Runnable {
+                        override fun run() {
+                            if (currentPage == editorPickList.size) {
+                                currentPage = 0
+                            }
+                            home_editor_place_pager.setCurrentItem(currentPage++, true)
+                        }
+                    }
+                    val timer = Timer()
+                    timer.schedule(object: TimerTask(){
+                        override fun run() {
+                            handler.post(updateTask)
+                        }
+                    }, DELAY_MS, PERIOD_MS)
+                }
+            }
+        })
 
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)

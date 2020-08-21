@@ -21,11 +21,16 @@ interface RetrofitService {
     @GET("api/hotplaces/")
     fun requestHotPlaceList(): Call<ArrayList<NaverPlaceID>>
 
-    /** 부수기능 관련 API**/
+    /** 공지사항 관련 API**/
 
     // 공지사항 요청
     @GET("api/noticelist/")
     fun requestNoticeList(): Call<ArrayList<Notice>>
+
+    /** EDITOR PICK 관련 API **/
+
+    @GET("api/editorlist/")
+    fun requestEditorPickList(): Call<ArrayList<EditorPick>>
 
     /** USER 관련 API**/
 

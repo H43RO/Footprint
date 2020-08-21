@@ -105,6 +105,7 @@ class DateHistoryFragment : Fragment() {
                         response: Response<ArrayList<History>>
                     ) {
                         historyList.clear()
+                        responseBody.clear()
                         text_date_no_data.visibility = View.GONE
 
                         if (response.body()?.size == 0 || response.body() == null) {
@@ -116,7 +117,7 @@ class DateHistoryFragment : Fragment() {
                             TransitionManager.beginDelayedTransition(layout_list, AutoTransition())
                         } else {
                             date_history_list.visibility = View.VISIBLE
-                            responseBody = response.body()!!
+                            responseBody.addAll(response.body()!!)
                             for (history in responseBody) {
                                 if(history.place != null) { // place가 null이면 임의로 생성한 history이므로 이름 변환 과정을 건너뜀
                                     realm.executeTransaction {
@@ -126,6 +127,7 @@ class DateHistoryFragment : Fragment() {
                                     }
                                 }
                             }
+                            viewAdapter.notifyDataSetChanged()
                             historyList.addAll(responseBody)
                             loading_date_history.visibility = View.GONE
 
