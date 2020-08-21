@@ -31,6 +31,10 @@ from django.db.models.query_utils import Q
 from django.contrib.auth.tokens import default_token_generator
 from django.template import loader
 from django.utils import timezone, dateformat
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
 
 def index(request):
     sights = Place.objects.filter(place_div=0).order_by('-count')[:6]
@@ -130,11 +134,15 @@ def place_list(request):
 
 
 def place_detail(request, id):
-    if id is not None:
-        item = get_object_or_404(Place, pk=id)
-        cnt = History.objects.filter(place=item).all()
-        return render(request, 'place_detail.html', {'item': item, 'cnt':cnt})
-    return HttpResponseRedirect('index/')
+    # if id is not None:
+    #     places = get_object_or_404(Place, pk=id)
+    #     return render(request, 'place_detail.html', {'places': places})
+    # return HttpResponseRedirect('history/')
+    context = {
+        'places': place_detail_crawl(pk=id)
+    }
+    return render(request, 'place_detail.html', context)
+
 
 
 def place_register(request):
@@ -339,3 +347,83 @@ def editor(request):
 def editorview(request, id):
     editors = Post.objects.get(id=id)
     return render(request, 'editor_view.html', {'editors': editors})
+
+
+def place_detail_crawl(pk):
+    URL = 'https://store.naver.com/restaurants/detail?id'
+
+    result = requests.get(f'{URL}={pk}')
+    soup = BeautifulSoup(result.content, 'html.parser')
+    title = soup.find("strong", {"class": "name"})
+    title = str(title.string).strip()
+    print(title)
+
+    category = soup.find("span", {"class": "category"})
+    category = str(category.string).strip()
+    print(category)
+
+    location = soup.find("span", {"class": "addr"})
+    location = str(location.string).strip()
+    print(location)
+
+    open = soup.find("span", {"class": "time"})
+    if open is not None:
+        open = str(open.string).strip()
+        print(open)
+    else:
+        open = " "
+        print(open)
+
+    description = soup.find("div", {"class": "info"})
+    desc = description.find("span", {"class": "txt"})
+    if desc is not None:
+        tag = soup.find("span", {"class": "kwd"})
+        if tag is not None:
+            desc = " "
+            print(desc)
+        else:
+            desc = str(desc.string).strip()
+            print(desc)
+    else:
+        desc = " "
+        print(desc)
+
+    URL_IMG = 'https://store.naver.com/restaurants/detail?id'
+    result_IMG = requests.get(f'{URL_IMG}={pk}&tab=photo')
+    soups = BeautifulSoup(result_IMG.content, 'html.parser')
+
+    area = soups.find("div", {"class": "list_photo"})
+    a = area.find("a")
+    if a is not None:
+        img = a.find("img").get("src")
+        print(img)
+    else:
+        a = area.find("div")
+        img = a.find("img").get("src")
+        print(img)
+
+    list_menu = soup.find("ul", {"class": "list_menu"})
+    menu = list_menu.find_all("span", {"class": "name"})
+    menu_result = []
+    for item in menu:
+        menu_result.append(item.get_text())
+    print(menu_result)
+
+    price = soup.find_all("em", {"class": "price"})
+    print(price)
+    price_result = []
+    for item in price:
+        price_result.append(item.get_text())
+    print(price_result)
+
+
+    return {
+        'title': title,
+        'category': category,
+        'location': location,
+        'open': open,
+        'description': desc,
+        'menu': menu_result,
+        'price': price_result,
+        'img' : img
+    }
