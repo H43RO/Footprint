@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -36,6 +37,7 @@ import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Utility.ForegroundService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceInfo
+import kotlin.concurrent.timer
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
@@ -43,6 +45,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.sql.Time
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), PermissionListener {
@@ -51,6 +56,10 @@ class HomeFragment : Fragment(), PermissionListener {
     lateinit var viewManager: RecyclerView.LayoutManager
     var hotPlaceList: ArrayList<Place> = ArrayList()
     var editorPickList: ArrayList<EditorPick> = ArrayList()
+
+    var currentPage: Int = 0
+    private val DELAY_MS : Long = 500
+    private val PERIOD_MS : Long = 3000
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -149,8 +158,25 @@ class HomeFragment : Fragment(), PermissionListener {
                 if (response.body() != null && response.code() == 200) {
                     editorPickList.addAll(response.body()!!)
 
-                    home_editor_place_pager.adapter = EditorPickViewPagerAdapter(context!!, editorPickList)
+                    home_editor_place_pager.adapter =
+                        EditorPickViewPagerAdapter(context!!, editorPickList)
                     home_editor_place_pager.currentItem = 0
+
+                    val handler = Handler()
+                    val updateTask: Runnable = object : Runnable {
+                        override fun run() {
+                            if (currentPage == editorPickList.size) {
+                                currentPage = 0
+                            }
+                            home_editor_place_pager.setCurrentItem(currentPage++, true)
+                        }
+                    }
+                    val timer = Timer()
+                    timer.schedule(object: TimerTask(){
+                        override fun run() {
+                            handler.post(updateTask)
+                        }
+                    }, DELAY_MS, PERIOD_MS)
                 }
             }
         })
