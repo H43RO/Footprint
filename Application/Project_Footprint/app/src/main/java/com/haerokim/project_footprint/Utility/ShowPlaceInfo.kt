@@ -35,7 +35,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         var placeTitle = place.title
         var placeCategory = place.category
         var placeDescription = place.description
-        var placeTime = place.time
+        var placeTime = place.businessHours
         var placeLocation = place.location
         var placeImageSrc = place.imageSrc
         var placeMenuName = place.menuName
@@ -157,7 +157,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         var placeTitle = place.title
         var placeCategory = place.category
         var placeDescription = place.description
-        var placeTime = place.time
+        var placeTime = place.businessHours
         var placeLocation = place.location
         var placeImageSrc = place.imageSrc
         var placeMenuName = place.menuName
