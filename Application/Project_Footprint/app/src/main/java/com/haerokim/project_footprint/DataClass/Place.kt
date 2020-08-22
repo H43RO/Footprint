@@ -7,7 +7,7 @@ data class Place(
     var title: String?,
     var category: String?,
     var description: String?,
-    var time: String?,
+    var businessHours: String?,
     var location: String?,
     var imageSrc: String?,
     var menuName: ArrayList<String>,
@@ -30,7 +30,7 @@ data class Place(
     }
 
     fun getPlaceTime(): String {
-        return time ?: "등록된 정보가 없습니다"
+        return businessHours ?: "등록된 정보가 없습니다"
     }
 
     fun getPlaceLocation(): String {

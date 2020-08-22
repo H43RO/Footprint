@@ -80,6 +80,11 @@ class HomeFragment : Fragment(), PermissionListener {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,6 +118,20 @@ class HomeFragment : Fragment(), PermissionListener {
             .build()
         var getPlaceList: RetrofitService = retrofit.create(RetrofitService::class.java)
 
+        viewManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
+
+        viewAdapter.setHasStableIds(true)
+
+        recyclerView =
+            view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+
         getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<NaverPlaceID>> {
             override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
                 Log.e("Error Hot Place", t.message)
@@ -123,25 +142,15 @@ class HomeFragment : Fragment(), PermissionListener {
                 response: Response<ArrayList<NaverPlaceID>>
             ) {
                 if (response.body() != null && response.code() == 200) {
+                    hotPlaceList.clear()
+
                     // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
                     for (hotNaverPlaceID in response.body()!!) {
                         hotPlaceList.add(
                             GetPlaceInfo(hotNaverPlaceID.naver_place_id).execute().get()
                         )
                     }
-
-                    viewManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
-
-                    viewAdapter.setHasStableIds(true)
-
-                    recyclerView =
-                        view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
-                            setHasFixedSize(true)
-                            layoutManager = viewManager
-                            adapter = viewAdapter
-                        }
+                    viewAdapter.notifyDataSetChanged()
                 }
             }
         })
