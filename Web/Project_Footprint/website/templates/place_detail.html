@@ -8,9 +8,8 @@
         font-family: "나눔스퀘어";
         background-color: #f9f9f9;
     }
-
     div.container {
-        margin-top: 100px;
+        padding-top: 150px;
         margin-left: 200px;
     }
 
@@ -105,7 +104,7 @@
     <div class="card mb-3">
         <div class="row no-gutters">
           <div class="col-md-4">
-            <img src="{{ places.img }}" class="card-img" alt="">
+            <img src="{{ places.imageSrc }}" class="card-img" alt="">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -115,19 +114,19 @@
                 <div class="place_desc">
               <h5 class="card-title">{{ places.description }}</h5>
               <p class="card-text">{{ places.location }}</p>
-              <p class="card-text"><small class="text-muted">{{ places.open }}</small></p>
+              <p class="card-text"><small class="text-muted">{{ places.businessHours }}</small></p>
                 </div>
                 <div class="place_menus">
-                    {% if places.menu %}
+                    {% if places.menuName %}
                     <div class="menu">
                         <h5 class="menu"> MENU</h5> <br>
-                        {% for item in places.menu %}
+                        {% for item in places.menuName %}
                         <p>{{ item }} &nbsp &nbsp &nbsp <br></p>
                         {% endfor %}
                     </div>
                     <div class="price">
                         <h5 class="menu"> &nbsp </h5> <br>
-                        {% for item in places.price %}
+                        {% for item in places.menuPrice %}
                         <p> {{ item }} &nbsp</p>
                         {% endfor %}
                     </div>

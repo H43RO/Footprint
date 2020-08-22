@@ -5,7 +5,7 @@ from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
 from .place_id_serializers import PlaceIdSerializer
 from .notice_serializers import NoticeSerializer
-from rest_framework import viewsets, permissions, generics, status, mixins
+from rest_framework import viewsets, permissions, generics, status, mixins, serializers
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
@@ -26,6 +26,9 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 from django.http import Http404
+from .views import place_detail_crawl, get_hotplace
+from django.http import JsonResponse
+from django.http import HttpResponse
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
@@ -96,14 +99,6 @@ class HistoryViewSet(viewsets.ModelViewSet):
     filterset_class = HistoryFilter
     filter_backends = [filters.DjangoFilterBackend]
 
-    # filter_fields = ['title', 'created_at']
-
-    @action(methods=['get'], detail=False)
-    def newest(self, request):
-        newest = self.get_queryset().order_by('created_at').last()
-        serializer = self.get_serializer_class()(newest)
-        return Response(serializer.data)
-
 
 class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(post_div=1)
@@ -114,7 +109,18 @@ class ApiHotPlace(viewsets.ModelViewSet):
     queryset = Place.objects.order_by('-count')[:5]
     serializer_class = PlaceSerializer
 
+    @action(methods=['get'], detail=False)
+    def result(self, request):
+        res = get_hotplace()
+        places = []
+        for item in res:
+            places.append(place_detail_crawl(item))
+        places = list(places)
+        return Response(places,status=200)
+
 
 class EditorViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(post_div=0)
     serializer_class = NoticeSerializer
+
+
