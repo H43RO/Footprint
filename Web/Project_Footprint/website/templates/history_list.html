@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-   <style>
+<style>
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
@@ -18,7 +18,7 @@
         overflow-y:scroll;
         font-family: 'NanumSquare', sans-serif;
         margin:auto;
-        margin-top:0px;
+        margin-top:105px;
     }
 
     div.right {
@@ -28,6 +28,7 @@
         box-sizing: border-box;
         background: #e8e8e8;
         font-family: 'NanumSquare', sans-serif;
+        margin-top:105px;
 
     }
 
@@ -131,86 +132,95 @@
         font-size:14;
         color:#636160;
     }
-    </style>
+    a.card-link{
+        font-size : 20px;
+        color: #232324;
+        padding: 15px;
+    }
+
+</style>
 
 
 <body class="history-list">
-    <div class="left">
-        <div class="history">
-            <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
-            {% for item in historys %}
-            <div class="card-body">
-                <div class="card-left" onclick="myFunction({{item.id}})">
-                    {% if item.img %}
-                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="">
-                    {% endif %}
-                    <div class="history-text">
-                        <p class="card-text">
-                            {%if item.title %}
-                        <h5 class="card-title" id="title{{item.id}}">
+<div class="left">
+    <div class="history">
+        <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
+        {% for item in historys %}
+        <div class="card-body">
+            <div class="card-left" onclick="myFunction({{item.id}})">
+                {% if item.img %}
+                <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="">
+                {% endif %}
+                <div class="history-text">
+                    <p class="card-text">
+                        {%if item.title %}
+                    <h5 class="card-title" id="title{{item.id}}">
                         {{item.title }}</h5>
-                        {% endif %}
-                        </p>
-                        {%if item.mood %}
-                        <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
-                        {% endif %}
-                        {%if item.place %}
-                        <p class="card-text" id="place{{item.id}}" >{{ item.place }}</p>
-                        {% endif %}
-                        {%if item.custom_place %}
-                        <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
-                        {% endif %}
-                        {%if item.comment %}
-                        <p class="card-text" id="comment{{item.id}}" style="display: none">
-                            {{ item.comment }}</p>
-                        {% endif %}
+                    {% endif %}
+                    </p>
+                    {%if item.mood %}
+                    <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
+                    {% endif %}
+                    {%if item.place %}
+                    <p class="card-text" id="place{{item.id}}">{{ item.place }}</p>
+                    {% endif %}
+                    {%if item.custom_place %}
+                    <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
+                    {% endif %}
+                    {%if item.comment %}
+                    <p class="card-text" id="comment{{item.id}}" style="display: none">
+                        {{ item.comment }}</p>
+                    {% endif %}
 
-                        <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
-                        <form class="button-history" action="{% url 'history-update' %}?id={{ item.id }}" name="update" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-light btn-sm">수정</button>
-                            <br />
-                        </form>
-                        <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete" method="post">
-                            {% csrf_token %}
-                            <script>
+                    <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
+                    <form class="button-history" action="{% url 'history-update' %}?id={{ item.id }}" name="update"
+                          method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-light btn-sm">수정</button>
+                        <br/>
+                    </form>
+                    <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete"
+                          method="post">
+                        {% csrf_token %}
+                        <script>
                                                 function Function() {
                                                 alert("Really?");
                                                 }
 
 
-                            </script>
-                            <button type="submit" class="btn btn-light btn-sm" onclick="Function()">삭제</button>
 
-                        </form>
-                    </div>
+                        </script>
+                        <button type="submit" class="btn btn-light btn-sm" onclick="Function()">삭제</button>
+
+                    </form>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
+</div>
 
-    <div class="right">
-        <div class="containor">
+<div class="right">
+    <div class="containor">
         <div class="card mb-3" id="history-card-3">
-                <img class="history-img" id="img" src="../static/logo2.png" , alt="" style="">
+            <img class="history-img" id="img" src="../static/logo2.png" , alt="" style="">
 
-                <div class="card-body" id="right-body">
-                    <h5 class="card-title">
-                        <p id="demo-title"></p>
-                    </h5>
-                    <p id="demo-mood"></p>
-                    <p class="card-text" id="demo-comment"></p>
-                    <p id="demo-place" ></p>
-                    <p id="demo-custom-place"></p>
-                    <p class="card-text"><small class="text-muted" id="demo-create-at"></small></p>
+            <div class="card-body" id="right-body">
+                <h5 class="card-title">
+                    <p id="demo-title"></p>
+                </h5>
+                <p id="demo-mood"></p>
+                <p class="card-text" id="demo-comment"></p>
+                <p id="demo-place"></p>
+                <p id="demo-custom-place"></p>
+                <p class="card-text"><small class="text-muted" id="demo-create-at"></small></p>
 
             </div>
         </div>
     </div>
 </div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
                         window.myFunction = function(id) {
                             if(document.getElementById("title" + id) != null){
@@ -270,6 +280,7 @@
                             }
                         }
 
-    </script>
-    </body>
+
+</script>
+</body>
 {% endblock %}
