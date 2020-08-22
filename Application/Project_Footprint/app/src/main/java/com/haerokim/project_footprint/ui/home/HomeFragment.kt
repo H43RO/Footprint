@@ -23,6 +23,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ethanhua.skeleton.Skeleton
+import com.ethanhua.skeleton.SkeletonScreen
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
@@ -59,8 +61,8 @@ class HomeFragment : Fragment(), PermissionListener {
     var timer = Timer()
 
     var currentPage: Int = 0
-    private val DELAY_MS : Long = 500
-    private val PERIOD_MS : Long = 3000
+    private val DELAY_MS: Long = 500
+    private val PERIOD_MS: Long = 3000
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -132,24 +134,31 @@ class HomeFragment : Fragment(), PermissionListener {
                 adapter = viewAdapter
             }
 
-        getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<NaverPlaceID>> {
-            override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
+        val skeletonRecyclerView: SkeletonScreen =
+            Skeleton.bind(recyclerView).adapter(viewAdapter)
+                .color(R.color.shimmerColor)
+                .duration(1200)
+                .frozen(false)
+                .load(R.layout.skeleton_hot_place_item)
+                .count(5)
+                .show()
+
+        getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<Place>> {
+            override fun onFailure(call: Call<ArrayList<Place>>, t: Throwable) {
                 Log.e("Error Hot Place", t.message)
             }
 
             override fun onResponse(
-                call: Call<ArrayList<NaverPlaceID>>,
-                response: Response<ArrayList<NaverPlaceID>>
+                call: Call<ArrayList<Place>>,
+                response: Response<ArrayList<Place>>
             ) {
+                skeletonRecyclerView.hide()
+
                 if (response.body() != null && response.code() == 200) {
                     hotPlaceList.clear()
 
                     // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
-                    for (hotNaverPlaceID in response.body()!!) {
-                        hotPlaceList.add(
-                            GetPlaceInfo(hotNaverPlaceID.naver_place_id).execute().get()
-                        )
-                    }
+                    hotPlaceList.addAll(response.body()!!)
                     viewAdapter.notifyDataSetChanged()
                 }
             }
@@ -182,7 +191,7 @@ class HomeFragment : Fragment(), PermissionListener {
                         }
                     }
                     // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
-                    timer.schedule(object: TimerTask(){
+                    timer.schedule(object : TimerTask() {
                         override fun run() {
                             handler.post(updateTask)
                         }
@@ -284,7 +293,8 @@ class HomeFragment : Fragment(), PermissionListener {
 
         button_go_editor_detail.setOnClickListener {
             val bundle = bundleOf("editorPickList" to editorPickList)
-            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
+            it.findNavController()
+                .navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
         }
     }
 

@@ -18,8 +18,8 @@ interface RetrofitService {
     ): Call<ArrayList<NaverPlaceID>> //Response : NaverPlaceID
 
     // 핫 플레이스 정보 요청
-    @GET("api/hotplaces/")
-    fun requestHotPlaceList(): Call<ArrayList<NaverPlaceID>>
+    @GET("api/hotplaces/result/")
+    fun requestHotPlaceList(): Call<ArrayList<Place>>
 
     /** 공지사항 관련 API**/
 
