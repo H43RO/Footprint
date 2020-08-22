@@ -7,11 +7,17 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.activity_place_detail.*
 
 class PlaceDetailActivity : AppCompatActivity() {
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +37,26 @@ class PlaceDetailActivity : AppCompatActivity() {
 
         title_text.setText(placeTitle)
         category_text.setText(placeCategory)
-        description_text.setText(placeDescription)
-        location_text.setText(placeLocation)
-        time_text.setText(placeTime)
+
+        if(placeDescription.length < 3){
+            description_text.setText("이 곳에서 당신의 추억을 남겨보세요")
+        }else{
+            description_text.setText(placeDescription)
+        }
+
+        if(placeLocation.length < 3){
+            location_text.setText("등록된 정보가 없습니다.")
+        }else{
+            location_text.setText(placeLocation)
+        }
+
+        Log.d("plcaeTime", placeTime + "임미당")
+
+        if(placeTime.length < 3){
+            time_text.setText("등록된 정보가 없습니다.")
+        }else{
+            time_text.setText(placeTime)
+        }
 
         location_card.setOnClickListener {
             val gmmIntentUri = Uri.parse("geo:0,0?q=$placeLocation")
