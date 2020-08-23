@@ -10,13 +10,14 @@
         font-size: 15px;
         font-family: 'NanumSquare', sans-serif;
         margin: auto;
+        padding-top: 110px;
     }
 
 
 
 </style>
 
-<div class="container" style="margin-top:50px;">
+<div class="container">
     <form enctype="multipart/form-data" class="history-form" action="{% url 'history-create' %}" method="post">
         {% csrf_token %}
         <div class="history-form">
