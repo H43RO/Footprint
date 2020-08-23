@@ -22,6 +22,7 @@ class PlaceDetailActivity : AppCompatActivity() {
         // 번들로부터 데이터 얻음
         val bundle = intent.extras
 
+        val placeID = bundle?.getString("PlaceID")
         val placeTitle = bundle?.getString("Title") ?: "등록된 정보가 없습니다."
         val placeCategory = bundle?.getString("Category") ?: "등록된 정보가 없습니다."
         val placeDescription = bundle?.getString("Description") ?: "여기서 식사하시는거 어때요?"
@@ -64,7 +65,7 @@ class PlaceDetailActivity : AppCompatActivity() {
         //추후 SQL 쿼리를 통한 ID 값 취득이 가능해지면(링크 조합이 가능해지면) 완성할 예정
         link_card.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://www.naver.com/")
+            intent.data = Uri.parse("https://store.naver.com/restaurants/detail?id=$placeID")
             startActivity(intent)
         }
 
