@@ -14,6 +14,7 @@ import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
+import com.haerokim.project_footprint.Utility.LoadingDialog
 import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -93,6 +94,7 @@ class RegisterActivity : AppCompatActivity() {
                 register_birth_date.setError("생년월일 형식이 올바르지 않습니다")
 
             } else {
+                LoadingDialog(this).show()
                 userEmail = register_email.text.toString()
                 userPassword = register_password.text.toString()
                 userPasswordConfirm = register_password_confirm.text.toString()
@@ -125,9 +127,11 @@ class RegisterActivity : AppCompatActivity() {
                     }
                     override fun onResponse(call: Call<User>, response: Response<User>) {
                         if (response.code() == 400) {
+                            LoadingDialog(applicationContext).dismiss()
                             register_email.setError("이미 가입된 이메일 입니다.")
                             Toast.makeText(applicationContext, "이미 가입된 이메일 입니다", Toast.LENGTH_LONG).show()
                         } else if (response.code() == 201) {
+                            LoadingDialog(applicationContext).dismiss()
                             startActivity(Intent(applicationContext, RegisterConfirmActivity::class.java))
                         }
                     }
@@ -145,5 +149,10 @@ class RegisterActivity : AppCompatActivity() {
         } catch (e: ParseException) {
             return false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialog(applicationContext).dismiss()
     }
 }

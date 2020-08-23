@@ -139,8 +139,8 @@ class HomeFragment : Fragment(), PermissionListener {
                 .color(R.color.shimmerColor)
                 .duration(1200)
                 .frozen(false)
-                .load(R.layout.skeleton_hot_place_item)
                 .count(5)
+                .load(R.layout.skeleton_hot_place_item)
                 .show()
 
         getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<Place>> {
@@ -157,6 +157,7 @@ class HomeFragment : Fragment(), PermissionListener {
                 if (response.body() != null && response.code() == 200) {
                     hotPlaceList.clear()
 
+                    skeletonRecyclerView.hide()
                     // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
                     hotPlaceList.addAll(response.body()!!)
                     viewAdapter.notifyDataSetChanged()

@@ -103,7 +103,6 @@
                         android:ems="10"
                         android:gravity="center_vertical"
                         android:hint="장소명을 입력해주세요"
-                        android:inputType="textEmailAddress"
                         android:paddingStart="16dp"
                         android:textColor="#5C5C5C"
                         android:textSize="16sp" />

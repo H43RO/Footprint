@@ -14,10 +14,6 @@ import kotlinx.android.synthetic.main.activity_place_detail.*
 
 class PlaceDetailActivity : AppCompatActivity() {
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity(Intent(this, HomeActivity::class.java))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

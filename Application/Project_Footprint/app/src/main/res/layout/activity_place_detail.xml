@@ -30,7 +30,7 @@
             android:layout_marginTop="120dp"
             android:text="장소 이름"
             android:textColor="#FFFFFF"
-            android:textSize="35dp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <TextView
