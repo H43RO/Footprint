@@ -51,17 +51,11 @@
     </RelativeLayout>
 
 
-    <com.chauthai.overscroll.RecyclerViewBouncy
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/surround_place_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
-        app:friction="200"
-        app:gapLimit="220"
-        app:maxAdapterSizeToEstimate="20"
-        app:speedFactor="5"
-        app:tension="1000"
-        app:viewCountEstimateSize="5"
         tools:listitem="@layout/place_item" />
 
 </LinearLayout>

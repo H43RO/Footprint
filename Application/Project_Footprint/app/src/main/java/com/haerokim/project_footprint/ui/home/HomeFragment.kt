@@ -282,10 +282,6 @@ class HomeFragment : Fragment(), PermissionListener {
             }
         }
 
-        card_surround_place.setOnClickListener {
-            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_surround)
-        }
-
         image_home_user_profile.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_menu)
         }
@@ -299,8 +295,6 @@ class HomeFragment : Fragment(), PermissionListener {
             it.findNavController()
                 .navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
         }
-
-
     }
 
     override fun onResume() {
