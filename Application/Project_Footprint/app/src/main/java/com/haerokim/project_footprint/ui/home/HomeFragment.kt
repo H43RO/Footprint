@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.haerokim.project_footprint.Activity.HistoryWriteActivity
 import com.haerokim.project_footprint.Adapter.EditorPickViewPagerAdapter
 import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
 import com.haerokim.project_footprint.DataClass.EditorPick
@@ -42,6 +43,7 @@ import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import kotlin.concurrent.timer
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -297,6 +299,8 @@ class HomeFragment : Fragment(), PermissionListener {
             it.findNavController()
                 .navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
         }
+
+
     }
 
     override fun onResume() {
