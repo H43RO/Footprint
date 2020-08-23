@@ -152,6 +152,7 @@ class ForegroundService : Service(), BeaconConsumer {
                                                 }
 
                                                 override fun onResponse(call: Call<History>, response: Response<History>) {
+                                                    Log.d("Foreground_HistoryCreate",response.code().toString())
                                                     Log.d("Foreground_HistoryCreate", "업로드 된 장소 : $naverPlaceID")
                                                 }
                                             })
