@@ -13,6 +13,7 @@ import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Network.RetrofitService
+import com.haerokim.project_footprint.Utility.LoadingDialog
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
@@ -70,36 +71,52 @@ class LoginActivity : AppCompatActivity() {
                     edit_text_password.error = "비밀번호는 8자 이상 25자 이하 입니다."
                 } else {
                     // 모든 Validation Check를 통과하면
+
+                    LoadingDialog(this).show()
+
                     loginService.requestLogin(email, password).enqueue(object : Callback<User> {
                         override fun onFailure(call: Call<User>, t: Throwable) {
                             Log.e("login error", t.message)
+                            LoadingDialog(applicationContext).dismiss()
+                            Toast.makeText(
+                                applicationContext,
+                                "예기치 못한 오류가 발생했습니다",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             //로그인 성공 시 해당 회원의 정보를 로컬에 저장함
-                            if (response.code() == 400) {
-                                Log.e("login error", "Password Invalid")
-                                Toast.makeText(
-                                    applicationContext,
-                                    "이메일 및 비밀번호를 다시 확인해주세요",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            } else if(response.code() == 404){
-                                Log.e("login error", "Not activated")
-                                Toast.makeText(
-                                    applicationContext,
-                                    "이메일 인증을 완료해주세요",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }  else if(response.code() == 200) {
-                                Paper.book().write("user_profile", response.body())
-                                Log.d("login success", response.body()?.nickname)
-                                //자동 로그인을 위한 SharedPreference 적용
-                                editor.putBoolean("auto_login_enable", true)
-                                editor.commit()
 
-                                val intent = Intent(applicationContext, HomeActivity::class.java)
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                startActivity(intent)
+                            when(response.code()){
+                                400->{
+                                    Log.e("login error", "Password Invalid")
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "이메일 및 비밀번호를 다시 확인해주세요",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                                404->{
+                                    Log.e("login error", "Not activated")
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "이메일 인증을 완료해주세요",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                                200->{
+                                    LoadingDialog(applicationContext).dismiss()
+
+                                    Paper.book().write("user_profile", response.body())
+                                    Log.d("login success", response.body()?.nickname)
+                                    //자동 로그인을 위한 SharedPreference 적용
+                                    editor.putBoolean("auto_login_enable", true)
+                                    editor.commit()
+
+                                    val intent = Intent(applicationContext, HomeActivity::class.java)
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    startActivity(intent)
+                                }
                             }
                         }
                     })
@@ -115,6 +132,10 @@ class LoginActivity : AppCompatActivity() {
         button_register.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialog(applicationContext).dismiss()
     }
 }

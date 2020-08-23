@@ -9,14 +9,10 @@
     tools:context=".Activity.HistoryDetailActivity">
 
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="0dp"
         android:id="@+id/card_history_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="30dp"
         android:background="#ffffff"
         app:cardElevation="0dp">
 
@@ -54,7 +50,7 @@
                 android:padding="24dp">
 
                     <TextView
-                        android:textColor="#353535"
+                        android:textColor="#373737"
                         android:id="@+id/text_history_detail_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
