@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +24,7 @@ import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.ShowPlaceInfo
+import com.haerokim.project_footprint.ui.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import retrofit2.Call
@@ -40,11 +44,16 @@ class SurroundFragment : Fragment() {
     lateinit var viewManager: RecyclerView.LayoutManager
     val surroundBeaconReceiver = SurroundBeaconReceiver()
 
+    val viewModel: HomeViewModel by activityViewModels()
+
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+
             if (intent != null) {
                 surroundBeaconList.clear()
-                surroundBeaconList.addAll(intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf())
+                surroundBeaconList.addAll(
+                    intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
+                )
 
                 //기존 리스트와 다른 점이 없으면 새로고침하지 않음
                 //원소 순서와 상관 없이 원소가 같아야함 (Set 특성 이용)
@@ -127,7 +136,14 @@ class SurroundFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.registerReceiver(surroundBeaconReceiver, IntentFilter("surround_beacon_list"))
+        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                activity?.registerReceiver(
+                    surroundBeaconReceiver,
+                    IntentFilter("surround_beacon_list")
+                )
+            }
+        })
     }
 
     class PlaceListAdapter(
@@ -177,23 +193,33 @@ class SurroundFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewManager = LinearLayoutManager(context)
-        viewAdapter =
-            PlaceListAdapter(
-                surroundPlaceList,
-                requireContext()
-            )
+        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
+            if (it == false) {
+                loading_spinner.visibility = View.GONE
+                Toast.makeText(context, "발자취 따라가기를 활성화 해주세요", Toast.LENGTH_LONG).show()
+            } else {
+                viewManager = LinearLayoutManager(context)
+                viewAdapter =
+                    PlaceListAdapter(
+                        surroundPlaceList,
+                        requireContext()
+                    )
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }
+                recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
+                    setHasFixedSize(true)
+                    layoutManager = viewManager
+                    adapter = viewAdapter
+                }
+            }
+        })
     }
 
     override fun onPause() {
         super.onPause()
-
-        activity?.unregisterReceiver(surroundBeaconReceiver)
+        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                activity?.unregisterReceiver(surroundBeaconReceiver)
+            }
+        })
     }
 }

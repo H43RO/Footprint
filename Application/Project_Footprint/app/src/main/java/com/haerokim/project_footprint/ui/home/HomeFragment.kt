@@ -55,6 +55,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), PermissionListener {
+    val viewModel: HomeViewModel by activityViewModels()
+
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
@@ -206,6 +208,13 @@ class HomeFragment : Fragment(), PermissionListener {
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
 
+        if(scanning_mode_switch.isChecked){
+            viewModel.changeMode("on")
+        }else{
+            viewModel.changeMode("off")
+        }
+
+
         val pref: SharedPreferences? =
             context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
         val profileImageUri = Uri.parse(pref?.getString("profile_image", ""))
@@ -228,6 +237,8 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", true)
                     commit()
                 }
+
+                viewModel.changeMode("on")
 
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#CC59628F"))
                 text_switch_state.text = "발자취를 따라갑니다"
@@ -268,6 +279,8 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", false)
                     commit()
                 }
+
+                viewModel.changeMode("off")
 
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#6659628F"))
                 text_switch_state.text = "발자취를 따라가지 않습니다"
@@ -310,4 +323,5 @@ class HomeFragment : Fragment(), PermissionListener {
     }
 
 }
+
 
