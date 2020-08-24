@@ -31,7 +31,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 
 
-class HistoryViewSet(viewsets.ModelViewSet):
+class HistoryCreateViewSet(generics.ListCreateAPIView):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
 
@@ -94,7 +94,7 @@ class HistoryFilter(filters.FilterSet):
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
-    queryset = History.objects.all()
+    queryset = History.objects.all().order_by('created_at')
     serializer_class = HistorySerializer
     filterset_class = HistoryFilter
     filter_backends = [filters.DjangoFilterBackend]
