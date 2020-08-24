@@ -116,13 +116,11 @@ class SurroundFragment : Fragment() {
                                     viewAdapter.notifyDataSetChanged()
                                 }
                             }
-
                             Log.d("Surround!", "바인딩 완료!")
                             loading_spinner.visibility = View.GONE
                         }
                     })
             }
-
             return null
         }
     }

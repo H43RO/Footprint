@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cf25d8ba-478d-4f85-a11d-dc205064cead" name="Default Changelist" comment="Web App 개발 환경 세팅">
-      <change afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/Utility/LoadingDialog.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/dialog_loading.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/Activity/PlaceDetailActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/Activity/PlaceDetailActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/ui/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/activity_place_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/activity_place_detail.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/footprint/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/footprint/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/Utility/ForegroundService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Application/Project_Footprint/app/src/main/java/com/haerokim/project_footprint/Utility/ForegroundService.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -172,11 +165,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="332" />
-    <option name="y" value="290" />
-    <option name="width" value="1344" />
-    <option name="height" value="774" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="148" />
+    <option name="y" value="142" />
+    <option name="width" value="1593" />
+    <option name="height" value="931" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -288,9 +281,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="332" y="290" width="1344" height="774" extended-state="1" />
+    <frame x="0" y="23" width="1792" height="1057" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.122119814" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09085714" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -304,7 +297,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.25073314" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.17720208" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32965517" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />

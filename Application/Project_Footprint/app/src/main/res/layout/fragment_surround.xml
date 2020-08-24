@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/layout_background"
-    android:orientation="vertical"
     tools:context=".ui.surround.SurroundFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:src="@color/colorPrimary"/>
+
     <RelativeLayout
+        android:id="@+id/status_banner"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -24,7 +27,7 @@
                 android:layout_marginLeft="24dp"
                 android:text="주변 장소들"
                 android:textColor="#ffffff"
-                android:textSize="35dp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -34,7 +37,7 @@
                 android:layout_marginTop="4dp"
                 android:text="가까운 장소들을 보여줍니다"
                 android:textColor="#D7FFFFFF"
-                android:textSize="20dp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -52,10 +55,11 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/status_banner"
         android:id="@+id/surround_place_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         tools:listitem="@layout/place_item" />
 
-</LinearLayout>
+</RelativeLayout>
