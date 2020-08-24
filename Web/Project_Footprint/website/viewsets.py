@@ -100,6 +100,7 @@ class HistoryViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.DjangoFilterBackend]
 
 
+
 class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(post_div=1)
     serializer_class = NoticeSerializer
