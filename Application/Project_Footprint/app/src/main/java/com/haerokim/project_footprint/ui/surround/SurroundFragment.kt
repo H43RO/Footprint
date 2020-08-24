@@ -189,7 +189,6 @@ class SurroundFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_surround, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -197,7 +196,9 @@ class SurroundFragment : Fragment() {
             if (it == false) {
                 loading_spinner.visibility = View.GONE
                 Toast.makeText(context, "발자취 따라가기를 활성화 해주세요", Toast.LENGTH_LONG).show()
+                text_state.text = "발자취 따라가기를 활성화 해주세요"
             } else {
+                text_state.text = "가까운 주변 장소를 탐색합니다"
                 viewManager = LinearLayoutManager(context)
                 viewAdapter =
                     PlaceListAdapter(
