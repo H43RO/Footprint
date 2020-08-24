@@ -32,6 +32,7 @@ from website.viewsets import (
     NoticeViewSet,
     ApiHotPlace,
     EditorViewSet,
+    HistoryCreateViewSet,
     )
 from django_filters.views import FilterView
 
@@ -60,5 +61,6 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
     path('accounts/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
