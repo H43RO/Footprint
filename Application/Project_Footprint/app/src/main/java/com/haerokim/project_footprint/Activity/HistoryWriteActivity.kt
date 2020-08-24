@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.DataClass.User
-import com.haerokim.project_footprint.DataClass.WriteHistory
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.R
@@ -241,7 +240,11 @@ class HistoryWriteActivity : AppCompatActivity() {
                 historyCreatedAt = historyDate + historyTime
                 historyUserID = user.id
 
-                val localTime = LocalDateTime.parse(historyCreatedAt)
+                val localTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDateTime.parse(historyCreatedAt)
+                } else {
+                    TODO("VERSION.SDK_INT < O")
+                }
                 Log.d("resultDate", localTime.toString())
 
                 val builder: AlertDialog.Builder =
@@ -268,7 +271,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                             val mood =
                                 RequestBody.create(
                                     MediaType.parse("text/plain"),
-                                    historyMood ?: "1"
+                                    historyMood ?: "기분 좋았던 순간"
                                 )
                             val customPlace = RequestBody.create(
                                 MediaType.parse("text/plain"),
@@ -279,14 +282,6 @@ class HistoryWriteActivity : AppCompatActivity() {
                                     MediaType.parse("text/plain"),
                                     localTime.toString()
                                 )
-
-                            Log.d("Written History", historyUserID.toString())
-                            Log.d("Written History", image.toString())
-                            Log.d("Written History", historyTitle)
-                            Log.d("Written History", historyComment)
-                            Log.d("Written History", historyMood ?: "1")
-                            Log.d("Written History", historyPlaceTitle)
-                            Log.d("Written History", localTime.toString())
 
                             writeHistoryService.writeHistoryWithImage(
                                 userID = userID,
@@ -319,20 +314,15 @@ class HistoryWriteActivity : AppCompatActivity() {
                                     }
                                 }
                             })
-
                         } else {  // 이미지 없이 업로드 할 시
-                            val writtenHistory: WriteHistory = WriteHistory(
-                                title = historyTitle,
-                                mood = historyMood,
-                                comment = historyComment,
-                                custom_place = historyPlaceTitle,
-                                created_at = localTime,
-                                updated_at = localTime,
-                                user = user.id
-                            )
-
-                            writeHistoryService.writeHistoryNoImage(writtenHistory)
-                                .enqueue(object : Callback<History> {
+                            writeHistoryService.writeHistoryNoImage(
+                                user.id,
+                                historyTitle,
+                                historyComment,
+                                historyPlaceTitle,
+                                localTime,
+                                historyMood
+                            ).enqueue(object : Callback<History> {
                                     override fun onFailure(call: Call<History>, t: Throwable) {
                                         Log.d("History Create Error", t.message)
                                     }
@@ -352,6 +342,10 @@ class HistoryWriteActivity : AppCompatActivity() {
                                             finish()
                                         } else {
                                             Log.d("History Create Failed", "임의 히스토리 생성실패")
+                                            Log.e(
+                                                "History Create Failed",
+                                                response.body().toString()
+                                            )
                                         }
                                     }
                                 })

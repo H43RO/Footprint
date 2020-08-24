@@ -179,7 +179,7 @@ class HomeFragment : Fragment(), PermissionListener {
                 response: Response<ArrayList<EditorPick>>
             ) {
                 editorPickList.clear()
-                if (response.body() != null && response.code() == 200) {
+                if (response.body() != null && response.code() == 200 && home_editor_place_pager != null) {
                     editorPickList.addAll(response.body()!!)
 
                     home_editor_place_pager.adapter =
