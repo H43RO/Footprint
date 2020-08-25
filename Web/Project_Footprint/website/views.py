@@ -399,16 +399,23 @@ def place_detail_crawl(pk):
         menu = list_menu.find_all("span", {"class": "name"})
         for item in menu:
             menuName.append(item.get_text())
+        menuNames = menuName
+        menuName=json.dumps(menuName,ensure_ascii=False)
     else:
-        menuName = ""
-    json.dumps(menuName)
-    print(menuName)
+        menuName = []
+        menuNames = ""
 
-    # price = soup.find_all("em", {"class": "price"})
-    # menuPrice = []
-    # for item in price:
-    #     menuPrice.append(item.get_text())
-
+    price = soup.find_all("em", {"class": "price"})
+    menuPrice = []
+    if price is not None:
+        for item in price:
+            menuPrice.append(item.get_text())
+        menuPrices = menuPrice
+        menuPrice = json.dumps(menuPrice,ensure_ascii=False)
+    else:
+        menuPrice = []
+        menuPrices = ""
+    print(menuNames)
     res = {
         'naverPlaceID': naverPlaceID,
         'title': title,
@@ -418,8 +425,9 @@ def place_detail_crawl(pk):
         'description': description,
         'imageSrc': imageSrc,
         'menuName': menuName,
-        # 'menuName': menuName,
-        # 'menuPrice': menuPrice,
+        'menuNames': menuNames,
+        'menuPrices': menuPrices,
+        'menuPrice': menuPrice,
     }
     logger.error('되는가?크롤링')
 
@@ -428,43 +436,38 @@ def place_detail_crawl(pk):
 
 
 def add_new_items(crawled_items):
+    #각자 settings 의 databases로 수정 필요
     db = pymysql.connect(host='localhost', user = 'root', password='080799', db = 'footprint',charset = 'utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     logger.error('되는가?add함수')
     last_inserted_items = HotPlace.objects.last()
-    logger.error(last_inserted_items)
+    hotplace_pk = HotPlace.objects.all()
 
     # HotPlace에 아무런데이터가없다면""로초기화를시켜주고, 그렇지않다면'naverPlaceID'를 가져옴
     if last_inserted_items is None:
         last_inserted_id = ""
     else:
         last_inserted_id = getattr(last_inserted_items, 'naverPlaceID')
-    logger.error(last_inserted_id)
     items_to_insert_into_db = {}
+    print(hotplace_pk)
 
     # 만약DB에 추가된 naverPlaceID와 동일한id를 가졌다면 db 값 UPDATE 작업 진행
-    for item in crawled_items:
-        if crawled_items['naverPlaceID'] == last_inserted_id:
+    for item in hotplace_pk:
+        if crawled_items['naverPlaceID'] == item.pk:
             try:
-                sql = 'UPDATE website_hotplace SET title = %s, category = %s, location = %s, businessHours = %s, description = %s, imageSrc = %s, menuName = %s WHERE naverPlaceID = %s'
+                sql = 'UPDATE website_hotplace SET title = %s, category = %s, location = %s, businessHours = %s, description = %s, imageSrc = %s, menuName = %s, menuPrice = %s WHERE naverPlaceID = %s'
                 val = (crawled_items['title'],
                        crawled_items['category'], crawled_items['location'],
                        crawled_items['businessHours'], crawled_items['description'],
-                       crawled_items['imageSrc'],crawled_items['menuName'], crawled_items['naverPlaceID'])
+                       crawled_items['imageSrc'], crawled_items['menuName'], crawled_items['menuPrice'],crawled_items['naverPlaceID'])
                 cursor.execute(sql, val)
                 db.commit()
-                # menuNames =
-                # sql= 'update website_hotplace set menuName = json_replace(menuName,'menuNames') where id = 1 ;'
                 db.close()
-                logger.error('되는가?db update 상태')
             except:
                 print('error')
             return
-        items_to_insert_into_db = crawled_items
-
-    logger.error(last_inserted_id)
-    logger.error('되는가?db 최신 상태')
-    logger.error(items_to_insert_into_db)
+        else:
+            items_to_insert_into_db = crawled_items
 
     item_naverPlaceID = items_to_insert_into_db['naverPlaceID']
     item_title = items_to_insert_into_db['title']
@@ -473,10 +476,12 @@ def add_new_items(crawled_items):
     item_businessHours = items_to_insert_into_db['businessHours']
     item_description = items_to_insert_into_db['description']
     item_imageSrc = items_to_insert_into_db['imageSrc']
+    item_menuName = items_to_insert_into_db['menuName']
+    item_menuPrice = items_to_insert_into_db['menuPrice']
 
     # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
-    sql2 = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc)
+    sql2 = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc,item_menuName,item_menuPrice)
     cursor.execute(sql2, val)
     db.commit()
     db.close()

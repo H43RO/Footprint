@@ -117,16 +117,16 @@
               <p class="card-text"><small class="text-muted">{{ places.businessHours }}</small></p>
                 </div>
                 <div class="place_menus">
-                    {% if places.menuName %}
+                    {% if places.menuNames %}
                     <div class="menu">
                         <h5 class="menu"> MENU</h5> <br>
-                        {% for item in places.menuName %}
+                        {% for item in places.menuNames %}
                         <p>{{ item }} &nbsp &nbsp &nbsp <br></p>
                         {% endfor %}
                     </div>
                     <div class="price">
                         <h5 class="menu"> &nbsp </h5> <br>
-                        {% for item in places.menuPrice %}
+                        {% for item in places.menuPrices %}
                         <p> {{ item }} &nbsp</p>
                         {% endfor %}
                     </div>
