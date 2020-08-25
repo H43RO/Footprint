@@ -27,7 +27,7 @@ class CustomUserAdmin(UserAdmin):
 class PlaceAdmin(admin.ModelAdmin):
     model = Place
     list_per_page = 10
-    list_display = ('beacon_uuid', 'title', 'place_div', 'naver_place_id', 'count', 'created_at' )
+    list_display = ('beacon_uuid', 'title', 'place_div', 'naver_place_id', 'count', 'created_at',)
     list_display_links = ('title', 'naver_place_id', 'beacon_uuid')
     list_filter = ('place_div',)
     search_fields = ('title', 'naver_place_id', 'beacon_uuid')
@@ -55,7 +55,15 @@ class PostAdmin(admin.ModelAdmin):
                    ('updated_at', DateRangeFilter),)
 
 
+class HotPlaceAdmin(admin.ModelAdmin):
+    model = HotPlace
+    list_display = ('naverPlaceID', 'title', 'category','location')
+    list_display_links = ('naverPlaceID',)
+
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Place, PlaceAdmin)
 admin.site.register(History, HistoryAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(HotPlace, HotPlaceAdmin)
+
