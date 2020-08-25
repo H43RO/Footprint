@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +24,7 @@ import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.ShowPlaceInfo
+import com.haerokim.project_footprint.ui.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import retrofit2.Call
@@ -30,27 +34,41 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SurroundFragment : Fragment() {
-    var surroundBeaconList: ArrayList<kotlin.String> = ArrayList()
-    var tempBeaconList: ArrayList<kotlin.String> = ArrayList()
+    var surroundBeaconList: ArrayList<String> = ArrayList()
+    var tempBeaconList: ArrayList<String> = ArrayList()
     var surroundPlaceList: ArrayList<Place> = ArrayList()
+    var tempNaverPlacIDList: ArrayList<NaverPlaceID> = ArrayList()
     var tempPlaceList: ArrayList<Place> = ArrayList()
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
     val surroundBeaconReceiver = SurroundBeaconReceiver()
 
+    val viewModel: HomeViewModel by activityViewModels()
+
     inner class SurroundBeaconReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+
             if (intent != null) {
-                surroundBeaconList =
+                surroundBeaconList.clear()
+                surroundBeaconList.addAll(
                     intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
+                )
 
                 //기존 리스트와 다른 점이 없으면 새로고침하지 않음
-                //원소 순서와 상관 없이 원소가 같아야함 (Set 의 특성 이용)
+                //원소 순서와 상관 없이 원소가 같아야함 (Set 특성 이용)
                 if (tempBeaconList.toSet() != surroundBeaconList.toSet()) {
-                    Log.d("Surround", "AsyncTask 진입!")
+
+                    //Test 용
+                    Log.d("Surround Before", tempBeaconList.toString())
+                    Log.d("Surround Current", surroundBeaconList.toString())
+
+                    Log.d("Surround", "변화 감지 : AsyncTask 진입")
+                    tempBeaconList.clear()
+                    tempBeaconList.addAll(surroundBeaconList)
+
+                    // surroundBeaconList에 대해 바인딩 시작
                     PlaceListBinder().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-                    tempBeaconList = surroundBeaconList
                 } else {
                     Log.d("Surround", "변함 없음!")
                 }
@@ -80,6 +98,8 @@ class SurroundFragment : Fragment() {
 
             // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
             // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
+            surroundPlaceList.clear()
+
             for (beacon in surroundBeaconList) {
                 getPlaceInfoService.requestNaverPlaceID(beacon)
                     .enqueue(object : Callback<ArrayList<NaverPlaceID>> {
@@ -93,44 +113,38 @@ class SurroundFragment : Fragment() {
                             response: Response<ArrayList<NaverPlaceID>>
                         ) {
                             Log.d("GetPlaceInfo", "정보 얻기 성공!")
-                            response.body()
-                                ?.let {
-                                    tempPlaceList.add(
-                                        GetPlaceInfo(
-                                            it.get(0).naver_place_id
-                                        ).executeOnExecutor(
-                                            THREAD_POOL_EXECUTOR
-                                        ).get()
-                                    )
+
+                            tempNaverPlacIDList.clear()
+                            tempNaverPlacIDList.addAll(response.body()!!)
+
+                            for (place in tempNaverPlacIDList) {
+                                surroundPlaceList.add(
+                                    GetPlaceInfo(place.naver_place_id).execute().get()
+                                )
+                                if (place == tempNaverPlacIDList[tempNaverPlacIDList.size - 1]) {
+                                    viewAdapter.notifyDataSetChanged()
                                 }
+                            }
+                            Log.d("Surround!", "바인딩 완료!")
+                            loading_spinner.visibility = View.GONE
                         }
                     })
             }
-
-            Thread.sleep(3000)
-
             return null
-        }
-
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
-
-            //안정적인 DataSetChange를 위해 tempPlaceList 사용함
-            surroundPlaceList.clear()
-            surroundPlaceList.addAll(tempPlaceList)
-            Log.d("Surround!", "바인딩 완료!")
-            viewAdapter.notifyDataSetChanged()
-
-            loading_spinner.visibility = View.GONE
         }
     }
 
     override fun onResume() {
         super.onResume()
-        activity?.registerReceiver(surroundBeaconReceiver, IntentFilter("surround_beacon_list"))
+        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                activity?.registerReceiver(
+                    surroundBeaconReceiver,
+                    IntentFilter("surround_beacon_list")
+                )
+            }
+        })
     }
-    //객체 배열이 완성되고 비동기적으로 ListAdapter가 완성될 수 있도록 구현할 예정
-    //그렇지 않으면 Adapting 과정에서 충돌 발생할 것
 
     class PlaceListAdapter(
         private val surroundPlaceList: ArrayList<Place>, private val context: Context
@@ -175,28 +189,38 @@ class SurroundFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_surround, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewManager = LinearLayoutManager(context)
-        viewAdapter =
-            PlaceListAdapter(
-                surroundPlaceList,
-                requireContext()
-            )
+        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
+            if (it == false) {
+                loading_spinner.visibility = View.GONE
+                Toast.makeText(context, "발자취 따라가기를 활성화 해주세요", Toast.LENGTH_LONG).show()
+                text_state.text = "발자취 따라가기를 활성화 해주세요"
+            } else {
+                text_state.text = "가까운 주변 장소를 탐색합니다"
+                viewManager = LinearLayoutManager(context)
+                viewAdapter =
+                    PlaceListAdapter(
+                        surroundPlaceList,
+                        requireContext()
+                    )
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }
-
+                recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
+                    setHasFixedSize(true)
+                    layoutManager = viewManager
+                    adapter = viewAdapter
+                }
+            }
+        })
     }
 
     override fun onPause() {
         super.onPause()
-
-        activity?.unregisterReceiver(surroundBeaconReceiver)
+        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                activity?.unregisterReceiver(surroundBeaconReceiver)
+            }
+        })
     }
 }

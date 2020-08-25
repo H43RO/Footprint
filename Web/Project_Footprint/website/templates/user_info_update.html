@@ -33,25 +33,12 @@
     font-weight:bold;
     }
 
-    .input-group form-group {
-    flex-shrink:2;
-    }
-
-    .user-tag{
-    height: 30px;
-    width: 300px;
-    padding: 15px;
-    font-size: 120%;
-    color: black;
-    background-color: white;
-    }
-
     .user-info {
     height: 60px;
-    width: 430px;
-    margin-top: 5px;
+    width: 420px;
+    margin-top: 15px;
     margin-left: 25px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     font-weight:bold;
     font-size: 140%;
     text-align: center;
@@ -63,7 +50,7 @@
     }
 
     .user-img {
-    height: 320px;
+    height: 380px;
     width: 400px;
     margin-top: 5px;
     margin-right: 30px;
@@ -76,28 +63,48 @@
 
     .confirm_btn{
     color: black;
-    width: 115px;
+    width: 130px;
     height: 45px;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-bottom: 15px;
+    margin-left: 25px;
+    margin-right: 10px;
     font-size: 100%;
     font-weight:bold;
     background-color: #c4c4c4;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
+    float: left;
     }
 
     .delete_btn{
     color: black;
-    width: 115px;
+    width: 130px;
     height: 45px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     font-size: 100%;
     font-weight:bold;
     background-color: #f56042;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
+    float: left;
     }
 
+    .pw_btn{
+    color: black;
+    width: 130px;
+    height: 45px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    font-size: 100%;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    float: left;
+    }
 </style>
 
 <div class="container p-5">
@@ -119,41 +126,28 @@
                             <input type="hidden" name="id" value="{{ form.instance.id }}"/>
                             {% for field in form %}
                                 {% if field.label == '프로필 이미지' %}
-<!--                                    <div class="input-group form-group">-->
-<!--                                        <div class="user-tag">-->
-<!--                                        {{ field.label }}-->
-<!--                                        </div>-->
-                                        <div class = "user-img">
-                                        <img id="image{{field.id}}" src="{{ field.image.url }}" type="file">
+                                    <div class = "user-img">
+                                    <img id="image{{field.id}}" src="{{ field.image.url }}" type="file">
                                         {{ field }}
-                                        </div>
+                                    </div>
                                 {% elif field.label == '나이' %}
-<!--                                    <div class="input-group form-group" >-->
-<!--                                        <div class="user-tag">-->
-<!--                                        {{ field.label }}-->
-<!--                                        </div>-->
-                                        <div class="user-info">
+                                    <div class="user-info">
                                         {{ field }}
-                                        </div>
-<!--                                    </div>-->
+                                    </div>
                                 {% else %}
-<!--                                    <div class="input-group form-group">-->
-<!--                                        <div class="user-tag">-->
-<!--                                        {{ field.label }}-->
-<!--                                        </div>-->
-                                        <div class="user-info">
+                                    <div class="user-info">
                                         {{ field }}
-                                        </div>
-<!--                                    </div>-->
+                                    </div>
                                 {% endif %}
                                 {% for error in field.errors %}
                                     <p style="color: red">{{ error }}</p>
                                 {% endfor %}
                             {% endfor %}
-                            <div class="user-tag">
-                            <h5>비밀번호 변경을 원하십니까? <a href="/user_password_update" target="blank"><strong><em>비밀번호 변경</em></strong></a></h5>
-                            </div>
                             <button class="btn confirm_btn" type="submit" >수정완료</button>
+                        </form>
+                        <form action="{% url 'user_password_update' %}" >
+                            {% csrf_token %}
+                            <button class="btn pw_btn" >비밀번호 변경</button></a>
                         </form>
                         <form action="{% url 'user_delete' %}" >
                             {% csrf_token %}

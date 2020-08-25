@@ -35,7 +35,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         var placeTitle = place.title
         var placeCategory = place.category
         var placeDescription = place.description
-        var placeTime = place.time
+        var placeTime = place.businessHours
         var placeLocation = place.location
         var placeImageSrc = place.imageSrc
         var placeMenuName = place.menuName
@@ -51,6 +51,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         //PlaceDetailActivity 로 보낼 장소 데이터 모두 번들에 담음
         val intent = Intent(context, PlaceDetailActivity::class.java)
         val bundle: Bundle = Bundle()
+        bundle.putString("PlaceID", placeID)
         bundle.putString("Title", placeTitle)
         bundle.putString("Category", placeCategory)
         bundle.putString("Description", placeDescription)
@@ -157,7 +158,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         var placeTitle = place.title
         var placeCategory = place.category
         var placeDescription = place.description
-        var placeTime = place.time
+        var placeTime = place.businessHours
         var placeLocation = place.location
         var placeImageSrc = place.imageSrc
         var placeMenuName = place.menuName
@@ -167,6 +168,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         val intent = Intent(context, PlaceDetailActivity::class.java)
 
         val bundle: Bundle = Bundle()
+        bundle.putString("PlaceID", place.naverPlaceID)
         bundle.putString("Title", placeTitle)
         bundle.putString("Category", placeCategory)
         bundle.putString("Description", placeDescription)

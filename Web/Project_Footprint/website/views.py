@@ -47,7 +47,8 @@ import json
 def index(request):
     sights = Place.objects.filter(place_div=0).order_by('-count')[:6]
     restaurants = Place.objects.filter(place_div=1).order_by('-count')[:6]
-    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants})
+    user = request.user
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'user' : user})
 
 
 def list(request):

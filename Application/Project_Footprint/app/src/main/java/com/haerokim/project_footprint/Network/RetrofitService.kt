@@ -5,6 +5,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.collections.ArrayList
 
 interface RetrofitService {
@@ -18,8 +20,8 @@ interface RetrofitService {
     ): Call<ArrayList<NaverPlaceID>> //Response : NaverPlaceID
 
     // 핫 플레이스 정보 요청
-    @GET("api/hotplaces/")
-    fun requestHotPlaceList(): Call<ArrayList<NaverPlaceID>>
+    @GET("api/hotplaces/result/")
+    fun requestHotPlaceList(): Call<ArrayList<Place>>
 
     /** 공지사항 관련 API**/
 
@@ -153,8 +155,14 @@ interface RetrofitService {
     ): Call<History>
 
     // 임의 히스토리 생성 (이미지 미포함)
+    @FormUrlEncoded
     @POST("/api/histories/")
     fun writeHistoryNoImage(
-        @Body body: WriteHistory
+        @Field ("user")userID: Int,
+        @Field ("title") title: String?,
+        @Field("comment") comment: String?,
+        @Field("custom_place") customPlace: String?,
+        @Field("created_at") createdAt: LocalDateTime,
+        @Field("mood") mood: String?
     ): Call<History>
 }

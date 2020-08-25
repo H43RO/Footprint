@@ -23,10 +23,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ethanhua.skeleton.Skeleton
+import com.ethanhua.skeleton.SkeletonScreen
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.haerokim.project_footprint.Activity.HistoryWriteActivity
 import com.haerokim.project_footprint.Adapter.EditorPickViewPagerAdapter
 import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
 import com.haerokim.project_footprint.DataClass.EditorPick
@@ -40,6 +43,7 @@ import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import kotlin.concurrent.timer
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,6 +55,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), PermissionListener {
+    val viewModel: HomeViewModel by activityViewModels()
+
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
@@ -59,8 +65,8 @@ class HomeFragment : Fragment(), PermissionListener {
     var timer = Timer()
 
     var currentPage: Int = 0
-    private val DELAY_MS : Long = 500
-    private val PERIOD_MS : Long = 3000
+    private val DELAY_MS: Long = 500
+    private val PERIOD_MS: Long = 3000
 
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -78,6 +84,11 @@ class HomeFragment : Fragment(), PermissionListener {
             REQUEST_ENABLE_BT -> Log.d("Bluetooth", "활성화 완료")
             else -> Log.d("Bluetooth", "활성화 실패")
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
     }
 
     override fun onCreateView(
@@ -113,35 +124,47 @@ class HomeFragment : Fragment(), PermissionListener {
             .build()
         var getPlaceList: RetrofitService = retrofit.create(RetrofitService::class.java)
 
-        getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<NaverPlaceID>> {
-            override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
+        viewManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
+
+        viewAdapter.setHasStableIds(true)
+
+        recyclerView =
+            view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+
+        val skeletonRecyclerView: SkeletonScreen =
+            Skeleton.bind(recyclerView).adapter(viewAdapter)
+                .color(R.color.shimmerColor)
+                .duration(1200)
+                .frozen(false)
+                .count(5)
+                .load(R.layout.skeleton_hot_place_item)
+                .show()
+
+        getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<Place>> {
+            override fun onFailure(call: Call<ArrayList<Place>>, t: Throwable) {
                 Log.e("Error Hot Place", t.message)
             }
 
             override fun onResponse(
-                call: Call<ArrayList<NaverPlaceID>>,
-                response: Response<ArrayList<NaverPlaceID>>
+                call: Call<ArrayList<Place>>,
+                response: Response<ArrayList<Place>>
             ) {
+                skeletonRecyclerView.hide()
+
                 if (response.body() != null && response.code() == 200) {
+                    hotPlaceList.clear()
+
+                    skeletonRecyclerView.hide()
                     // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
-                    for (hotNaverPlaceID in response.body()!!) {
-                        hotPlaceList.add(
-                            GetPlaceInfo(hotNaverPlaceID.naver_place_id).execute().get()
-                        )
-                    }
-
-                    viewManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
-
-                    viewAdapter.setHasStableIds(true)
-
-                    recyclerView =
-                        view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
-                            setHasFixedSize(true)
-                            layoutManager = viewManager
-                            adapter = viewAdapter
-                        }
+                    hotPlaceList.addAll(response.body()!!)
+                    viewAdapter.notifyDataSetChanged()
                 }
             }
         })
@@ -156,7 +179,7 @@ class HomeFragment : Fragment(), PermissionListener {
                 response: Response<ArrayList<EditorPick>>
             ) {
                 editorPickList.clear()
-                if (response.body() != null && response.code() == 200) {
+                if (response.body() != null && response.code() == 200 && home_editor_place_pager != null) {
                     editorPickList.addAll(response.body()!!)
 
                     home_editor_place_pager.adapter =
@@ -173,7 +196,7 @@ class HomeFragment : Fragment(), PermissionListener {
                         }
                     }
                     // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
-                    timer.schedule(object: TimerTask(){
+                    timer.schedule(object : TimerTask() {
                         override fun run() {
                             handler.post(updateTask)
                         }
@@ -184,6 +207,13 @@ class HomeFragment : Fragment(), PermissionListener {
 
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
+
+        if(scanning_mode_switch.isChecked){
+            viewModel.changeMode("on")
+        }else{
+            viewModel.changeMode("off")
+        }
+
 
         val pref: SharedPreferences? =
             context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
@@ -207,6 +237,8 @@ class HomeFragment : Fragment(), PermissionListener {
                     putBoolean("state", true)
                     commit()
                 }
+
+                viewModel.changeMode("on")
 
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#CC59628F"))
                 text_switch_state.text = "발자취를 따라갑니다"
@@ -248,6 +280,8 @@ class HomeFragment : Fragment(), PermissionListener {
                     commit()
                 }
 
+                viewModel.changeMode("off")
+
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#6659628F"))
                 text_switch_state.text = "발자취를 따라가지 않습니다"
 
@@ -261,10 +295,6 @@ class HomeFragment : Fragment(), PermissionListener {
             }
         }
 
-        card_surround_place.setOnClickListener {
-            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_surround)
-        }
-
         image_home_user_profile.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_home_to_navigation_menu)
         }
@@ -275,7 +305,8 @@ class HomeFragment : Fragment(), PermissionListener {
 
         button_go_editor_detail.setOnClickListener {
             val bundle = bundleOf("editorPickList" to editorPickList)
-            it.findNavController().navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
+            it.findNavController()
+                .navigate(R.id.action_navigation_home_to_navigation_editor_pick, bundle)
         }
     }
 
@@ -292,4 +323,5 @@ class HomeFragment : Fragment(), PermissionListener {
     }
 
 }
+
 

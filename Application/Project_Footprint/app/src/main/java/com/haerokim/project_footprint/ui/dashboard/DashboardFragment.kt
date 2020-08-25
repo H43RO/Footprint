@@ -1,5 +1,6 @@
 package com.haerokim.project_footprint.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import com.haerokim.project_footprint.Activity.HistoryWriteActivity
 import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
@@ -30,10 +32,6 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        card_whole_history.setOnClickListener {
-            it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_whole_history)
-        }
-        card_whole_history.visibility = View.GONE
 
         card_today_history.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_today_history)
@@ -47,5 +45,8 @@ class DashboardFragment : Fragment() {
             it.findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_keyword_history)
         }
 
+        card_write_history.setOnClickListener {
+            startActivity(Intent(context, HistoryWriteActivity::class.java))
+        }
     }
 }

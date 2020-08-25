@@ -8,36 +8,29 @@
     android:focusableInTouchMode="true"
     tools:context=".Activity.PlaceDetailActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#65000000" />
 
         <ImageView
             android:id="@+id/title_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="230dp" />
 
         <TextView
             android:id="@+id/title_text"
+            android:maxWidth="280dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="120dp"
             android:text="장소 이름"
             android:textColor="#FFFFFF"
-            android:textSize="35dp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
+            android:layout_alignBottom="@+id/title_text"
             android:id="@+id/category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/title_text"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@+id/title_text"
             android:text="카테고리"
@@ -50,19 +43,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_text"
             android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
             android:text="장소 설명"
             android:textColor="#E8FFFFFF"
             android:textSize="18dp" />
 
-    </RelativeLayout>
 
     <androidx.cardview.widget.CardView
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/description_text"
         android:id="@+id/menu_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="210dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="#ffffff"
         android:elevation="8dp"
         app:cardCornerRadius="4dp">
@@ -93,7 +87,6 @@
 
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/menu_price_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,29 +95,31 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="32dp"
                 android:layout_marginBottom="16dp"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/time_card"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_below="@+id/menu_card"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:background="#ffffff"
         android:elevation="8dp"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/time_icon"
@@ -134,36 +129,34 @@
                 android:src="@drawable/ic_baseline_access_time_24" />
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/location_icon"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
 
                 <TextView
-                    android:layout_weight="1"
-                    android:gravity="center"
                     android:id="@+id/time_text"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="영업 시간" />
-
-                <TextView
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textSize="16dp"
+                    android:text="영업 시간"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location_text"
-                    android:text="변동 사항이 있을 수 있습니다" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="변동 사항이 있을 수 있습니다"
+                    android:textSize="16dp" />
 
 
             </LinearLayout>
-
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
@@ -173,18 +166,18 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_below="@+id/location_card"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:background="#ffffff"
         android:elevation="8dp"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="32dp"
@@ -193,31 +186,30 @@
                 android:src="@drawable/ic_baseline_link_24" />
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/location_icon"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_weight="1"
-                    android:gravity="center"
                     android:id="@+id/link_text"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="네이버 플레이스로 이동하기" />
-
-                <TextView
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textSize="16dp"
+                    android:text="네이버 플레이스로 이동하기"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/link_text"
-                    android:text="탭하여 더 많은 정보를 확인합니다" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="탭하여 더 많은 정보를 확인합니다"
+                    android:textSize="16dp" />
 
 
             </LinearLayout>
@@ -233,18 +225,18 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_below="@+id/time_card"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:background="#ffffff"
         android:elevation="8dp"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/location_icon"
@@ -254,31 +246,31 @@
                 android:src="@drawable/ic_baseline_location_on_24" />
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/location_icon"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
 
                 <TextView
-                    android:layout_weight="1"
-                    android:gravity="center"
                     android:id="@+id/location_text"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="주소" />
-
-                <TextView
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textSize="16dp"
+                    android:text="주소"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location_text"
-                    android:text="탭하여 지도를 펼칩니다" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="탭하여 지도를 펼칩니다"
+                    android:textSize="16dp" />
 
 
             </LinearLayout>
@@ -287,5 +279,13 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/link_card"
+        android:text="* 해당 장소 정보는 네이버 플레이스의 데이터임을 밝힙니다." />
 
 </RelativeLayout>

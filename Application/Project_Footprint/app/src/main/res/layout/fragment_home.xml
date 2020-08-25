@@ -143,7 +143,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                app:cardBackgroundColor="#CC777EA3"
+                app:cardBackgroundColor="#777EA3"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="16dp">
 
@@ -158,44 +158,6 @@
                         android:layout_marginLeft="24dp"
                         android:gravity="center_vertical"
                         android:text="오늘 남긴 발자취\n천천히 따라가보기"
-                        android:textColor="#ffffff"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="24dp"
-                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:tint="#ffffff" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_surround_place"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="#CC646983"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="16dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="24dp"
-                        android:gravity="center_vertical"
-                        android:text="지금 당신 주변에는"
                         android:textColor="#ffffff"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -274,13 +236,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="4dp"
+
                 app:friction="200"
                 app:gapLimit="220"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:maxAdapterSizeToEstimate="20"
                 app:speedFactor="5"
                 app:tension="1000"
+
+                app:maxAdapterSizeToEstimate="5"
                 app:viewCountEstimateSize="5"
+
                 tools:listitem="@layout/hot_place_item" />
 
         </LinearLayout>
