@@ -10,7 +10,6 @@ from django.db.models import F
 from ckeditor_uploader.fields import RichTextUploadingField
 from datetime import date
 from django.utils import timezone
-from django.contrib.postgres.fields import ArrayField
 
 DEFAULT_HISTORY = 1
 
@@ -140,11 +139,9 @@ class HotPlace(models.Model):
     businessHours = models.CharField(max_length=100, blank=True, null=True,)
     description = models.CharField(max_length=200, blank=True, null=True,)
     imageSrc = models.CharField(max_length=1000,blank=True, null=True)
-    menuName = models.JSONField(blank=True, null=True)
+    menuName = models.JSONField(blank=True, null=True,default=[])
+    menuPrice = models.JSONField(blank=True, null=True)
     count = models.IntegerField(null=True, default=0)
-
-    # menuName = models.CharField(max_length=10,blank=True, null=True,)
-    # menuPrice = models.CharField(max_length=10,blank=True, null=True,)
 
     def __int__(self):
         return self.naverPlaceID
