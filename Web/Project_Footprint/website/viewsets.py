@@ -1,4 +1,4 @@
-from .models import User, Place, History, Post
+from .models import User, Place, History, Post, HotPlace
 from .place_info_serializers import PlaceSerializer
 from .history_serializer import HistorySerializer, HistoryPutSerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
@@ -29,6 +29,7 @@ from django.http import Http404
 from .views import place_detail_crawl, get_hotplace
 from django.http import JsonResponse
 from django.http import HttpResponse
+from .hotplace_serializers import HotplaceSerializers
 
 
 class HistoryCreateViewSet(generics.ListCreateAPIView):
@@ -123,5 +124,10 @@ class ApiHotPlace(viewsets.ModelViewSet):
 class EditorViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(post_div=0)
     serializer_class = NoticeSerializer
+
+
+class HotPlcaeViewSet(viewsets.ModelViewSet):
+    queryset = HotPlace.objects.order_by('-count')[:5]
+    serializer_class = HotplaceSerializers
 
 
