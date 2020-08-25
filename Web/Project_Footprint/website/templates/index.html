@@ -58,7 +58,11 @@
             <h2 class="index_head">오늘 내가 가는 이 발자취가 <br>뒷 사람의 이정표가 되리라.</h2>
              <ul class="actions">
               <li>
+                {% if user.is_authenticated %}
                 <a href="/history"> 발자취 남기기 &#9654;</a>
+                {% else %}
+                <a href="/signin"> 발자취 남기기 &#9654;</a>
+                {% endif %}
               </li>
             </ul>
             <p>-서산대사, &lt;답설야중기&gt; </p>
