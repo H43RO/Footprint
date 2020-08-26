@@ -130,17 +130,11 @@ class UpdateHistoryForm(HistoryForm):
         return instance
 
 
-
-
 class UpdateUserInfoForm(UserChangeForm):
     password = None
-
     class Meta:
-        # model = get_user_model()
         model = User
         fields = ['image', 'birth_date', 'nickname', 'age', 'gender']
-        # exclude = ['password']
-        # 검증을 위해 넣어놓은 것, 패스워드 틀리면 저장 안되게 하려고(이게 수정된 정보에 올라가서는 안됨)
         labels = {
             'image': _('프로필 이미지'),
             'birth_date': _('생년월일'),
@@ -173,11 +167,8 @@ class CheckPasswordForm(forms.Form):
                 self.add_error('password', '비밀번호가 일치하지 않습니다.')
 
 
+# PasswordChangeForm 을 상속해서 사용해면 변경할 비밀번호 뿐만 아니라 현재 비밀번호도 입력 받을 수 있으므로 보안을 더 강화할 수 있음
 class UserPasswordUpdateForm(PasswordChangeForm):
-    """
-    A form that lets a user change their password by entering their old
-    password.
-    """
     old_password = forms.CharField(
         label=_("현재 비밀번호"),
         strip=False,
@@ -210,6 +201,7 @@ class UserPasswordUpdateForm(PasswordChangeForm):
 class ApiPasswordResetForm(forms.Form):
     new_password1 = forms.CharField(label=_("변경할 비밀번호"), widget=forms.PasswordInput, max_length=25)
     new_password2 = forms.CharField(label=_("변경할 비밀번호 재입력"), widget=forms.PasswordInput, max_length=25)
+
     def clean_new_password2(self):
         password1 = self.cleaned_data.get('new_password1')
         password2 = self.cleaned_data.get('new_password2')
@@ -217,61 +209,10 @@ class ApiPasswordResetForm(forms.Form):
             if password1 != password2:
                 raise forms.ValidationError(_("The two password fields didn't match."))
         return password2    
+
     class Meta:
         model = User
         fields = ['password2']
-        
-
-class UserPasswordResetForm(SetPasswordForm):
-    """
-    A form that lets a user change set his/her password without
-    entering the old password
-    """
-    new_password1 = forms.CharField(label=_("변경할 비밀번호"), widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=_("변경할 비밀번호 재입력"), widget=forms.PasswordInput)
-
-    # def __init__(self, user, *args, **kwargs):
-    #     self.user = user
-    #     super(UserPasswordResetForm, self).__init__(*args, **kwargs)
-
-    # def clean_new_password2(self):
-    #     password1 = self.cleaned_data.get('new_password1')
-    #     password2 = self.cleaned_data.get('new_password2')
-
-    #     if password1 and password2:
-    #         if password1 != password2:
-    #             raise forms.ValidationError(_("The two password fields didn't match."))
-    #     password_validation.validate_password(password2, self.user)
-    #     return password2
-
-    # def save(self, commit=True):
-    #     self.user.set_password(self.cleaned_data['new_password1'])
-    #     self.user.set_password(password)
-    #     if commit:
-    #         self.user.save()
-    #     return self.user 
-    def save(self, commit=True):
-        password = self.cleaned_data["new_password1"]
-        self.user.set_password(password)
-        if commit:
-            self.user.save()
-        email = self.user.email
-        instance = User.objects.get(id=self.user.id)
-        if not instance.first_login:
-            instance.first_login = True
-            instance.save()
-        return self.user       
-
-
-class UserPasswordAuthForm(forms.Form):
-    email = forms.EmailField(
-        label=_("가입 시 사용한 이메일을 입력해주세요."),
-        widget=forms.EmailInput,
-    )
-
-    class Meta:
-        model = User
-        fields = ['email']
 
 
 class PostForm(forms.ModelForm):
