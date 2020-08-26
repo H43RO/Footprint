@@ -154,7 +154,24 @@ def history(request):
     context = {
         'historys': historys,
     }
-    return render(request, 'history_list.html', context)
+    if request.user.is_authenticated:
+        return render(request, 'history_list.html', context)
+    else:
+        if request.method == 'POST':
+            form = SignInForm(data=request.POST)
+            if form.is_valid():
+                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                # authenticate()를 통해 DB의 username과 password를 클라이언트가 요청한 값과 비교함
+                if user is not None:
+                    login(request, user)
+                    return HttpResponseRedirect('../index/')
+            else:
+                messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
+                return HttpResponseRedirect('../signin/')
+        else:
+            form = SignInForm()
+        return render(request, 'signin.html', {'form': form})
+
 
 
 def history_create(request):
@@ -424,7 +441,7 @@ def place_detail_crawl(pk):
 
 # 크롤링한 Hotplace 데이터를 Database에 저장함
 def add_to_db(crawled_items):
-    db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='!khc532412', db='foot_print', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}
     items_to_insert_into_db = crawled_items
