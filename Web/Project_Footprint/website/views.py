@@ -16,7 +16,8 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 
 from .models import User, History, Place, Post, HotPlace
-from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, CheckPasswordForm, UserPasswordUpdateForm, ApiPasswordResetForm
+from .forms import SignUpForm, PlaceRegisterForm, SignInForm, HistoryForm, UpdateHistoryForm, UpdateUserInfoForm, \
+    CheckPasswordForm, UserPasswordUpdateForm, ApiPasswordResetForm
 from rest_framework.response import Response
 from .backends import EmailAuthBackend
 from .token import account_activation_token, message
@@ -34,11 +35,13 @@ from django.utils import timezone, dateformat
 from bs4 import BeautifulSoup
 from multiprocessing import Pool, Manager
 import logging
+
 logger = logging.getLogger('test')
 import pymysql
 # import os
 # os.environ.setdefault('DJANGO_SETTINGS_MODULE', "ClienCrawlingDjango.settings")
 import django
+
 django.setup()
 logger.error('되는가?디비셋업')
 import json
@@ -48,7 +51,7 @@ def index(request):
     sights = Place.objects.filter(place_div=0).order_by('-count')[:6]
     restaurants = Place.objects.filter(place_div=1).order_by('-count')[:6]
     user = request.user
-    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'user' : user})
+    return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'user': user})
 
 
 def list(request):
@@ -123,7 +126,8 @@ def api_user_activate(request):
         user_id = request.GET.get('user_id')
         timestamp = request.GET.get('timestamp')
         signature = request.GET.get('signature')
-        requests.post('http://127.0.0.1:8000/api/v1/accounts/verify-registration/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature  })
+        requests.post('http://127.0.0.1:8000/api/v1/accounts/verify-registration/',
+                      data={'user_id': user_id, 'timestamp': timestamp, 'signature': signature})
     return HttpResponseRedirect('../index/')
 
 
@@ -139,14 +143,28 @@ def myinfo(request):
 def place_list(request):
     places = Place.objects.all()
     histories = History.objects.all()
-    return render(request, 'place_list.html', {'places':places, 'histories': histories})
+    return render(request, 'place_list.html', {'places': places, 'histories': histories})
 
 
 def place_detail(request, id):
+    # if id is not None:
+    #     places = get_object_or_404(Place, pk=id)
+    #     return render(request, 'place_detail.html', {'places': places})
+    # return HttpResponseRedirect('history/')
     context = {
         'places': place_detail_crawl(pk=id)
     }
     return render(request, 'place_detail.html', context)
+
+
+def place_register(request):
+    if request.method == 'POST':
+        form = PlaceRegisterForm(request.POST)
+        if form.is_valid():
+            new_item = form.save()
+        return HttpResponseRedirect('../place_list')
+    form = PlaceRegisterForm()
+    return render(request, 'place_register.html', {'form': form})
 
 
 def place_restaurant(request):
@@ -285,14 +303,16 @@ def api_password_reset(request):
     if request.method == 'POST':
         if form.is_valid():
             password = request.POST.get('new_password2')
-            response_message = requests.post('http://127.0.0.1:8000/api/v1/accounts/reset-password/', data={'user_id' : user_id, 'timestamp' : timestamp, 'signature' : signature, 'password' : password })
+            response_message = requests.post('http://127.0.0.1:8000/api/v1/accounts/reset-password/',
+                                             data={'user_id': user_id, 'timestamp': timestamp, 'signature': signature,
+                                                   'password': password})
             if response_message.status_code == 200:
                 return HttpResponseRedirect('../signin/')
             else:
                 template = loader.get_template("user_password_find_error.html")
                 res_text = response_message.text
-                return HttpResponse(template.render({"data" : res_text}))
-    return render(request, 'user_password_find.html', {'form' : form })
+                return HttpResponse(template.render({"data": res_text}))
+    return render(request, 'user_password_find.html', {'form': form})
 
 
 def user_password_find(request):
@@ -325,7 +345,8 @@ def user_password_find(request):
                 messages.error(request, '유효하지 않은 이메일입니다.')
 
     password_reset_form = PasswordResetForm()
-    return render(request=request, template_name="user_password_find.html", context={"password_reset_form": password_reset_form})
+    return render(request=request, template_name="user_password_find.html",
+                  context={"password_reset_form": password_reset_form})
 
 
 def noticelist(request):
@@ -340,7 +361,7 @@ def noticeview(request, id):
 
 def editor(request):
     editors = Post.objects.filter(post_div=0)
-    return render(request, 'editor.html', {'editors' : editors})
+    return render(request, 'editor.html', {'editors': editors})
 
 
 def editorview(request, id):
@@ -348,25 +369,27 @@ def editorview(request, id):
     return render(request, 'editor_view.html', {'editors': editors})
 
 
-# HotPlace 크롤링 함수
+# 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
 def place_detail_crawl(pk):
     URL = 'https://store.naver.com/restaurants/detail?id'
-    naverPlaceID = int(pk)
-
+    naverPlaceID = pk
     result = requests.get(f'{URL}={pk}')
     soup = BeautifulSoup(result.content, 'html.parser')
     title = soup.find("strong", {"class": "name"})
-    title = title.get_text()
+    title = str(title.string).strip()
 
     category = soup.find("span", {"class": "category"})
-    category = category.get_text()
+    category = str(category.string).strip()
 
     location = soup.find("span", {"class": "addr"})
-    location = location.get_text()
+    location = str(location.string).strip()
 
-    businessHours = soup.find("div", {"class": "biztime"})
+    businessHours = soup.find("span", {"class": "time"})
     if businessHours is not None:
-        businessHours = businessHours.get_text()
+        if businessHours is soup.find("span", {"class": "highlight"}):
+            businessHours = str(businessHours.string).strip()
+        else:
+            businessHours = " "
     else:
         businessHours = " "
 
@@ -377,7 +400,7 @@ def place_detail_crawl(pk):
         if tag is not None:
             description = " "
         else:
-            description = description.get_text()
+            description = str(description.string).strip()
     else:
         description = " "
 
@@ -404,6 +427,7 @@ def place_detail_crawl(pk):
     else:
         menuName = []
         menuNames = ""
+    print(menuName)
 
     price = soup.find_all("em", {"class": "price"})
     menuPrice = []
@@ -415,7 +439,7 @@ def place_detail_crawl(pk):
     else:
         menuPrice = []
         menuPrices = ""
-    print(menuNames)
+    print(menuPrice)
     res = {
         'naverPlaceID': naverPlaceID,
         'title': title,
@@ -430,44 +454,46 @@ def place_detail_crawl(pk):
         'menuPrice': menuPrice,
     }
     logger.error('되는가?크롤링')
-
     add_new_items(res)
     return res
 
 
 def add_new_items(crawled_items):
-    #각자 settings 의 databases로 수정 필요
-    db = pymysql.connect(host='localhost', user = 'root', password='080799', db = 'footprint',charset = 'utf8')
+    db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     logger.error('되는가?add함수')
     last_inserted_items = HotPlace.objects.last()
-    hotplace_pk = HotPlace.objects.all()
-
-    # HotPlace에 아무런데이터가없다면""로초기화를시켜주고, 그렇지않다면'naverPlaceID'를 가져옴
+    logger.error(last_inserted_items)
+    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
     if last_inserted_items is None:
         last_inserted_id = ""
     else:
         last_inserted_id = getattr(last_inserted_items, 'naverPlaceID')
+    logger.error(last_inserted_id)
     items_to_insert_into_db = {}
-    print(hotplace_pk)
-
-    # 만약DB에 추가된 naverPlaceID와 동일한id를 가졌다면 db 값 UPDATE 작업 진행
-    for item in hotplace_pk:
-        if crawled_items['naverPlaceID'] == item.pk:
+    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
+    for item in crawled_items:
+        if crawled_items['naverPlaceID'] == last_inserted_id:
             try:
                 sql = 'UPDATE website_hotplace SET title = %s, category = %s, location = %s, businessHours = %s, description = %s, imageSrc = %s, menuName = %s, menuPrice = %s WHERE naverPlaceID = %s'
                 val = (crawled_items['title'],
                        crawled_items['category'], crawled_items['location'],
                        crawled_items['businessHours'], crawled_items['description'],
-                       crawled_items['imageSrc'], crawled_items['menuName'], crawled_items['menuPrice'],crawled_items['naverPlaceID'])
+                       crawled_items['imageSrc'], crawled_items['menuName'], crawled_items['menuPrice'], crawled_items['naverPlaceID'])
                 cursor.execute(sql, val)
                 db.commit()
+                # menuNames =
+                # sql= 'update website_hotplace set menuName = json_replace(menuName,'menuNames') where id = 1 ;'
                 db.close()
+                logger.error('되는가?db update 상태')
             except:
                 print('error')
             return
-        else:
-            items_to_insert_into_db = crawled_items
+        items_to_insert_into_db = crawled_items
+
+    logger.error(last_inserted_id)
+    logger.error('되는가?db 최신 상태')
+    logger.error(items_to_insert_into_db)
 
     item_naverPlaceID = items_to_insert_into_db['naverPlaceID']
     item_title = items_to_insert_into_db['title']
@@ -478,11 +504,13 @@ def add_new_items(crawled_items):
     item_imageSrc = items_to_insert_into_db['imageSrc']
     item_menuName = items_to_insert_into_db['menuName']
     item_menuPrice = items_to_insert_into_db['menuPrice']
+    item_count = 0
 
     # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
-    sql2 = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc,item_menuName,item_menuPrice)
+    sql2 = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice, item_count)
     cursor.execute(sql2, val)
+
     db.commit()
     db.close()
     logger.error('되는가?db input 상태')
@@ -498,6 +526,6 @@ def get_hotplace():
 
 
 if __name__ == '__main__':
-    pool = Pool(processes=4) #4개의 프로세스 동시에 작동
+    pool = Pool(processes=4)  # 4개의 프로세스 동시에 작동
     logger.error('되는가?멀티')
-    pool.map(place_detail_crawl,range(1,end,10)) #title_to_list라는 함수에 1 ~ end까지 10씩늘려가며 인자로 적용
+    pool.map(place_detail_crawl, range(1, end, 10))  # title_to_list라는 함수에 1 ~ end까지 10씩늘려가며 인자로 적용

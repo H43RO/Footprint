@@ -127,7 +127,7 @@ class EditorViewSet(viewsets.ModelViewSet):
 
 
 class HotPlcaeViewSet(viewsets.ModelViewSet):
-    queryset = HotPlace.objects.order_by('-count')[:5]
+    queryset = HotPlace.objects.order_by('-counts')[:5]
     serializer_class = HotplaceSerializers
 
 
