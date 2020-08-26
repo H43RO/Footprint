@@ -100,6 +100,22 @@ class Place(models.Model):
         return self.title
 
 
+class HotPlace(models.Model):
+    naverPlaceID = models.IntegerField(primary_key=True)
+    title = models.CharField(max_length=30)
+    category = models.CharField(max_length=30, default='')
+    location = models.CharField(max_length=200, default='')
+    businessHours = models.CharField(max_length=100, blank=True, null=True,)
+    description = models.CharField(max_length=200, blank=True, null=True,)
+    imageSrc = models.CharField(max_length=1000,blank=True, null=True)
+    menuName = models.JSONField(blank=True, null=True)
+    menuPrice = models.JSONField(blank=True, null=True)
+    counts = models.IntegerField(default=0, null=True)
+
+    def __int__(self):
+        return self.naverPlaceID
+
+
 class History(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="blog/%Y/%m/%d")
     title = models.CharField(max_length=100, blank=True, null=True)
@@ -114,7 +130,7 @@ class History(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             Place.objects.filter(pk=self.place_id).update(count=F('count')+1)
-            HotPlace.objects.filter(pk=self.place_id).update(count=F('count')+1)
+            HotPlace.objects.filter(pk=self.place_id).update(counts=F('counts')+1)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -131,17 +147,3 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class HotPlace(models.Model):
-    naverPlaceID = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=30)
-    category = models.CharField(max_length=30, default='')
-    location = models.CharField(max_length=200, default='')
-    businessHours = models.CharField(max_length=100, blank=True, null=True,)
-    description = models.CharField(max_length=200, blank=True, null=True,)
-    imageSrc = models.CharField(max_length=1000,blank=True, null=True)
-    menuName = models.JSONField(blank=True, null=True,default=[])
-    menuPrice = models.JSONField(blank=True, null=True)
-    count = models.IntegerField(null=True, default=0)
-
-    def __int__(self):
-        return self.naverPlaceID

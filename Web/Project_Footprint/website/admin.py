@@ -57,7 +57,7 @@ class PostAdmin(admin.ModelAdmin):
 
 class HotPlaceAdmin(admin.ModelAdmin):
     model = HotPlace
-    list_display = ('naverPlaceID', 'title', 'category','location')
+    list_display = ('naverPlaceID', 'title', 'category','location','counts')
     list_display_links = ('naverPlaceID',)
 
 
