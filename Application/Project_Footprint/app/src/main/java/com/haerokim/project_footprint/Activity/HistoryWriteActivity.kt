@@ -161,8 +161,9 @@ class HistoryWriteActivity : AppCompatActivity() {
                         } else {
                             "$dayOfMonth"
                         }
-                    historyDate += "T"
+
                     edit_history_date.text = historyDate
+                    historyDate += "T"
                     Log.d("HistoryCreatedAt", historyDate)
                 }, year, month, day
             )
@@ -181,7 +182,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                         minute.toString()
                     }
                     Log.d("HistoryCreatedAt", historyTime)
-                    edit_history_time.text = historyTime
+                    edit_history_time.text = hourOfDay.toString() + "시 " + minute.toString() + "분"
                 }, hour, minute, false
             )
             timePicker.show()
