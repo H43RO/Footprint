@@ -34,16 +34,7 @@ from django.template import loader
 from django.utils import timezone, dateformat
 from bs4 import BeautifulSoup
 from multiprocessing import Pool, Manager
-import logging
-
-logger = logging.getLogger('test')
 import pymysql
-# import os
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', "ClienCrawlingDjango.settings")
-import django
-
-django.setup()
-logger.error('되는가?디비셋업')
 import json
 
 
@@ -140,56 +131,11 @@ def myinfo(request):
         return render(request, 'myinfo.html', context)
 
 
-def place_list(request):
-    places = Place.objects.all()
-    histories = History.objects.all()
-    return render(request, 'place_list.html', {'places': places, 'histories': histories})
-
-
 def place_detail(request, id):
-    # if id is not None:
-    #     places = get_object_or_404(Place, pk=id)
-    #     return render(request, 'place_detail.html', {'places': places})
-    # return HttpResponseRedirect('history/')
     context = {
         'places': place_detail_crawl(pk=id)
     }
     return render(request, 'place_detail.html', context)
-
-
-def place_register(request):
-    if request.method == 'POST':
-        form = PlaceRegisterForm(request.POST)
-        if form.is_valid():
-            new_item = form.save()
-        return HttpResponseRedirect('../place_list')
-    form = PlaceRegisterForm()
-    return render(request, 'place_register.html', {'form': form})
-
-
-def place_restaurant(request):
-    context = {
-        'restaurants': Place.objects.filter(place_div=1)
-    }
-    return render(request, 'place_restaurant_list.html', context)
-
-
-def place_sights(request):
-    context = {
-        'sights': Place.objects.filter(place_div=0)
-    }
-    return render(request, 'place_sights_list.html', context)
-
-
-def place_search(request):
-    place_search = Place.objects.all()
-    q = request.POST.get('q', "")
-
-    if q:
-        place_search = place_search.filter(title__icontains=q)
-        return render(request, 'place_search.html', {'place_search': place_search, 'q': q})
-    else:
-        return render(request, 'place_search.html')
 
 
 def history(request):
@@ -349,7 +295,7 @@ def user_password_find(request):
                   context={"password_reset_form": password_reset_form})
 
 
-def noticelist(request):
+def notice_list(request):
     notices = Post.objects.filter(post_div=1)
     return render(request, 'notice.html', {'notices': notices})
 
@@ -359,7 +305,7 @@ def noticeview(request, id):
     return render(request, 'notice_view.html', {'notices': notices})
 
 
-def editor(request):
+def editor_list(request):
     editors = Post.objects.filter(post_div=0)
     return render(request, 'editor.html', {'editors': editors})
 
@@ -369,7 +315,7 @@ def editorview(request, id):
     return render(request, 'editor_view.html', {'editors': editors})
 
 
-# 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
+# 네이버 플레이스 페이지를 크롤링함
 def place_detail_crawl(pk):
     URL = 'https://store.naver.com/restaurants/detail?id'
     naverPlaceID = pk
@@ -427,7 +373,6 @@ def place_detail_crawl(pk):
     else:
         menuName = []
         menuNames = ""
-    print(menuName)
 
     price = soup.find_all("em", {"class": "price"})
     menuPrice = []
@@ -439,7 +384,6 @@ def place_detail_crawl(pk):
     else:
         menuPrice = []
         menuPrices = ""
-    print(menuPrice)
     res = {
         'naverPlaceID': naverPlaceID,
         'title': title,
@@ -453,48 +397,15 @@ def place_detail_crawl(pk):
         'menuPrices': menuPrices,
         'menuPrice': menuPrice,
     }
-    logger.error('되는가?크롤링')
-    add_new_items(res)
+    add_to_db(res)
     return res
 
-
-def add_new_items(crawled_items):
+# 크롤링한 Hotplace 데이터를 Database에 저장함
+def add_to_db(crawled_items):
     db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
-    logger.error('되는가?add함수')
-    last_inserted_items = HotPlace.objects.last()
-    logger.error(last_inserted_items)
-    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
-    if last_inserted_items is None:
-        last_inserted_id = ""
-    else:
-        last_inserted_id = getattr(last_inserted_items, 'naverPlaceID')
-    logger.error(last_inserted_id)
     items_to_insert_into_db = {}
-    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
-    for item in crawled_items:
-        if crawled_items['naverPlaceID'] == last_inserted_id:
-            try:
-                sql = 'UPDATE website_hotplace SET title = %s, category = %s, location = %s, businessHours = %s, description = %s, imageSrc = %s, menuName = %s, menuPrice = %s WHERE naverPlaceID = %s'
-                val = (crawled_items['title'],
-                       crawled_items['category'], crawled_items['location'],
-                       crawled_items['businessHours'], crawled_items['description'],
-                       crawled_items['imageSrc'], crawled_items['menuName'], crawled_items['menuPrice'], crawled_items['naverPlaceID'])
-                cursor.execute(sql, val)
-                db.commit()
-                # menuNames =
-                # sql= 'update website_hotplace set menuName = json_replace(menuName,'menuNames') where id = 1 ;'
-                db.close()
-                logger.error('되는가?db update 상태')
-            except:
-                print('error')
-            return
-        items_to_insert_into_db = crawled_items
-
-    logger.error(last_inserted_id)
-    logger.error('되는가?db 최신 상태')
-    logger.error(items_to_insert_into_db)
-
+    items_to_insert_into_db = crawled_items
     item_naverPlaceID = items_to_insert_into_db['naverPlaceID']
     item_title = items_to_insert_into_db['title']
     item_category = items_to_insert_into_db['category']
@@ -505,15 +416,12 @@ def add_new_items(crawled_items):
     item_menuName = items_to_insert_into_db['menuName']
     item_menuPrice = items_to_insert_into_db['menuPrice']
     item_count = 0
-
-    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT
-    sql2 = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice, item_count)
-    cursor.execute(sql2, val)
-
+    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT, 동일한 id 값이 있다면 UPDATE
+    sql = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE naverPlaceID = %s, title = %s, category = %s, location = %s, businessHours = %s, description = %s, imageSrc = %s, menuName = %s, menuPrice = %s"
+    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice, item_count, item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice)
+    cursor.execute(sql, val)
     db.commit()
     db.close()
-    logger.error('되는가?db input 상태')
 
 
 def get_hotplace():
@@ -523,9 +431,3 @@ def get_hotplace():
         res.append(item.naver_place_id)
         place_detail_crawl(item.naver_place_id)
     return res
-
-
-if __name__ == '__main__':
-    pool = Pool(processes=4)  # 4개의 프로세스 동시에 작동
-    logger.error('되는가?멀티')
-    pool.map(place_detail_crawl, range(1, end, 10))  # title_to_list라는 함수에 1 ~ end까지 10씩늘려가며 인자로 적용
