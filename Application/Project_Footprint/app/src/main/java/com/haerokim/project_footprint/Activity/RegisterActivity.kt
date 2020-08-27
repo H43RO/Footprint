@@ -27,6 +27,11 @@ import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ *  회원가입 기능 제공
+ *  - 필수 입력 폼 Validation Check 포함
+ **/
+
 class RegisterActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +50,7 @@ class RegisterActivity : AppCompatActivity() {
             .setDateFormat("yyyy-MM-dd")
             .create()
 
+        // API 호출을 위한 Retrofit 객체 생성
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -52,24 +58,16 @@ class RegisterActivity : AppCompatActivity() {
 
         var registerService: RetrofitService = retrofit.create(RetrofitService::class.java)
 
-
         register_gender.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.male -> {
-                    userGender = 0
-                }
-
-                R.id.female -> {
-                    userGender = 1
-                }
-
-                R.id.non_specified -> {
-                    userGender = 2
-                }
+                R.id.male ->  userGender = 0
+                R.id.female -> userGender = 1
+                R.id.non_specified -> userGender = 2
             }
         }
 
         button_submit_register.setOnClickListener {
+            // Validation Check
             if (register_email.text.isEmpty() || register_password.text.isEmpty() || register_password_confirm.text.isEmpty()
                 || register_birth_date.text.isEmpty() || userGender == null || register_nickname.text.isEmpty()
             ) {
@@ -94,6 +92,7 @@ class RegisterActivity : AppCompatActivity() {
                 register_birth_date.setError("생년월일 형식이 올바르지 않습니다")
 
             } else {
+                // 모든 Validation Check 를 통과하면 진입
                 LoadingDialog(this).show()
                 userEmail = register_email.text.toString()
                 userPassword = register_password.text.toString()
@@ -101,14 +100,12 @@ class RegisterActivity : AppCompatActivity() {
                 userBirthDate = register_birth_date.text.toString()
                 userNickname = register_nickname.text.toString()
 
+                // 입력된 생년월일을 기반으로 사용자 나이 계산
                 val userBirthYear: Int = userBirthDate.substring(0, 4).toInt()
-
                 val current = LocalDateTime.now()
                 val formatter = DateTimeFormatter.ISO_DATE
                 val formatted = current.format(formatter)
-
                 val currentYear: Int = formatted.substring(0, 4).toInt()
-
                 userAge = (currentYear - userBirthYear) + 1
 
                 val registerForm: RegisterForm = RegisterForm(
@@ -140,6 +137,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    /** 사용자 생년월일 Validation Check 메소드 **/
     fun checkValidationDate(birthDate: String): Boolean {
         val birthDateFormat = SimpleDateFormat("yyyy-MM-dd")
         try {

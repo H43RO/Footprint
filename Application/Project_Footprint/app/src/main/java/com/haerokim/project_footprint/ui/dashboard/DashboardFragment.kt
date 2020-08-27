@@ -14,6 +14,8 @@ import com.haerokim.project_footprint.Activity.HistoryWriteActivity
 import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
+/**  History 조회 및 작성 메뉴 선택 기능 제공  **/
+
 class DashboardFragment : Fragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel

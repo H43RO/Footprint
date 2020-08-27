@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.haerokim.project_footprint.Activity.EditorPickDeatilActivity
+import com.haerokim.project_footprint.Activity.EditorPickDetailActivity
 import com.haerokim.project_footprint.DataClass.EditorPick
 import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.editor_item.view.*
-import kotlinx.android.synthetic.main.home_editor_item.view.*
+
+/**
+ *  에디터 추천 장소 리스트 RecyclerView Adapter
+ *  - API 를 통해 얻은 에디터 추천 게시물 리스트를 데이터로 가짐
+ **/
 
 class EditorPickListAdapter(
     private val editorPickList: ArrayList<EditorPick>,
@@ -27,7 +31,7 @@ class EditorPickListAdapter(
         }
 
         override fun onClick(v: View?) {
-            val intent = Intent(context, EditorPickDeatilActivity::class.java)
+            val intent = Intent(context, EditorPickDetailActivity::class.java)
             val bundle: Bundle = Bundle()
 
             val title = editorPickList[adapterPosition - 1].title
@@ -40,7 +44,7 @@ class EditorPickListAdapter(
             bundle.putString("img", img)
             bundle.putString("description", description)
 
-            //번들 intent data로 담아줌
+            // Bundle Data 를 담아 EditorPickDetailActivity 로 이동
             intent.putExtras(bundle)
             context.startActivity(intent)
         }

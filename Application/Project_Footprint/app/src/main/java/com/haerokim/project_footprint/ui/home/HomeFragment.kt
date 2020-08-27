@@ -54,6 +54,13 @@ import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ *  홈 화면
+ *  - 사용자가 CalendarView 를 통해 날짜를 선택할 때마다 API 호출
+ *  - HistoryListAdapter 를 통해 RecyclerView 구현
+ *  - 달력의 Extendable 한 UI를 위해 Animation 사용
+ **/
+
 class HomeFragment : Fragment(), PermissionListener {
     val viewModel: HomeViewModel by activityViewModels()
 

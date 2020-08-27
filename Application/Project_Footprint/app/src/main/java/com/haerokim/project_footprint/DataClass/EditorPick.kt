@@ -4,6 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+/**  Editor Pick 게시물 Object  **/
+
 @Parcelize
 data class EditorPick(
     val id: Int,

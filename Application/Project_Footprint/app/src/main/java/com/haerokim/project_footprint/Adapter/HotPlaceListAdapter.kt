@@ -13,6 +13,11 @@ import com.haerokim.project_footprint.Utility.ShowPlaceInfo
 import kotlinx.android.synthetic.main.hot_place_item.view.*
 import kotlinx.android.synthetic.main.place_item.view.*
 
+/**
+ *  핫플레이스 리스트 RecyclerView Adapter
+ *  - API 를 통해 얻은 핫플레이스 리스트를 데이터로 가짐
+ **/
+
 class HotPlaceListAdapter(
     private val hotPlaceList: ArrayList<Place>,
     private val context: Context
@@ -26,6 +31,7 @@ class HotPlaceListAdapter(
 
         override fun onClick(v: View?) {
             view.setOnClickListener {
+                // 선택된 Place 의 상세 정보를 보여줌
                 ShowPlaceInfo(context, hotPlaceList[adapterPosition - 1].naverPlaceID).showInfo(
                     hotPlaceList[adapterPosition - 1]
                 )
