@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'crispy_forms',
     'ckeditor_uploader',
-    'ckeditor'
+    'ckeditor',
+    'debug_toolbar',
 ]
 
 REST_FRAMEWORK = {
@@ -47,14 +48,18 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]    
 }
+
+# 유저 Api 대응 시 사용(로그인, 회원가입 등)
+# Docuemnt : https://django-rest-registration.readthedocs.io/en/latest/
+# body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 REST_REGISTRATION = {
+
     'REGISTER_VERIFICATION_ENABLED': True,
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
     'RESET_PASSWORD_VERIFICATION_ENABLED': True,
     'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},  
     'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
     'VERIFICATION_FROM_EMAIL' : 'h2is1234@gmail.com',
-    # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : '/website/a.txt', 'html_body' : 'rest_registration/register/body.html'},
     'SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL' : True,
     'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
     'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
@@ -62,7 +67,7 @@ REST_REGISTRATION = {
     'SUCCESS_RESPONSE_BULIDER' : ('website.user_serializers.build_default_success_response'),
     'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
     'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
-    # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
+
 }
 
 MIDDLEWARE = [
@@ -73,7 +78,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+
+
 ROOT_URLCONF = 'footprint.urls'
 TEMPLATES = [
     {
@@ -94,16 +103,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'footprint.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':  os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'footprint',
         'USER': 'root',
         'PASSWORD': 's9423093',
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+        }
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -138,25 +152,30 @@ TIME_ZONE = 'Asia/Seoul'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# for email
-AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-## for email verification
+# 이메일 인증을 위한 smtp 설정
+AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'h2is1234@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'tmffkdla5603' ## write your email password
+EMAIL_HOST_USER = 'aa@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'aaaa' ## write your email password
 EMAIL_USE_TLS = True
 
-#Maintain Session
+#로그인 세션 유지
 SESSION_COOKIE_AGE = 60*60
 SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]

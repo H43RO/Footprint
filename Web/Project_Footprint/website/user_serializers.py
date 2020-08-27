@@ -26,12 +26,11 @@ class UserLoginSerializer(serializers.Serializer):
 #     builder = registration_settings.SUCCESS_RESPONSE_BUILDER
 #     return builder(message=message, status=status, extra_data=extra_data)
 
-from rest_registration.api.views import login
 def build_default_success_response(message, status, extra_data):
     data = message
     if extra_data:
         data.update(extra_data)
-    return Response(data, status=status)
-
+        return Response(data, status=status)
+        
     if user.is_active is False:
         raise BadRequest(_("This user is not activated."))
