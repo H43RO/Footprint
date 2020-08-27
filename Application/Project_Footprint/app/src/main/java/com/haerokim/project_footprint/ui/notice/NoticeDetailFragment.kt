@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.fragment_notcie_detail.*
 
+/**  공지사항 상세보기 기능 제공  **/
+
 class NoticeDetailFragment : Fragment() {
 
     override fun onCreateView(

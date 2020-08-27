@@ -55,13 +55,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- *  홈 화면
- *  - 사용자가 CalendarView 를 통해 날짜를 선택할 때마다 API 호출
- *  - HistoryListAdapter 를 통해 RecyclerView 구현
- *  - 달력의 Extendable 한 UI를 위해 Animation 사용
+ *  메인 화면 (홈 화면)
+ *  - 발자취 따라가기 모드 ON/OFF, 핫플레이스 리스트, 에디터 픽 플레이스 리스트 등 포함
+ *  - 앱 최초 실행 시 필요 권한 허용을 위한 Dialog 동작함 (내부 저장소 R/W, 위치 권한)
  **/
 
 class HomeFragment : Fragment(), PermissionListener {
+    // 발자취 따라가가기 모드의 ON/OFF 상태에 따라 SurroundFragment 가 다르게 동작하기 때문에 ViewModel 사용
     val viewModel: HomeViewModel by activityViewModels()
 
     lateinit var recyclerView: RecyclerView
@@ -69,12 +69,14 @@ class HomeFragment : Fragment(), PermissionListener {
     lateinit var viewManager: RecyclerView.LayoutManager
     var hotPlaceList: ArrayList<Place> = ArrayList()
     var editorPickList: ArrayList<EditorPick> = ArrayList()
-    var timer = Timer()
 
-    var currentPage: Int = 0
+    // ViewPager 자동 전환 기능을 위한 Timer 선언, Interval 선언
+    var timer = Timer()
     private val DELAY_MS: Long = 500
     private val PERIOD_MS: Long = 3000
+    var currentPage: Int = 0
 
+    // Bluetooth 활성화 동작의 Request Code
     private val REQUEST_ENABLE_BT = 5603
     private val homeViewModel: HomeViewModel by activityViewModels()
 
@@ -87,15 +89,11 @@ class HomeFragment : Fragment(), PermissionListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // Bluetooth 활성화 Intent 이후 진입
         when (requestCode) {
             REQUEST_ENABLE_BT -> Log.d("Bluetooth", "활성화 완료")
             else -> Log.d("Bluetooth", "활성화 실패")
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
     }
 
     override fun onCreateView(
@@ -105,6 +103,7 @@ class HomeFragment : Fragment(), PermissionListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
+        // ViewModel 에 저장된 상태에 따라 Switch 상태를 변경
         homeViewModel.scanMode.observe(viewLifecycleOwner, Observer<Boolean> {
             scanning_mode_switch.isChecked = it
         })
@@ -119,12 +118,15 @@ class HomeFragment : Fragment(), PermissionListener {
 
         Paper.init(context)
 
+        // User 정보 로드 필요 (닉네임 등)
         val user: User = Paper.book().read("user_profile")
         text_home_user_nickname.setText(user.nickname + "님")
 
         val gson = GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
+
+        // API 호출을 위한 Retrofit 객체 생성
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -133,11 +135,9 @@ class HomeFragment : Fragment(), PermissionListener {
 
         viewManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
         viewAdapter = HotPlaceListAdapter(hotPlaceList, requireContext())
 
-        viewAdapter.setHasStableIds(true)
-
+        // 핫플레이스 리스트를 보여주는 RecyclerView 설정
         recyclerView =
             view.findViewById<RecyclerView>(R.id.home_hot_place_list).apply {
                 setHasFixedSize(true)
@@ -145,6 +145,7 @@ class HomeFragment : Fragment(), PermissionListener {
                 adapter = viewAdapter
             }
 
+        // 서버와의 통신 Delay 가 있을 시 스켈레톤 UI가 먼저 보이도록 함
         val skeletonRecyclerView: SkeletonScreen =
             Skeleton.bind(recyclerView).adapter(viewAdapter)
                 .color(R.color.shimmerColor)
@@ -154,6 +155,7 @@ class HomeFragment : Fragment(), PermissionListener {
                 .load(R.layout.skeleton_hot_place_item)
                 .show()
 
+        // 핫플레이스 리스트를 얻기 위해 API 호출
         getPlaceList.requestHotPlaceList().enqueue(object : Callback<ArrayList<Place>> {
             override fun onFailure(call: Call<ArrayList<Place>>, t: Throwable) {
                 Log.e("Error Hot Place", t.message)
@@ -168,13 +170,13 @@ class HomeFragment : Fragment(), PermissionListener {
                 if (response.body() != null && response.code() == 200) {
                     hotPlaceList.clear()
                     skeletonRecyclerView.hide()
-                    // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
                     hotPlaceList.addAll(response.body()!!)
                     viewAdapter.notifyDataSetChanged()
                 }
             }
         })
 
+        // 에디터 픽 플레이스 게시물 리스트를 얻기 위해 API 호출
         getPlaceList.requestEditorPickList().enqueue(object : Callback<ArrayList<EditorPick>> {
             override fun onFailure(call: Call<ArrayList<EditorPick>>, t: Throwable) {
                 Log.e("EditorPickList Error", t.message)
@@ -192,9 +194,11 @@ class HomeFragment : Fragment(), PermissionListener {
                         EditorPickViewPagerAdapter(context!!, editorPickList)
                     home_editor_place_pager.currentItem = 0
 
+                    // 자동 전환 View Pager 동작을 위한 Handler 객체 + 동작부
                     val handler = Handler()
                     val updateTask: Runnable = object : Runnable {
                         override fun run() {
+                            // 호출될 때 마다 페이지를 한 칸 이동하고, 마지막 페이지면 처음으로 이동
                             if (currentPage == editorPickList.size) {
                                 currentPage = 0
                             }
@@ -202,6 +206,7 @@ class HomeFragment : Fragment(), PermissionListener {
                         }
                     }
                     // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
+                    // - Fragment 가 화면에서 사라질 때 cancle() 하게 됨  ex) onDestroy()
                     timer = Timer()
                     timer.schedule(object : TimerTask() {
                         override fun run() {
@@ -213,16 +218,10 @@ class HomeFragment : Fragment(), PermissionListener {
             }
         })
 
-        //UI 복원 시 switch 모드 정상화 (SharedPreference)
+        // 앱 재시작 후 UI 복원 시 마지막 Switch 상태로 복구 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
 
-        if (scanning_mode_switch.isChecked) {
-            viewModel.changeMode("on")
-        } else {
-            viewModel.changeMode("off")
-        }
-
-
+        // 사용자 프로필 이미지 로드를 위한 SharedPreferences 객체
         val pref: SharedPreferences? =
             context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
         val profileImageUri = Uri.parse(pref?.getString("profile_image", ""))
@@ -233,19 +232,21 @@ class HomeFragment : Fragment(), PermissionListener {
             image_home_user_profile.setImageResource(R.drawable.basic_profile)
         }
 
+        // 앱 최초 실행 시 위치 권한, 저장소 접근 권한 요구
         TedPermission.with(context)
             .setPermissionListener(this)
             .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
 
+        // 발자취 따라가기 ON/OFF 상태에 따른 동작
         scanning_mode_switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
+            if (isChecked) {  // 발자취 따라가기 모드를 켰을 때 진입
+                //Switch 및 ViewModel 상태 저장
                 with(switchStateSave.edit()) {
                     putBoolean("state", true)
                     commit()
                 }
-
                 viewModel.changeMode("on")
 
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#CC59628F"))
@@ -254,13 +255,13 @@ class HomeFragment : Fragment(), PermissionListener {
                 //위치 권한 허용 되어있으면 비콘 스캔 시작
                 if (TedPermission.isGranted(context)) {
                     if (mBluetoothAdapter == null) {
-                        // 블루투스 지원 안하는 경우
+                        // 기종 자체가 블루투스 지원 안하는 경우
                     } else if (!mBluetoothAdapter.isEnabled) {
-                        // 블루수트 안 켜져있는 경우 활성화 시킴
+                        // 블루투스 안 켜져있는 경우 활성화 시킴
                         val bluetoothOnIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                         startActivityForResult(bluetoothOnIntent, REQUEST_ENABLE_BT)
                     } else {
-                        // 블루투스 켜져있는 경우
+                        // 블루투스 켜져있는 경우 (정상 진입)
                         Snackbar.make(
                             requireActivity().findViewById(android.R.id.content),
                             "당신의 발자취를 따라가기 시작합니다!",
@@ -270,24 +271,24 @@ class HomeFragment : Fragment(), PermissionListener {
                 } else { //워치 권한 허용 안됨
                     Snackbar.make(
                         requireActivity().findViewById(android.R.id.content),
-                        "앱 사용을 위해 위치 권한이 필요합니다",
+                        "앱 사용을 위한 위치 권한이 필요합니다",
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
 
-                //Foreground Service 시작 (비콘 스캔 서비스)
+                // Foreground Service 시작 (비콘 스캔 서비스 호출)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context?.startForegroundService(foregroundIntent)
                 } else {
                     context?.startService(foregroundIntent)
                 }
 
-            } else {
+            } else {  // 발자취 따라가기 모드를 껐을 때 진입
+                // Switch 및 ViewModel 상태 저장
                 with(switchStateSave.edit()) {
                     putBoolean("state", false)
                     commit()
                 }
-
                 viewModel.changeMode("off")
 
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#6659628F"))
@@ -299,6 +300,8 @@ class HomeFragment : Fragment(), PermissionListener {
                     Snackbar.LENGTH_LONG
                 ).show()
 
+                // Foreground Service 중단
+                // TODO("Android 8.0 이후 버그 대응 필요")
                 context?.stopService(foregroundIntent)
             }
         }

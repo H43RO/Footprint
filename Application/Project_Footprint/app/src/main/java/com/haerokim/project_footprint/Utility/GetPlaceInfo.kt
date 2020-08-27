@@ -7,17 +7,20 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
 
+/**
+ *  특정 장소의 상세정보를 크롤링하는 기능 제공
+ *  - NaverPlaceID 를 파라미터로 받아, 네이버 플레이스에서 상세정보 크롤링함
+ *  - 'Jsoup' 라이브러리 활용하여 HTML 문서를 통해 크롤링 함
+ *  - Place Data class 객체 형태로 획득한 정보 반환
+ **/
+
 class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
-    //GetPlaceInfo() 를 실행하는 시점에, 비콘 모듈의 UUID 값을 넣어줄 예정
-    //넘어온 UUID를 기반으로 SQL 쿼리를 하고, 쿼리를 통해 네이버 플레이스 등록 ID 취득 예정
-    private lateinit var placeInfo: Place
+    //넘어온 NaverPlaceID 기반으로 네이버 플레이스 크롤링
+    private lateinit var placeInfo: Place // 반환될 객체
     private var placeNaverID = placeID
 
     //호출하는 쪽에서 GetPlaceInfo("name").execute().get() 을 통해 Place 객체 받음
-
     override fun doInBackground(vararg params: Place?): Place {
-
-        // 해당 데이터 처리하는 Activity에서 Null 대응하므로 Nullable 타입으로 지정
         var placeTitle: String? = null
         var placeCategory: String? = null
         var placeDescription: String? = null
@@ -38,14 +41,13 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
             val menuNameElement: Elements = doc.select("div[class=list_menu_inner]").select("span[class=name]")
             val menuPriceElement: Elements = doc.select("div em[class=price]")
 
-            // 네이버 플레이스 URL에다가 tab=photo 쿼리 붙이면 이미지 파싱 URL임
+            // 네이버 플레이스 URL에다가 tab=photo 쿼리 붙여 이미지 획득 URL로 사용
             val imageDoc: Document =
                 Jsoup.connect("https://store.naver.com/restaurants/detail?id=$placeNaverID&tab=photo")
                     .get()
             val imageElement: Elements = imageDoc.select("div.list_photo img")
 
             // ===================HTML 파싱 데이터 모두 변수에 담아줌=================== //
-
 
             placeTitle = if (titleElement.size != 0) {
                 titleElement[0].text()
@@ -93,8 +95,8 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        //Place 정보를 담은 객체 생성해서 리턴해줌
 
+        //Place 정보를 담은 객체 생성해서 리턴해줌
         placeInfo = Place(placeNaverID,
             placeTitle, placeCategory, placeDescription
             , placeTime, placeLocation, placeImageSrc, placeMenuName, placeMenuPrice

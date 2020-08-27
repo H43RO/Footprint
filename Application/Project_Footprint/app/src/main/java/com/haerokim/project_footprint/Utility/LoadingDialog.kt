@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import com.haerokim.project_footprint.R
 
+/**  로딩 다이얼로그 객체  **/
+
 class LoadingDialog
     constructor(context: Context) : Dialog(context) {
 

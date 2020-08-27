@@ -146,6 +146,7 @@ class DateHistoryFragment : Fragment() {
                                     }
                                 }
                             }
+
                             viewAdapter.notifyDataSetChanged()
                             historyList.addAll(responseBody)
                             loading_date_history.visibility = View.GONE
