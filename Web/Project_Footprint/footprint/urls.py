@@ -12,9 +12,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
 from website import views
 from django.urls import path, include
@@ -64,4 +64,14 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG: 
+    import debug_toolbar 
+    urlpatterns = [ 
+        path('__debug__/', include(debug_toolbar.urls)), 
+        ] + urlpatterns
+
+
+
+
 

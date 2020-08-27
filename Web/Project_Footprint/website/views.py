@@ -46,7 +46,11 @@ def index(request):
 
 
 def list(request):
+    """
+    배포 할 때 삭제
+    """
     user = User.objects.all()
+
     context = {
         'users': user
     }
@@ -71,7 +75,6 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                # login(request, user)
                 return HttpResponseRedirect('../list/')
     else:
         form = SignUpForm()
@@ -104,6 +107,10 @@ def signout(request):
 
 
 def user_activate(request, uidb64, token):
+    """
+    계정 활성화
+    이메일로 들어온 링크 클릭 시, 그 이메일의 User object 활성화
+    """
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -111,13 +118,17 @@ def user_activate(request, uidb64, token):
         if account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            return redirect('../place_search/')
+            return redirect('../index/')
 
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
 
 def api_user_activate(request):
+    """
+    Api로 만든 계정 활성화
+    이메일로 들어온 링크 클릭 시, 그 이메일의 User object 활성화
+    """
     if request.method == 'GET':
         user_id = request.GET.get('user_id')
         timestamp = request.GET.get('timestamp')
@@ -143,7 +154,6 @@ def place_detail(request, id):
         'places': place_detail_crawl(pk=id)
     }
     return render(request, 'place_detail.html', context)
-
 
 def history(request):
     if request.method == 'POST' and 'id' in request.POST:
@@ -271,8 +281,11 @@ def user_password_update(request):
         form = UserPasswordUpdateForm(request.user)
     return render(request, 'user_password_update.html', {'form': form})
 
-
 def api_password_reset(request):
+    """
+    계정 활성화
+    이메일로 들어온 링크 클릭 시, 그 이메일의 User object 활성화
+    """
     user_id = request.GET.get('user_id')
     timestamp = request.GET.get('timestamp')
     signature = request.GET.get('signature')
@@ -285,7 +298,7 @@ def api_password_reset(request):
                                              data={'user_id': user_id, 'timestamp': timestamp, 'signature': signature,
                                                    'password': password})
             if response_message.status_code == 200:
-                return HttpResponseRedirect('../signin/')
+                return HttpResponseRedirect('../signin/') 
             else:
                 template = loader.get_template("user_password_find_error.html")
                 res_text = response_message.text
@@ -352,7 +365,6 @@ def editor_list(request):
 def editorview(request, id):
     editors = Post.objects.get(id=id)
     return render(request, 'editor_view.html', {'editors': editors})
-
 
 # 네이버 플레이스 페이지를 크롤링함
 def place_detail_crawl(pk):
@@ -441,7 +453,7 @@ def place_detail_crawl(pk):
 
 # 크롤링한 Hotplace 데이터를 Database에 저장함
 def add_to_db(crawled_items):
-    db = pymysql.connect(host='localhost', user='root', password='!khc532412', db='foot_print', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}
     items_to_insert_into_db = crawled_items

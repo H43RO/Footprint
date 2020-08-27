@@ -11,8 +11,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from datetime import date
 from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField, JSONField
-import jsonfield
 
+import jsonfield
 
 DEFAULT_HISTORY = 1
 
@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
-
+    
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a User with the given email and password.
@@ -80,7 +80,14 @@ class User(AbstractUser):
         ),
     )
     image = models.ImageField(blank=True, null=True)
-
+    
+    email.db_index = True
+    birth_date.db_index = True
+    nickname.db_index = True
+    age.db_index = True
+    gender.db_index = True
+    is_staff.db_index = True
+    is_active.db_index = True
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['birth_date', 'nickname', 'age', 'gender']
@@ -99,9 +106,15 @@ class Place(models.Model):
     img = models.ImageField(blank=True, null=True, upload_to="place")
     count = models.IntegerField(null=True, default=0)
 
+    beacon_uuid.db_index = True
+    title.db_index = True
+    place_div.db_index = True
+    naver_place_id.db_index = True
+    created_at.db_index = True
+    count.db_index = True
+
     def __str__(self):
         return self.title
-
 
 class HotPlace(models.Model):
     naverPlaceID = models.IntegerField(primary_key=True)
@@ -129,12 +142,13 @@ class History(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_HISTORY)
     created_at = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     def save(self, *args, **kwargs):
         if not self.pk:
             Place.objects.filter(pk=self.place_id).update(count=F('count')+1)
             HotPlace.objects.filter(pk=self.place_id).update(counts=F('counts')+1)
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
@@ -148,5 +162,4 @@ class Post(models.Model):
     description = RichTextUploadingField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
