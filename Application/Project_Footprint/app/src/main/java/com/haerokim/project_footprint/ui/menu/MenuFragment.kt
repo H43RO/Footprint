@@ -18,6 +18,9 @@ import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 
+/**  사용자 설정 및 앱 사용 관련 메뉴 제공 UI  **/
+
+
 class MenuFragment : Fragment() {
 
     private lateinit var menuViewModel: MenuViewModel

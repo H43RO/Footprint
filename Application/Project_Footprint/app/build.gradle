@@ -43,7 +43,6 @@ dependencies {
 
     implementation 'org.altbeacon:android-beacon-library:2.17.1'
 
-
     implementation 'io.paperdb:paperdb:2.7.1'
 
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'

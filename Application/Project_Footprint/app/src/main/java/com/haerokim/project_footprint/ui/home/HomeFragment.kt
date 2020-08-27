@@ -54,6 +54,13 @@ import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ *  홈 화면
+ *  - 사용자가 CalendarView 를 통해 날짜를 선택할 때마다 API 호출
+ *  - HistoryListAdapter 를 통해 RecyclerView 구현
+ *  - 달력의 Extendable 한 UI를 위해 Animation 사용
+ **/
+
 class HomeFragment : Fragment(), PermissionListener {
     val viewModel: HomeViewModel by activityViewModels()
 
@@ -160,7 +167,6 @@ class HomeFragment : Fragment(), PermissionListener {
 
                 if (response.body() != null && response.code() == 200) {
                     hotPlaceList.clear()
-
                     skeletonRecyclerView.hide()
                     // Hot Place List의 NaverPlaceID를 기반으로 Place List 생성
                     hotPlaceList.addAll(response.body()!!)
@@ -196,11 +202,13 @@ class HomeFragment : Fragment(), PermissionListener {
                         }
                     }
                     // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
+                    timer = Timer()
                     timer.schedule(object : TimerTask() {
                         override fun run() {
                             handler.post(updateTask)
                         }
                     }, DELAY_MS, PERIOD_MS)
+
                 }
             }
         })
@@ -208,9 +216,9 @@ class HomeFragment : Fragment(), PermissionListener {
         //UI 복원 시 switch 모드 정상화 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
 
-        if(scanning_mode_switch.isChecked){
+        if (scanning_mode_switch.isChecked) {
             viewModel.changeMode("on")
-        }else{
+        } else {
             viewModel.changeMode("off")
         }
 

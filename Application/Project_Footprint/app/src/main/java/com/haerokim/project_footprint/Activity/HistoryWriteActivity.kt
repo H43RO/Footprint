@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.annotation.LongDef
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
@@ -42,16 +41,22 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
+
+/**
+ *  사용자 임의로 History 생성 기능 제공
+ *  - 이미지 수정 및 업로드 시 Retrofit @Multipart 이용
+ *  - 'Android Image Cropper' 라이브러리 사용
+ **/
 
 class HistoryWriteActivity : AppCompatActivity() {
     var imageUri: Uri? = null
 
+    /**
+     *  Android Image Cropper 라이브러리를 통해 이미지 선택 및 편집 완료 후 진입
+     *  - imageUri 변수에 업로드 될 이미지의 Uri 값을 넣게 됨
+     **/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -67,11 +72,12 @@ class HistoryWriteActivity : AppCompatActivity() {
                 edit_history_detail_image.setImageURI(imageUri)
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-
+                Log.e("Error Image Selecting", "이미지 선택 및 편집 오류")
             }
         }
     }
 
+    /**  Bitmap 이미지를 Local에 저장하고, URI를 반환함  **/
     private fun bitmapToFile(bitmap: Bitmap): Uri {
         // Get the context wrapper
         val wrapper = ContextWrapper(this)
@@ -92,7 +98,6 @@ class HistoryWriteActivity : AppCompatActivity() {
         return Uri.parse(file.absolutePath)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_write)
@@ -103,6 +108,7 @@ class HistoryWriteActivity : AppCompatActivity() {
             .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
 
+        // API 호출을 위한 Retrofit 객체 생성
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -116,16 +122,17 @@ class HistoryWriteActivity : AppCompatActivity() {
         var historyComment: String
         var historyPlaceTitle: String
         var historyUserID: Int
-
-        var historyCreatedAt: String? = null  //historyDate + historyTime
+        var historyCreatedAt: String? = null  // historyDate + historyTime
         var historyDate: String? = null
         var historyTime: String? = null
 
-        val items = resources.getStringArray(R.array.moode_list)
+        // 사용자 기분 선택 구성 요소
+        val items = resources.getStringArray(R.array.mood_list)
         val spinnerAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         spinner_select_mood.adapter = spinnerAdapter
 
+        // Date, Time Picker 기본 값으로 사용될 현재 날짜 및 시각 가져옴
         val calendarInstance = Calendar.getInstance()
         val year = calendarInstance.get(Calendar.YEAR)
         val month = calendarInstance.get(Calendar.MONTH)
@@ -134,6 +141,7 @@ class HistoryWriteActivity : AppCompatActivity() {
         val minute = calendarInstance.get(Calendar.MINUTE)
 
         edit_history_detail_image.setOnClickListener {
+            // Android Image Cropper 라이브러리 사용
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setActivityTitle("이미지 추가")
@@ -150,20 +158,15 @@ class HistoryWriteActivity : AppCompatActivity() {
                     historyDate =
                         year.toString() + "-"
                     historyDate +=
-                        if ((monthOfYear + 1) < 10) {
-                            "0" + (monthOfYear + 1).toString() + "-"
-                        } else {
-                            (monthOfYear + 1).toString() + "-"
-                        }
+                        if ((monthOfYear + 1) < 10) "0" + (monthOfYear + 1).toString() + "-"
+                        else (monthOfYear + 1).toString() + "-"
                     historyDate +=
-                        if (dayOfMonth < 10) {
-                            "0$dayOfMonth"
-                        } else {
-                            "$dayOfMonth"
-                        }
-                    historyDate += "T"
+                        if (dayOfMonth < 10) "0$dayOfMonth"
+                        else "$dayOfMonth"
+
                     edit_history_date.text = historyDate
-                    Log.d("HistoryCreatedAt", historyDate)
+
+                    historyDate += "T"
                 }, year, month, day
             )
             datePicker.show()
@@ -175,13 +178,11 @@ class HistoryWriteActivity : AppCompatActivity() {
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                     historyTime = "$hourOfDay:"
 
-                    historyTime += if (minute < 10) {
-                        "0$minute"
-                    } else {
-                        minute.toString()
-                    }
-                    Log.d("HistoryCreatedAt", historyTime)
-                    edit_history_time.text = historyTime
+                    historyTime +=
+                        if (minute < 10) "0$minute"
+                        else minute.toString()
+
+                    edit_history_time.text = hourOfDay.toString() + "시 " + minute.toString() + "분"
                 }, hour, minute, false
             )
             timePicker.show()
@@ -240,12 +241,12 @@ class HistoryWriteActivity : AppCompatActivity() {
                 historyCreatedAt = historyDate + historyTime
                 historyUserID = user.id
 
+                // 날짜 및 시각은 LocalDateTime 객체 형태로 Request 해야함
                 val localTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     LocalDateTime.parse(historyCreatedAt)
                 } else {
                     TODO("VERSION.SDK_INT < O")
                 }
-                Log.d("resultDate", localTime.toString())
 
                 val builder: AlertDialog.Builder =
                     AlertDialog.Builder(this)
@@ -253,8 +254,12 @@ class HistoryWriteActivity : AppCompatActivity() {
                 builder.setMessage("모두 작성하셨나요?")
                 builder.setPositiveButton("예",
                     DialogInterface.OnClickListener { dialog, which ->
+                        // API 호출 형태가 다르므로 이미지 수정 여부에 따라 다른 메소드 호출함
                         if (imageUri != null) {  // 이미지와 함께 업로드 할 시
+                            // 저장된 이미지 Uri를 통해 업로드할 File 객체 생성
                             val image = File(imageUri!!.path.toString())
+
+                            // Django ImageField 에 담을 데이터를 전송할 때는 MultipartBody, RequestBody 등에 데이터 담아야 함
                             val requestFile: RequestBody =
                                 RequestBody.create(MediaType.parse("multipart/data"), image)
                             val uploadImage: MultipartBody.Part =
@@ -269,19 +274,11 @@ class HistoryWriteActivity : AppCompatActivity() {
                             val comment =
                                 RequestBody.create(MediaType.parse("text/plain"), historyComment)
                             val mood =
-                                RequestBody.create(
-                                    MediaType.parse("text/plain"),
-                                    historyMood ?: "기분 좋았던 순간"
-                                )
-                            val customPlace = RequestBody.create(
-                                MediaType.parse("text/plain"),
-                                historyPlaceTitle
-                            )
+                                RequestBody.create(MediaType.parse("text/plain"), historyMood ?: "기분 좋았던 순간")
+                            val customPlace =
+                                RequestBody.create(MediaType.parse("text/plain"), historyPlaceTitle)
                             val createdAt =
-                                RequestBody.create(
-                                    MediaType.parse("text/plain"),
-                                    localTime.toString()
-                                )
+                                RequestBody.create(MediaType.parse("text/plain"), localTime.toString())
 
                             writeHistoryService.writeHistoryWithImage(
                                 userID = userID,
@@ -296,17 +293,10 @@ class HistoryWriteActivity : AppCompatActivity() {
                                     Log.e("History Create Failed", t.message)
                                 }
 
-                                override fun onResponse(
-                                    call: Call<History>,
-                                    response: Response<History>
-                                ) {
+                                override fun onResponse(call: Call<History>, response: Response<History>) {
                                     if (response.code() == 201) {
                                         Log.d("History Create Success", "임의 히스토리 생성완료")
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "발자취를 남겼습니다!",
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                        Toast.makeText(applicationContext, "발자취를 남겼습니다!", Toast.LENGTH_LONG).show()
                                         finish()
                                     } else {
                                         Log.e("History Create Failed", "임의 히스토리 생성실패")
@@ -327,25 +317,14 @@ class HistoryWriteActivity : AppCompatActivity() {
                                         Log.d("History Create Error", t.message)
                                     }
 
-                                    override fun onResponse(
-                                        call: Call<History>,
-                                        response: Response<History>
-                                    ) {
+                                    override fun onResponse(call: Call<History>, response: Response<History>) {
                                         if (response.code() == 201) {
                                             Log.d("History Create Success", "임의 히스토리 생성완료")
-                                            Toast.makeText(
-                                                applicationContext,
-                                                "발자취를 남겼습니다!",
-                                                Toast.LENGTH_LONG
-                                            )
-                                                .show()
+                                            Toast.makeText(applicationContext, "발자취를 남겼습니다!", Toast.LENGTH_LONG).show()
                                             finish()
                                         } else {
                                             Log.d("History Create Failed", "임의 히스토리 생성실패")
-                                            Log.e(
-                                                "History Create Failed",
-                                                response.body().toString()
-                                            )
+                                            Log.e("History Create Failed", response.body().toString())
                                         }
                                     }
                                 })

@@ -109,7 +109,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_baseline_calendar_today_24"
+                        android:src="@drawable/ic_baseline_today_24"
                         android:tint="#5E5E5E" />
 
                     <TextView
@@ -178,7 +178,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="50dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#A8AABC"
+                app:cardBackgroundColor="@color/colorAccent"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp">
 

@@ -43,12 +43,18 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ *  사용자 프로필 정보 수정 기능 제공 (프로필 이미지, 회원 정보 등)
+ *  - 현재 프로필 이미지는 Local 에만 저장하는 구조 (추후 마이그레이션 예정)
+ **/
 
 class EditProfileFragment : Fragment() {
+    /**
+     *  Android Image Cropper 라이브러리를 통해 이미지 선택 및 편집 완료 후 진입
+     *  - imageUri 변수에 업로드 될 이미지의 Uri 값을 넣게 됨
+     **/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        //프로필 사진 변경을 위한 사진이 선택 및 편집되면 Uri 형태로 결과가 반환됨
         if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode === RESULT_OK) {
@@ -69,6 +75,7 @@ class EditProfileFragment : Fragment() {
         }
     }
 
+    /**  Bitmap 이미지를 Local에 저장하고, URI를 반환함  **/
     private fun bitmapToFile(bitmap:Bitmap): Uri {
         // Get the context wrapper
         val wrapper = ContextWrapper(context)
@@ -101,9 +108,23 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd")
+            .create()
+
+        // API 호출을 위한 Retrofit 객체 생성
+        var retrofit = Retrofit.Builder()
+            .baseUrl(Website.BASE_URL) //사이트 Base URL
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        var updateUserInfoService: RetrofitService =
+            retrofit.create(RetrofitService::class.java)
+
         image_edit_user_profile.setBackground(ShapeDrawable(OvalShape()))
         image_edit_user_profile.setClipToOutline(true)
 
+        // 저장된 프로필 이미지 로드
         val pref: SharedPreferences? = context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
         val profileImageUri = Uri.parse(pref?.getString("profile_image", ""))
 
@@ -113,9 +134,10 @@ class EditProfileFragment : Fragment() {
             image_edit_user_profile.setImageResource(R.drawable.basic_profile)
         }
 
+        // 저장된 프로필 정보 로드
         val user: User = Paper.book().read("user_profile")
 
-        //Date to String
+        // 회원 생년월일 Date to String
         val userBirthDate = user.birthDate
         val userBirthDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val userBirthDateString: String = userBirthDateFormat.format(userBirthDate)
@@ -129,7 +151,7 @@ class EditProfileFragment : Fragment() {
         button_change_profile_image.setOnClickListener {
            val popup: PopupMenu = PopupMenu(context, it)
             popup.inflate(R.menu.profile_image_menu)
-            // 기본 이미지로 변경할 건지, 갤러리 및 촬영 사진으로 변경할 것인
+            // 기본 이미지로 변경할 건지, 갤러리 사진으로 변경할 것인지 선택할 수 있는 Popup Menu
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when(it.itemId){
                     R.id.basic->{
@@ -152,7 +174,7 @@ class EditProfileFragment : Fragment() {
             popup.show()
         }
 
-        // 회원 프로필 정보 수정 취소
+        // 회원 프로필 정보 수정 취소 (정보 원상 복구)
         revert_edit_profile.setOnClickListener {
             edit_profile_nickname.setText(user.nickname)
             edit_profile_email.setText(user.email)
@@ -160,21 +182,9 @@ class EditProfileFragment : Fragment() {
             edit_profile_age.setText(user.age.toString())
         }
 
-        // 회원 프로필 정보 수정
-        val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd")
-            .create()
-
-        var retrofit = Retrofit.Builder()
-            .baseUrl(Website.BASE_URL) //사이트 Base URL
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-
-        var updateUserInfoService: RetrofitService =
-            retrofit.create(RetrofitService::class.java)
 
         submit_edit_profile.setOnClickListener {
-            // String to Date
+            // 회원이 입력한 생년월일 String to Date (API 대응 시 필요)
             val updateBirthDateString: String = edit_profile_birth_date.text.toString()
             val updateBirthDate: Date = userBirthDateFormat.parse(updateBirthDateString)
 
@@ -185,21 +195,14 @@ class EditProfileFragment : Fragment() {
                 user.gender
             )
 
-            // Retrofit API Request
-            updateUserInfoService.updateUserInfo(
-                user.id,
-                updateProfile
-            )
+            // 회원 정보 수정 API 호출
+            updateUserInfoService.updateUserInfo(user.id, updateProfile)
                 .enqueue(object : Callback<UpdateProfile> {
                     override fun onFailure(call: Call<UpdateProfile>, t: Throwable) {
                         Log.e("Update Profile", t.message)
                     }
 
-                    override fun onResponse(
-                        call: Call<UpdateProfile>,
-                        response: Response<UpdateProfile>
-                    ) {
-                        // Paper Overwrite (ID, Email, Token은 바뀌지 않음)
+                    override fun onResponse(call: Call<UpdateProfile>, response: Response<UpdateProfile>) {
                         val updateUserProfile: UpdateProfile? = response.body()
                         val newUserProfile: User = User(
                             user.id,
@@ -211,6 +214,7 @@ class EditProfileFragment : Fragment() {
                             user.token
                         )
 
+                        // Paper 저장 데이터 변경 (ID, Email, Token은 바뀌지 않음)
                         Paper.book().write("user_profile", newUserProfile)
                         Snackbar.make(requireActivity().findViewById(android.R.id.content), "회원 정보 변경 완료!", Snackbar.LENGTH_LONG).show()
                     }
@@ -225,7 +229,7 @@ class EditProfileFragment : Fragment() {
             builder.setMessage("로그아웃하시겠습니까?")
             builder.setPositiveButton("예",
                 DialogInterface.OnClickListener { dialog, which ->
-                    // 로그인 정보, 회원 정보 모두 삭제
+                    // 저장되어있는 로그인 정보, 회원 정보 모두 삭제
                     Paper.book().delete("user_profile")
                     val autoLogin = context?.getSharedPreferences("auto_login", Activity.MODE_PRIVATE)
                     val editor: SharedPreferences.Editor = autoLogin!!.edit()
@@ -250,7 +254,7 @@ class EditProfileFragment : Fragment() {
 
         // 비밀번호 변경 버튼
         button_modify_password.setOnClickListener {
-
+            //TODO("구현 예정")
         }
 
         // 회원 탙퇴 버튼

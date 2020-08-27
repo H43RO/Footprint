@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
@@ -27,7 +26,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_history_detail.history_detail_image
 import kotlinx.android.synthetic.main.activity_history_edit.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -41,13 +39,21 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 
+/**
+ *  사용자 History 편집 기능 제공
+ *  - 이미지 수정 및 업로드 시 Retrofit @Multipart 이용
+ *  - 'Android Image Cropper' 라이브러리 사용
+ **/
+
 class HistoryEditActivity : AppCompatActivity() {
     var imageUri: Uri? = null
 
+    /**
+     *  Android Image Cropper 라이브러리를 통해 이미지 선택 및 편집 완료 후 진입
+     *  - imageUri 변수에 업로드 될 이미지의 Uri 값을 넣게 됨
+     **/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        // 업로드를 위한 사진이 선택 및 편집되면 Uri 형태로 결과가 반환됨
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
@@ -55,24 +61,25 @@ class HistoryEditActivity : AppCompatActivity() {
                 val bitmap =
                     MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
 
-                imageUri = bitmapToFile(bitmap!!) // Uri
+                imageUri = bitmapToFile(bitmap!!)
                 history_detail_image.setImageURI(imageUri)
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-
+                Log.e("Error Image Selecting", "이미지 선택 및 편집 오류")
             }
         }
     }
 
+    /**  Bitmap 이미지를 Local에 저장하고, URI를 반환함  **/
     private fun bitmapToFile(bitmap: Bitmap): Uri {
         // Get the context wrapper
         val wrapper = ContextWrapper(this)
 
-        // Initialize a new file instance to save bitmap object
+        // Bitmap 이미지를 저장하기 위한 File Object
         var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
         file = File(file, "edit_image.jpg")
         try {
-            // Compress the bitmap and save in jpg format
+            // Bitmap 이미지를 JPEG 형태로 압축하여 저장
             val stream: OutputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
             stream.flush()
@@ -88,6 +95,21 @@ class HistoryEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_edit)
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd")
+            .create()
+
+        // API 호출을 위한 Retrofit 객체 생성
+        var retrofit = Retrofit.Builder()
+            .baseUrl(Website.BASE_URL) //사이트 Base URL
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        var updateHistoryService: RetrofitService =
+            retrofit.create(RetrofitService::class.java)
+
+        // HistoryDetailActivity 에서 넘겨받은 Bundle Data 사용
+        // - API 특성상, 수정 시 historyID만 있으면 되기 때문에 User 정보는 갖고오지 않음
         val historyInfo: Bundle? = intent.extras
 
         var historyID = historyInfo?.getInt("id")
@@ -97,19 +119,6 @@ class HistoryEditActivity : AppCompatActivity() {
         var historyComment = historyInfo?.getString("comment") ?: "내용 미상"
         var historyPlaceTitle = historyInfo?.getString("placeTitle")
         var historyCreatedAt = historyInfo?.getString("createdAt") ?: "어느 멋진 날"
-        var historyUserID = historyInfo?.getInt("userID")
-
-        val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd")
-            .create()
-
-        var retrofit = Retrofit.Builder()
-            .baseUrl(Website.BASE_URL) //사이트 Base URL
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-
-        var updateHistoryService: RetrofitService =
-            retrofit.create(RetrofitService::class.java)
 
         if (historyImage == null) {
             // Image URL 없을 시 기본 이미지
@@ -128,6 +137,7 @@ class HistoryEditActivity : AppCompatActivity() {
         edit_history_detail_content.setText(historyComment)
 
         history_detail_image.setOnClickListener {
+            // Android Image Cropper 라이브러리 사용
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setActivityTitle("이미지 추가")
@@ -137,7 +147,7 @@ class HistoryEditActivity : AppCompatActivity() {
                 .start(this)
         }
 
-        val items = resources.getStringArray(R.array.moode_list)
+        val items = resources.getStringArray(R.array.mood_list)
         val spinnerAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         spinner_select_mood.adapter = spinnerAdapter
@@ -176,8 +186,8 @@ class HistoryEditActivity : AppCompatActivity() {
             builder.setMessage("모두 작성하셨나요?")
             builder.setPositiveButton("예",
                 DialogInterface.OnClickListener { dialog, which ->
-                    // 이미지 수정을 하지 않았을 때 다른 메소드 호출함
-                    if (imageUri == null) {
+                    // API 호출 형태가 다르므로 이미지 수정 여부에 따라 다른 메소드 호출함
+                    if (imageUri == null) {  // 이미지 수정이 일어나지 않았을 때
                         val updateHistory =
                             UpdateHistory(historyTitle, historyMood, historyComment)
                         updateHistoryService.updateHistoryWithoutImage(historyID!!, updateHistory)
@@ -186,10 +196,7 @@ class HistoryEditActivity : AppCompatActivity() {
                                     Log.e("Update History Error", t.message)
                                 }
 
-                                override fun onResponse(
-                                    call: Call<History>,
-                                    response: Response<History>
-                                ) {
+                                override fun onResponse(call: Call<History>, response: Response<History>) {
                                     if (response.code() == 400) {
                                         Log.e("Update History Error", response.message())
                                     } else {
@@ -202,13 +209,17 @@ class HistoryEditActivity : AppCompatActivity() {
                                         intent.putExtra("mood", resultHistory?.mood)
                                         intent.putExtra("comment", resultHistory?.comment)
 
+                                        // HistoryDetailActivity 에게 수정 결과 전달 후 종료
                                         setResult(Activity.RESULT_OK, intent)
                                         finish()
                                     }
                                 }
                             })
-                    } else {  // 이미지 수정했을 시
+                    } else {  // 이미지 수정이 일어났을 때
+                        // 저장된 이미지 Uri를 통해 업로드할 File 객체 생성
                         val image = File(imageUri!!.path.toString())
+
+                        // Django ImageField 에 담을 데이터를 전송할 때는 MultipartBody, RequestBody 등에 데이터 담아야 함
                         val requestFile: RequestBody =
                             RequestBody.create(MediaType.parse("multipart/data"), image)
                         val uploadImage: MultipartBody.Part =
@@ -225,16 +236,12 @@ class HistoryEditActivity : AppCompatActivity() {
                             content = comment,
                             mood = mood,
                             img = uploadImage
-                        )
-                            .enqueue(object : Callback<History> {
+                        ).enqueue(object : Callback<History> {
                                 override fun onFailure(call: Call<History>, t: Throwable) {
                                     Log.e("Update History Error", t.message)
                                 }
 
-                                override fun onResponse(
-                                    call: Call<History>,
-                                    response: Response<History>
-                                ) {
+                                override fun onResponse(call: Call<History>, response: Response<History>) {
                                     if (response.code() == 400) {
                                         Log.e("Update History Error", response.message())
                                     } else if (response.code() == 200) {
@@ -248,6 +255,7 @@ class HistoryEditActivity : AppCompatActivity() {
                                         intent.putExtra("mood", resultHistory?.mood)
                                         intent.putExtra("comment", resultHistory?.comment)
 
+                                        // HistoryDetailActivity 에게 수정 결과 전달 후 종료
                                         setResult(Activity.RESULT_OK, intent)
                                         finish()
                                     }
