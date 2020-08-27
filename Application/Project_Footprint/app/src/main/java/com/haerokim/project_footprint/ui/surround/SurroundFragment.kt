@@ -33,6 +33,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ *  주변 장소 보여주기 기능 제공
+ *  - 발자취 따라가기 모드 ON 일때만 동작하도록 구현
+ *  - ForegroundService 에서 주기적으로 Broadcasting 하는 주변 장소 리스트를 수신하여 동작
+ **/
+
 class SurroundFragment : Fragment() {
     var surroundBeaconList: ArrayList<String> = ArrayList()
     var tempBeaconList: ArrayList<String> = ArrayList()
@@ -51,15 +57,12 @@ class SurroundFragment : Fragment() {
 
             if (intent != null) {
                 surroundBeaconList.clear()
-                surroundBeaconList.addAll(
-                    intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
-                )
-
-                //기존 리스트와 다른 점이 없으면 새로고침하지 않음
-                //원소 순서와 상관 없이 원소가 같아야함 (Set 특성 이용)
+                surroundBeaconList.addAll(intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf())
+                // 기존 리스트와 다른 점이 없으면 새로고침하지 않음
+                // 원소 순서와 상관 없이 원소가 같아야함 (Set 특성 이용)
                 if (tempBeaconList.toSet() != surroundBeaconList.toSet()) {
 
-                    //Test 용
+                    // Test 용
                     Log.d("Surround Before", tempBeaconList.toString())
                     Log.d("Surround Current", surroundBeaconList.toString())
 
@@ -76,30 +79,32 @@ class SurroundFragment : Fragment() {
         }
     }
 
+    /**
+     *  주변 장소 리스트 아이템 Binding 동작
+     *  1. Broadcast 를 통해 수신한 주변 장소들의 UUID 를 통해 API 를 호출하여 각 장소의 NaverPlaceID 를 얻음
+     *  2. 각각에 대하여 NaverPlaceID 를 기반으로 네이버 플레이스 정보를 크롤링하여 Place 객체 생성 및 추가
+     *  3. 주변 장소 리스트 아이템 Binding 완료
+     **/
+
     inner class PlaceListBinder : AsyncTask<Void, Void, Void>() {
         override fun onPreExecute() {
             super.onPreExecute()
-
             loading_spinner.visibility = View.VISIBLE
-
             tempPlaceList.clear()
         }
 
         override fun doInBackground(vararg params: Void?): Void? {
-            //Retrofit Service를 통해 네이버 Place ID를 받아올 수 있도록 구현할 예정
-            //네이버 Place ID를 받아오면, GetPlaceInfo 클래스를 통해 정보 얻을 수 있음
 
+            // API 호출을 위한 Retrofit 객체 생성
             var retrofit = Retrofit.Builder()
                 .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
             var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-            // 현재 Beacon 객체 각각은 UUID, 거리 등을 갖고 있는 상태
-            // 갖고있는 UUID 값을 기반으로 Place 객체를 채우는 동작을 함
             surroundPlaceList.clear()
 
+            // 현재 가지고 있는 UUID 값 각각을 기반으로 Place 객체를 찍어내는 동작을 함 (리스트 아이템으로 사용될 예정)
             for (beacon in surroundBeaconList) {
                 getPlaceInfoService.requestNaverPlaceID(beacon)
                     .enqueue(object : Callback<ArrayList<NaverPlaceID>> {
@@ -107,7 +112,7 @@ class SurroundFragment : Fragment() {
                             Log.d("GetPlaceInfo", "정보 얻기 실패")
                         }
 
-                        // 네이버 플레이스 ID를 받아와서 GetPlaceInfo에 정보 요청함
+                        // 네이버 플레이스 ID를 받아와서 GetPlaceInfo() 로 장소 정보 요청함
                         override fun onResponse(
                             call: Call<ArrayList<NaverPlaceID>>,
                             response: Response<ArrayList<NaverPlaceID>>
@@ -117,6 +122,7 @@ class SurroundFragment : Fragment() {
                             tempNaverPlacIDList.clear()
                             tempNaverPlacIDList.addAll(response.body()!!)
 
+                            // Naver Place ID 각각에 대한 장소 정보를 얻어서 RecyclerView 에 보여줄 리스트에 추가
                             for (place in tempNaverPlacIDList) {
                                 surroundPlaceList.add(
                                     GetPlaceInfo(place.naver_place_id).execute().get()
@@ -125,7 +131,6 @@ class SurroundFragment : Fragment() {
                                     viewAdapter.notifyDataSetChanged()
                                 }
                             }
-                            Log.d("Surround!", "바인딩 완료!")
                             loading_spinner.visibility = View.GONE
                         }
                     })
@@ -134,6 +139,7 @@ class SurroundFragment : Fragment() {
         }
     }
 
+    // 발자취 따라가기 모드가 활성화 되어있을 때 && 화면 재구성 시 Broadcast Receiver 등록
     override fun onResume() {
         super.onResume()
         viewModel.scanMode.observe(viewLifecycleOwner, Observer {
@@ -145,6 +151,11 @@ class SurroundFragment : Fragment() {
             }
         })
     }
+
+    /**
+     *  주변 장소 리스트 RecyclerView Adapter
+     *  - PlaceListBinder 에서 Binding 완료된 리스트를 데이터로 가짐
+     **/
 
     class PlaceListAdapter(
         private val surroundPlaceList: ArrayList<Place>, private val context: Context
@@ -166,8 +177,8 @@ class SurroundFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.view.setOnClickListener {
-                ShowPlaceInfo(
-                    context,
+                // 아이템을 터치했을 때 상세 정보 페이지로 이동 : ShowPlaceInfo().showInfo() 사용
+                ShowPlaceInfo(context,
                     surroundPlaceList[position].naverPlaceID
                 ).showInfo(surroundPlaceList[position])
             }
@@ -185,7 +196,6 @@ class SurroundFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_surround, container, false)
     }
 
@@ -199,6 +209,7 @@ class SurroundFragment : Fragment() {
                 text_state.text = "발자취 따라가기를 활성화 해주세요"
             } else {
                 text_state.text = "가까운 주변 장소를 탐색합니다"
+
                 viewManager = LinearLayoutManager(context)
                 viewAdapter =
                     PlaceListAdapter(
@@ -206,6 +217,7 @@ class SurroundFragment : Fragment() {
                         requireContext()
                     )
 
+                // 주변 장소 리스트를 보여주는 RecyclerView 설정
                 recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
                     setHasFixedSize(true)
                     layoutManager = viewManager
@@ -215,6 +227,7 @@ class SurroundFragment : Fragment() {
         })
     }
 
+    // 화면 이탈 시 Broadcast Receiver 해지
     override fun onPause() {
         super.onPause()
         viewModel.scanMode.observe(viewLifecycleOwner, Observer {

@@ -20,18 +20,13 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 
 /**  사용자 설정 및 앱 사용 관련 메뉴 제공 UI  **/
 
-
 class MenuFragment : Fragment() {
-
-    private lateinit var menuViewModel: MenuViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        menuViewModel =
-            ViewModelProviders.of(this).get(MenuViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_menu, container, false)
 
         return root
@@ -40,12 +35,14 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // User 정보 로드 필요 (닉네임 등)
         val user: User = Paper.book().read("user_profile")
         text_menu_user_nickname.text = user.nickname
 
         image_user_profile.setBackground(ShapeDrawable(OvalShape()))
         image_user_profile.setClipToOutline(true)
 
+        // 사용자 프로필 이미지 로드
         val pref: SharedPreferences? = context?.getSharedPreferences("profile_image", Activity.MODE_PRIVATE)
         val profileImageUri = Uri.parse(pref?.getString("profile_image", ""))
 
