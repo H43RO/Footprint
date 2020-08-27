@@ -3,8 +3,12 @@ package com.haerokim.project_footprint.DataClass
 import java.util.*
 import kotlin.String
 
-//created_at Format : ex) 2017-01-06T22:21:51
-// ID, created_at, place, user 필수항목
+/**
+ *  History Object
+ *  - created_at Format : ex) 2020-08-17T22:21:51
+ *  - ID, created_at, place, user 필수항목
+ **/
+
 
 data class History(
     var id: Int,

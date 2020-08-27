@@ -15,18 +15,21 @@ import com.google.firebase.messaging.RemoteMessage
 import com.haerokim.project_footprint.Activity.HomeActivity
 import com.haerokim.project_footprint.R
 
+/**
+ *  Firebase Cloud Messaging을 위한 Service Class
+ *  - 차후 추가 기능을 위해 이식만 했음 (작동 확인 후 기능 구현 보류)
+ **/
+
 open class FCMService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // 데이터가 있는지
+        // 메시지에 데이터가 있으면 진입
         if (remoteMessage != null) {
             Log.d(TAG, "From: " + remoteMessage.from)
-
             // 데이터 메시지인 경우
             if (remoteMessage.data.isNotEmpty()) {
                 sendNotification(remoteMessage.data)
                 Log.d(TAG, "Message data payload: " + remoteMessage.data)
             }
-
             // 알림 메시지인 경우
             if (remoteMessage.notification != null) {
                 val remoteMessageData = mapOf(
@@ -43,26 +46,23 @@ open class FCMService : FirebaseMessagingService() {
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시되도록 함
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
-        // 일회용 PendingIntent
-        // PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임한다.
         val intent = Intent(this, HomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남긴다. A-B-C-D-B => A-B
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+        // PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임
         val pendingIntent =
             PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT)
 
-        // 알림 채널 이름
         val channelId = getString(R.string.firebase_notification_channel_id)    // Notice
-        // 알림 소리
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        // 알림에 대한 UI 정보와 작업을 지정
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_background)                      // 아이콘
-            .setContentTitle(msgData.getValue("title"))               // 제목
-            .setContentText(msgData.getValue("msg"))              // 세부내용
+            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setContentTitle(msgData.getValue("title"))
+            .setContentText(msgData.getValue("msg"))
             .setAutoCancel(true)
             .setSound(soundUri)
-            .setContentIntent(pendingIntent)                          // 알림 실행 시 Intent
+            .setContentIntent(pendingIntent)
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

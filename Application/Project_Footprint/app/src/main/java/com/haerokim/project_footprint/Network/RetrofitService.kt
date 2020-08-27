@@ -9,6 +9,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.collections.ArrayList
 
+/**  Django REST framework API 대응을 위한 Retrofit Interface  **/
+
 interface RetrofitService {
 
     /** PLACE 관련 API**/

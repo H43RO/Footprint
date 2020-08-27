@@ -15,6 +15,11 @@ import com.haerokim.project_footprint.R
 import kotlinx.android.synthetic.main.history_item.view.*
 import java.text.SimpleDateFormat
 
+/**
+ *  사용자 히스토리 (다이어리) 리스트 RecyclerView Adapter
+ *  - API 를 통해 얻은 히스토리 리스트를 데이터로 가짐
+ **/
+
 class HistoryListAdapter(
     private val historyList: ArrayList<History>,
     private val context: Context
@@ -51,7 +56,7 @@ class HistoryListAdapter(
             bundle.putString("placeTitle", historyPlaceTitle)
             bundle.putInt("userID", historyUserID)
 
-            //번들 intent data로 담아줌
+            // Bundle Data 를 담아 HistoryDetailActivity 로 이동
             intent.putExtras(bundle)
             context.startActivity(intent)
         }

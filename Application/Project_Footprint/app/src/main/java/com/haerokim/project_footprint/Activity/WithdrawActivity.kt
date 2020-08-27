@@ -20,15 +20,22 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ *  회원탈퇴 기능 제공
+ *  - 필수 입력 폼 Validation Check 포함
+ **/
 
 class WithdrawActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_withdraw)
 
+        // Paper DB 로부터  사용자 정보 로드
         val user: User = Paper.book().read("user_profile")
+
         text_caution.text = user.nickname + "님의 소중한 기록이 삭제됩니다."
 
+        // API 호출을 위한 Retrofit 객체 생성
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create())
@@ -44,6 +51,7 @@ class WithdrawActivity : AppCompatActivity() {
             if (edit_text_password.text.toString().isEmpty()) {
                 edit_text_password.error = "비밀번호를 입력해주세요"
             } else {
+                // 로그인 정보가 일치하는 지 확인
                 service.requestLogin(user.email, edit_text_password.text.toString())
                     .enqueue(object : Callback<User> {
                         override fun onFailure(call: Call<User>, t: Throwable) {
@@ -51,7 +59,7 @@ class WithdrawActivity : AppCompatActivity() {
                         }
 
                         override fun onResponse(call: Call<User>, response: Response<User>) {
-                            // 회원 정보 일치하여 API 통해 탈퇴 요청
+                            // 회원 정보가 일치하면 진입 -> 회원 탈퇴 API 호출
                             if (user.id == response.body()?.id) {
                                 val builder: AlertDialog.Builder =
                                     AlertDialog.Builder(this@WithdrawActivity)

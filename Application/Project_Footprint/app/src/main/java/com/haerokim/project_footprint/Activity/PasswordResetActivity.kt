@@ -18,6 +18,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ *  비밀번호 초기화 기능
+ *  - 미 가입 회원 예외 처리 포함
+ **/
+
 class PasswordResetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +32,7 @@ class PasswordResetActivity : AppCompatActivity() {
             .setDateFormat("yyyy-MM-dd")
             .create()
 
+        // API 호출을 위한 Retrofit 객체 생성
         var retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -50,6 +56,7 @@ class PasswordResetActivity : AppCompatActivity() {
                             if (response.code() == 404) {
                                 edit_text_email_reset_password.error = "가입되지 않은 이메일 입니다."
                             } else if (response.code() == 200) {
+                                // 사용자 이메일로 비밀번호 초기화 링크 전송됨
                                 Toast.makeText(applicationContext, "이메일로 비밀번호 초기화 링크를 보냈습니다!", Toast.LENGTH_LONG).show()
                                 startActivity(Intent(applicationContext, LoginActivity::class.java))
                             }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="moode_list">
+    <string-array name="mood_list">
         <item>기분 좋았던 순간</item>
         <item>기뻤던 순간</item>
         <item>평화로웠던 순간</item>
