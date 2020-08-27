@@ -53,7 +53,6 @@ REST_FRAMEWORK = {
 # Docuemnt : https://django-rest-registration.readthedocs.io/en/latest/
 # body, subject 내용 바꿀 시에, 새로 venv 다운받을 시 venv/Lib/site-packages/rest_registration/templates/rest_registration/register/ 수정
 REST_REGISTRATION = {
-
     'REGISTER_VERIFICATION_ENABLED': True,
     'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
     'RESET_PASSWORD_VERIFICATION_ENABLED': True,

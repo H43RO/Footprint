@@ -150,10 +150,6 @@ def myinfo(request):
 
 
 def place_detail(request, id):
-    # if id is not None:
-    #     places = get_object_or_404(Place, pk=id)
-    #     return render(request, 'place_detail.html', {'places': places})
-    # return HttpResponseRedirect('history/')
     context = {
         'places': place_detail_crawl(pk=id)
     }
