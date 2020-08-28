@@ -167,7 +167,10 @@ class CheckPasswordForm(forms.Form):
                 self.add_error('password', '비밀번호가 일치하지 않습니다.')
 
 
-# PasswordChangeForm 을 상속해서 사용해면 변경할 비밀번호 뿐만 아니라 현재 비밀번호도 입력 받을 수 있으므로 보안을 더 강화할 수 있음
+"""
+PasswordChangeForm 을 상속해서 사용해면 변경할 비밀번호 뿐만 아니라 
+현재 비밀번호도 입력 받을 수 있으므로 보안을 더 강화할 수 있음
+"""
 class UserPasswordUpdateForm(PasswordChangeForm):
     old_password = forms.CharField(
         label=_("현재 비밀번호"),

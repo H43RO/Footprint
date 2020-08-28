@@ -16,7 +16,6 @@
 
     .container{
     padding-top: 100px;
-    width: 100%;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
     }
@@ -32,17 +31,16 @@
     margin-left: 20px;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
+    font-size: 2vw;
     }
 
     .user-info{
-    padding-top: 130px;
-    width: 430px;
-    height: 55px;
-    margin-left: 25px;
-    margin-bottom: 20px;
-    padding: 12px;
-    padding-left: 18px;
-    font-size: 130%;
+    width: 27vw;
+    height: 3.3vw;
+    margin-left: 2vw;
+    margin-bottom: 1.5vw;
+    padding: 1.2%;
+    font-size: 1.3vw;
     font-weight:bold;
     text-align: left;
     border-style: none;
@@ -52,11 +50,11 @@
     }
 
     .user-img{
-    margin-right: 50px;
+    margin-right: 4vw;
     padding: 12px;
     padding-left: 18px;
-    width: 400px;
-    height: 355px;
+    width: 25vw;
+    height: 22vw;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
     background-color: #f2f2f2;
@@ -65,10 +63,9 @@
 
     .update-btn{
     color: black;
-    width: 130px;
-    height: 45px;
-    margin-left: 25px;
-    font-size: 155%;
+    width: 13%;
+    height: 7%;
+    font-size: 1.5vw;
     font-weight:bold;
     background-color: #c4c4c4;
     border-style: none;
@@ -92,11 +89,13 @@
             <div class="card-body">
                 <h2 class="card-title">{{ user.email }}님의 회원정보</h2>
                 <hr>
+                    <picture>
                     {% if user.image %}
                     <img class="user-img" id="image{{user.id}}" src="{{user.image.url }}" >
                     {% else %}
                     <img class="user-img" src="{% static '../static/profile_default.png' %}" >
                     {% endif %}
+                    </picture>
                     <div class="user-info">
                         이메일  :  {{ user.email }}
                     </div>

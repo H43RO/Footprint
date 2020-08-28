@@ -15,7 +15,7 @@
     }
 
     .container{
-    width: 100%;
+    padding-top: 100px;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
     margin-top: 20px;
@@ -27,6 +27,7 @@
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
     text-align: center;
+    font-size: 2vw;
     }
 
     .card-body{
@@ -35,28 +36,20 @@
     border-radius: 20px;
     }
 
-    .user-info {
-<!--    align-content: center;-->
-    height: 60px;
-    width: 370px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    margin-left: 280px;
-    font-weight:bold;
-    font-size: 140%;
-    text-align: center;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
-    background-color: #f3f3f3;
+    .card-body p{
+    font-size: 1vw;
+    }
+
+    .card-body h5{
+    font-size: 1.3vw;
     }
 
     .delete_btn{
     color: black;
-    width: 115px;
-    height: 45px;
     margin-top: 20px;
-    font-size: 100%;
+    width: 13%;
+    height: 7%;
+    font-size: 1.3vw;
     font-weight:bold;
     background-color: #f56042;
     border-style: none;
@@ -88,11 +81,8 @@
                         {% csrf_token %}
                         <p style="color: red"><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br><br>
                         <h5><strong>본인인증을 위해 비밀번호를 다시 입력해주세요.</strong></h5>
-<!--                            <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>-->
-                                <div class="user-info">
-                                    <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>
-                                    {{ password_form.password }}
-                                </div>
+                            <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>
+                            {{ password_form.password }}
                             {% if messages %}
                                 {% for message in messages %}
                                   <p style="color: red">{{ message.message }}</p>
