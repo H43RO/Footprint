@@ -508,8 +508,8 @@ def add_to_db(crawled_items):
     item_menuPrice = items_to_insert_into_db['menuPrice']
     item_count = 0
     # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT, 동일한 id 값이 있다면 UPDATE
-    sql = "INSERT INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE naverPlaceID = %s, title = %s, category = %s, location = %s, businessHours = %s, description = %s, imageSrc = %s, menuName = %s, menuPrice = %s"
-    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice, item_count, item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice)
+    sql = "INSERT IGNORE INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice, item_count)
     cursor.execute(sql, val)
     db.commit()
     db.close()
