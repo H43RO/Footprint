@@ -11,11 +11,11 @@
 
 ## System Architecture
 
-![README%20md%20f0516922b5de455db6eb4d7437968f86/_.png](README%20md%20f0516922b5de455db6eb4d7437968f86/_.png)
+![_](https://user-images.githubusercontent.com/30336663/91571271-45d71d00-e981-11ea-9503-d3fefaa475dc.png)
 
-![README%20md%20f0516922b5de455db6eb4d7437968f86/_2.png](README%20md%20f0516922b5de455db6eb4d7437968f86/_2.png)
+![_](https://user-images.githubusercontent.com/30336663/91571271-45d71d00-e981-11ea-9503-d3fefaa475dc.png)
 
-![README%20md%20f0516922b5de455db6eb4d7437968f86/_3.png](README%20md%20f0516922b5de455db6eb4d7437968f86/_3.png)
+![_](https://user-images.githubusercontent.com/30336663/91571271-45d71d00-e981-11ea-9503-d3fefaa475dc.png)
 
 ## Features
 
@@ -70,17 +70,17 @@
     pip install mysqlclient  # MySQL을 사용할 경우
     ```
 
-3. `[settings.py](http://settings.py)` 에서 사용할 데이터베이스 설정을 완료해줍니다. (MySQL으로 기본 세팅 되어있습니다.)
+3. `settings.py` 에서 사용할 데이터베이스 설정을 완료해줍니다. (MySQL으로 기본 세팅 되어있습니다.)
 4. 아래 명령어를 실행하여 관리자 계정을 만듭니다. 관리자 페이지 URL은 "localhost:8000/admin" 입니다.
 
     ```bash
-    python [manage.py](http://manage.py) createsuperuser
+    python manage.py createsuperuser
     ```
 
 5. 아래 명령어를 실행하여 데이터베이스 마이그레이션을 한 뒤, 서버 구동을 시작합니다.
 
     ```bash
-    python [manage.py](http://manage.py) makemigrations website
+    python manage.py makemigrations website
     python manage.py migrate
     python manage.py runserver
     ```
