@@ -18,7 +18,7 @@
     div.left {
         width: 25%;
         margin: 0;
-        height: 100vh;
+        height: 90vh;
         float: left;
         box-sizing: border-box;
         background: #e8e8e8;
@@ -36,7 +36,7 @@
     div.right {
         width: 75%;
         margin: 0;
-        height: 100vh;
+        height: 90vh;
         float: right;
         box-sizing: border-box;
         background: #e8e8e8;
@@ -45,9 +45,6 @@
 
     }
 
-        div.left::-webkit-scrollbar {
-        width: 10px;
-    }
 
     div.left::-webkit-scrollbar-thumb {
         background-color: #2f3542;
@@ -75,7 +72,7 @@
 
     div.card-left {
         position: relative;
-        width: 20vw;
+        width: 21vw;
         margin:auto;
         border-radius: 15px;
         background:#ffffff;
@@ -141,18 +138,22 @@
     a.card-link{
         font-size : 20px;
         color: #232324;
-        padding: 15px;
+        padding: 7.5%;
+        padding-top:5%;
     }
 
 
     .lib-panel {
         margin-bottom: 20Px;
+        border-radius:15px;
     }
     .lib-panel img {
-        width: 100%;
+        width: 98%;
         background-color: transparent;
         border-top-left-radius: 15px;
         border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
     }
 
 
@@ -160,14 +161,23 @@
     .lib-panel .col-md-6 {
         padding: 0;
         background-color: #FFFFFF;
-        width: 70vw;
+        width: 72.9vw;
         border-radius: 15px;
+        height: 35vw;
+        position: relative;
+        overflow-y:scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
 
+    .col-md-6::-webkit-scrollbar {
+        display: none;
+    }
+
     .lib-panel .lib-row {
         padding: 0 20px 0 20px;
-        border-radius: 15px;
+
     }
 
     .lib-panel .lib-row.lib-header {
@@ -194,9 +204,8 @@
 
     .row-margin-bottom {
         margin-bottom: 20px;
-        margin-top: 15vh;
-        margin-left: 1%;
-
+        margin-top: 8vh;
+        margin-left: 1.06vw;
     }
 
     .box-shadow {
@@ -214,6 +223,10 @@
         color:#636160;
     }
 
+
+
+
+}
 
 
 </style>
@@ -288,9 +301,8 @@
                         <div class="col-md-6">
                             <img class="lib-img-show" id="img" src="../static/logo2.png" class="card-img">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="col-md-6">
                             <div class="lib-row lib-header" id="demo-title">
-
                             </div>
                             <div class="lib-header-seperator"></div>
                             <div class="lib-row lib-desc" id="demo-mood">
