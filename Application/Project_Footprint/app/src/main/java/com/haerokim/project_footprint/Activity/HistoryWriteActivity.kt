@@ -102,6 +102,7 @@ class HistoryWriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_write)
 
+        Paper.init(this)
         var user: User = Paper.book().read("user_profile")
 
         val gson = GsonBuilder()
@@ -176,8 +177,9 @@ class HistoryWriteActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this, R.style.DatePicker,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                    historyTime = "$hourOfDay:"
-
+                    historyTime =
+                        if (hourOfDay < 10) "0$hourOfDay:"
+                        else hourOfDay.toString() + ":"
                     historyTime +=
                         if (minute < 10) "0$minute"
                         else minute.toString()
