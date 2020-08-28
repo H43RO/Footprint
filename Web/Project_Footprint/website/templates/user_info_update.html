@@ -15,7 +15,6 @@
     }
 
     .container{
-    width: 100%;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
     padding-top: 100px;
@@ -32,16 +31,17 @@
     margin-left: 20px;
     font-family: 'NanumSquare', sans-serif;
     font-weight:bold;
+    font-size: 2vw;
     }
 
     .user-info {
-    height: 60px;
-    width: 420px;
-    margin-top: 15px;
-    margin-left: 25px;
-    margin-bottom: 5px;
+    width: 45%;
+    height: 1%;
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-bottom: 10px;
     font-weight:bold;
-    font-size: 140%;
+    font-size: 1.3vw;
     text-align: center;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
@@ -51,10 +51,11 @@
     }
 
     .user-img {
-    height: 360px;
-    width: 400px;
-    margin-top: 5px;
-    margin-right: 30px;
+    margin-right: 1.5vw;
+    padding: 12px;
+    padding-left: 18px;
+    width: 25vw;
+    height: 22vw;
     border-style: none;
     border-radius: 10px 10px 10px 10px;
     color: black;
@@ -64,13 +65,13 @@
 
     .confirm_btn{
     color: black;
-    width: 130px;
-    height: 45px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom: 15px;
-    margin-left: 25px;
+    margin-left: 15px;
     margin-right: 10px;
-    font-size: 100%;
+    width: 14%;
+    height: 8%;
+    font-size: 1.1vw;
     font-weight:bold;
     background-color: #c4c4c4;
     border-style: none;
@@ -80,11 +81,11 @@
 
     .delete_btn{
     color: black;
-    width: 130px;
-    height: 45px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom: 15px;
-    font-size: 100%;
+    width: 14%;
+    height: 8%;
+    font-size: 1.1vw;
     font-weight:bold;
     background-color: #f56042;
     border-style: none;
@@ -94,12 +95,12 @@
 
     .pw_btn{
     color: black;
-    width: 130px;
-    height: 45px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom: 15px;
     margin-right: 10px;
-    font-size: 100%;
+    width: 14%;
+    height: 8%;
+    font-size: 1.1vw;
     font-weight:bold;
     background-color: #c4c4c4;
     border-style: none;
@@ -148,7 +149,7 @@
                         </form>
                         <form action="{% url 'user_password_update' %}" >
                             {% csrf_token %}
-                            <button class="btn pw_btn" >비밀번호 변경</button></a>
+                            <button class="btn pw_btn" >PW변경</button></a>
                         </form>
                         <form action="{% url 'user_delete' %}" >
                             {% csrf_token %}
