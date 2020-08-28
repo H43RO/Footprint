@@ -453,6 +453,7 @@ def place_detail_crawl(pk):
         a = area.find("div")
         imageSrc = a.find("img").get("src")
 
+
     menuName = []
     list_menu = soup.find("ul", {"class": "list_menu"})
     if list_menu is not None:
@@ -460,13 +461,13 @@ def place_detail_crawl(pk):
         for item in menu:
             menuName.append(item.get_text())
         menuNames = menuName
-        menuName=json.dumps(menuName,ensure_ascii=False)
+        menuName = menuName
     else:
         menuName = []
         menuNames = ""
 
-    price = soup.find_all("em", {"class": "price"})
     menuPrice = []
+    price = soup.find_all("em", {"class": "price"})
     if price is not None:
         for item in price:
             menuPrice.append(item.get_text())
@@ -493,19 +494,17 @@ def place_detail_crawl(pk):
 
 # 크롤링한 Hotplace 데이터를 Database에 저장함
 def add_to_db(crawled_items):
-    db = pymysql.connect(host='localhost', user='root', password='', db='foot_print', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
-    items_to_insert_into_db = {}
-    items_to_insert_into_db = crawled_items
-    item_naverPlaceID = items_to_insert_into_db['naverPlaceID']
-    item_title = items_to_insert_into_db['title']
-    item_category = items_to_insert_into_db['category']
-    item_location = items_to_insert_into_db['location']
-    item_businessHours = items_to_insert_into_db['businessHours']
-    item_description = items_to_insert_into_db['description']
-    item_imageSrc = items_to_insert_into_db['imageSrc']
-    item_menuName = items_to_insert_into_db['menuName']
-    item_menuPrice = items_to_insert_into_db['menuPrice']
+    item_naverPlaceID = crawled_items['naverPlaceID']
+    item_title = crawled_items['title']
+    item_category = crawled_items['category']
+    item_location = crawled_items['location']
+    item_businessHours = crawled_items['businessHours']
+    item_description = crawled_items['description']
+    item_imageSrc = crawled_items['imageSrc']
+    item_menuName = crawled_items['menuName']
+    item_menuPrice = crawled_items['menuPrice']
     item_count = 0
     # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT, 동일한 id 값이 있다면 UPDATE
     sql = "INSERT IGNORE INTO website_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
