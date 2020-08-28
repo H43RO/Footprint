@@ -1,4 +1,6 @@
-# 발자취 (Project Footprint) - 2020 공개 SW 개발자 대회 출품작
+# 발자취 (Project Footprint)
+2020 공개 SW 개발자 대회 출품작
+
 
 발자취는 BLE(Bluetooth Low Energy) 핵심 기술인 'Beacon' 을 활용하여, 사용자의 하루 일과를 자동으로 기록해주는 서비스입니다. 자동으로 기록된 일과는 사용자의 마음대로 자신만의 다이어리 처럼 꾸밀 수 있습니다. 또한 임의로 일과를 추가할 수도 있습니다. 이렇게 쌓인 사용자의 기록 하나하나가 서버에 저장되어, 자신만의 추억으로 간직하거나 SNS에 공유할 수 있습니다.
 
@@ -35,8 +37,6 @@
 - 사용자들이 **가장 많이 방문한 장소 리스트 (핫 플레이스)** 조회 API 제공
 - 에디터가 직접 작성한 **추천 관광 루틴, 맛집 게시글 조회** API 제공
 
-
-
 ## Usage
 
 필요한 코드 사용이 용이하도록 코드에 동작 설명 주석이 첨부 되어있습니다. 기본적인 사용법은 다음과 같습니다.
@@ -58,7 +58,7 @@
     pip install Pillow
     pip install djangorestframework
     pip install django-admin-rangefilter
-    pip install djangoframework-fiters??
+    pip install djangoframework-fiters
     pip install django-filter
     pip install django-rest-registeration
     pip install django-grappelli
