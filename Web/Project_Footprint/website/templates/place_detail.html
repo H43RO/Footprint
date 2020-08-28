@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=373de50ef6dcf6a5a87b44674f4dc70c&libraries=services"></script>
 
 <style>
     body {
@@ -10,87 +11,120 @@
     }
     div.container {
         padding-top: 150px;
-        margin-left: 200px;
     }
-
+    .card-title{
+        padding:0;
+        text-align: center;
+    }
     div.board_aside {
         width: 250px;
         float: left;
     }
-
     div.board_contents {
-        width: 1056px;
         margin: 0 auto;
     }
-
     h1.editor_head {
         height: 700px;
         font-size: 3.0rem;
         font-weight: 800;
     }
-
     .editor_contents {
         padding-top: 60px;
     }
-
     p.editor_date {
         padding-top: 20px;
         padding-bottom: 20px;
     }
-
     hr {
         width: 100px;
         margin-top: -630px;
         color: #3cadd4;
     }
-
     h4.place_tit {
         margin-left: -30px;
         font-size: 2.3rem;
         font-weight: 550;
         font-family: "나눔스퀘어";
     }
-    .notice {
-        margin-top: 60px;
-    }
-    div.col-md-4{
-<!--        height: 600px;-->
-<!--        max-width: 100%;-->
-
-    }
-    img.card-img{
-            margin-left: 70px;
+    img.card-img-top{
             display: block;
             width:100%;
             height: 100%;
             object-fit: contain;
             overflow: hidden;
+            border-radius: 15px;
     }
-
-    div.card.mb-3{
+    div.card{
         margin-top: 50px;
         border-radius: 15px;
     }
-
     div.place_menus{
-        margin-top: 50px;
-        display: flex;
-
+        margin-top: 20px;
     }
     .card-body{
-        margin-left: 180px;
-        padding: 55px;
+        margin: 0 auto;
     }
-    .row.no-gutters{
-        display: flex;
-        flex: initial;
+    p.card-text{
+        font-size: 1rem;
+        text-align: center;
     }
     div.menu{
-        width: 300px;
+        font-size: 0.95rem;
+        float:left;
+    }
+    div.price{
+        font-size: 0.95rem;
+        float:right;
+    }
+    div.col-4{
+        margin: 0 auto;
+    }
+    .data{
+        max-width: 80%;
+
+    }
+    #map{
+        max-width: 80%;
+        height:400px;
+    }
+    @media screen and (min-width: 850px){
+    div.board_contents {
+        width: 1056px;
+        margin: 0 auto;
+    }
+    div.cont{
+        font-size:0;
+        max-width:1056px;
+        margin:0 auto;
+    }
+    div.col-4{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    div.data{
+        max-width: 65%;
+    }
+    #map{
+        max-width: 35%;
+        height:400px;
+    }
+    div.menu{
+        font-size: 1rem;
+    }
+    div.price{
+            font-size: 1rem;
     }
     h5.menu {
-        height:20px;
+        height:1.25rem;
         font-weight: 800;
+    }
+    h3.card-title{
+        font-size: 2.0rem;
+        font-weight: 800;
+        text-align: center;
+        padding:0;
+    }
+    .location_tag
     }
 </style>
 
@@ -101,21 +135,15 @@
         </h1>
         <hr>
     </div>
-    <div class="card mb-3">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img src="{{ places.imageSrc }}" class="card-img" alt="">
-          </div>
-          <div class="col-md-8">
+        <div class="cont">
+        <div class="col-4 data">
+        <div class="card">
+            <img src="{{ places.imageSrc }}" alt="" class="card-img-top" />
             <div class="card-body">
-                <h4 class="place_tit">" {{ places.title }} "</h4>
-                <br>
-                <div class="places">
-                <div class="place_desc">
-              <h5 class="card-title">{{ places.description }}</h5>
-              <p class="card-text">{{ places.location }}</p>
-              <p class="card-text"><small class="text-muted">{{ places.businessHours }}</small></p>
-                </div>
+                <h3 class="card-title">" {{ places.title }} "</h3>
+                <h5 class="card-title">{{ places.description }}</h5>
+                <p class="card-text">{{ places.location }}</p>
+                <p class="card-text"><small class="text-muted">{{ places.businessHours }}</small></p>
                 <div class="place_menus">
                     {% if places.menuNames %}
                     <div class="menu">
@@ -130,13 +158,42 @@
                         <p> {{ item }} &nbsp</p>
                         {% endfor %}
                     </div>
+                    </div>
+                {% endif %}
                 </div>
-                    {% endif %}
+              </div>
             </div>
-          </div>
+        <div class="col-4 map" id="map">
         </div>
-      </div>
     </div>
 </div>
+<script>
+    var mapContainer = document.getElementById('map'),
+        mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3 
+        };
 
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch('{{places.location}}', function(result, status) {
+
+         if (status === kakao.maps.services.Status.OK) {
+
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div class="location_tag" style="width: 200px;text-align:center;padding:6px 0; font-size:1rem">"{{ places.title }}"</div>'
+            });
+            infowindow.open(map, marker);
+
+            map.setCenter(coords);
+        }
+    });
+</script>
 {% endblock %}
