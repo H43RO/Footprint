@@ -163,6 +163,13 @@ def place_detail(request, id):
     }
     return render(request, 'place_detail.html', context)
 
+
+"""
+히스토리회(일기) 조회
+생성 날짜 순으로 리스트를 보여줌
+삭제 버튼이 눌렸을 시, 전달된 id값을 통해 item 삭제
+로그인하지 않은 유저가 히스토리 접근할 경우 로그인 페이지로 렌더링함
+"""
 def history(request):
     if request.method == 'POST' and 'id' in request.POST:
         item = get_object_or_404(History, id=id, user=request.user)
@@ -191,7 +198,10 @@ def history(request):
         return render(request, 'signin.html', {'form': form})
 
 
-
+"""
+히스토리(일기) 생성
+임의로 작성할 수 있는 'created_at' field가 빈 폼일 경우 자동으로 현재 시간 생성
+"""
 def history_create(request):
     if request.method == 'POST':
         if request.POST['created_at'] == '':
@@ -211,6 +221,10 @@ def history_create(request):
     return render(request, 'history_create.html', {'form': form})
 
 
+"""
+히스토리(일기) 삭제
+해당하는 id의 History item 삭제
+"""
 def history_delete(request, id):
     item = get_object_or_404(History, pk=id)
     if request.method == 'POST':
@@ -220,6 +234,12 @@ def history_delete(request, id):
     return render(request, 'history_delete.html', {'item': item})
 
 
+"""
+히스토리(일기) 수정
+해당하는 id의 History item 수정
+글 수정 시, 기존의 내용 폼에 유지
+임의로 작성할 수 있는 'created_at' field가 빈 폼일 경우 자동으로 현재 시간 생성
+"""
 def history_update(request):
     if request.method == 'POST' and 'id' in request.POST:
         if request.POST['created_at'] == '':
@@ -473,7 +493,7 @@ def place_detail_crawl(pk):
 
 # 크롤링한 Hotplace 데이터를 Database에 저장함
 def add_to_db(crawled_items):
-    db = pymysql.connect(host='localhost', user='root', password='111111', db='jinsol', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='', db='foot_print', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}
     items_to_insert_into_db = crawled_items
