@@ -2,38 +2,49 @@
 {% load static %}
 {% block content %}
 <style>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
-    div.history-list {
+    body.history-list {
+        margin: 0;
+        height: 100vh;
         width: 100%;
+        background: #e8e8e8;
     }
     div.left {
-        width: 35%;
-        height: 1150px;
+        width: 25%;
+        margin: 0;
+        height: 90vh;
         float: left;
         box-sizing: border-box;
         background: #e8e8e8;
         overflow-y:scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
         font-family: 'NanumSquare', sans-serif;
         margin:auto;
-        margin-top:105px;
+        margin-top:7.2%;
+    }
+    .left::-webkit-scrollbar {
+        display: none;
     }
 
     div.right {
-        width: 65%;
-        height: 1150px;
+        width: 75%;
+        margin: 0;
+        height: 90vh;
         float: right;
         box-sizing: border-box;
         background: #e8e8e8;
         font-family: 'NanumSquare', sans-serif;
-        margin-top:105px;
+        margin-top:7.2%;
 
     }
 
-        div.left::-webkit-scrollbar {
-        width: 10px;
-    }
 
     div.left::-webkit-scrollbar-thumb {
         background-color: #2f3542;
@@ -50,18 +61,18 @@
 
 
     a.card-link {
-        margin-left:50px;
+        margin-left:11%;
     }
 
     div.card {
-        width: 600px;
         margin:auto;
         border-radius: 15px;
     }
 
 
     div.card-left {
-        width: 280px;
+        position: relative;
+        width: 21vw;
         margin:auto;
         border-radius: 15px;
         background:#ffffff;
@@ -69,19 +80,12 @@
 
 
     div.history-text{
-        margin-left:20px;
+        margin-left:6%;
+        align-items: center;
     }
 
     h5.card-title {
         font-family: 'Nanum Myeongjo', serif;
-    }
-
-    #history-card-3 {
-        max-width: 550px;
-        max-height: 900;
-        margin:auto;
-        margin-top: 10%;
-        border-radius: 15px;
     }
 
     img.card-img-top{
@@ -134,8 +138,95 @@
     a.card-link{
         font-size : 20px;
         color: #232324;
-        padding: 15px;
+        padding: 7.5%;
+        padding-top:5%;
     }
+
+
+    .lib-panel {
+        margin-bottom: 20Px;
+        border-radius:15px;
+    }
+    .lib-panel img {
+        width: 98%;
+        background-color: transparent;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+
+    .lib-panel .row,
+    .lib-panel .col-md-6 {
+        padding: 0;
+        background-color: #FFFFFF;
+        width: 72.9vw;
+        border-radius: 15px;
+        height: 35vw;
+        position: relative;
+        overflow-y:scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+
+    .col-md-6::-webkit-scrollbar {
+        display: none;
+    }
+
+    .lib-panel .lib-row {
+        padding: 0 20px 0 20px;
+
+    }
+
+    .lib-panel .lib-row.lib-header {
+        background-color: #FFFFFF;
+        width:34vw;
+        font-size: 25px;
+        padding: 10px 20px 0 20px;
+        font-family: 'Nanum Myeongjo', serif;
+        border-radius: 15px;
+    }
+
+
+    .lib-panel .lib-row.lib-desc {
+        position: relative;
+        display: block;
+        font-size: 15px;
+    }
+    .lib-panel .lib-row.lib-desc a{
+        position: absolute;
+        width: 100%;
+        bottom: 10px;
+        left: 20px;
+    }
+
+    .row-margin-bottom {
+        margin-bottom: 20px;
+        margin-top: 8vh;
+        margin-left: 1.06vw;
+    }
+
+    .box-shadow {
+        -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+        box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+    }
+
+    .no-padding {
+        padding: 0;
+    }
+    #demo-comment{
+        padding:4%;
+    }
+    #demo-create-at {
+        color:#636160;
+    }
+
+
+
+
+}
 
 
 </style>
@@ -189,6 +280,7 @@
 
 
 
+
                         </script>
                         <button type="submit" class="btn btn-light btn-sm" onclick="Function()">삭제</button>
 
@@ -202,25 +294,34 @@
 
 <div class="right">
     <div class="containor">
-        <div class="card mb-3" id="history-card-3">
-            <img class="history-img" id="img" src="../static/logo2.png" , alt="" style="">
-
-            <div class="card-body" id="right-body">
-                <h5 class="card-title">
-                    <p id="demo-title"></p>
-                </h5>
-                <p id="demo-mood"></p>
-                <p class="card-text" id="demo-comment"></p>
-                <p id="demo-place"></p>
-                <p id="demo-custom-place"></p>
-                <p class="card-text"><small class="text-muted" id="demo-create-at"></small></p>
-
+        <div class="row row-margin-bottom">
+            <div class="col-md-5 no-padding lib-item" data-category="view">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img-show" id="img" src="../static/logo2.png" class="card-img">
+                        </div>
+                        <div class="col-md-6" id="col-md-6">
+                            <div class="lib-row lib-header" id="demo-title">
+                            </div>
+                            <div class="lib-header-seperator"></div>
+                            <div class="lib-row lib-desc" id="demo-mood">
+                            </div>
+                            <p class="card-text" id="demo-comment"></p>
+                            <div class="lib-row lib-desc" id="demo-place">
+                            </div>
+                            <div class="lib-row lib-desc" id="demo-custom-place">
+                            </div>
+                            <div class="lib-row lib-desc" id="demo-create-at">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
     </div>
 </div>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
                         window.myFunction = function(id) {
                             if(document.getElementById("title" + id) != null){
@@ -282,6 +383,7 @@
 
 
 
-</script>
+
+        </script>
 </body>
 {% endblock %}
