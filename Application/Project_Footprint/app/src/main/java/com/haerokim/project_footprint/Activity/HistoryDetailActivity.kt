@@ -3,8 +3,7 @@ package com.haerokim.project_footprint.Activity
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -155,6 +154,15 @@ class HistoryDetailActivity : AppCompatActivity() {
                             .setItems(sns, DialogInterface.OnClickListener { dialog, which ->
                                 when (which) {
                                     0 -> {  // 인스타그램 피드
+                                        val text: String = "${text_history_detail_title.text}\n\n${text_history_detail_content.text}\n#$historyPlaceTitle #발자취"
+
+                                        // 인스타그램 정책 상 Text 는 Intent 못하므로 클립보드에 담아줌
+                                        val clipboard: ClipboardManager =
+                                            getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                        val clip: ClipData = ClipData.newPlainText("content", text)
+                                        clipboard.setPrimaryClip(clip)
+
+                                        Toast.makeText(applicationContext, "클립보드에 본문이 복사되었습니다", Toast.LENGTH_LONG).show()
                                         val snsIntent = Intent(Intent.ACTION_SEND)
                                         val localPath: String =
                                             ImageDownloader().execute(historyImage).get()

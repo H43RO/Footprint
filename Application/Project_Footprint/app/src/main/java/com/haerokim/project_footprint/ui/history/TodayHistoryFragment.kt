@@ -140,7 +140,7 @@ class TodayHistoryFragment : Fragment() {
                     text_today_no_data.visibility = View.GONE
 
                     // 해당 날짜에 기록이 없을 경우 진입
-                    if (response.body()?.size == 0) {
+                    if (response.body()?.size == 0 || response.body() == null) {
                         today_history_list.visibility = View.GONE
                         text_today_no_data.visibility = View.VISIBLE
                         loading_today_history.visibility = View.GONE

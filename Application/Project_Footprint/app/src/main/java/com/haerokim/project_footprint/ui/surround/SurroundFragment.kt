@@ -201,6 +201,19 @@ class SurroundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewManager = LinearLayoutManager(context)
+        viewAdapter =
+            PlaceListAdapter(
+                surroundPlaceList,
+                requireContext()
+            )
+
+        // 주변 장소 리스트를 보여주는 RecyclerView 설정
+        recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
 
         viewModel.scanMode.observe(viewLifecycleOwner, Observer {
             if (it == false) {
@@ -209,20 +222,6 @@ class SurroundFragment : Fragment() {
                 text_state.text = "발자취 따라가기를 활성화 해주세요"
             } else {
                 text_state.text = "가까운 주변 장소를 탐색합니다"
-
-                viewManager = LinearLayoutManager(context)
-                viewAdapter =
-                    PlaceListAdapter(
-                        surroundPlaceList,
-                        requireContext()
-                    )
-
-                // 주변 장소 리스트를 보여주는 RecyclerView 설정
-                recyclerView = view.findViewById<RecyclerView>(R.id.surround_place_list).apply {
-                    setHasFixedSize(true)
-                    layoutManager = viewManager
-                    adapter = viewAdapter
-                }
             }
         })
     }

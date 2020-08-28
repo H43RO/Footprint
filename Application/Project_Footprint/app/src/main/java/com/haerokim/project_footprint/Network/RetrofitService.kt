@@ -16,7 +16,7 @@ interface RetrofitService {
     /** PLACE 관련 API**/
 
     // 장소 정보 요청
-    @GET("api/places")
+    @GET("api/places/")
     fun requestNaverPlaceID(
         @Query("beacon_uuid") UUID: String
     ): Call<ArrayList<NaverPlaceID>> //Response : NaverPlaceID
