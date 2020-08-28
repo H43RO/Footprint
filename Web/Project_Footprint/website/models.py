@@ -124,8 +124,8 @@ class HotPlace(models.Model):
     businessHours = models.CharField(max_length=100, blank=True, null=True,)
     description = models.CharField(max_length=200, blank=True, null=True,)
     imageSrc = models.CharField(max_length=1000,blank=True, null=True)
-    menuName = jsonfield.JSONField(blank=True, null=True)
-    menuPrice = jsonfield.JSONField(blank=True, null=True)
+    menuName = JSONField(blank=True, null=True)
+    menuPrice = JSONField(blank=True, null=True)
     counts = models.IntegerField(default=0, null=True)
 
     def __int__(self):
