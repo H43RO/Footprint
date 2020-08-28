@@ -3,6 +3,10 @@ from .models import History
 from django.utils import timezone, dateformat
 
 
+"""
+History 조회, 생성, 삭제 Serializer
+'created_at','mood' field가 null일 경우, 해당 인스턴스에 자동으로 값을 넣어줌.
+"""
 class HistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = History
@@ -20,8 +24,10 @@ class HistorySerializer(serializers.ModelSerializer):
         return data
 
 
-
-
+"""
+History 수정 Serializer
+'created_at','mood' field가 null일 경우, 해당 인스턴스에 자동으로 값을 넣어줌.
+"""
 class HistoryPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = History
