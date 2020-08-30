@@ -494,7 +494,7 @@ def place_detail_crawl(pk):
 
 # 크롤링한 Hotplace 데이터를 Database에 저장함
 def add_to_db(crawled_items):
-    db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='rlaguswns5', db='footprint', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     item_naverPlaceID = crawled_items['naverPlaceID']
     item_title = crawled_items['title']
