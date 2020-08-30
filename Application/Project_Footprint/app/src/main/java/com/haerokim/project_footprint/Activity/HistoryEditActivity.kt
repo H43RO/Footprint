@@ -164,15 +164,18 @@ class HistoryEditActivity : AppCompatActivity() {
                 id: Long
             ) {
                 when (position) {
-                    0 -> {
-
-                    }
-
-                    1 -> {
-
-                    }
+                    0 -> historyMood = "기분 좋았던 순간"
+                    1 -> historyMood = "기뻤던 순간"
+                    2 -> historyMood = "평화로웠던 순간"
+                    3 -> historyMood = "황홀했던 순간"
+                    4 -> historyMood = "행복했던 순간"
+                    5 -> historyMood = "뭉클했던 순간"
+                    6 -> historyMood = "우울했던 순간"
+                    7 -> historyMood = "당황했던 순간"
+                    8 -> historyMood = "화났던 순간"
+                    9 -> historyMood = "아쉬웠던 순간"
+                    10 -> historyMood = "최악이었던 순간"
                 }
-//                TODO("Spinner 메뉴 (기분) Int 값 Django History 모델과 조율 필요")
             }
         }
 
