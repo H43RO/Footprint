@@ -6,129 +6,170 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<style>
+<style type="text/css">
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 
-    .html,body{
-    background-color: #f9f9f9;
+    .html,
+    body {
+        background-color: #f9f9f9;
+        font-family: 'NanumSquare', sans-serif;
     }
 
-    .container{
-    padding-top: 100px;
-    font-family: 'NanumSquare', sans-serif;
-    font-weight:bold;
-    }
-
-    .card-body{
-    font-weight:bold;
-    text-align: center;
-    }
-
-    .border-secondary{
+    .card {
         border-radius: 15px;
+        
     }
 
-    .card-title{
-    margin-top: 5px;
-    margin-left: 20px;
-    font-family: 'NanumSquare', sans-serif;
-    font-weight:bold;
-    font-size: 2vw;
+    .card-body {
+        font-weight: bold;
+        text-align: center;
     }
 
-    .user-info{
-    width: 27vw;
-    height: 3.3vw;
-    margin-left: 2vw;
-    margin-bottom: 1.5vw;
-    padding: 1.2%;
-    font-size: 1.3vw;
-    font-weight:bold;
-    text-align: left;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
-    background-color: #f2f2f2;
+    .card-title {
+        margin-top: 5px;
+        margin-left: 20px;
+        font-family: 'NanumSquare', sans-serif;
+        font-weight: bold;
+        font-size: 2vw;
     }
 
-    .user-img{
-    margin-right: 4vw;
-    padding: 12px;
-    width: 25vw;
-    height: 22vw;
-    border-style: none;
-    border-radius: 15px;
-    background-color: #f2f2f2;
-    float : right;
+    .col-sm {
+        padding-top: 100px;
     }
 
-    .update-btn{
-    color: black;
-    width: 13%;
-    height: 7%;
-    font-size: 1.5vw;
-    font-weight:bold;
-    background-color: #c4c4c4;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
+    .user-info {
+        width: 22vw;
+        height: 3.3vw;
+        margin-bottom: 1.5vw;
+        padding: 0.8vw;
+        font-size: 1.2vw;
+        font-weight: bold;
+        text-align: left;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: black;
+        background-color: #f2f2f2;
+    }
+
+    .user-img {
+        padding: 12px;
+        width: 20vw;
+        height: 20vw;
+        border-style: none;
+        border-radius: 15px;
+        background-color: #f2f2f2;
+        float: right;
+    }
+
+    .update-btn {
+        display: block;
+        margin: 0 auto;
+        color: black;
+        width: 10vw;
+        height: 3.5vw;
+        font-size: 1.5vw;
+        font-weight: bold;
+        text-align: center;
+        background-color: #c4c4c4;
+        border-style: none;
+        border-radius: 10px;
+    }
+
+    .myinfo {
+        display: inline-block;
+        vertical-align: middle;
+        max-width: 100%;
+    }
+
+    .right {
+        float: right;
+        padding: 10 0 10 50;
+    }
+
+    .left {
+        float: left;
+        padding: 10 50 10 0;
+
+    }
+
+    @media screen and (max-width: 960px) {
+        .right {
+            float: right;
+            padding: 10 0 10 30;
+        }
+
+        .left {
+            float: left;
+            padding: 10 30 10 0;
+
+        }
+        .user-info {
+            width: 22vw;
+            font-size: 1.2vw;
+            padding: 0.9vw;
+            margin-left:-25px;
+        }
+        .update-btn{
+            height: 3vh;
+
+        }
     }
 </style>
 
 <div class="container p-5">
-<div class="container">
-    <div class="filter_content section--search_category">
-        <div class="section--category_group">
-            <ul class="list--category depth1" style="list-style:none">
-            </ul>
-        </div>
-    </div>
-    </div>
+
     {% for user in users %}
     <div class="row userinfo" style="margin:20px auto;">
-        <div class="col-sm-12">
-            <div class="card border-secondary">
-            <div class="card-body">
-                <h2 class="card-title">{{ user.email }}님의 회원정보</h2>
-                <hr>
-                    <picture>
-                    {% if user.image %}
-                    <img class="user-img" id="image{{user.id}}" src="{{user.image.url }}" >
-                    {% else %}
-                    <img class="user-img" src="{% static '../static/profile_default.png' %}" >
-                    {% endif %}
-                    </picture>
-                    <div class="user-info">
-                        이메일  :  {{ user.email }}
-                    </div>
-                    <div class="user-info">
-                        닉네임  :  {{ user.nickname }}
-                    </div>
-                    <div class="user-info">
-                        생년월일  :  {{ user.birth_date }}
-                    </div>
-                    <div class="user-info">
-                        나이  :  {{ user.age }}
-                    </div>
-                {% if user.gender == 0 %}
-                    <div class="user-info">
-                            성별  :  남자
-                    </div>
-                {% elif user.gender == 1 %}
-                        <div class="user-info">
-                            성별  :  여자
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.email }}님의 회원정보</h2>
+                    <hr>
+                    <div class="myinfo">
+                        <div class="right">
+                            <picture>
+                                {% if user.image %}
+                                <img class="user-img" id="image{{user.id}}" src="{{user.image.url }}">
+                                {% else %}
+                                <img class="user-img" src="{% static '../static/profile_default.png' %}">
+                                {% endif %}
+                            </picture>
                         </div>
-                {% else %}
-                        <div class="user-info">
-                            성별  :  not specified
+                        <div class="left">
+                            <div class="user-info">
+                                이메일 : {{ user.email }}
+                            </div>
+                            <div class="user-info">
+                                닉네임 : {{ user.nickname }}
+                            </div>
+                            <div class="user-info">
+                                생년월일 : {{ user.birth_date }}
+                            </div>
+                            <div class="user-info">
+                                나이 : {{ user.age }}
+                            </div>
+                            {% if user.gender == 0 %}
+                            <div class="user-info">
+                                성별 : 남자
+                            </div>
+                            {% elif user.gender == 1 %}
+                            <div class="user-info">
+                                성별 : 여자
+                            </div>
+                            {% else %}
+                            <div class="user-info">
+                                성별 : not specified
+                            </div>
+                            {% endif %}
                         </div>
-                {% endif %}
-                <a href = "{% url 'user_info_update' %}?id={{ user.id }}" class="btn float update-btn">수정하기</a>
+                    </div>
+                    <a href="{% url 'user_info_update' %}?id={{ user.id }}" class="btn float update-btn">수정하기</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-    {% endfor %}
+{% endfor %}
 </div>
 {% endblock %}
