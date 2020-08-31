@@ -70,27 +70,6 @@ class SignInForm(AuthenticationForm):
         fields = ['email', 'password']
 
 
-class PlaceRegisterForm(ModelForm):
-    class Meta:
-        model = Place
-        fields = ['title', 'naver_place_id', 'place_div']
-        labels = {
-            'title': _('가게명 '),
-            'naver_place_id': _('Naver Place Id '),
-            'place_div': _('장소 구분 ')
-        }
-        help_texts = {
-            'title': _('가게명을 입력해주세요.'),
-            'naver_place_id': _('Naver Place Id를 입력해주세요.'),
-            'place_div': _('해당하는 숫자를 입력해주세요.(관광지: 0, 식당: 1)')
-        }
-        error_messages = {
-            'title': {
-                'max_length': _('가게명을 30자 이내로 적어주세요')
-            },
-        }
-
-
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
@@ -167,11 +146,11 @@ class CheckPasswordForm(forms.Form):
                 self.add_error('password', '비밀번호가 일치하지 않습니다.')
 
 
-"""
-PasswordChangeForm 을 상속해서 사용해면 변경할 비밀번호 뿐만 아니라 
-현재 비밀번호도 입력 받을 수 있으므로 보안을 더 강화할 수 있음
-"""
 class UserPasswordUpdateForm(PasswordChangeForm):
+    """
+    PasswordChangeForm 을 상속해서 사용해면 변경할 비밀번호 뿐만 아니라
+    현재 비밀번호도 입력 받을 수 있으므로 보안을 더 강화할 수 있음
+    """
     old_password = forms.CharField(
         label=_("현재 비밀번호"),
         strip=False,

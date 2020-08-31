@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'ckeditor_uploader',
     'ckeditor',
-    'debug_toolbar',
 ]
 
 REST_FRAMEWORK = {
@@ -76,8 +75,6 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -106,14 +103,11 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'footprint',
+        'NAME':  'footprint',
         'USER': 'root',
-        'PASSWORD': 'rlaguswns5',
+        'PASSWORD': '080799',
         'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
-        }
+        'PORT': '3306'
     }
 }
 

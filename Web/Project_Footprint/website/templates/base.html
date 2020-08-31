@@ -22,10 +22,7 @@
 	<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
-	<!-- <link rel="stylesheet" href="{% static 'css/style-large.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/style-medium.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/style-small.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/style-xsmall.css' %}" />  -->
+
 	{% block extrahead %}
 	{% endblock %}
 
@@ -36,6 +33,11 @@
 		}
 		body{
 		   background-color : #f9f9f9;
+			margin: 0;
+			height: 100vh
+		}
+		#skel-layers-hiddenWrapper{
+			height:0 !important;
 		}
 	</style>
 	<div id="stats">
