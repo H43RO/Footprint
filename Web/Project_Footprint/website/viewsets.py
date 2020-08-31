@@ -3,7 +3,6 @@ from .place_info_serializers import PlaceSerializer
 from .history_serializer import HistorySerializer, HistoryPutSerializer
 from .user_info_serializer import UserListSerializer, UserUpdateSerializer
 from .user_serializers import UserLoginSerializer
-from .place_id_serializers import PlaceIdSerializer
 from .notice_serializers import NoticeSerializer
 from rest_framework import viewsets, permissions, generics, status, mixins, serializers
 from rest_framework.response import Response
