@@ -35,6 +35,10 @@ INSTALLED_APPS = [
     'crispy_forms',
     'ckeditor_uploader',
     'ckeditor',
+    #for debug
+    'debug_toolbar',
+    'silk',
+    'optimized_image',
 ]
 
 REST_FRAMEWORK = {
@@ -75,6 +79,13 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #silk middleare
+    'silk.middleware.SilkyMiddleware',
+
+    #debug_toolbar middleware
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -103,11 +114,14 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':  'footprint',
+        'NAME': 'footprint',
         'USER': 'root',
-        'PASSWORD': '080799',
+        'PASSWORD': 's9423093',
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+        }
     }
 }
 
@@ -118,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'djanbgo.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -155,8 +169,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'abc@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'abc' ## write your email password
+EMAIL_HOST_USER = 'pcj980@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'ckswhd123~' ## write your email password
 EMAIL_USE_TLS = True
 
 #로그인 세션 유지
@@ -166,3 +180,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+SILKY_PYTHON_PROFILER = True
+OPTIMIZED_IMAGE_METHOD = 'pillow'

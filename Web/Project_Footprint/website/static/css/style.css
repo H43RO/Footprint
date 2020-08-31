@@ -887,14 +887,15 @@
 
 /* Header */
 
-	body.landing #header {
+	/* body.landing #header {
 		background-color: transparent;
 		background-image: url(../images/dark_tint.png);
+		background-image: url(../images/bokeh_car_lights_bg.jpg);
 		position: absolute;
 		left: 0;
 		top: 0;
 
-	}
+	} */
 
 		body.landing #header nav a {
 			color: rgba(255, 255, 255, 0.5);
