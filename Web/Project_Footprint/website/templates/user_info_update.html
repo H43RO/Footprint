@@ -10,152 +10,191 @@
     @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
     @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 
-    .html,body{
-    background-color: #f9f9f9;
+    .html,
+    body {
+        background-color: #f9f9f9;
     }
 
-    .container{
-    font-family: 'NanumSquare', sans-serif;
-    font-weight:bold;
-    padding-top: 100px;
+    .container {
+        font-family: 'NanumSquare', sans-serif;
+        font-weight: bold;
+        padding-top: 100px;
+    }
+    .card{
+        border-radius: 10px;
     }
 
-    .card-body{
-    font-weight:bold;
-    text-align: center;
-    border-radius: 20px;
+    .card-body {
+        font-weight: bold;
+        text-align: center;
+        border-radius: 20px;
     }
 
-    .card-title{
-    margin-top: 5px;
-    margin-left: 20px;
-    font-family: 'NanumSquare', sans-serif;
-    font-weight:bold;
-    font-size: 2vw;
+    .card-title {
+        margin-top: 5px;
+        margin-left: 20px;
+        font-family: 'NanumSquare', sans-serif;
+        font-weight: bold;
+        font-size: 2vw;
     }
 
     .user-info {
-    width: 45%;
-    height: 1%;
-    margin-top: 10px;
-    margin-left: 15px;
-    margin-bottom: 10px;
-    font-weight:bold;
-    font-size: 1.3vw;
-    text-align: center;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
-    background-color: #f3f3f3;
-    float: left;
+        width: 22vw;
+        height: 1%;
+        margin-top: 10px;
+        margin-left: 15px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 1.3vw;
+        text-align: center;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: black;
+        background-color: #f3f3f3;
+        float: left;
     }
 
     .user-img {
-    margin-right: 1.5vw;
-    padding: 12px;
-    padding-left: 18px;
-    width: 25vw;
-    height: 22vw;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
-    background-color: #f3f3f3;
-    float: right;
+        margin-right: 1.5vw;
+        padding: 12px;
+        padding-left: 18px;
+        width: 25vw;
+        height: 22vw;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: black;
+        background-color: #f3f3f3;
+        float: right;
     }
 
-    .confirm_btn{
-    color: black;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    margin-left: 15px;
-    margin-right: 10px;
-    width: 14%;
-    height: 8%;
-    font-size: 1.1vw;
-    font-weight:bold;
-    background-color: #c4c4c4;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    float: left;
+    .confirm_btn {
+        color: black;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        margin-left: 15px;
+        margin-right: 10px;
+        width: 14%;
+        height: 8%;
+        font-size: 1.1vw;
+        font-weight: bold;
+        background-color: #c4c4c4;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        float: left;
     }
 
-    .delete_btn{
-    color: black;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    width: 14%;
-    height: 8%;
-    font-size: 1.1vw;
-    font-weight:bold;
-    background-color: #f56042;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    float: left;
+    .delete_btn {
+        color: black;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        width: 14%;
+        height: 8%;
+        font-size: 1.1vw;
+        font-weight: bold;
+        background-color: #f56042;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        float: left;
     }
 
-    .pw_btn{
-    color: black;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    margin-right: 10px;
-    width: 14%;
-    height: 8%;
-    font-size: 1.1vw;
-    font-weight:bold;
-    background-color: #c4c4c4;
-    border-style: none;
-    border-radius: 10px 10px 10px 10px;
-    float: left;
+    .pw_btn {
+        color: black;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        margin-right: 10px;
+        width: 14%;
+        height: 8%;
+        font-size: 1.1vw;
+        font-weight: bold;
+        background-color: #c4c4c4;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        float: left;
+    }
+
+    #id_age {
+        border: none;
+        background-color: transparent;
+        margin-left: -5vw;
+    }
+    #id_birth_date, #id_nickname, #id_gender, #id_age{
+        background-color: #f3f3f3;
+        height: 3vw;
+
+    } 
+    @media screen and (max-width: 960px) {
+        #id_birth_date, #id_nickname, #id_gender, #id_age{
+            font-size: 1.1rem;
+
+        }
+        #id_age{
+            margin-left: -4vw;
+        }
+        #id_image{
+            font-size:0.8rem;
+        }
+        .user-info {
+            width: 28vw;
+            border-radius: 5px;
+        }
+        .user-img {
+            width: 25vw;
+
+        }
+        button.btn.confirm_btn, button.btn.pw_btn, button.btn.delete_btn{
+            font-size:0.8rem;
+
+        }
     }
 
 </style>
 
 <div class="container p-5">
-<div class="container">
-    <div class="filter_content section--search_category">
-        <div class="section--category_group">
-            <ul class="list--category depth1" style="list-style:none">
-            </ul>
-        </div>
-    </div>
+    <div class="container">
         <div class="row userinfo" style="margin:20px auto;">
             <div class="col-sm-12">
-                <div class="card border-secondary">
+                <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">{{ user.email }}님의 회원정보 수정</h2>
                         <hr>
                         <form action="{% url 'user_info_update' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ form.instance.id }}"/>
+                            <input type="hidden" name="id" value="{{ form.instance.id }}" />
                             {% for field in form %}
+                            <div class="myinfo">
                                 {% if field.label == '프로필 이미지' %}
-                                    <div class = "user-img">
+                                <div class="user-img">
                                     <img id="image{{field.id}}" src="{{ field.image.url }}" type="file">
-                                        {{ field }}
-                                    </div>
+                                    {{ field }}
+                                </div>
                                 {% elif field.label == '나이' %}
-                                    <div class="user-info">
-                                        {{ field }}
-                                    </div>
+                                <div class="user-info">
+                                    {{ field }}
+                                </div>
                                 {% else %}
-                                    <div class="user-info">
-                                        {{ field }}
-                                    </div>
+                                <div class="user-info">
+                                    {{ field }}
+                                </div>
                                 {% endif %}
-                                {% for error in field.errors %}
-                                    <p style="color: red">{{ error }}</p>
-                                {% endfor %}
+                            </div>
+                            {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
                             {% endfor %}
-                            <button class="btn confirm_btn" type="submit" >수정완료</button>
+                            {% endfor %}
+                            <div class="update-btn">
+                                <button class="btn confirm_btn" type="submit">수정완료</button>
+                            </div>
                         </form>
-                        <form action="{% url 'user_password_update' %}" >
-                            {% csrf_token %}
-                            <button class="btn pw_btn" >PW변경</button></a>
-                        </form>
-                        <form action="{% url 'user_delete' %}" >
-                            {% csrf_token %}
-                            <button class="btn delete_btn" >탈퇴하기</button></a>
-                        </form>
+                        <div class="buttons">
+                            <form action="{% url 'user_password_update' %}">
+                                {% csrf_token %}
+                                <button class="btn pw_btn">PW변경</button></a>
+                            </form>
+                            <form action="{% url 'user_delete' %}">
+                                {% csrf_token %}
+                                <button class="btn delete_btn">탈퇴하기</button></a>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
