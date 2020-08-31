@@ -27,13 +27,13 @@ class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
         label="비밀번호",
         strip=False,
-        widget=forms.PasswordInput,
-        help_text="8~25글자 사이의 비밀번호를 입력해주세요"
+        widget=forms.PasswordInput(render_value=True),
+        help_text="8~25글자 사이의 비밀번호를 입력해주세요",
     )
     password2 = forms.CharField(
         label="비밀번호 확인",
         strip=False,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(render_value=True),
         help_text='비밀번호를 재입력해주세요',
     )
     class Meta:
@@ -55,19 +55,56 @@ class SignUpForm(UserCreationForm):
         }
 
 
-class SignInForm(AuthenticationForm):
-    username = forms.EmailField(
+# class SignInForm(AuthenticationForm):
+#     username = forms.EmailField(
+#         label=_("이메일"),
+#     )
+#     password = forms.CharField(
+#         label=_("비밀번호"),
+#         strip=False,
+#         widget=forms.PasswordInput(render_value=True)
+#     )
+#     class Meta:
+#         model = User
+#         fields = ['email', 'password']
+
+class SignInForm(forms.Form):
+    email = forms.EmailField(
         label=_("이메일"),
-        widget=forms.EmailInput,
+        widget=forms.EmailInput()
     )
     password = forms.CharField(
         label=_("비밀번호"),
         strip=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}, render_value=True),
     )
-    class Meta:
-        model = User
-        fields = ['email', 'password']
+
+    # error_messages = {
+    #     'invalid_login': _(
+    #         "Please enter a correct %(username)s and password. Note that both "
+    #         "fields may be case-sensitive."
+    #     ),
+    #     'inactive': _("This account is inactive."),
+    # }
+
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
+        self.user_cache = None
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget = forms.EmailInput(attrs={'placeholder': '이메일'})
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['password'].widget = forms.PasswordInput(attrs={'placeholder': '비밀번호'})
+        self.fields['password'].widget.attrs['class'] = 'form-control'
+        
+    def clean(self):
+        # email = self.cleaned_data.get('email')
+        # password = self.cleaned_data.get('password')
+        return self.cleaned_data
+
+    def get_user(self):
+        return self.user_cache
+
+
 
 
 class HistoryForm(forms.ModelForm):

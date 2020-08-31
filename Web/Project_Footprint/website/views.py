@@ -89,14 +89,16 @@ def signin(request):
     """
     if request.method == 'POST':
         form = SignInForm(data=request.POST)
+        # print(request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
                 return HttpResponseRedirect('../index/')
-        else:
-            messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
-            return HttpResponseRedirect('../signin/')
+            else:
+                messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
+                return HttpResponseRedirect('../signin/')
+
     else:
         form = SignInForm()
     return render(request, 'signin.html', {'form': form})
