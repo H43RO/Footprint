@@ -236,7 +236,7 @@ class HomeFragment : Fragment(), PermissionListener {
         TedPermission.with(context)
             .setPermissionListener(this)
             .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
-            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
             .check()
 
         // 발자취 따라가기 ON/OFF 상태에 따른 동작

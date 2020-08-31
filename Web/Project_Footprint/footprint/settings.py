@@ -155,8 +155,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'aa@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'aaaa' ## write your email password
+EMAIL_HOST_USER = 'abc@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'abc' ## write your email password
 EMAIL_USE_TLS = True
 
 #로그인 세션 유지
