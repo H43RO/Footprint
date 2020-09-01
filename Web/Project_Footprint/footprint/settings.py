@@ -57,7 +57,7 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_ENABLED': True,
     'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},  
     'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
-    'VERIFICATION_FROM_EMAIL' : 'h2is1234@gmail.com',
+    'VERIFICATION_FROM_EMAIL' : 'pcj0198@gmail.com',
     'SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL' : True,
     'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
     'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
@@ -155,12 +155,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'abc@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'abc' ## write your email password
+EMAIL_HOST_USER = 'aa@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'aaa' ## write your email password
 EMAIL_USE_TLS = True
 
 #로그인 세션 유지
-SESSION_COOKIE_AGE = 60*60
+SESSION_COOKIE_AGE = 60 * 60
 SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
