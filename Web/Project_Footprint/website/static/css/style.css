@@ -888,13 +888,12 @@
 /* Header */
 
 	body.landing #header {
-		background-color: transparent;
+		background-color: #383b43;
 		background-image: url(../images/dark_tint.png);
-		position: absolute;
+		position: static;
 		left: 0;
 		top: 0;
-
-	}
+		}
 
 		body.landing #header nav a {
 			color: rgba(255, 255, 255, 0.5);
@@ -1216,8 +1215,8 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 100%;
-	font-family: 'NanumSquare', sans-serif;
 	}
+	
 	#signin .container{
 	height: 100%;
 	align-content: center;
@@ -1229,8 +1228,8 @@
 	height: 45px;
 	padding: 20px;
 	border-style: none;
+	color:black;
 	border-radius: 10px 10px 10px 10px;
-	color: white;
 	background-color: #d9dbd9;
 	opacity:0.5;
 	}
@@ -1239,6 +1238,7 @@
 	height: 370px;
 	margin-top: 140px;
 	margin-bottom: 50px;
+	color: white;
 	width: 310px;
 	border-style: none;
 	background-color: rgba(255,255,255,0.0);
@@ -1286,8 +1286,8 @@
 		height: 100%;
 		}
 	
-		#signup .container1{
-		font-family: 'NanumSquare', sans-serif;
+		.container1{
+		/* font-family: 'NanumSquare', sans-serif; */
 		float: right;
 		margin-right: 300px;
 		width: 400px;

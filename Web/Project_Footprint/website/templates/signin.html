@@ -2,22 +2,7 @@
 {% load static %}
 
 
-{% block extrahead %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!-- <style>
 
-    html,body{
-    background-image: url('../static/background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 100%;
-    font-family: 'NanumSquare', sans-serif;
-    }
-
-</style> -->
-{% endblock %}
 <!------ Include the above in your HEAD tag ---------->
 
 
@@ -94,8 +79,89 @@
 		font-weight:bold;
 		font-size: 90%;
 		}
-	</style>
+    </style>
 </head>-->
+<style>
+        /* body{
+        background-image: url('../static/background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        font-family: 'NanumSquare', sans-serif;
+        } */
+
+        /* .container{
+        height: 100%;
+        background-image: url('../static/background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        font-family: 'NanumSquare', sans-serif;
+        align-content: center;
+        border-style: none;
+        }
+
+
+        .form-control {
+        height: 45px;
+        padding: 20px;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: black;
+        background-color: #d9dbd9;
+        opacity:0.5;
+        }
+
+        .card{
+        height: 370px;
+        margin-top: 140px;
+        margin-bottom: 50px;
+        width: 310px;
+        border-style: none;
+        background-color: rgba(255,255,255,0.0);
+        }
+
+        .card-header {
+		text-align : center ;
+		border-style: none;
+        }
+
+		.card-footer {
+        border-style: none;
+        color: white;
+        }
+
+        .card-footer a{
+        color: white;
+        }
+
+        .login_btn{
+        margin-top: 15px;
+        color: white;
+        font-weight:bold;
+        background-color: #293263;
+        width: 270px;
+        height: 45px;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        }
+
+		input::placeholder {
+		color:white;
+		font-weight:bold;
+		font-size: 90%;
+		}     */
+        .form-control {
+            /* height: 45px;
+            padding: 20px; */
+            border-style: none;
+            border-radius: 10px 10px 10px 10px;
+            color: white;
+            background-color: #d9dbd9;
+            opacity:0.5;
+        }
+
+</style>
 
 {% block content %}
 <div id = "signin">
@@ -109,10 +175,12 @@
 					<form method="post" >
 						{% csrf_token %}
 						<div class="input-group form-group">
-							<input class="form-control" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" type="text" placeholder="이메일" />
+                            <!-- <input class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" type="text" placeholder="이메일" /> -->
+                             {{form.email}} 
 						</div>
 						<div class="input-group form-group">
-							<input class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" type="password" placeholder="비밀번호" />
+                            <!-- <input class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" type="password" placeholder="비밀번호" /> -->
+                            {{ form.password}}
 						</div>
 						 {% if messages %}
 							{% for message in messages %}
