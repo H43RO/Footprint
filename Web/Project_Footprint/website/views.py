@@ -68,7 +68,9 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                return HttpResponseRedirect('../list/')
+                
+                return HttpResponseRedirect('../signup_email_confirm/')
+
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -91,9 +93,10 @@ def signin(request):
                     return HttpResponseRedirect('../index/')
                 else:
                     messages.error(request, '인증되지 않은 이메일입니다.')
+                    return HttpResponseRedirect('../signin/')
             else:
                 messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
-
+                return HttpResponseRedirect('../signin/')
     else:
         form = SignInForm()
     return render(request, 'signin.html', {'form': form})
@@ -149,14 +152,13 @@ def myinfo(request):
         }
         return render(request, 'myinfo.html', context)
     else:
-        return HttpResponseRedirect('../signin/')
-        
+        return HttpResponseRedirect('/signin/')
 
 
 def place_detail(request, id):
     """
-        장소 자세히보기
-        크롤링한 데이터를 기반으로 한 장소 자세히보기 페이지 보여줌
+    장소 자세히보기
+    크롤링한 데이터를 기반으로 한 장소 자세히보기 페이지 보여줌
     """
     context = {
         'places': place_detail_crawl(pk=id)
@@ -173,12 +175,7 @@ def history(request):
     """
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/signin/')
-    if request.method == 'POST' and 'id' in request.POST:
-        item = get_object_or_404(History, id=id, user=request.user)
-        item.delete()
-        return redirect('history-delete')
     historys = History.objects.filter(user_id=request.user.pk).order_by('created_at')
-    print(historys)
     context = {
         'historys': historys,
     }
@@ -195,14 +192,20 @@ def history_create(request):
             request.POST._mutable = True
             formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
             request.POST['created_at'] = formatted_date
+            request.POST['user'] = request.user
             form = HistoryForm(request.POST, request.FILES)
             if form.is_valid():
                 new_item = form.save()
             return HttpResponseRedirect('../')
         else:
             form = HistoryForm(request.POST, request.FILES)
+            request.POST._mutable = True
+            request.POST['user'] = request.user
             if form.is_valid():
                 new_item = form.save()
+            else:
+                messages.error(request, '작성 시간은 YYYY-mm-dd h:m:s 양식입니다.')
+                return redirect('history-create')
             return HttpResponseRedirect('../')
     form = HistoryForm(request.FILES)
     return render(request, 'history_create.html', {'form': form})
@@ -278,7 +281,7 @@ def user_delete(request):
     else:
         password_form = CheckPasswordForm(request.user)
         return render(request, 'user_delete.html', {'password_form': password_form})
-    return HttpResponseRedirect("../list")
+    return HttpResponseRedirect("../index")
 
 
 def user_password_update(request):
@@ -403,12 +406,16 @@ def place_detail_crawl(pk):
     naverPlaceID = pk
     result = requests.get(f'{URL}={pk}')
     soup = BeautifulSoup(result.content, 'html.parser')
+
     title = soup.find("strong", {"class": "name"})
     title = str(title.string).strip()
+
     category = soup.find("span", {"class": "category"})
     category = str(category.string).strip()
+
     location = soup.find("span", {"class": "addr"})
     location = str(location.string).strip()
+
     businessHours = soup.find("span", {"class": "time"})
     if businessHours is not None:
         if businessHours is soup.find("span", {"class": "highlight"}):
@@ -417,6 +424,7 @@ def place_detail_crawl(pk):
             businessHours = " "
     else:
         businessHours = " "
+
     desc = soup.find("div", {"class": "info"})
     description = desc.find("span", {"class": "txt"})
     if description is not None:
@@ -427,8 +435,10 @@ def place_detail_crawl(pk):
             description = str(description.string).strip()
     else:
         description = " "
+
     URL_IMG = 'https://store.naver.com/restaurants/detail?id'
     result_IMG = requests.get(f'{URL_IMG}={pk}&tab=photo')
+
     soups = BeautifulSoup(result_IMG.content, 'html.parser')
     area = soups.find("div", {"class": "list_photo"})
     a = area.find("a")
@@ -437,6 +447,7 @@ def place_detail_crawl(pk):
     else:
         a = area.find("div")
         imageSrc = a.find("img").get("src")
+
     menuName = []
     list_menu = soup.find("ul", {"class": "list_menu"})
     if list_menu is not None:
@@ -449,6 +460,7 @@ def place_detail_crawl(pk):
         menuName = []
         menuNames = ""
     price = soup.find_all("em", {"class": "price"})
+
     menuPrice = []
     if price is not None:
         for item in price:
@@ -458,6 +470,7 @@ def place_detail_crawl(pk):
     else:
         menuPrice = []
         menuPrices = ""
+
     res = {
         'naverPlaceID': naverPlaceID,
         'title': title,
@@ -472,6 +485,7 @@ def place_detail_crawl(pk):
         'menuPrice': menuPrice,
     }
     add_to_db(res)
+
     return res
 
 
@@ -479,7 +493,7 @@ def add_to_db(crawled_items):
     """
      크롤링한 Hotplace 데이터를 Database(Mysql)에 저장함
     """
-    db = pymysql.connect(host='localhost', user='root', password='s9423093', db='footprint', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='!khc532412', db='foot_print', charset='utf8')
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}

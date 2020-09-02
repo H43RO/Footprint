@@ -30,6 +30,7 @@ open class FCMService : FirebaseMessagingService() {
                 sendNotification(remoteMessage.data)
                 Log.d(TAG, "Message data payload: " + remoteMessage.data)
             }
+
             // 알림 메시지인 경우
             if (remoteMessage.notification != null) {
                 val remoteMessageData = mapOf(

@@ -8,230 +8,9 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="{% static 'js/history.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/history.css' %}">
 
-<style>
-    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
-    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-    .cont {
-        margin: 0;
-        height: 100vh;
-        width: 100%;
-    }
-    div.left {
-        width: 25%;
-        margin: 0 !important;
-        height: 100vh;
-        float: left;
-        box-sizing: border-box;
-        background: #f9f9f9;
-        overflow-y:scroll;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        font-family: 'NanumSquare', sans-serif;
-        margin:auto;
-        margin-top:7.2%;
-    }
-    .left::-webkit-scrollbar {
-        display: none;
-    }
-
-    div.right {
-        width: 75%;
-        margin: 0 !important;
-        height: 100vh;
-        float: right;
-        box-sizing: border-box;
-        background: #f9f9f9;
-        font-family: 'NanumSquare', sans-serif;
-        margin-top:7.2%;
-
-    }
-
-
-    div.left::-webkit-scrollbar-thumb {
-        background-color: #2f3542;
-        border-radius: 10px;
-        background-clip: padding-box;
-        border: 2px solid transparent;
-    }
-
-    div.left::-webkit-scrollbar-thumb {
-        background-color: grey;
-        border-radius: 10px;
-        box-shadow: inset 0px 0px 5px white;
-    }
-
-
-    a.card-link {
-        margin-left:11%;
-    }
-
-    div.card {
-        margin:auto;
-        border-radius: 15px;
-    }
-
-
-    div.card-left {
-        position: relative;
-        width: 21vw;
-        margin:auto;
-        border-radius: 15px;
-        background:#ffffff;
-    }
-    .history{
-        margin-top: 100px
-    }
-
-    div.history-text{
-        margin-left:6%;
-        align-items: center;
-    }
-
-    h4.card-title {
-        font-family: 'Nanum Myeongjo', serif;
-        font-weight: 800;
-        padding-top: 10px;
-    }
-
-    img.card-img-top{
-        max-width: 100%;
-        max-height: 100%;
-        margin:auto;
-        object-fit: contain;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
-
-    img.history-img{
-        max-width:100%;
-        max-height: 100%;
-        margin:auto;
-        object-fit: contain;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
-
-    div.col-md-8{
-        margin-top:30%;
-    }
-
-    button.btn-light {
-        margin-bottom: 8px;
-        margin-right: 5px;
-    }
-    form.button-history{
-        float:left;
-    }
-
-    #demo-place{
-        font-size:14;
-        color:#636160;
-    }
-
-    #demo-custom-place{
-        font-size:14;
-        color:#636160;
-    }
-    a.card-link{
-        font-size : 20px;
-        color: #232324;
-        padding: 7.5%;
-        padding-top:5%;
-    }
-
-
-    .lib-panel {
-        margin-bottom: 20Px;
-        border-radius:15px;
-    }
-    .lib-panel img {
-        width: 98%;
-        background-color: transparent;
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 0px;
-        border-top-right-radius: 0px;
-    }
-
-
-    .lib-panel .row,
-    .lib-panel .col-md-6 {
-        padding: 0;
-        background-color: #FFFFFF;
-        width: 72.9vw;
-        border-radius: 15px;
-        height: 35vw;
-        position: relative;
-        overflow-y:scroll;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-
-    .col-md-6::-webkit-scrollbar {
-        display: none;
-    }
-
-    .lib-panel .lib-row {
-        padding: 0 20px 0 20px;
-
-    }
-
-    .lib-panel .lib-row.lib-header {
-        background-color: #FFFFFF;
-        width:34vw;
-        font-size: 25px;
-        padding: 10px 20px 0 20px;
-        font-family: 'Nanum Myeongjo', serif;
-        border-radius: 15px;
-    }
-
-
-    .lib-panel .lib-row.lib-desc {
-        position: relative;
-        display: block;
-        font-size: 15px;
-    }
-    .lib-panel .lib-row.lib-desc a{
-        position: absolute;
-        width: 100%;
-        bottom: 10px;
-        left: 20px;
-    }
-
-    .row-margin-bottom {
-        margin-bottom: 20px;
-        margin-top: 140px;
-        margin-left: 1.06vw;
-    }
-
-    .box-shadow {
-        -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
-        box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
-    }
-
-    .no-padding {
-        padding: 0;
-    }
-    #demo-comment{
-        padding:4%;
-    }
-    #demo-create-at {
-        color:#636160;
-    }
-    @media screen and (max-width: 850px){
-        .history{
-            margin-top: 50px
-        }
-        .row-margin-bottom {
-            margin-bottom: 20px;
-            margin-top: 90px;
-            margin-left: 1.06vw;
-        }
-
-    }
-</style>
 
 <div class="cont">
     <div class="left">
@@ -271,16 +50,24 @@
                             <button type="submit" class="btn btn-light btn-sm">수정</button>
                             <br/>
                         </form>
-                        <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete"
+                              <form class="button-history2" action="{% url 'history-delete' id=item.id %}" onsubmit="return getConfirmation()" name="delete"
                               method="post">
                             {% csrf_token %}
                             <script>
-                                                    function Function() {
-                                                    alert("Really?");
-                                                    }
+                                                    function getConfirmation()
+                                                        {
+                                                            var retVal = confirm("Do you want to continue ?");
+                                                            if (retVal == true)
+                                                            {
+                                                                return true;
+                                                            } 
+                                                            else
+                                                            {
+                                                                return false;
+                                                            }
+                                                        }
                             </script>
-                            <button type="submit" class="btn btn-light btn-sm" onclick="Function()">삭제</button>
-
+                            <button type="submit" class="btn btn-light btn-sm" >삭제</button>
                         </form>
                     </div>
                 </div>
@@ -317,66 +104,5 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-
-                window.myFunction = function(id) {
-                    if(document.getElementById("title" + id) != null){
-                        var title = document.getElementById("title" + id).textContent;
-                    }
-                    if(mood = document.getElementById("mood" + id) != null){
-                        var mood = document.getElementById("mood" + id).textContent;
-                    }
-                    if(document.getElementById("image" + id) != null){
-                        var image = document.getElementById("image" + id).src;
-                        document.getElementById("img").src = image;
-                    }else{
-                        document.getElementById("img").src="../static/logo3.png";
-                    }
-                    if(document.getElementById("comment" + id) != null){
-                        var comment = document.getElementById("comment" + id).textContent;
-                        comment = comment.replace(/(?:\r\n|\r|\n)/g, '<br />');
-                    }
-                    if (document.getElementById("place" + id) != null){
-                        var place = document.getElementById("place" + id).textContent;
-                    }
-                    if (document.getElementById("custom-place" + id) != null){
-                        var customplace = document.getElementById("custom-place" + id).textContent;
-                    }
-                    if(document.getElementById("created-at" + id) != null){
-                        var create = document.getElementById("created-at" + id).textContent;
-                    }
-                    if(title != null){
-                        document.getElementById("demo-title").innerHTML = title;
-                    }else{
-                        document.getElementById("demo-title").innerHTML = " ";
-                    }
-                    if(mood != null){
-                        document.getElementById("demo-mood").innerHTML = mood;
-                    }else{
-                        document.getElementById("demo-mood").innerHTML = "";
-                    }
-                    if(comment != null){
-                        document.getElementById("demo-comment").innerHTML = comment
-                    }else{
-                        document.getElementById("demo-comment").innerHTML = "";
-                    }
-                    if(place != null){
-                        document.getElementById("demo-place").innerHTML = place;
-                    }else{
-                        document.getElementById("demo-place").innerHTML = "";
-                    }
-                    if(customplace != null){
-                        document.getElementById("demo-custom-place").innerHTML = customplace;
-                    }else{
-                        document.getElementById("demo-custom-place").innerHTML = "";
-                    }
-                    if(create != null){
-                        document.getElementById("demo-create-at").innerHTML = create;
-                    }else{
-                        document.getElementById("demo-create-at").innerHTML = "";
-                    }
-                }
-
-</script>
 </div>
 {% endblock %}

@@ -78,6 +78,7 @@ class WithdrawActivity : AppCompatActivity() {
                                                 }
                                             })
                                     })
+                                
                                 builder.setNegativeButton("아니오",
                                     DialogInterface.OnClickListener { dialog, which ->
                                     })

@@ -2,129 +2,14 @@
 {% load static %}
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static '/css/user.css' %}">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<style type="text/css">
-    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
 
-    .html,
-    body {
-        background-color: #f9f9f9;
-        font-family: 'NanumSquare', sans-serif;
-    }
-
-    .card {
-        border-radius: 15px;
-        
-    }
-
-    .card-body {
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .card-title {
-        margin-top: 5px;
-        margin-left: 20px;
-        font-family: 'NanumSquare', sans-serif;
-        font-weight: bold;
-        font-size: 2vw;
-    }
-
-    .col-sm {
-        padding-top: 100px;
-    }
-
-    .user-info {
-        width: 20vw;
-        height: 1%;
-        margin-left: 15px;
-        margin-bottom: 10px;
-        padding: 0.8vw;
-        font-size: 1.3vw;
-        font-weight: bold;
-        text-align: left;
-        border-style: none;
-        border-radius: 10px 10px 10px 10px;
-        color: black;
-        background-color: #f2f2f2;
-    }
-
-    .user-img {
-        padding: 12px;
-        width: 22vw;
-        height: 22vw;
-        border-style: none;
-        border-radius: 15px;
-        background-color: #f2f2f2;
-        float: right;
-    }
-
-    .update-btn {
-        display: block;
-        margin: 0 auto;
-        color: black;
-        width: 10vw;
-        height: 3.5vw;
-        font-size: 1.5vw;
-        font-weight: bold;
-        text-align: center;
-        background-color: #c4c4c4;
-        border-style: none;
-        border-radius: 10px;
-    }
-
-    .myinfo {
-        display: inline-block;
-        vertical-align: middle;
-        max-width: 100%;
-    }
-
-    .right {
-        float: right;
-        padding: 10 0 10 50;
-    }
-
-    .left {
-        float: left;
-        padding: 10 50 10 0;
-
-    }
-
-    @media screen and (max-width: 960px) {
-        .right {
-            float: right;
-            padding: 1.5vw;
-
-        }
-
-        .left {
-            float: left;
-
-        }
-        .user-info {
-            width: 28vw;
-            font-size: 2vw;
-            padding: 0.9vw;
-        }
-        .user-img{
-            width: 25vw;
-            height: 25vw;
-        }
-        
-        .update-btn{
-            height: 3.2vw;
-            font-size:1.8vw;
-
-        }
-    }
-</style>
-
+<div id="myinfo">
 <div class="container p-5">
-
     {% for user in users %}
     <div class="row userinfo" style="margin:20px auto;">
         <div class="col-sm">
