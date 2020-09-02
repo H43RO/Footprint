@@ -181,6 +181,7 @@ class HistoryWriteActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this, R.style.DatePicker,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    //TimePicker 특성 상 한자리 시간 입력에 대한 대응을 해줘야 함
                     historyTime =
                         if (hourOfDay < 10) "0$hourOfDay:"
                         else hourOfDay.toString() + ":"
@@ -192,6 +193,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                 }, hour, minute, false
             )
             timePicker.show()
+
             val view: ViewGroup.MarginLayoutParams =
                 timePicker.getButton(Dialog.BUTTON_POSITIVE).layoutParams as ViewGroup.MarginLayoutParams
             view.leftMargin = 16

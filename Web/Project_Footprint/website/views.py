@@ -155,8 +155,8 @@ def myinfo(request):
 
 def place_detail(request, id):
     """
-        장소 자세히보기
-        크롤링한 데이터를 기반으로 한 장소 자세히보기 페이지 보여줌
+    장소 자세히보기
+    크롤링한 데이터를 기반으로 한 장소 자세히보기 페이지 보여줌
     """
     context = {
         'places': place_detail_crawl(pk=id)
@@ -403,12 +403,16 @@ def place_detail_crawl(pk):
     naverPlaceID = pk
     result = requests.get(f'{URL}={pk}')
     soup = BeautifulSoup(result.content, 'html.parser')
+
     title = soup.find("strong", {"class": "name"})
     title = str(title.string).strip()
+
     category = soup.find("span", {"class": "category"})
     category = str(category.string).strip()
+
     location = soup.find("span", {"class": "addr"})
     location = str(location.string).strip()
+
     businessHours = soup.find("span", {"class": "time"})
     if businessHours is not None:
         if businessHours is soup.find("span", {"class": "highlight"}):
@@ -417,6 +421,7 @@ def place_detail_crawl(pk):
             businessHours = " "
     else:
         businessHours = " "
+
     desc = soup.find("div", {"class": "info"})
     description = desc.find("span", {"class": "txt"})
     if description is not None:
@@ -427,8 +432,10 @@ def place_detail_crawl(pk):
             description = str(description.string).strip()
     else:
         description = " "
+
     URL_IMG = 'https://store.naver.com/restaurants/detail?id'
     result_IMG = requests.get(f'{URL_IMG}={pk}&tab=photo')
+
     soups = BeautifulSoup(result_IMG.content, 'html.parser')
     area = soups.find("div", {"class": "list_photo"})
     a = area.find("a")
@@ -437,6 +444,7 @@ def place_detail_crawl(pk):
     else:
         a = area.find("div")
         imageSrc = a.find("img").get("src")
+
     menuName = []
     list_menu = soup.find("ul", {"class": "list_menu"})
     if list_menu is not None:
@@ -449,6 +457,7 @@ def place_detail_crawl(pk):
         menuName = []
         menuNames = ""
     price = soup.find_all("em", {"class": "price"})
+
     menuPrice = []
     if price is not None:
         for item in price:
@@ -458,6 +467,7 @@ def place_detail_crawl(pk):
     else:
         menuPrice = []
         menuPrices = ""
+
     res = {
         'naverPlaceID': naverPlaceID,
         'title': title,
@@ -472,6 +482,7 @@ def place_detail_crawl(pk):
         'menuPrice': menuPrice,
     }
     add_to_db(res)
+
     return res
 
 
