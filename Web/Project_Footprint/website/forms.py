@@ -54,20 +54,6 @@ class SignUpForm(UserCreationForm):
             'gender': _('성별을 입력해주세요'),
         }
 
-
-# class SignInForm(AuthenticationForm):
-#     username = forms.EmailField(
-#         label=_("이메일"),
-#     )
-#     password = forms.CharField(
-#         label=_("비밀번호"),
-#         strip=False,
-#         widget=forms.PasswordInput(render_value=True)
-#     )
-#     class Meta:
-#         model = User
-#         fields = ['email', 'password']
-
 class SignInForm(forms.Form):
     email = forms.EmailField(
         label=_("이메일"),
@@ -79,14 +65,6 @@ class SignInForm(forms.Form):
         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}, render_value=True),
     )
 
-    # error_messages = {
-    #     'invalid_login': _(
-    #         "Please enter a correct %(username)s and password. Note that both "
-    #         "fields may be case-sensitive."
-    #     ),
-    #     'inactive': _("This account is inactive."),
-    # }
-
     def __init__(self, request=None, *args, **kwargs):
         self.request = request
         self.user_cache = None
@@ -97,8 +75,6 @@ class SignInForm(forms.Form):
         self.fields['password'].widget.attrs['class'] = 'form-control'
         
     def clean(self):
-        # email = self.cleaned_data.get('email')
-        # password = self.cleaned_data.get('password')
         return self.cleaned_data
 
     def get_user(self):
@@ -110,7 +86,7 @@ class SignInForm(forms.Form):
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'created_at']
+        fields = ['title', 'mood', 'img', 'comment', 'place', 'custom_place', 'created_at', 'user']
         labels = {
             'title': _('제목'),
             'mood':_('내 기분'),
@@ -122,12 +98,12 @@ class HistoryForm(forms.ModelForm):
         }
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),
+            'user': forms.HiddenInput()
 
         }
         help_texts = {
             'comment': _('일기를 작성해주세요.'),
         }
-
 
 class UpdateHistoryForm(HistoryForm):
     class Meta:
