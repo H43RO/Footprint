@@ -195,14 +195,20 @@ def history_create(request):
             request.POST._mutable = True
             formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
             request.POST['created_at'] = formatted_date
+            request.POST['user'] = request.user
             form = HistoryForm(request.POST, request.FILES)
             if form.is_valid():
                 new_item = form.save()
             return HttpResponseRedirect('../')
         else:
             form = HistoryForm(request.POST, request.FILES)
+            request.POST._mutable = True
+            request.POST['user'] = request.user
             if form.is_valid():
                 new_item = form.save()
+            else:
+                messages.error(request, '작성 시간은 YYYY-mm-dd h:m:s 양식입니다.')
+                return redirect('history-create')
             return HttpResponseRedirect('../')
     form = HistoryForm(request.FILES)
     return render(request, 'history_create.html', {'form': form})
@@ -479,7 +485,7 @@ def add_to_db(crawled_items):
     """
      크롤링한 Hotplace 데이터를 Database(Mysql)에 저장함
     """
-    db = pymysql.connect(host='localhost', user='root', password='s9423093', db='footprint', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='!khc532412', db='foot_print', charset='utf8')
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}
