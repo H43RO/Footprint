@@ -1,11 +1,11 @@
 from django.contrib.auth.backends import ModelBackend
-
 from .models import User
 
 
 class EmailAuthBackend(object):
     """
-    Custom Email Backend to perform authentication via email
+    커스텀 이메일 백엔드
+    유저 인증 시, email field를 username 대신 사용
     """
 
     def authenticate(self, request, username, password):

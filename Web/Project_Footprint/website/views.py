@@ -93,9 +93,10 @@ def signin(request):
                     return HttpResponseRedirect('../index/')
                 else:
                     messages.error(request, '인증되지 않은 이메일입니다.')
+                    return HttpResponseRedirect('../signin/')
             else:
                 messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
-
+                return HttpResponseRedirect('../signin/')
     else:
         form = SignInForm()
     return render(request, 'signin.html', {'form': form})
@@ -174,12 +175,7 @@ def history(request):
     """
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/signin/')
-    if request.method == 'POST' and 'id' in request.POST:
-        item = get_object_or_404(History, id=id, user=request.user)
-        item.delete()
-        return redirect('history-delete')
     historys = History.objects.filter(user_id=request.user.pk).order_by('created_at')
-    print(historys)
     context = {
         'historys': historys,
     }
@@ -196,12 +192,15 @@ def history_create(request):
             request.POST._mutable = True
             formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
             request.POST['created_at'] = formatted_date
+            request.POST['user'] = request.user
             form = HistoryForm(request.POST, request.FILES)
             if form.is_valid():
                 new_item = form.save()
             return HttpResponseRedirect('../')
         else:
             form = HistoryForm(request.POST, request.FILES)
+            request.POST._mutable = True
+            request.POST['user'] = request.user
             if form.is_valid():
                 new_item = form.save()
             return HttpResponseRedirect('../')

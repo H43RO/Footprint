@@ -271,16 +271,24 @@
                             <button type="submit" class="btn btn-light btn-sm">수정</button>
                             <br/>
                         </form>
-                        <form class="button-history2" action="{% url 'history-delete' id=item.id %}" name="delete"
+                              <form class="button-history2" action="{% url 'history-delete' id=item.id %}" onsubmit="return getConfirmation()" name="delete"
                               method="post">
                             {% csrf_token %}
                             <script>
-                                                    function Function() {
-                                                    alert("Really?");
-                                                    }
+                                                    function getConfirmation()
+                                                        {
+                                                            var retVal = confirm("Do you want to continue ?");
+                                                            if (retVal == true)
+                                                            {
+                                                                return true;
+                                                            } 
+                                                            else
+                                                            {
+                                                                return false;
+                                                            }
+                                                        }
                             </script>
-                            <button type="submit" class="btn btn-light btn-sm" onclick="Function()">삭제</button>
-
+                            <button type="submit" class="btn btn-light btn-sm" >삭제</button>
                         </form>
                     </div>
                 </div>
