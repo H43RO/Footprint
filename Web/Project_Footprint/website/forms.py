@@ -54,20 +54,6 @@ class SignUpForm(UserCreationForm):
             'gender': _('성별을 입력해주세요'),
         }
 
-
-# class SignInForm(AuthenticationForm):
-#     username = forms.EmailField(
-#         label=_("이메일"),
-#     )
-#     password = forms.CharField(
-#         label=_("비밀번호"),
-#         strip=False,
-#         widget=forms.PasswordInput(render_value=True)
-#     )
-#     class Meta:
-#         model = User
-#         fields = ['email', 'password']
-
 class SignInForm(forms.Form):
     email = forms.EmailField(
         label=_("이메일"),
@@ -78,14 +64,6 @@ class SignInForm(forms.Form):
         strip=False,
         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}, render_value=True),
     )
-
-    # error_messages = {
-    #     'invalid_login': _(
-    #         "Please enter a correct %(username)s and password. Note that both "
-    #         "fields may be case-sensitive."
-    #     ),
-    #     'inactive': _("This account is inactive."),
-    # }
 
     def __init__(self, request=None, *args, **kwargs):
         self.request = request
