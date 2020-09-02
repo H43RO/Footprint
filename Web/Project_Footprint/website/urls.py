@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from . import viewsets
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('notice/', views.notice_list, name='notice'),
     path('editor/', views.editor_list, name='editor'),
     path('editor/editor_view/<int:id>', views.editorview, name='editor_view'),
+    path('signup_email_confirm/', TemplateView.as_view(template_name="signup_email_confirm.html"), name='signup_email_confirm'),
 ]

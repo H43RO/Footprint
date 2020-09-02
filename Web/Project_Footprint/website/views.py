@@ -47,14 +47,6 @@ def index(request):
     return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'user': user})
 
 
-def list(request):
-    user = User.objects.all()
-    context = {
-        'users': user
-    }
-    return render(request, 'list.html', context)
-
-
 def signup(request):
     """
     회원가입
@@ -75,8 +67,7 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                # login(request, user)
-                return HttpResponseRedirect('../list/')
+                return HttpResponseRedirect('../signup_email_confirm/')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -153,7 +144,8 @@ def myinfo(request):
             'users': User.objects.filter(id=user_id)
         }
         return render(request, 'myinfo.html', context)
-
+    else:
+        return HttpResponseRedirect('/signin/')
 
 def place_detail(request, id):
     """
@@ -277,7 +269,7 @@ def user_delete(request):
     else:
         password_form = CheckPasswordForm(request.user)
         return render(request, 'user_delete.html', {'password_form': password_form})
-    return HttpResponseRedirect("../list")
+    return HttpResponseRedirect("../index")
 
 
 def user_password_update(request):
