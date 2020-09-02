@@ -46,20 +46,13 @@ def index(request):
     user = request.user
     return render(request, 'index.html', {'sights': sights, 'restaurants': restaurants, 'user': user})
 
-
-def list(request):
-    user = User.objects.all()
-    context = {
-        'users': user
-    }
-    return render(request, 'list.html', context)
-
-
 def signup(request):
     """
     회원가입
     회원가입 폼 양식이 유효하면, 입력한 이메일로 회원가입 인증 메일을 발송함
     """
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/index/')
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -75,7 +68,6 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                # login(request, user)
                 return HttpResponseRedirect('../list/')
     else:
         form = SignUpForm()
@@ -87,17 +79,20 @@ def signin(request):
     로그인
     로그인 폼 양식이 유효하면, 로그인 인증 과정을 거치고 인증이 완료되면 메인 페이지로 돌아감
     """
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/index/')
     if request.method == 'POST':
         form = SignInForm(data=request.POST)
-        # print(request.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
             if user is not None:
-                login(request, user)
-                return HttpResponseRedirect('../index/')
+                if user.is_active is True:
+                    login(request, user)
+                    return HttpResponseRedirect('../index/')
+                else:
+                    messages.error(request, '인증되지 않은 이메일입니다.')
             else:
                 messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
-                return HttpResponseRedirect('../signin/')
 
     else:
         form = SignInForm()
@@ -123,7 +118,7 @@ def user_activate(request, uidb64, token):
         if account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            return redirect('../place_search/')
+            return redirect('/index/')
     except ValidationError:
         return HttpResponse({"messge": "TYPE_ERROR"}, status=400)
 
@@ -153,6 +148,9 @@ def myinfo(request):
             'users': User.objects.filter(id=user_id)
         }
         return render(request, 'myinfo.html', context)
+    else:
+        return HttpResponseRedirect('../signin/')
+        
 
 
 def place_detail(request, id):
@@ -171,13 +169,16 @@ def history(request):
     히스토리회(일기) 조회
     생성 날짜 순으로 리스트를 보여줌
     삭제 버튼이 눌렸을 시, 전달된 id값을 통해 item 삭제
-    로그인하지 않은 유저가 히스토리 접근할 경우 로그인 페이지로 렌더링함
+    로그인하지 않은 유저가 히스토리 접근할 경우 로그인 페이지로 리다이렉트함
     """
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/signin/')
     if request.method == 'POST' and 'id' in request.POST:
         item = get_object_or_404(History, id=id, user=request.user)
         item.delete()
         return redirect('history-delete')
-    historys = History.objects.all().order_by('created_at')
+    historys = History.objects.filter(user_id=request.user.pk).order_by('created_at')
+    print(historys)
     context = {
         'historys': historys,
     }
