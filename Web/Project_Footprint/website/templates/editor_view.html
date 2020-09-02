@@ -1,63 +1,16 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
 
-<style>
-        body{
-            font-family: "나눔스퀘어";
-            background-color: #f9f9f9;
-        }
-        div.container {
-            padding-top: 150px;
-        }
-        div.board_aside {
-            width: 250px;
-            float: left;
-        }
-        div.board_contents{
-            width : 1056px;
-            margin: 0 auto;
-        }
-        h1.editor_head{
-            height: 700px;
-            font-size: 3.0rem;
-            font-weight: 800;
-
-        }
-        .editor_contents{
-            padding-top: 60px;
-        }
-        h4.editor {
-			font-size: 2.0rem;
-			font-weight: 800;
-        }
-        p.editor_date{
-            padding-top : 20px;
-            padding-bottom : 20px;
-        }
-        hr{
-            width: 100px;
-            margin-top: -630px;
-            color: #3cadd4;
-        }
-        h4.editor_tit {
-            font-size: 2.3rem;
- 			font-weight: 550;
- 			font-family: "나눔명조";
-        }
-        .notice{
-            margin-top: 60px;
-        }
-    </style>
-
-<div class="container">
-        <div class="board_contents">
-            <h1 class="editor_head">
+<div id="editor_view" class="container_editor">
+        <div class="board_contents editor">
+            <h3 class="editor_head">
                 Editor Pick<br>
-            </h1>
-            <hr>
+            </h3>
+            <hr class="editor">
         </div>
-        <div class="board_contents">
+        <div class="board_contents editor">
             <div class="editor_contents">
                 <div class="editor">
                     <h4 class="editor_tit">
@@ -72,5 +25,5 @@
             </div>
             </div>
         </div>
-    </div>
+</div>
 {% endblock %}

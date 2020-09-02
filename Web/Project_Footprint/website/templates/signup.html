@@ -5,109 +5,25 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 {% endblock %}
-<!------ Include the above in your HEAD tag ---------->
-
-    <!-- <style>
-        @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-        @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
-
-        html,body{
-        background-image: url('../static/background.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 100%;
-        }
-
-        .container1{
-        font-family: 'NanumSquare', sans-serif;
-        float: right;
-        margin-right: 300px;
-        width: 400px;
-        height: 100%;
-        align-content: center;
-        border-style: none;
-        }
-
-        .container2{
-        font-family: 'Nanum Myeongjo', serif;
-        float: left;
-        margin-left: 250px;
-        width: 400px;
-        height: 100%;
-        align-content: right;
-        border-style: none;
-        }
-
-        .introduce{
-        height: 370px;
-        margin-top: 20px;
-        border-style: none;
-        background-color: rgba(255,255,255,0.0);
-        color: white;
-        }
-
-        .introduce-header h1{
-        margin-top: 190px;
-		text-align : left ;
-		border-style: none;
-		color: white;
-		font-weight:bold;
-        }
-
-		.introduce-body h3{
-		margin-top: 60px;
-		text-align : left ;
-        border-style: none;
-        color: white;
-        }
-
-        select:invalid {
-        color: gray;
-        }
-
-        .card{
-        height: 580px;
-        margin-top: 130px;
-        padding: 50px;
-        width: 500px;
-        border-style: none;
-        background-color: rgba(255,255,255,0.4);
-        }
-
-        .form-control {
-        height: 40px;
-        width: 100px;
-        border-style: none;
-        border-radius: 10px 10px 10px 10px;
-        color: black;
-        background-color: #d9dbd9;
-        opacity:0.7;
-        }
-
-        .signup_btn{
-        margin-top: 10px;
-        color: white;
-        font-weight:bold;
-        background-color: #293263;
-        width: 300px;
-        height: 40px;
-        border-style: none;
-        border-radius: 10px 10px 10px 10px;
-        }
-
-		input::placeholder {
-		font-weight:bold;
-		font-size: 95%;
-		}
-	</style> -->
     {% block content %}
+    <style type="text/css">
+            @media screen and (max-width: 960px){
+                .container2{
+                      display: none;
+                }
+                #signup .card{
+                    position: absolute;
+                    left: 50%;
+                    top: 50;
+                    transform: translate(-50%);
+                    width:400px;
+                }
+            }
+    </style>
     <div id = "signup">
         <div class="container1">
             <div class="d-flex justify-content-center h-100">
                 <div class="card">
-        <!--			<div class="card-header">-->
-        <!--				<img src="../static/logo.png" width="120px">-->
-        <!--			</div>-->
                     <form form action="{% url 'signup' %}" method="post" >
                         {% csrf_token %}
                         {% for field in form %}
@@ -158,5 +74,6 @@
                 </div>
             </div>
         </div>
+
     </div>
     {% endblock %}

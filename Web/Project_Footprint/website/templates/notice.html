@@ -1,92 +1,27 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
 
-<style type="text/css" >
-        body{
-            font-family: "나눔스퀘어";
-            background-color: #f9f9f9;
-        }
-        div.container {
-            padding-top: 150px;
-        }
-
-        .notices_contents{
-            padding-top: 45px;
-        }
-        div.board_contents{
-            width : 1056px;
-            margin: 0 auto;
-        }
-        div.board_aside {
-            width: 250px;
-            float: left;
-        }
-        h1.notice_head{
-            font-size: 3.0rem;
-            font-weight: 800;
-
-        }
-        hr{
-            width: 85px;
-            color: #3cadd4;
-        }
-        .row{
-            padding-top: 15px;
-        }
-
-        .card-title{
-            padding-left: 10px;
-            font-weight: 600;
-            font-size: 1.5rem;
-            font-family: "나눔명조"
-        }
-        p.card_date{
-            padding-left: 15px;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-        }
-        p.card_desc{
-            font-size: 1.0rem;
-            padding-left: 15px;
-            margin-bottom: 5px;
-        }
-        a{
-            text-decoration: none;
-            color: black;
-        }
-      .card{
-            border-radius: 15px;
-            width:40rem;
-        }
-    @media screen and (min-width: 850px){
-          .card{
-            border-radius: 15px;
-            width:62rem;
-        }
-    }
-    </style>
-
-    <div class="container">
-            <div class="board_contents">
+    <div id="notice" class="container_notice">
+            <div class="board_contents notice">
                 <h1 class="notice_head">
                     Notice<br>
                 </h1>
-                <hr>
-                <span class="aside-st"></span>
+                <hr class="notice">
+                <!-- <span class="aside-st"></span> -->
             </div>
-            <div class="board_contents">
+            <div class="board_contents notice">
                 <div class="notices_contents">
                 {% for item in notices %}
-                    <div class="row">
+                    <div  class="row">
                         <div class="col-sm-6">
-                            <div class="card">
+                            <div class="card ">
                             <div class="card-body">
-                                <a href="notice_view/{{ item.id }}" >
+                                <a  href="notice_view/{{ item.id }}" >
                                 <h5 class="card-title">{{ item.title }}</h5>
-                                <p class="card_date">{{ item.created_at|date:"Y-m-d" }}</p>
-                                <p class="card_desc">{{ item.contents }}</p>
+                                <p class="notice_date">{{ item.created_at|date:"Y-m-d" }}</p>
+                                <p class="notice_desc">{{ item.contents }}</p>
                                 </a>
                             </div>
                             </div>
