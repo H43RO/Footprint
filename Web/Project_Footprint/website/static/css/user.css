@@ -1,0 +1,295 @@
+/* myinfo */
+/* user info update */
+
+
+/* user delete */
+    #user_delete .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #user_delete .container{
+    font-family: 'NanumSquare', sans-serif;
+    padding-top: 100px;
+    font-weight:bold;
+    }
+
+    #user_delete .card-title{
+    margin-top: 5px;
+    margin-left: 25px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    text-align: center;
+    font-size: 2vw;
+    }
+
+    #user_delete .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #user_delete .card-body p{
+    font-size: 1vw;
+    }
+
+    #user_delete .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #user_delete .delete_btn{
+    color: black;
+    margin-top: 20px;
+    width: 13%;
+    height: 7%;
+    font-size: 1.3vw;
+    font-weight:bold;
+    background-color: #f56042;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* signup email confirm */
+    #signup_email_c .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #signup_email_c .container{
+    font-family: 'NanumSquare', sans-serif;
+    padding-top: 100px;
+    font-weight:bold;
+    }
+
+    #signup_email_c .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #signup_email_c .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #signup_email_c .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+
+/* user password update */
+    #pw_update .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_update .container{
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    padding-top: 100px;
+    }
+
+    #pw_update .card-body.user{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 1.2vw;
+    }
+
+    #pw_update .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+    #pw_update .user-tag {
+    height: 60px;
+    width: 400px;
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-bottom: 5px;
+    font-weight:bold;
+    font-size: 130%;
+    border-style: none;
+    color: black;
+    background-color: white;
+    }
+
+    #pw_update .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 14%;
+    height: 8%;
+    font-size: 1.2vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* user password find */
+    #pw_find .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_find .container{
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    padding-top: 100px;
+    }
+
+    #pw_find .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 1.2vw;
+    }
+
+    #pw_find .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+    #pw_find .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    width: 13%;
+    height: 9%;
+    font-size: 1.0vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+    #pw_find .asteriskField{
+        font-size:0;
+    }
+
+
+/* password email confirm */
+    #pw_email_c .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_email_c .container{
+    padding-top: 100px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    }
+
+    #pw_email_c .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #pw_email_c .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #pw_email_c .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+
+/* password reset */
+    #pw_reset .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_reset .container{
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    padding-top: 100px;
+    }
+
+    #pw_reset .card-body{
+    font-weight:bold;
+    border-radius: 20px;
+    }
+
+    #pw_reset .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    text-align: center;
+    }
+
+    #pw_reset .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    width: 14%;
+    height: 8%;
+    font-size: 1.2vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* password reset complete */
+    #pw_reset_c .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_reset_c .container{
+    font-weight:bold;
+    padding-top: 100px;
+    font-family: 'NanumSquare', sans-serif;
+    }
+
+    #pw_reset_c .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #pw_reset_c .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #pw_reset_c .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+    #pw_reset_c .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    width: 13%;
+    height: 7%;
+    font-size: 1.5vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+
+
+
+
+
+
+
+
