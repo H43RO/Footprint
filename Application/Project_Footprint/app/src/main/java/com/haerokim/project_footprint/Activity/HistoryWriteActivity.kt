@@ -57,6 +57,7 @@ class HistoryWriteActivity : AppCompatActivity() {
      *  Android Image Cropper 라이브러리를 통해 이미지 선택 및 편집 완료 후 진입
      *  - imageUri 변수에 업로드 될 이미지의 Uri 값을 넣게 됨
      **/
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -79,14 +80,13 @@ class HistoryWriteActivity : AppCompatActivity() {
 
     /**  Bitmap 이미지를 Local에 저장하고, URI를 반환함  **/
     private fun bitmapToFile(bitmap: Bitmap): Uri {
-        // Get the context wrapper
         val wrapper = ContextWrapper(this)
 
-        // Initialize a new file instance to save bitmap object
+        // Bitmap 파일 저장을 위한 File 객체
         var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
         file = File(file, "write_image.jpg")
         try {
-            // Compress the bitmap and save in jpg format
+            // Bitmap 파일을 JPEG 형태로 압축해서 출력
             val stream: OutputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
             stream.flush()
@@ -141,6 +141,7 @@ class HistoryWriteActivity : AppCompatActivity() {
         val hour = calendarInstance.get(Calendar.HOUR_OF_DAY)
         val minute = calendarInstance.get(Calendar.MINUTE)
 
+        // 히스토리 이미지 추가
         edit_history_detail_image.setOnClickListener {
             // Android Image Cropper 라이브러리 사용
             CropImage.activity()
@@ -152,12 +153,14 @@ class HistoryWriteActivity : AppCompatActivity() {
                 .start(this)
         }
 
+        // 히스토리 날짜 입력
         edit_history_date.setOnClickListener {
             val datePicker = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     historyDate =
                         year.toString() + "-"
+                    //DatePicker 특성 상 한 자리 날짜 입력에 대한 대응을 해줘야 함
                     historyDate +=
                         if ((monthOfYear + 1) < 10) "0" + (monthOfYear + 1).toString() + "-"
                         else (monthOfYear + 1).toString() + "-"
@@ -173,10 +176,12 @@ class HistoryWriteActivity : AppCompatActivity() {
             datePicker.show()
         }
 
+        // 히스토리 시간 입력
         edit_history_time.setOnClickListener {
             val timePicker = TimePickerDialog(
                 this, R.style.DatePicker,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    //TimePicker 특성 상 한자리 시간 입력에 대한 대응을 해줘야 함
                     historyTime =
                         if (hourOfDay < 10) "0$hourOfDay:"
                         else hourOfDay.toString() + ":"
@@ -188,6 +193,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                 }, hour, minute, false
             )
             timePicker.show()
+
             val view: ViewGroup.MarginLayoutParams =
                 timePicker.getButton(Dialog.BUTTON_POSITIVE).layoutParams as ViewGroup.MarginLayoutParams
             view.leftMargin = 16
@@ -202,6 +208,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                 .setTextColor(Color.parseColor("#293263"))
         }
 
+        // 히스토리 기분 (감정) 입력
         spinner_select_mood.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // NOP
@@ -229,6 +236,7 @@ class HistoryWriteActivity : AppCompatActivity() {
             }
         }
 
+        // 작성 완료 및 업로드 버튼 눌렀을 때 진입
         button_upload_history.setOnClickListener {
             if (edit_history_title.text.isEmpty() || edit_history_place.text.isEmpty() || historyDate == null || historyTime == null) {
                 if (edit_history_title.text.isEmpty()) edit_history_title.error = "제목은 필수입력 항목입니다."
@@ -291,6 +299,7 @@ class HistoryWriteActivity : AppCompatActivity() {
                                     localTime.toString()
                                 )
 
+                            // image 포함한 MultipartBody 및 RequestBody 작성
                             writeHistoryService.writeHistoryWithImage(
                                 userID = userID,
                                 img = uploadImage,

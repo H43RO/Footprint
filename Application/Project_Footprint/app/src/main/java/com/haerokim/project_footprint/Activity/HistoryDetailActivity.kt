@@ -93,39 +93,17 @@ class HistoryDetailActivity : AppCompatActivity() {
         text_history_detail_content.text = historyComment
 
         when (historyMood) {
-            "0" -> {
-                text_history_detail_place_mood.append("기분 좋았던 순간")
-            }
-            "1" -> {
-                text_history_detail_place_mood.append("기뻤던 순간")
-            }
-            "2" -> {
-                text_history_detail_place_mood.append("평화로웠던 순간")
-            }
-            "3" -> {
-                text_history_detail_place_mood.append("황홀했던 순간")
-            }
-            "4" -> {
-                text_history_detail_place_mood.append("행복했던 순간")
-            }
-            "5" -> {
-                text_history_detail_place_mood.append("뭉클했던 순간")
-            }
-            "6" -> {
-                text_history_detail_place_mood.append("우울했던 순간")
-            }
-            "7" -> {
-                text_history_detail_place_mood.append("당황했던 순간")
-            }
-            "8" -> {
-                text_history_detail_place_mood.append("화났던 순간")
-            }
-            "9" -> {
-                text_history_detail_place_mood.append("아쉬웠던 순간")
-            }
-            "10" -> {
-                text_history_detail_place_mood.append("최악이었던 순간")
-            }
+            "0" -> text_history_detail_place_mood.append("기분 좋았던 순간")
+            "1" -> text_history_detail_place_mood.append("기뻤던 순간")
+            "2" -> text_history_detail_place_mood.append("평화로웠던 순간")
+            "3" -> text_history_detail_place_mood.append("황홀했던 순간")
+            "4" -> text_history_detail_place_mood.append("행복했던 순간")
+            "5" -> text_history_detail_place_mood.append("뭉클했던 순간")
+            "6" -> text_history_detail_place_mood.append("우울했던 순간")
+            "7" -> text_history_detail_place_mood.append("당황했던 순간")
+            "8" -> text_history_detail_place_mood.append("화났던 순간")
+            "9" -> text_history_detail_place_mood.append("아쉬웠던 순간")
+            "10" -> text_history_detail_place_mood.append("최악이었던 순간")
         }
 
         // History 수정, SNS 공유, 삭제 중 선택할 수 있는 PopupMenu
@@ -217,13 +195,24 @@ class HistoryDetailActivity : AppCompatActivity() {
                                             Log.e("Delete History Error", t.message)
                                         }
 
-                                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                                        override fun onResponse(
+                                            call: Call<String>,
+                                            response: Response<String>
+                                        ) {
                                             if (response.code() == 204) {
-                                                Toast.makeText(applicationContext, "삭제되었습니다", Toast.LENGTH_LONG).show()
+                                                Toast.makeText(
+                                                    applicationContext,
+                                                    "삭제되었습니다",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
                                                 finish()
                                             } else {
                                                 Log.d("Delete History Error", "삭제 실패")
-                                                Toast.makeText(applicationContext, "삭제에 실패했습니다", Toast.LENGTH_LONG).show()
+                                                Toast.makeText(
+                                                    applicationContext,
+                                                    "삭제에 실패했습니다",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
                                             }
                                         }
                                     })

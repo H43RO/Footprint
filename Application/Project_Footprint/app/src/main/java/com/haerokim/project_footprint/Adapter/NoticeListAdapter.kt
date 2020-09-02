@@ -27,9 +27,8 @@ class NoticeListAdapter(private val noticeList: ArrayList<Notice>, private val c
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): NoticeListAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.notice_item, parent, false)
+    ): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.notice_item, parent, false)
 
         return ViewHolder(view)
     }

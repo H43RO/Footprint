@@ -160,7 +160,7 @@ EMAIL_HOST_PASSWORD = 'iotml1234' ## write your email password
 EMAIL_USE_TLS = True
 
 #로그인 세션 유지
-SESSION_COOKIE_AGE = 60*60
+SESSION_COOKIE_AGE = 60 * 60
 SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
