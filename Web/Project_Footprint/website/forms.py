@@ -99,10 +99,10 @@ class HistoryForm(forms.ModelForm):
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),
             'user': forms.HiddenInput()
-
         }
         help_texts = {
             'comment': _('일기를 작성해주세요.'),
+            'created_at': _('작성 시간 양식은 YYYY-mm-dd입니다.'),
         }
 
 class UpdateHistoryForm(HistoryForm):
