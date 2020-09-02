@@ -68,7 +68,9 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                return HttpResponseRedirect('../list/')
+                
+                return HttpResponseRedirect('../signup_email_confirm/')
+
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -149,8 +151,7 @@ def myinfo(request):
         }
         return render(request, 'myinfo.html', context)
     else:
-        return HttpResponseRedirect('../signin/')
-        
+        return HttpResponseRedirect('/signin/')
 
 
 def place_detail(request, id):
@@ -278,7 +279,7 @@ def user_delete(request):
     else:
         password_form = CheckPasswordForm(request.user)
         return render(request, 'user_delete.html', {'password_form': password_form})
-    return HttpResponseRedirect("../list")
+    return HttpResponseRedirect("../index")
 
 
 def user_password_update(request):

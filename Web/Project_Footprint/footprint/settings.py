@@ -57,7 +57,7 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_ENABLED': True,
     'REGISTER_VERIFICATION_EMAIL_TEMPLATES' : {'subject' : "rest_registration/register/subject.txt", 'html_body' : 'rest_registration/register/body.html'},  
     'REGISTER_VERIFICATION_URL': ('http://127.0.0.1:8000/api_activate/'),
-    'VERIFICATION_FROM_EMAIL' : 'pcj0198@gmail.com',
+    'VERIFICATION_FROM_EMAIL' : 'sch.iot.esc@gmail.com',
     'SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL' : True,
     'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
     'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
@@ -103,9 +103,9 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':  'footprint',
+        'NAME':  'jinsol',
         'USER': 'root',
-        'PASSWORD': 's9423093',
+        'PASSWORD': '111111',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -155,8 +155,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'aa@gmail.com' ## write your Google email : abcd@gmail.com
-EMAIL_HOST_PASSWORD = 'aaa' ## write your email password
+EMAIL_HOST_USER = 'sch.iot.esc@gmail.com' ## write your Google email : abcd@gmail.com
+EMAIL_HOST_PASSWORD = 'iotml1234' ## write your email password
 EMAIL_USE_TLS = True
 
 #로그인 세션 유지

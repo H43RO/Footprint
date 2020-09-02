@@ -8,7 +8,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
-<div id = "pw_update">
+<div id="signup_email_c">
 <div class="container p-5">
 <div class="container">
     <div class="filter_content section--search_category">
@@ -20,21 +20,11 @@
         <div class="row userinfo" style="margin:20px auto;">
             <div class="col-sm-12">
                 <div class="card border-secondary">
-                    <div class="card-body user">
-                        <h2 class="card-title">{{ user.email }}님의 비밀번호 변경</h2>
+                    <div class="card-body">
+                        <h2 class="card-title">회웝가입 완료 및 로그인을 위한 이메일을 발송했습니다</h2>
                         <hr>
-                        <form action="{% url 'user_password_update' %}" method="post" >
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ form.instance.id }}"/>
-                            {% for field in form %}
-                            <p><strong>{{ field.label }}</strong></p>
-                                  {{ field }}
-                                {% for error in field.errors %}
-                                    <p style="color: red">{{ error }}</p>
-                                {% endfor %}
-                            {% endfor %}
-                            <button class="btn confirm_btn" type="submit" >변경완료</button>
-                        </form>
+                        <h5><strong>입력하신 이메일 주소의 메일을 확인한 뒤 로그인 해주세요.</strong></h5>
+                        <h5><strong>감사합니다.</strong></h5>
                     </div>
                 </div>
             </div>
