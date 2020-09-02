@@ -1,149 +1,26 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=373de50ef6dcf6a5a87b44674f4dc70c&libraries=services"></script>
+<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
 
-<style>
-    body {
-        font-family: "나눔스퀘어";
-        background-color: #f9f9f9;
-    }
-    div.container {
-        padding-top: 150px;
-    }
-    .card-title{
-        padding:0;
-        text-align: center;
-    }
-    div.board_aside {
-        width: 250px;
-        float: left;
-    }
-    div.board_contents {
-        margin: 0 auto;
-    }
-    h1.editor_head {
-        height: 700px;
-        font-size: 3.0rem;
-        font-weight: 800;
-    }
-    .editor_contents {
-        padding-top: 60px;
-    }
-    p.editor_date {
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-    hr {
-        width: 100px;
-        margin-top: -630px;
-        color: #3cadd4;
-    }
-    h4.place_tit {
-        margin-left: -30px;
-        font-size: 2.3rem;
-        font-weight: 550;
-        font-family: "나눔스퀘어";
-    }
-    img.card-img-top{
-            display: block;
-            width:100%;
-            height: 100%;
-            object-fit: contain;
-            overflow: hidden;
-            border-radius: 15px;
-    }
-    div.card{
-        margin-top: 50px;
-        border-radius: 15px;
-    }
-    div.place_menus{
-        margin-top: 20px;
-    }
-    .card-body{
-        margin: 0 auto;
-    }
-    p.card-text{
-        font-size: 1rem;
-        text-align: center;
-    }
-    div.menu{
-        font-size: 0.95rem;
-        float:left;
-    }
-    div.price{
-        font-size: 0.95rem;
-        float:right;
-    }
-    div.col-4{
-        margin: 0 auto;
-    }
-    .data{
-        max-width: 80%;
 
-    }
-    #map{
-        max-width: 80%;
-        height:400px;
-        margin-top: 20px;
-    }
-    @media screen and (min-width: 850px){
-    div.board_contents {
-        width: 1056px;
-        margin: 0 auto;
-    }
-    div.cont{
-        font-size:0;
-        max-width:1056px;
-        margin:0 auto;
-    }
-    div.col-4{
-        display: inline-block;
-        vertical-align: middle;
-    }
-    div.data{
-        max-width: 65%;
-    }
-    #map{
-        max-width: 35%;
-        height:400px;
-    }
-    div.menu{
-        font-size: 1rem;
-    }
-    div.price{
-            font-size: 1rem;
-    }
-    h5.menu {
-        height:1.25rem;
-        font-weight: 800;
-    }
-    h3.card-title{
-        font-size: 2.0rem;
-        font-weight: 800;
-        text-align: center;
-        padding:0;
-    }
-
-</style>
-
-<div class="container">
-    <div class="board_contents">
-        <h1 class="editor_head">
+<div class="container_place">
+    <div class="board_contents place">
+        <h1 class="place_head">
             Places<br>
         </h1>
-        <hr>
+        <hr class="place">
     </div>
         <div class="cont">
         <div class="col-4 data">
-        <div class="card">
+        <div class="card place">
             <img src="{{ places.imageSrc }}" alt="" class="card-img-top" />
-            <div class="card-body">
-                <h3 class="card-title">" {{ places.title }} "</h3>
-                <h5 class="card-title">{{ places.description }}</h5>
-                <p class="card-text">{{ places.location }}</p>
-                <p class="card-text"><small class="text-muted">{{ places.businessHours }}</small></p>
+            <div class="card-body place">
+                <h3 class="card-title place">" {{ places.title }} "</h3>
+                <h5 class="card-title place">{{ places.description }}</h5>
+                <p class="card-text place">{{ places.location }}</p>
+                <p class="card-text place"><small class="text-muted">{{ places.businessHours }}</small></p>
                 <div class="place_menus">
                     {% if places.menuNames %}
                     <div class="menu">

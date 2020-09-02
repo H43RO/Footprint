@@ -1,112 +1,25 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
 
-<style type="text/css">
-        body{
-            font-family: "나눔스퀘어";
-            background-color: #f9f9f9;
-        }
-        div.container {
-            padding-top: 150px;
-        }
-        div.board_contents{
-            width : 1056px;
-            margin: 0 auto;
-        }
-        div.board_aside {
-            width: 300px;
-            float: left;
-        }
-        h3.type1{
-            font-size: 3.0rem;
-            font-weight: 800;
-            margin-left : -3.3em;
-        }
-        hr{
-            width: 85px;
-            color: #3cadd4;
-        }
-        .culture_gallery {
-            position: relative;
-            width: 1056px;
-            padding: 40px 0 0px 0;
-        }
-        ul{
-            list-style : none;
-        }
-        img.card_img {
-            display: block;
-            max-width:100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        .culture_gallery .tit {
-            display: block;
-            margin: 16px 0 15px 0;
-            font-size: 15px;
-            line-height: 1;
-            font-weight: normal;
-            color: #000;
-        }
-        .culture_gallery .txt {
-            display: block;
-            font-size: 13px;
-            color: #666;
-            line-height: 1;
-            font-weight: normal;
-        }
-        p.type1 {
-            font-size: 21px;
-            padding-bottom:16px;
-            font-size:15px;
-            color:#000;
-        }
-
-        div.card.mb-4.shadow-sm{
-            overflow: hidden;
-            float: left;
-            width: 328px;
-            height: 420px;
-            margin: 0 24px 39px 0;
-            line-height: 22px;
-            border-radius: 15px;
-        }
-        .editor_card{
-            padding-top: 20px;
-        }
-        div.card-body{
-            padding-top:10px;
-        }
-
-        @media screen and (max-width: 850px){
-        .culture_gallery {
-            position: relative;
-            width: 800px;
-            padding: 40px 0 0px 0;
-        }
-    }
-    </style>
-
-    <div class="container">
-        <div class="board_contents">
-        <div class="culture">
-            <h3 class="type1">Editor Pick</h3>
-            <hr>
+    <div class="container_editor">
+        <div class="board_contents editor">
+        <div class="board_contents editor">
+            <h3 class="editor_head">Editor Pick</h3>
+            <hr class="editor">
         </div>
-            <div class="board_contents">
+            <div class="board_contents editor">
                 <div class="editor_card">
                     <div class="Culture_box" id="Culture5_box">
                         <ul class="culture_gallery">
                             {% for item in editors %}
-                            <div class="card mb-4 shadow-sm">
-                                <a href="editor_view/{{ item.id }}" class="link_area" omni-click="맵:Submain:COOKINGLIBRARY">
-                                    <img class="card_img" src="{{ item.img.url }}" alt="COOKING LIBRARY">
-                                    <div class="card-body">
-                                    <strong class="tit">{{ item.title }} &gt;</strong>
-                                    <span class="txt">{{ item.contents }}</span>
+                            <div class="card mb-4 shadow-sm editor">
+                                <a href="editor_view/{{ item.id }}" class="link_editor" omni-click="맵:Submain:COOKINGLIBRARY">
+                                    <img class="card_img editor" src="{{ item.img.url }}" alt="COOKING LIBRARY">
+                                    <div class="card-body editor">
+                                    <strong class="title_editor">{{ item.title }} &gt;</strong>
+                                    <span class="txt editor">{{ item.contents }}</span>
                                     </div>
                                 </a>
                             </div>
