@@ -103,9 +103,9 @@ WSGI_APPLICATION = 'footprint.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':  'jinsol',
+        'NAME':  'footprint',
         'USER': 'root',
-        'PASSWORD': '111111',
+        'PASSWORD': 's9423093',
         'HOST': 'localhost',
         'PORT': '3306'
     }

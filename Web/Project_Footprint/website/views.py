@@ -493,7 +493,7 @@ def add_to_db(crawled_items):
     """
      크롤링한 Hotplace 데이터를 Database(Mysql)에 저장함
     """
-    db = pymysql.connect(host='localhost', user='root', password='!khc532412', db='foot_print', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', password='s9423093', db='foot_print', charset='utf8')
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}
