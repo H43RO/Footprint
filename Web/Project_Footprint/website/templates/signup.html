@@ -1,25 +1,12 @@
 {% extends './base.html' %}
 {% load static %}
-{% block extrahead %}
+{% block content %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{% endblock %}
-    {% block content %}
-    <style type="text/css">
-            @media screen and (max-width: 960px){
-                .container2{
-                      display: none;
-                }
-                #signup .card{
-                    position: absolute;
-                    left: 50%;
-                    top: 50;
-                    transform: translate(-50%);
-                    width:400px;
-                }
-            }
-    </style>
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />   
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
+
     <div id = "signup">
         <div class="container1">
             <div class="d-flex justify-content-center h-100">
@@ -76,4 +63,4 @@
         </div>
 
     </div>
-    {% endblock %}
+{% endblock %}

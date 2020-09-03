@@ -2,16 +2,14 @@
 {% load static %}
 {% block content %}
 <meta name="viewport" content="width=device-width" , initial-scale="1">
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}">
 <script type="text/javascript" charset="utf-8">css_style = "{% static 'css/style.css' %}"  </script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 
 <style type="text/css">
-    .container_index{
-        max-width: 100vw;
-    }
+
     .slick-prev:before,
     .slick-next:before {
         color: black;
@@ -26,22 +24,15 @@
         width: 200px;
         height: 350px;
     }
-    
+
     @media screen and (max-width:960px) {
         .slick-slider {
             width: 90vw;
             padding:20px;
         }
-
         div.card.mb-4.shadow-sm {
-            width: 27vw;
-
+            width: 25vw;
         }  
-        div.album.py-5 {
-            margin-top: 55px;
-            width: 90vw;
-        }
-
 
         h3.place_tit {
             display: inline-block;
@@ -49,7 +40,6 @@
             margin-bottom: 25px;
             padding: 0;
         }
-
         #banner h2 {
             font-size: 2.5rem;
         }
@@ -57,34 +47,21 @@
     @media screen and (max-width : 700px) {
         div.card.mb-4.shadow-sm {
             width: 40vw;
-
         }   
-
         .slick-slider {
             width: 90vw;
             padding:20px;
-
-        }
-
-        div.album.py-5 {
-            margin-top: 55px;
-            width: 90vw;
         }
 
     }
-
     @media screen and (max-width : 450px) {
         div.card.mb-4.shadow-sm {
             width: 70vw;
-
         }   
-
         .slick-slider {
             width: 90vw;
             padding:20px;
-
         }
-
         div.album.py-5 {
             margin-top: 55px;
             width: 90vw;
@@ -92,26 +69,8 @@
 
 
     }
-
-    @media screen and (max-width : 450px) {
-        div.card.mb-4.shadow-sm.index {
-            width: 70vw;
-
-        }   
-
-        .slick-slider {
-            width: 80vw;
-            padding:20px;
-
-        }
-
-        div.album.py-5.index {
-            margin-top: 55px;
-            width: 90vw;
-        }
-
-    }
 </style>
+
 {% csrf_token %}
 <section id="banner">
     <div></div>

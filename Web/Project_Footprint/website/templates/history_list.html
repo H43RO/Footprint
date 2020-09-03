@@ -9,11 +9,11 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="{% static 'js/history.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/history.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}">
 
-
-<div class="cont">
-    <div class="left">
+<div class="cont history">
+    <div class="left history">
         <div class="history">
             <a href="{% url 'history-create' %}" class="history-card-link">일기 작성</a>
             {% for item in historys %}
@@ -75,7 +75,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="right">
+    <div class="right history">
         <div class="containor">
             <div class="row row-margin-bottom">
                 <div class="col-md-5 no-padding lib-item" data-category="view">
