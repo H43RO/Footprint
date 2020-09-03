@@ -2,8 +2,8 @@
 {% load static %}
 {% block content %}
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=373de50ef6dcf6a5a87b44674f4dc70c&libraries=services"></script>
-<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
-
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
 
 <div class="container_place">
     <div class="board_contents place">
@@ -12,10 +12,10 @@
         </h1>
         <hr class="place">
     </div>
-        <div class="cont">
+        <div class="cont place">
         <div class="col-4 data">
         <div class="card place">
-            <img src="{{ places.imageSrc }}" alt="" class="card-img-top" />
+            <img src="{{ places.imageSrc }}" alt="" class="card-img-top place" />
             <div class="card-body place">
                 <h3 class="card-title place">" {{ places.title }} "</h3>
                 <h5 class="card-title place">{{ places.description }}</h5>

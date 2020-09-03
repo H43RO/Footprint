@@ -274,7 +274,7 @@ def user_delete(request):
         if password_form.is_valid():
             request.user.delete()
             logout(request)
-            return redirect('../list')
+            return redirect('../index')
         else:
             messages.error(request, '비밀번호가 일치하지 않습니다. 다시 입력해주세요')
             return HttpResponseRedirect('../user_delete/')
@@ -493,8 +493,7 @@ def add_to_db(crawled_items):
     """
      크롤링한 Hotplace 데이터를 Database(Mysql)에 저장함
     """
-    db = pymysql.connect(host='localhost', user='root', password='s9423093', db='foot_print', charset='utf8')
-
+    db = pymysql.connect(host='localhost', user='root', password='080799', db='footprint', charset='utf8')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     items_to_insert_into_db = {}
     items_to_insert_into_db = crawled_items

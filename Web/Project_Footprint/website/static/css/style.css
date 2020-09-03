@@ -799,167 +799,92 @@
 				color: #444;
 			}
 
-/* Signin */
+/* Footer */
 
-
- #signin {
-	background-image: url('../background.jpg');
-	background-position: center center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	height: 100%;
-	}
-	
-	#signin .container{
-	height: 100%;
-	align-content: center;
-	border-style: none;
+	#footer {
+		background: #383b43;
+		padding: 6em 0em 4em;
 	}
 
-
-	#signin .form-control {
-	height: 45px;
-	padding: 20px;
-	border-style: none;
-	color:black;
-	border-radius: 10px 10px 10px 10px;
-	background-color: #d9dbd9;
-	opacity:0.5;
-	}
-
-	#signin .card{
-	height: 370px;
-	margin-top: 140px;
-	margin-bottom: 50px;
-	color: white;
-	width: 310px;
-	border-style: none;
-	background-color: rgba(255,255,255,0.0);
-	}
-
-	#signin .card-header {
-	text-align : center ;
-	border-style: none;
-	}
-
-	#signin .card-footer {
-	border-style: none;
-	margin-top: 12em;
-	}
-
-	#signin .login_btn{
-	margin-top: 15px;
-	color: white;
-	font-weight:bold;
-	background-color: #293263;
-	width: 270px;
-	height: 45px;
-	border-style: none;
-	border-radius: 10px 10px 10px 10px;
-	}
-
-	#signin input::placeholder {
-	color:white;
-	font-weight:bold;
-	font-size: 90%;
-	}
-
-	#signin .password_find {
-		color:white;
-	}
-
-/* Signup */
-
-
-    #signup {
-		background-image: url('../background.jpg');
-		background-position: center center;
-		background-size: cover;
-		background-repeat: no-repeat;
-		height: 100%;
+		#footer h2, #footer h3, #footer h4 {
+			color: #ffffff;
 		}
-	
-		.container1{
-		/* font-family: 'NanumSquare', sans-serif; */
-		float: right;
-		margin-right: 300px;
-		width: 400px;
-		height: 100%;
-		padding-top: 50px;
-		align-content: center;
-		border-style: none;
+
+		#footer p, #footer a, #footer li {
+			color: #cdced0;
+		}
+
+		#footer .links {
+			border-bottom: 1px solid rgba(144, 144, 144, 0.25);
+			margin-bottom: 4em;
+			padding-bottom: 1em;
+		}
+
+		#footer .copyright {
+			margin-top: 0.65em;
+			padding: 0;
+		}
+
+			#footer .copyright li {
+				color: #858585;
+				display: inline-block;
+				list-style: none;
+				margin-left: 0.5em;
+				padding-left: 0.5em;
+			}
+
+				#footer .copyright li:first-child {
+					margin-left: 0;
+					padding-left: 0;
+				}
+
+			#footer .copyright a {
+				color: #858585;
+			}
+
+		#footer .icons {
+			text-align: right;
+		}
+
+		#footer a.icon {
+			color: #ffffff;
+			font-size: 0.65em;
+			height: 4em;
+			line-height: 4em;
+			width: 4em;
+			cursor: pointer;
+		}
+
+/* Grid Demo */
+
+	.grid-demo {
+		display: block;
+		margin: 0 0 2em 0;
+	}
+
+		.grid-demo span {
+			background: #8d93a0;
+			border-radius: 4px;
+			color: rgba(0, 0, 0, 0.25);
+			display: block;
+			font-weight: 700;
+			height: 2.75em;
+			line-height: 2.75em;
+			text-align: center;
+		}
+
+		.grid-demo .row.flush > div span {
+			border-radius: 0;
+		}
+
+		.grid-demo .row.flush > div:first-child span {
+			border-radius: 4px 0 0 4px;
+		}
+
+		.grid-demo .row.flush > div:last-child span {
+			border-radius: 0 4px 4px 0;
 		}
 		
-		#signup .container2{
-		font-family: 'Nanum Myeongjo', serif;
-		float: left;
-		margin-left: 250px;
-		width: 400px;
-		height: 100%;
-		align-content: right;
-		border-style: none;
-		}
 
-		#signup .introduce{
-		height: 370px;
-		margin-top: 20px;
-		border-style: none;
-		background-color: rgba(255,255,255,0.0);
-		color: white;
-		}
+
 		
-		
-		#signup .introduce-header h1{
-		margin-top: 190px;
-		  text-align : left ;
-		  border-style: none;
-		  color: white;
-		  font-weight:bold;
-		}
-	
-		#signup .introduce-body h3{
-		margin-top: 50px;
-		text-align : left ;
-		border-style: none;
-		color: white;
-		margin-left: -88px;
-		}
-	
-		#signup select:invalid {
-		color: gray;
-		}
-	
-		#signup .card{
-		height: 580px;
-		margin-top: 130px;
-		padding: 50px;
-		width: 500px;
-		border-style: none;
-		background-color: rgba(255,255,255,0.4);
-		}
-	
-		#signup .form-control {
-		height: 40px;
-		width: 100px;
-		border-style: none;
-		border-radius: 10px 10px 10px 10px;
-		color: black;
-		background-color: #d9dbd9;
-		opacity:0.7;
-		}
-	
-		#signup .signup_btn{
-		margin-top: 10px;
-		color: white;
-		font-weight:bold;
-		background-color: #293263;
-		width: 300px;
-		height: 40px;
-		border-style: none;
-		border-radius: 10px 10px 10px 10px;
-		}
-	
-		#signup input::placeholder {
-		font-weight:bold;
-		font-size: 95%;
-		}

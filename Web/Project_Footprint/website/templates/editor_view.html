@@ -1,29 +1,26 @@
-{% extends './base.html' %}
-{% load static %}
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
+{% extends './base.html' %} {% load static %} {% block content %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static '/css/webstyle.css' %}"
+/>
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
 
 <div id="editor_view" class="container_editor">
-        <div class="board_contents editor">
-            <h3 class="editor_head">
-                Editor Pick<br>
-            </h3>
-            <hr class="editor">
-        </div>
-        <div class="board_contents editor">
-            <div class="editor_contents">
-                <div class="editor">
-                    <h4 class="editor_tit">
-                        {{ editors.title }}
-                    </h4>
-                </div>
+  <div class="board_contents editor">
+    <h3 class="editor_head">Editor Pick<br /></h3>
+    <hr class="editor" />
+  </div>
+  <div class="board_contents editor">
+    <div class="editor_contents">
+      <div class="editor">
+        <h4 class="editor_tit">{{ editors.title }}</h4>
+      </div>
 
-            <p class="editor_date"> {{ editors.created_at|date:"Y-m-d" }}</p>
-            <br><br>
-            <div class="editro_desc">
-                 {{ editors.description|safe }}
-            </div>
-            </div>
-        </div>
+      <p class="editor_date">{{ editors.created_at|date:"Y-m-d" }}</p>
+      <br /><br />
+      <div class="editro_desc">{{ editors.description|safe }}</div>
+    </div>
+  </div>
 </div>
 {% endblock %}

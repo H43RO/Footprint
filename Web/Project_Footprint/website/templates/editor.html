@@ -1,34 +1,44 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static '/css/editor.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
 
-    <div class="container_editor">
-        <div class="board_contents editor">
-        <div class="board_contents editor">
-            <h3 class="editor_head">Editor Pick</h3>
-            <hr class="editor">
+<div id="editor">
+  <div class="container_editor">
+    <div class="board_contents editor">
+      <div class="board_contents editor">
+        <h3 class="editor_head">Editor Pick</h3>
+        <hr class="editor" />
+      </div>
+      <div class="board_contents editor">
+        <div class="editor_card">
+          <div class="Culture_box">
+            <ul class="culture_gallery">
+              {% for item in editors %}
+              <div class="card mb-4 shadow-sm editor">
+                <a
+                  href="editor_view/{{ item.id }}"
+                  class="link_editor"
+                  omni-click="맵:Submain:COOKINGLIBRARY"
+                >
+                  <img
+                    class="card_img editor"
+                    src="{{ item.img.url }}"
+                    alt="COOKING LIBRARY"
+                  />
+                  <div class="card-body editor">
+                    <strong class="title_editor">{{ item.title }} &gt;</strong>
+                    <span class="txt editor">{{ item.contents }}</span>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
-            <div class="board_contents editor">
-                <div class="editor_card">
-                    <div class="Culture_box" id="Culture5_box">
-                        <ul class="culture_gallery">
-                            {% for item in editors %}
-                            <div class="card mb-4 shadow-sm editor">
-                                <a href="editor_view/{{ item.id }}" class="link_editor" omni-click="맵:Submain:COOKINGLIBRARY">
-                                    <img class="card_img editor" src="{{ item.img.url }}" alt="COOKING LIBRARY">
-                                    <div class="card-body editor">
-                                    <strong class="title_editor">{{ item.title }} &gt;</strong>
-                                    <span class="txt editor">{{ item.contents }}</span>
-                                    </div>
-                                </a>
-                            </div>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
-
