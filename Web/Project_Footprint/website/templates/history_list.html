@@ -15,17 +15,17 @@
 <div class="cont">
     <div class="left">
         <div class="history">
-            <a href="{% url 'history-create' %}" class="card-link">일기 작성</a>
+            <a href="{% url 'history-create' %}" class="history-card-link">일기 작성</a>
             {% for item in historys %}
             <div class="card-body">
                 <div class="card-left" onclick="myFunction({{item.id}})">
                     {% if item.img %}
-                    <img class="card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="">
+                    <img class="history-card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="">
                     {% endif %}
                     <div class="history-text">
                         <p class="card-text">
                             {%if item.title %}
-                        <h4 class="card-title" id="title{{item.id}}">
+                        <h4 class="history-card-title" id="title{{item.id}}">
                             {{item.title }}</h4>
                         {% endif %}
                         </p>

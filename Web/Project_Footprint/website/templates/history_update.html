@@ -1,20 +1,7 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<style>
-
-    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
-    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-
-
-    div.history-form {
-        font-size: 15px;
-        font-family: 'NanumSquare', sans-serif;
-        margin: auto;
-        padding-top: 110px;
-    }
-</style>
-
+<link rel="stylesheet" type="text/css" href="{% static '/css/history.css' %}">
 
 <div class="container">
     <form enctype="multipart/form-data" action="{% url 'history-update' %}" method="post">

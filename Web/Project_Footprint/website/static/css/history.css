@@ -1,3 +1,4 @@
+    /* history_list */
     .cont {
         margin: 0;
         height: 100vh;
@@ -48,16 +49,6 @@
     }
 
 
-    a.card-link {
-        margin-left:11%;
-    }
-
-    div.card {
-        margin:auto;
-        border-radius: 15px;
-    }
-
-
     div.card-left {
         position: relative;
         width: 21vw;
@@ -74,13 +65,13 @@
         align-items: center;
     }
 
-    h4.card-title {
+    h4.history-card-title {
         font-family: 'Nanum Myeongjo', serif;
         font-weight: 800;
         padding-top: 10px;
     }
 
-    img.card-img-top{
+    img.history-card-img-top{
         max-width: 100%;
         max-height: 100%;
         margin:auto;
@@ -98,14 +89,12 @@
         border-top-right-radius: 15px;
     }
 
-    div.col-md-8{
-        margin-top:30%;
-    }
 
     button.btn-light {
         margin-bottom: 8px;
         margin-right: 5px;
     }
+
     form.button-history{
         float:left;
     }
@@ -119,11 +108,13 @@
         font-size:14;
         color:#636160;
     }
-    a.card-link{
+
+    a.history-card-link{
         font-size : 20px;
         color: #232324;
         padding: 7.5%;
         padding-top:5%;
+        margin-left:11%;
     }
 
 
@@ -216,4 +207,12 @@
             margin-left: 1.06vw;
         }
 
+    }
+
+    /* history_create , history_update */
+    div.history-form {
+        font-size: 15px;
+        font-family: 'NanumSquare', sans-serif;
+        margin: auto;
+        padding-top: 110px;
     }
