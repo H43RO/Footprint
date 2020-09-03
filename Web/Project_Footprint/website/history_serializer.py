@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import History, User
+from .models import History
 from django.utils import timezone, dateformat
-from .user_serializers import UserLoginSerializer
 
 
 class HistorySerializer(serializers.ModelSerializer):
@@ -13,9 +12,6 @@ class HistorySerializer(serializers.ModelSerializer):
         model = History
         fields = '__all__'
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
     def to_representation(self, instance):
         data = super(HistorySerializer, self).to_representation(instance)
         if not data['created_at']:
@@ -24,6 +20,7 @@ class HistorySerializer(serializers.ModelSerializer):
         if not data['mood']:
             data['mood'] = "기분 좋았던 순간"
             instance.mood = "기분 좋았던 순간"
+        instance.save()
         return data
 
 
