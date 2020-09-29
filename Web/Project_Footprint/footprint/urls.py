@@ -65,3 +65,10 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
