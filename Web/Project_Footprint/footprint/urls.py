@@ -17,40 +17,49 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from website import views
+# from website import views
+from accounts import views as acc_views
+# from place import views as pla_views
+# from history import views as his_views
+# from post import views as pos_views
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
-from website.viewsets import (
-    ApiPlaceId,
-    UserUpdateView,
-    UserDeleteView,
-    UserListView,
-    HistoryViewSet,
-    HistoryUpdateAPIView,
-    HistoryDeleteAPIView,
-    NoticeViewSet,
-    ApiHotPlace,
-    EditorViewSet,
-    HotPlcaeViewSet,
-    HistoryCreateViewSet
-    )
+# from website.viewsets import (
+#     ApiPlaceId,
+#     UserUpdateView,
+#     UserDeleteView,
+#     UserListView,
+#     HistoryViewSet,
+#     HistoryUpdateAPIView,
+#     HistoryDeleteAPIView,
+#     NoticeViewSet,
+#     ApiHotPlace,
+#     EditorViewSet,
+#     HotPlcaeViewSet,
+#     HistoryCreateViewSet
+#     )
+from accounts.viewsets import UserListView, UserUpdateView, UserDeleteView
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
-router.register('histories', HistoryViewSet)
-router.register('places', ApiPlaceId, basename='places')
-router.register('userinfo', UserListView, basename='userinfo')
-router.register('noticelist', NoticeViewSet)
-router.register('hotplaces', HotPlcaeViewSet, basename='hotplaces')
-router.register('editorlist', EditorViewSet)
+# router.register('histories', HistoryViewSet)
+# router.register('places', ApiPlaceId, basename='places')
+# router.register('userinfo', UserListView, basename='userinfo')
+# router.register('noticelist', NoticeViewSet)
+# router.register('hotplaces', HotPlcaeViewSet, basename='hotplaces')
+# router.register('editorlist', EditorViewSet)
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
 
 urlpatterns = [
-    path('', include('website.urls')),
+    # path('', include('website.urls')),
+    path('', include('accounts.urls')),
+    # path('', include('places.urls')),
+    # path('', include('histories.urls')),
+    # path('', include('posts.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -58,12 +67,12 @@ urlpatterns = [
     url('api/', include(router.urls)),
     url('userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
     url('userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
-    url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
-    url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    # url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    # url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
     path('accounts/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
+    # url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

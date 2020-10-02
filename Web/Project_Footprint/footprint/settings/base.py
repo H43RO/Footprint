@@ -23,7 +23,7 @@ for key, value in secrets.items():
 
 ALLOWED_HOSTS = ['*']
 # Application definition
-AUTH_USER_MODEL = 'website.User'
+AUTH_USER_MODEL = 'accounts.User'
 INSTALLED_APPS = [
     'grappelli',
     'django.contrib.admin',
@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'website',
     'rest_framework',
     'django_filters',
     'rangefilter',
@@ -41,6 +40,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'ckeditor_uploader',
     'ckeditor',
+    # My app
+    'accounts',
+    # 'history',
+    # 'place',
+    # 'post',
 ]
 
 REST_FRAMEWORK = {
@@ -68,9 +72,9 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
     'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
     'USER_LOGIN_FIELDS' :  ['email'],
-    'SUCCESS_RESPONSE_BULIDER' : ('website.user_serializers.build_default_success_response'),
-    'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
-    'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
+    'SUCCESS_RESPONSE_BULIDER' : ('accounts.serializers.build_default_success_response'),
+    'LOGIN_SERIALIZER_CLASS' : ('accounts.serializers.UserLoginSerializer'),
+    'SUCCESS_RESPONSE_BUILDER' : ('accounts.serializers.build_default_success_response'),
 
 }
 
@@ -157,7 +161,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 이메일 인증을 위한 smtp 설정
-AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
+AUTHENTICATION_BACKENDS = ['accounts.backend.EmailAuthBackend']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
