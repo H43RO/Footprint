@@ -1,0 +1,108 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="{% static 'js/history.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}">
+
+<div class="cont history">
+    <div class="left history">
+        <div class="history">
+            <a href="{% url 'history-create' %}" class="history-card-link">일기 작성</a>
+            {% for item in historys %}
+            <div class="card-body">
+                <div class="card-left" onclick="myFunction({{item.id}})">
+                    {% if item.img %}
+                    <img class="history-card-img-top" id="image{{item.id}}" src="{{ item.img.url }}" , alt="">
+                    {% endif %}
+                    <div class="history-text">
+                        <p class="card-text">
+                            {%if item.title %}
+                        <h4 class="history-card-title" id="title{{item.id}}">
+                            {{item.title }}</h4>
+                        {% endif %}
+                        </p>
+                        {%if item.mood %}
+                        <h6 class="card-subtitle mb-2 text-muted" id="mood{{item.id}}">{{ item.mood }}</h6>
+                        {% endif %}
+                        {%if item.place %}
+                        <p class="card-text" id="place{{item.id}}">{{ item.place }}</p>
+                        {% endif %}
+                        {%if item.custom_place %}
+                        <p class="card-text" id="custom-place{{item.id}}">{{ item.custom_place }}</p>
+                        {% endif %}
+                        {%if item.comment %}
+                        <p class="card-text" id="comment{{item.id}}" style="display: none">
+                            {{ item.comment }}</p>
+                        {% endif %}
+
+                        <p class="card-text" id="created-at{{item.id}}" style="display: none">{{ item.created_at }}</p>
+                        <form class="button-history" action="{% url 'history-update' %}?id={{ item.id }}" name="update"
+                              method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-light btn-sm">수정</button>
+                            <br/>
+                        </form>
+                              <form class="button-history2" action="{% url 'history-delete' id=item.id %}" onsubmit="return getConfirmation()" name="delete"
+                              method="post">
+                            {% csrf_token %}
+                            <script>
+                                                    function getConfirmation()
+                                                        {
+                                                            var retVal = confirm("Do you want to continue ?");
+                                                            if (retVal == true)
+                                                            {
+                                                                return true;
+                                                            } 
+                                                            else
+                                                            {
+                                                                return false;
+                                                            }
+                                                        }
+                            </script>
+                            <button type="submit" class="btn btn-light btn-sm" >삭제</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="right history">
+        <div class="containor">
+            <div class="row row-margin-bottom">
+                <div class="col-md-5 no-padding lib-item" data-category="view">
+                    <div class="lib-panel">
+                        <div class="row box-shadow">
+                            <div class="col-md-6">
+                                <img class="lib-img-show" id="img" src="../static/logo2.png" class="card-img">
+                            </div>
+                            <div class="col-md-6" id="col-md-6">
+                                <div class="lib-row lib-header" id="demo-title">
+                                </div>
+                                <div class="lib-header-seperator"></div>
+                                <div class="lib-row lib-desc" id="demo-mood">
+                                </div>
+                                <p class="card-text" id="demo-comment"></p>
+                                <div class="lib-row lib-desc" id="demo-place">
+                                </div>
+                                <div class="lib-row lib-desc" id="demo-custom-place">
+                                </div>
+                                <div class="lib-row lib-desc" id="demo-create-at">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

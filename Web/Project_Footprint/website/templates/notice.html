@@ -1,0 +1,37 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
+
+    <div id="notice" class="container_notice">
+            <div class="board_contents notice">
+                <h1 class="notice_head">
+                    Notice<br>
+                </h1>
+                <hr class="notice">
+                <!-- <span class="aside-st"></span> -->
+            </div>
+            <div class="board_contents notice">
+                <div class="notices_contents">
+                {% for item in notices %}
+                    <div  class="row">
+                        <div class="col-sm-6">
+                            <div class="card ">
+                            <div class="card-body">
+                                <a  href="notice_view/{{ item.id }}" >
+                                <h5 class="card-title">{{ item.title }}</h5>
+                                <p class="notice_date">{{ item.created_at|date:"Y-m-d" }}</p>
+                                <p class="notice_desc">{{ item.contents }}</p>
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                {% endfor %}
+                </div>
+            </div>
+    
+    </div>
+{% endblock %}
+

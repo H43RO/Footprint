@@ -1,0 +1,46 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}">
+
+<div id = "signin">
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<img src="../static/logo.png" width="130px">
+				</div>
+				<div class="card-body">
+					<form method="post" >
+						{% csrf_token %}
+						<div class="input-group form-group">
+                            <!-- <input class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" type="text" placeholder="이메일" /> -->
+                             {{form.email}} 
+						</div>
+						<div class="input-group form-group">
+                            <!-- <input class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" type="password" placeholder="비밀번호" /> -->
+                            {{ form.password}}
+						</div>
+						 {% if messages %}
+							{% for message in messages %}
+							<small style="color: red">{{ message.message }}</small><br>
+							{% endfor %}
+						 {% endif %}
+						<div class="form-group">
+							<input type="submit" value="로그인" class="btn float login_btn">
+						</div>
+					</form>
+				</div>
+				<div class="card-footer">
+					<div class="d-flex justify-content-center">
+						<a href="/user_password_find" class = "password_find"><b class="password_find">비밀번호를 잊으셨나요?</b></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

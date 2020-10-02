@@ -1,0 +1,1240 @@
+
+/* myinfo */
+    #myinfo .html,body {
+        background-color: #f9f9f9;
+    }
+
+    #myinfo .card {
+        border-radius: 15px;
+    }
+
+    #myinfo .card-body {
+        font-weight: bold;
+        text-align: center;
+        font-family: 'NanumSquare', sans-serif;
+    }
+
+    #myinfo .card-title {
+        margin-top: 5px;
+        margin-left: 20px;
+        font-family: 'NanumSquare', sans-serif;
+        font-weight: bold;
+        font-size: 2vw;
+    }
+
+    #myinfo .col-sm {
+        padding-top: 50px;
+    }
+
+    #myinfo .user-info {
+        width: 20vw;
+        height: 1%;
+        margin-left: 15px;
+        margin-bottom: 10px;
+        padding: 0.8vw;
+        font-size: 1.3vw;
+        font-weight: bold;
+        text-align: left;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: black;
+        background-color: #f2f2f2;
+    }
+
+    #myinfo .user-img {
+        padding: 12px;
+        width: 22vw;
+        height: 22vw;
+        border-style: none;
+        border-radius: 15px;
+        background-color: #f2f2f2;
+        float: right;
+    }
+
+    #myinfo .update-btn {
+        display: block;
+        margin: 0 auto;
+        color: black;
+        width: 10vw;
+        height: 3.5vw;
+        font-size: 1.5vw;
+        font-weight: bold;
+        text-align: center;
+        background-color: #c4c4c4;
+        border-style: none;
+        border-radius: 10px;
+    }
+
+    #myinfo .myinfo {
+        display: inline-block;
+        vertical-align: middle;
+        max-width: 100%;
+    }
+
+    #myinfo .right {
+        float: right;
+        padding: 10 0 10 50;
+    }
+
+    #myinfo .left {
+        float: left;
+        padding: 10 50 10 0;
+
+    }
+
+
+/* user info update */
+    #user_update .html, body {
+        background-color: #f9f9f9;
+    }
+
+    #user_update .container {
+        font-family: 'NanumSquare', sans-serif;
+        font-weight: bold;
+        padding-top: 50px;
+    }
+
+    #user_update .card{
+        border-radius: 10px;
+    }
+
+    #user_update .card-body {
+        font-weight: bold;
+        text-align: center;
+        border-radius: 20px;
+    }
+
+    #user_update .card-title {
+        margin-top: 5px;
+        margin-left: 20px;
+        font-family: 'NanumSquare', sans-serif;
+        font-weight: bold;
+        font-size: 2vw;
+    }
+
+    #user_update .user-info {
+        width: 20vw;
+        height: 1%;
+        margin-top: 10px;
+        margin-left: 15px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 1.5vw;
+        text-align: center;
+        border-style: none;
+        border-radius: 5px;
+        color: black;
+        background-color: #f3f3f3;
+        float: left;
+    }
+
+    #user_update .user-img {
+        margin-right: 1.5vw;
+        padding: 12px;
+        padding-left: 18px;
+        width: 22vw;
+        height: 22vw;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: black;
+        background-color: #f3f3f3;
+        float: right;
+    }
+
+    #user_update .confirm_btn {
+        color: black;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        margin-left: 15px;
+        margin-right: 10px;
+        width: 14%;
+        height: 8%;
+        font-size: 1.1vw;
+        font-weight: bold;
+        background-color: #c4c4c4;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        float: left;
+    }
+
+    #user_update .delete_btn {
+        color: black;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        width: 14%;
+        height: 8%;
+        font-size: 1.1vw;
+        font-weight: bold;
+        background-color: #f56042;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        float: left;
+    }
+
+    #user_update .pw_btn {
+        color: black;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        margin-right: 10px;
+        width: 14%;
+        height: 8%;
+        font-size: 1.1vw;
+        font-weight: bold;
+        background-color: #c4c4c4;
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        float: left;
+    }
+
+    #id_age {
+        width: 17vw;
+        border: none;
+        background-color: transparent;
+    }
+    #id_birth_date, #id_nickname, #id_gender, #id_age{
+        background-color: #f3f3f3;
+        height: 3vw;
+    }
+    #id_image{
+            font-size:1.5vw;
+    }
+    #user_update button.btn.confirm_btn, button.btn.pw_btn, button.btn.delete_btn{
+            font-size:1.1vw;
+    }
+
+
+/* user delete */
+    #user_delete .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #user_delete .container{
+    font-family: 'NanumSquare', sans-serif;
+    padding-top: 100px;
+    font-weight:bold;
+    }
+
+    #user_delete .card-title{
+    margin-top: 5px;
+    margin-left: 25px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    text-align: center;
+    font-size: 2vw;
+    }
+
+    #user_delete .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #user_delete .card-body p{
+    font-size: 1vw;
+    }
+
+    #user_delete .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #user_delete .delete_btn{
+    color: black;
+    margin-top: 20px;
+    width: 13%;
+    height: 7%;
+    font-size: 1.3vw;
+    font-weight:bold;
+    background-color: #f56042;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* signup email confirm */
+    #signup_email_c .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #signup_email_c .container{
+    font-family: 'NanumSquare', sans-serif;
+    padding-top: 100px;
+    font-weight:bold;
+    }
+
+    #signup_email_c .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #signup_email_c .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #signup_email_c .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+
+/* user password update */
+    #pw_update .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_update .container{
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    padding-top: 50px;
+    }
+
+    #pw_update .card-body.user{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 1.2vw;
+    }
+
+    #pw_update .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+    #pw_update .user-tag {
+    height: 60px;
+    width: 400px;
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-bottom: 5px;
+    font-weight:bold;
+    font-size: 130%;
+    border-style: none;
+    color: black;
+    background-color: white;
+    }
+
+    #pw_update .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 14%;
+    height: 8%;
+    font-size: 1.2vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* user password find */
+    #pw_find .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_find .container{
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    padding-top: 100px;
+    }
+
+    #pw_find .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 1.2vw;
+    }
+
+    #pw_find .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+    #pw_find .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    width: 13%;
+    height: 9%;
+    font-size: 1.0vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+    #pw_find .asteriskField{
+        font-size:0;
+    }
+
+
+/* password email confirm */
+    #pw_email_c .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_email_c .container{
+    padding-top: 100px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    }
+
+    #pw_email_c .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #pw_email_c .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #pw_email_c .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+
+/* password reset */
+    #pw_reset .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_reset .container{
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    padding-top: 100px;
+    }
+
+    #pw_reset .card-body{
+    font-weight:bold;
+    border-radius: 20px;
+    }
+
+    #pw_reset .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    text-align: center;
+    }
+
+    #pw_reset .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    width: 14%;
+    height: 8%;
+    font-size: 1.2vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* password reset complete */
+    #pw_reset_c .html,body{
+    background-color: #f9f9f9;
+    }
+
+    #pw_reset_c .container{
+    font-weight:bold;
+    padding-top: 100px;
+    font-family: 'NanumSquare', sans-serif;
+    }
+
+    #pw_reset_c .card-body{
+    font-weight:bold;
+    text-align: center;
+    border-radius: 20px;
+    }
+
+    #pw_reset_c .card-body h5{
+    font-size: 1.3vw;
+    }
+
+    #pw_reset_c .card-title{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-family: 'NanumSquare', sans-serif;
+    font-weight:bold;
+    font-size: 2vw;
+    }
+
+    #pw_reset_c .confirm_btn{
+    color: black;
+    margin-top: 15px;
+    width: 13%;
+    height: 7%;
+    font-size: 1.5vw;
+    font-weight:bold;
+    background-color: #c4c4c4;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+
+/* Signin */
+
+    #signin {
+    background-image: url('../background.jpg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    }
+        
+    #signin .container{
+    height: 100%;
+    align-content: center;
+    border-style: none;
+    }
+
+
+    #signin .form-control {
+    height: 45px;
+    padding: 20px;
+    border-style: none;
+    color:black;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #d9dbd9;
+    opacity:0.5;
+    }
+
+    #signin .card{
+    height: 370px;
+    margin-top: 140px;
+    margin-bottom: 50px;
+    color: white;
+    width: 310px;
+    border-style: none;
+    background-color: rgba(255,255,255,0.0);
+    }
+
+    #signin .card-header {
+    text-align : center ;
+    border-style: none;
+    }
+
+    #signin .card-footer {
+    border-style: none;
+    margin-top: 12em;
+    }
+
+    #signin .login_btn{
+    margin-top: 15px;
+    color: white;
+    font-weight:bold;
+    background-color: #293263;
+    width: 270px;
+    height: 45px;
+    border-style: none;
+    border-radius: 10px 10px 10px 10px;
+    }
+
+    #signin input::placeholder {
+    color:white;
+    font-weight:bold;
+    font-size: 90%;
+    }
+
+    #signin .password_find {
+        color:white;
+    }
+
+    #signin .form-control {
+        /* height: 45px;
+        padding: 20px; */
+        border-style: none;
+        border-radius: 10px 10px 10px 10px;
+        color: white;
+        background-color: #d9dbd9;
+        opacity:0.5;
+    }
+
+    /* Signup */
+
+    #signup {
+		background-image: url('../background.jpg');
+		background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		height: 100%;
+		}
+	
+		.container1{
+		/* font-family: 'NanumSquare', sans-serif; */
+		float: right;
+		margin-right: 300px;
+		width: 400px;
+		height: 100%;
+		padding-top: 50px;
+		align-content: center;
+		border-style: none;
+		}
+		
+		#signup .container2{
+		font-family: 'Nanum Myeongjo', serif;
+		float: left;
+		margin-left: 250px;
+		width: 400px;
+		height: 100%;
+		align-content: right;
+		border-style: none;
+		}
+
+		#signup .introduce{
+		height: 370px;
+		margin-top: 20px;
+		border-style: none;
+		background-color: rgba(255,255,255,0.0);
+		color: white;
+		}
+		
+		
+		#signup .introduce-header h1{
+		margin-top: 190px;
+		  text-align : left ;
+		  border-style: none;
+		  color: white;
+		  font-weight:bold;
+		}
+	
+		#signup .introduce-body h3{
+		margin-top: 50px;
+		text-align : left ;
+		border-style: none;
+		color: white;
+		margin-left: -88px;
+		}
+	
+		#signup select:invalid {
+		color: gray;
+		}
+	
+		#signup .card{
+		height: 580px;
+		margin-top: 130px;
+		padding: 50px;
+		width: 500px;
+		border-style: none;
+		background-color: rgba(255,255,255,0.4);
+		}
+	
+		#signup .form-control {
+		height: 40px;
+		width: 100px;
+		border-style: none;
+		border-radius: 10px 10px 10px 10px;
+		color: black;
+		background-color: #d9dbd9;
+		opacity:0.7;
+		}
+	
+		#signup .signup_btn{
+		margin-top: 10px;
+		color: white;
+		font-weight:bold;
+		background-color: #293263;
+		width: 300px;
+		height: 40px;
+		border-style: none;
+		border-radius: 10px 10px 10px 10px;
+		}
+        
+        #signup input::placeholder {
+            font-weight:bold;
+            font-size: 85%;
+            background-color: #e8f0fe;
+            color:black;
+
+        }
+
+        #signup input::-webkit-input-placeholder {
+            font-weight:bold;
+            font-size: 85%;
+            background-color: #e8f0fe;
+            color:black;
+
+        }
+
+        #signup input:-ms-input-placeholder {
+            font-weight:bold;
+            font-size: 85%;
+            background-color: #e8f0fe;
+            color:black;
+
+        }
+
+        textarea::placeholder {
+            opacity: 0.7;
+            color:black;
+        }
+
+        #signup textarea::-webkit-input-placeholder {
+            opacity: 0.7;
+            color:black;
+        }
+
+        textarea:-ms-input-placeholder {
+            opacity: 0.7;
+            color:black;
+        }
+        #signup #id_age, #signup #id_birth_date,#signup #id_nickname,#signup #id_password2,#signup #id_email, #signup #id_password1 {
+            background-color:  #e8f0fe;
+        }
+        #signup #id_age, #signup #id_birth_date,#signup #id_nickname{
+            background-color:  #e8f0fe;
+            font-family: "나눔스퀘어";
+        }
+        #signup #id_age {
+            color:black;
+            margin: 0;
+            border: none;
+        }
+        #signup #id_gender{
+            background-color: #e8f0fe;
+            font-family: "나눔스퀘어";
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+    /* editor */
+
+        .container_editor {
+            padding-top: 150px;
+        }
+        div.board_contents.editor{
+            width : 1056px;
+            margin: 0 auto;
+        }
+        h3.editor_head{
+            display: inline-block;
+            font-family: "나눔스퀘어";
+            font-size: 3.0rem;
+            font-weight: 700;
+            margin-left : -3.3em;
+        }
+        hr.editor{
+            margin-top: 1rem;
+            width: 85px;
+            color: #3cadd4;
+        }
+        .culture_gallery {
+            position: relative;
+            width: 1056px;
+            padding: 40px 0 0px 0;
+        }
+        ul.culture_gallery{
+                list-style : none;
+        }
+        img.card_img.editor {
+            display: block;
+            max-width:100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .culture_gallery .title_editor {
+            display: block;
+            margin: 16px 0 15px 0;
+            font-size: 15px;
+            line-height: 1;
+            font-weight: normal;
+            color: #000;
+        }
+        .culture_gallery .txt.editor {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            line-height: 1;
+            font-weight: normal;
+        }
+        p.editor_head {
+            font-size: 21px;
+            padding-bottom:16px;
+            font-size:15px;
+            color:#000;
+        }
+
+        div.card.mb-4.shadow-sm.editor{
+            overflow: hidden;
+            float: left;
+            width: 328px;
+            height: 420px;
+            margin: 0 24px 39px 0;
+            line-height: 22px;
+            border-radius: 15px;
+        }
+        .editor_card{
+            padding-top: 20px;
+        }
+        div.card-body.editor{
+            padding-top:10px;
+        }
+
+
+    /* editor view */
+
+    h1.editor_head{
+        display: inline-block;
+        height: 700px;
+        font-size: 3.0rem;
+        font-weight: 800;
+
+    }
+
+    .editor_contents{
+        padding-top: 60px;
+    }
+
+    h4.editor {
+        font-size: 2.0rem;
+        font-weight: 800;
+    }
+
+    p.editor_date{
+        padding-top : 20px;
+        padding-bottom : 20px;
+    }
+
+    h4.editor_tit {
+        font-size: 2.3rem;
+        font-weight: 550;
+        font-family: "나눔명조";
+    }
+
+    /* notice */
+
+    .container_notice{
+        padding-top: 150px;
+    }
+
+    .notices_contents{
+        padding-top: 45px;
+    }
+
+    .board_contents.notice{
+        width : 1056px;
+        margin: 0 auto;
+    }
+    .board_aside {
+        width: 250px;
+        float: left;
+    }
+    h1.notice_head{
+        display: inline-block;
+        font-size: 3.0rem;
+        font-weight: 700;
+    }
+
+    #notice hr.notice {
+        margin-top: 1rem;
+        width: 85px;
+        color: #3cadd4;
+    }
+    #notice .row{
+        padding-top: 15px;
+    }
+
+    #notice .card-title{
+        padding-left: 10px;
+        font-weight: 600;
+        font-size: 1.5rem;
+        font-family: "나눔명조"
+    }
+
+    #notice p.notice_date{
+        padding-left: 15px;
+        margin-bottom: 5px;
+    }
+    p.notice_desc{
+        font-size: 1.0rem;
+        padding-left: 15px;
+        margin-bottom: 5px;
+    }
+    #notice a{
+        text-decoration: none;
+        color: black;
+    }
+    #notice .card{
+        border-radius: 15px;
+           width:62rem;
+    }
+
+    /* notice view */
+
+    div.container_notice {
+        padding-top: 150px;
+    }
+
+    div.board_contents {
+        width : 1056px;
+        margin: 0 auto;
+    }
+
+    h1.notice_head {
+        font-size: 3.0rem;
+        font-weight: 700;
+    }
+
+    .notices_contents{
+        padding-top: 60px;
+    }
+    h4.notice_tit {
+        font-size: 2.3rem;
+        font-weight: 550;
+        font-family: "나눔명조";
+    }
+    #notice_view p.notice_date{
+        padding-top : 20px;
+        padding-bottom : 20px;
+    }
+
+    hr.notice{
+        margin-top: 1rem;
+        width: 85px;
+        color: #3cadd4;
+    }
+    h4.notice_head {
+        font-size: 2.3rem;
+         font-weight: 550;
+         font-family: "나눔명조";
+    }
+    .notice{
+        margin-top: 60px;
+    }
+
+
+    /* place */
+
+    div.container_place {
+        padding-top: 150px;
+    } 
+    div.board_contents.place{
+        margin-left: 3vw;
+    }
+    h1.place_head {
+        height: 700px;
+        font-size: 3.0rem;
+        font-weight: 700;
+    }
+    .card-title.place{
+        padding:0;
+        text-align: center;
+    }
+    hr.place{
+        width: 100px;
+        margin-top: -630px;
+        color: #3cadd4;
+    }
+    img.card-img-top.place{
+            display: block;
+            width:100%;
+            height: 100%;
+            object-fit: contain;
+            overflow: hidden;
+            border-radius: 15px;
+    }
+    .card.place{
+        margin-top: 50px;
+        border-radius: 15px;
+    }
+    div.place_menus{
+        margin-top: 20px;
+    }
+    .card-body.place{
+        margin: 0 auto;
+    }
+    p.card-text.place{
+        font-size: 1rem;
+        text-align: center;
+    }
+    div.menu{
+        font-size: 0.95rem;
+        float:left;
+    }
+    div.price{
+        font-size: 0.95rem;
+        float:right;
+    }
+    div.col-4{
+        margin: 0 auto;
+    }
+    .data{
+        max-width: 80%;
+    }
+    #map{
+        max-width: 80%;
+        height:400px;
+        margin-top: 20px;
+    }
+
+
+    /* index */
+
+    .container_index{
+        max-width: 100vw;
+    }
+    div.col-md-4.index {
+        flex: 0 0 25%;
+    }
+
+    .card-body.index{
+        padding-top: 20px;
+    }
+
+    h3.place_tit {
+        display: inline-block;
+        margin-left: 50px;
+        margin-bottom: 25px;
+        padding: 0;
+    }
+    
+    h4.index_subtit {
+        color: #a9a9a9;
+        text-align: center;
+    }
+
+    div.card.mb-4.shadow-sm.index{
+        overflow: hidden;
+        float: left;
+        width: 270px;
+        height: 350px;
+        line-height: 22px;
+        border-radius: 15px;
+    }
+
+    img.card-img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    hr.hr {
+        margin-top: 5em;
+    }
+    
+
+     /* history_list */
+
+    .cont.history {
+        margin: 0;
+        height: 100vh;
+        width: 100%;
+    }
+    div.left.history {
+        width: 25%;
+        margin: 0 !important;
+        height: 100vh;
+        float: left;
+        box-sizing: border-box;
+        background: #f9f9f9;
+        overflow-y:scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        font-family: 'NanumSquare', sans-serif;
+        margin:auto;
+        margin-top:7.2%;
+    }
+    .left::-webkit-scrollbar {
+        display: none;
+    }
+
+    div.right.history {
+        width: 75%;
+        margin: 0 !important;
+        height: 100vh;
+        float: right;
+        box-sizing: border-box;
+        background: #f9f9f9;
+        font-family: 'NanumSquare', sans-serif;
+        margin-top:7.2%;
+
+    }
+
+
+    div.left::-webkit-scrollbar-thumb {
+        background-color: #2f3542;
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+
+    div.left::-webkit-scrollbar-thumb {
+        background-color: grey;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px white;
+    }
+
+
+    div.card-left {
+        position: relative;
+        width: 21vw;
+        margin:auto;
+        border-radius: 15px;
+        background:#ffffff;
+    }
+    .history{
+        margin-top: 100px
+    }
+
+    div.history-text{
+        margin-left:6%;
+        align-items: center;
+    }
+
+    h4.history-card-title {
+        font-family: 'Nanum Myeongjo', serif;
+        font-weight: 800;
+        padding-top: 10px;
+    }
+
+    img.history-card-img-top{
+        max-width: 100%;
+        max-height: 100%;
+        margin:auto;
+        object-fit: contain;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    img.history-img{
+        max-width:100%;
+        max-height: 100%;
+        margin:auto;
+        object-fit: contain;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+
+    button.btn-light {
+        margin-bottom: 8px;
+        margin-right: 5px;
+    }
+
+    form.button-history{
+        float:left;
+    }
+
+    #demo-place{
+        font-size:14;
+        color:#636160;
+    }
+
+    #demo-custom-place{
+        font-size:14;
+        color:#636160;
+    }
+
+    a.history-card-link{
+        font-size : 20px;
+        color: #232324;
+        padding: 7.5%;
+        padding-top:5%;
+        margin-left:11%;
+    }
+
+
+    .lib-panel {
+        margin-bottom: 20Px;
+        border-radius:15px;
+    }
+    .lib-panel img {
+        width: 98%;
+        background-color: transparent;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+
+    .lib-panel .row,
+    .lib-panel .col-md-6 {
+        padding: 0;
+        background-color: #FFFFFF;
+        width: 72.9vw;
+        border-radius: 15px;
+        height: 35vw;
+        position: relative;
+        overflow-y:scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+
+    .col-md-6::-webkit-scrollbar {
+        display: none;
+    }
+
+    .lib-panel .lib-row {
+        padding: 0 20px 0 20px;
+
+    }
+
+    .lib-panel .lib-row.lib-header {
+        background-color: #FFFFFF;
+        width:34vw;
+        font-size: 25px;
+        padding: 10px 20px 0 20px;
+        font-family: 'Nanum Myeongjo', serif;
+        border-radius: 15px;
+    }
+
+
+    .lib-panel .lib-row.lib-desc {
+        position: relative;
+        display: block;
+        font-size: 15px;
+    }
+    .lib-panel .lib-row.lib-desc a{
+        position: absolute;
+        width: 100%;
+        bottom: 10px;
+        left: 20px;
+    }
+
+    .row-margin-bottom {
+        margin-bottom: 20px;
+        margin-top: 140px;
+        margin-left: 1.06vw;
+    }
+
+    .box-shadow {
+        -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+        box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+    }
+
+    .no-padding {
+        padding: 0;
+    }
+    #demo-comment{
+        padding:4%;
+    }
+    #demo-create-at {
+        color:#636160;
+    }
+
+
+    /* history_create , history_update */
+
+    div.history-form {
+        font-size: 15px;
+        font-family: 'NanumSquare', sans-serif;
+        margin: auto;
+        padding-top: 110px;
+    }

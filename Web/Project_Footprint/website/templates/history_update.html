@@ -1,0 +1,16 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+
+<div class="container">
+    <form enctype="multipart/form-data" action="{% url 'history-update' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ form.instance.id }}"/>
+        <div class="history-form">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block" >수정완료</button>
+    </form>
+</div>
+{% endblock %}
