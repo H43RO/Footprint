@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import History
 from rangefilter.filter import DateRangeFilter
 
 class HistoryAdmin(admin.ModelAdmin):

@@ -1,14 +1,13 @@
 from django.db import models
 import jsonfield
 
-
 class Place(models.Model):
     beacon_uuid = models.CharField(max_length=100)
     title = models.CharField(max_length=30)
     place_div = models.PositiveSmallIntegerField()
     naver_place_id = models.CharField(primary_key=True, max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
-    img = models.ImageField(blank=True, null=True, upload_to="place")
+    img = models.ImageField(blank=True, null=True, upload_to="place/%Y/%m/%d")
     count = models.IntegerField(null=True, default=0)
 
     beacon_uuid.db_index = True

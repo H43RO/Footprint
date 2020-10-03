@@ -5,3 +5,17 @@ python manage.py runserver --settings=footprint.settings.base 기본
 python manage.py --settings=footprint.settings.base
 
 export DJANGO_SETTINGS_MODULE=myproject.settings.development
+
+
+
+
+
+python manage.py makemigrations places --settings=footprint.settings.development
+python manage.py makemigrations accounts --settings=footprint.settings.development    
+python manage.py makemigrations histoires --settings=footprint.settings.development  
+python manage.py makemigrations posts --settings=footprint.settings.development  
+
+python manage.py migrate places --settings=footprint.settings.development   
+python manage.py migrate accounts --settings=footprint.settings.development   
+python manage.py migrate histoires --settings=footprint.settings.development   
+python manage.py migrate posts --settings=footprint.settings.development   

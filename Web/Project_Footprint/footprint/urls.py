@@ -57,7 +57,7 @@ api_urlpatterns = [
 
 urlpatterns = [
     path('', include('accounts.urls')),
-    # path('', include('places.urls')),
+    path('', include('places.urls')),
     path('', include('histories.urls')),
     # path('', include('posts.urls')),
     path('api/', include(router.urls)),
