@@ -26,31 +26,21 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
-# from website.viewsets import (
-#     ApiPlaceId,
-#     UserUpdateView,
-#     UserDeleteView,
-#     UserListView,
-#     HistoryViewSet,
-#     HistoryUpdateAPIView,
-#     HistoryDeleteAPIView,
-#     NoticeViewSet,
-#     ApiHotPlace,
-#     EditorViewSet,
-#     HotPlcaeViewSet,
-#     HistoryCreateViewSet
-#     )
+
 from accounts.viewsets import UserListView, UserUpdateView, UserDeleteView
-from histories.viewsets import HistoryUpdateAPIView, HistoryDeleteAPIView, HistoryCreateViewSet
+from histories.viewsets import HistoryUpdateAPIView, HistoryDeleteAPIView, HistoryCreateViewSet, HistoryViewSet
 from django_filters.views import FilterView
+from places.viewsets import ApiPlaceId, HotPlcaeViewSet
+from histories.viewsets import HistoryViewSet
+from posts.viewsets import NoticeViewSet, EditorViewSet
 
 router = routers.DefaultRouter()
-# router.register('histories', HistoryViewSet)
-# router.register('places', ApiPlaceId, basename='places')
-# router.register('userinfo', UserListView, basename='userinfo')
-# router.register('noticelist', NoticeViewSet)
-# router.register('hotplaces', HotPlcaeViewSet, basename='hotplaces')
-# router.register('editorlist', EditorViewSet)
+router.register('histories', HistoryViewSet)
+router.register('places', ApiPlaceId, basename='places')
+router.register('userinfo', UserListView, basename='userinfo')
+router.register('noticelist', NoticeViewSet)
+router.register('hotplaces', HotPlcaeViewSet, basename='hotplaces')
+router.register('editorlist', EditorViewSet)
 api_urlpatterns = [
     path('accounts/', include('rest_registration.api.urls')),
 ]
@@ -59,7 +49,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('places.urls')),
     path('', include('histories.urls')),
-    # path('', include('posts.urls')),
+    path('', include('posts.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

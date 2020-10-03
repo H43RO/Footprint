@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
+
+<div id="notice_view" class="container_notice">
+        <div class="board_contents notice">
+            <h1 class="notice_head">
+                Notice<br>
+            </h1>
+            <hr class="notice">
+        </div>
+        <div class="board_contents notice">
+            <div class="notice_contents">
+                <div class="notice">
+                    <h4 class="notice_tit">
+                        {{ notices.title }}
+                    </h4>
+                </div>
+
+            <p class="notice_date"> {{ notices.created_at|date:"Y-m-d" }}</p>
+            <br><br>
+            <div class="notice_desc">
+                 {{ notices.description|safe }}
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,10 +1,10 @@
-from .models import Place
-from .serializers import PlaceSerializer
+from .models import Place, HotPlace
+from .serializers import PlaceSerializer, HotplaceSerializers
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import FilterSet
 from rest_framework.viewsets import ModelViewSet
 from .views import place_detail_crawl, get_hotplace
-
+from rest_framework.decorators import action
 
 class PlaceFilter(FilterSet):
     class Meta:
@@ -32,3 +32,7 @@ class ApiHotPlace(ModelViewSet):
             places.append(place_detail_crawl(item))
         places = list(places)
         return Response(places,status=200)
+
+class HotPlcaeViewSet(ModelViewSet):
+    queryset = HotPlace.objects.order_by('-counts')[:5]
+    serializer_class = HotplaceSerializers
