@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import History
-from django.utils import timezone, dateformat
-
+from django.utils import timezone
 
 class HistorySerializer(serializers.ModelSerializer):
     """
@@ -44,4 +43,9 @@ class HistoryPutSerializer(serializers.ModelSerializer):
             instance.mood = "기분 좋았던 순간"
         instance.save()
         return data
+
+class HistoryDateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = History
+        fields = '__all__'
 

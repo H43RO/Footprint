@@ -41,6 +41,7 @@ from rest_framework import routers
 #     HistoryCreateViewSet
 #     )
 from accounts.viewsets import UserListView, UserUpdateView, UserDeleteView
+from histories.viewsets import HistoryUpdateAPIView, HistoryDeleteAPIView, HistoryCreateViewSet
 from django_filters.views import FilterView
 
 router = routers.DefaultRouter()
@@ -55,10 +56,9 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    # path('', include('website.urls')),
     path('', include('accounts.urls')),
     # path('', include('places.urls')),
-    # path('', include('histories.urls')),
+    path('', include('histories.urls')),
     # path('', include('posts.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
@@ -67,12 +67,12 @@ urlpatterns = [
     url('api/', include(router.urls)),
     url('userinfo/(?P<id>[\w-]+)/update/$', UserUpdateView.as_view(), name='user_update'),
     url('userinfo/(?P<id>[\w-]+)/delete/$', UserDeleteView.as_view(), name='user_delete'),
-    # url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
-    # url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
+    url('api/histories/(?P<id>[\w-]+)/edit/$', HistoryUpdateAPIView.as_view(), name='update'),
+    url('api/histories/(?P<id>[\w-]+)/delete/$', HistoryDeleteAPIView.as_view(), name='delete'),
     path('grappelli/', include('grappelli.urls')),  # grappelli URLS
     path('accounts/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
+    url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

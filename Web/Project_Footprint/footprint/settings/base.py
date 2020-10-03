@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'ckeditor',
     # My app
     'accounts',
-    # 'history',
-    # 'place',
-    # 'post',
+    'histories',
+    'places',
+    'posts',
 ]
 
 REST_FRAMEWORK = {
@@ -91,7 +91,7 @@ ROOT_URLCONF = 'footprint.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

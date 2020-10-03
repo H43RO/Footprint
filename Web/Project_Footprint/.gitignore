@@ -403,3 +403,6 @@ pip-selfcheck.json
 
 #Secrets
 secrets.json
+
+#migrations
+migrations/
