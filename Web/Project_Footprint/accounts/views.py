@@ -1,5 +1,5 @@
 from .models import User
-from .forms import SignInForm, SignUpForm, CheckPasswordForm, UserPasswordUpdateForm, ApiPasswordResetForm
+from .forms import SignInForm, SignUpForm, CheckPasswordForm, UserPasswordUpdateForm, ApiPasswordResetForm, UpdateUserInfoForm
 from .token import account_activation_token, message
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -17,6 +17,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
+import requests
 
 def signup(request):
     """

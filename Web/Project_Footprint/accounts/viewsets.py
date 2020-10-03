@@ -1,7 +1,7 @@
 from .models import User
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
-from .serializer import UserListSerializer, UserLoginSerializer, UserUpdateSerializer
+from .serializers import UserListSerializer, UserLoginSerializer, UserUpdateSerializer
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
 
 

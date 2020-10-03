@@ -48,6 +48,20 @@ class SignUpForm(UserCreationForm):
             'gender': _('성별을 입력해주세요'),
         }
 
+
+class UpdateUserInfoForm(UserChangeForm):
+    password = None
+    class Meta:
+        model = User
+        fields = ['image', 'birth_date', 'nickname', 'age', 'gender']
+        labels = {
+            'image': _('프로필 이미지'),
+            'birth_date': _('생년월일'),
+            'nickname': _('닉네임'),
+            'age': _('나이'),
+            'gender': _('성별'),
+        }
+
 class SignInForm(forms.Form):
     email = forms.EmailField(
         label=_("이메일"),

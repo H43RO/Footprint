@@ -3,3 +3,5 @@ python manage.py runserver --settings=footprint.settings.development 개발용
 python manage.py runserver --settings=footprint.settings.base 기본
 
 python manage.py --settings=footprint.settings.base
+
+export DJANGO_SETTINGS_MODULE=myproject.settings.development

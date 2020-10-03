@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_registration.settings import registration_settings
 from django.contrib.auth import authenticate
 from django.contrib import messages
+from rest_registration.utils.responses import get_ok_response
 
 class UserLoginSerializer(serializers.Serializer):
     """
@@ -45,5 +46,5 @@ def build_default_success_response(message, status, extra_data):
         return Response(data, status=status)
 
     if extra_data.user.is_active is False:
-        raise BadRequest(_("This user is not activated."))
+        raise Response(_("This user is not activated."), status=400)
 

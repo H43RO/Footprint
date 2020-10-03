@@ -52,7 +52,6 @@ REST_FRAMEWORK = {
 
     ],
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]    
@@ -72,10 +71,8 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
     'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
     'USER_LOGIN_FIELDS' :  ['email'],
-    'SUCCESS_RESPONSE_BULIDER' : ('accounts.serializers.build_default_success_response'),
-    'LOGIN_SERIALIZER_CLASS' : ('accounts.serializers.UserLoginSerializer'),
     'SUCCESS_RESPONSE_BUILDER' : ('accounts.serializers.build_default_success_response'),
-
+    'LOGIN_SERIALIZER_CLASS' : ('accounts.serializers.UserLoginSerializer'),
 }
 
 MIDDLEWARE = [
@@ -155,7 +152,10 @@ TIME_ZONE = 'Asia/Seoul'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
