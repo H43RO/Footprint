@@ -17,26 +17,22 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from website import views
+# from website import views
+from accounts import views as acc_views
+# from place import views as pla_views
+# from history import views as his_views
+# from post import views as pos_views
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
-from website.viewsets import (
-    ApiPlaceId,
-    UserUpdateView,
-    UserDeleteView,
-    UserListView,
-    HistoryViewSet,
-    HistoryUpdateAPIView,
-    HistoryDeleteAPIView,
-    NoticeViewSet,
-    ApiHotPlace,
-    EditorViewSet,
-    HotPlcaeViewSet,
-    HistoryCreateViewSet
-    )
+
+from accounts.viewsets import UserListView, UserUpdateView, UserDeleteView
+from histories.viewsets import HistoryUpdateAPIView, HistoryDeleteAPIView, HistoryCreateViewSet, HistoryViewSet
 from django_filters.views import FilterView
+from places.viewsets import ApiPlaceId, HotPlcaeViewSet
+from histories.viewsets import HistoryViewSet
+from posts.viewsets import NoticeViewSet, EditorViewSet
 
 router = routers.DefaultRouter()
 router.register('histories', HistoryViewSet)
@@ -50,7 +46,10 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('', include('website.urls')),
+    path('', include('accounts.urls')),
+    path('', include('places.urls')),
+    path('', include('histories.urls')),
+    path('', include('posts.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

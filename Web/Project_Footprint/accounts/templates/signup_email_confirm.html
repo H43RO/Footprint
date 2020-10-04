@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div id="signup_email_c">
+<div class="container p-5">
+<div class="container">
+    <div class="filter_content section--search_category">
+        <div class="section--category_group">
+            <ul class="list--category depth1" style="list-style:none">
+            </ul>
+        </div>
+    </div>
+        <div class="row userinfo" style="margin:20px auto;">
+            <div class="col-sm-12">
+                <div class="card border-secondary">
+                    <div class="card-body">
+                        <h2 class="card-title">회웝가입 완료 및 로그인을 위한 이메일을 발송했습니다</h2>
+                        <hr>
+                        <h5><strong>입력하신 이메일 주소의 메일을 확인한 뒤 로그인 해주세요.</strong></h5>
+                        <h5><strong>감사합니다.</strong></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div id="myinfo">
+<div class="container p-5">
+    {% for user in users %}
+    <div class="row userinfo" style="margin:20px auto;">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.email }}님의 회원정보</h2>
+                    <hr>
+                    <div class="myinfo">
+                        <div class="right">
+                            <picture>
+                                {% if user.image %}
+                                <img class="user-img" id="image{{user.id}}" src="{{user.image.url }}">
+                                {% else %}
+                                <img class="user-img" src="{% static '../static/profile_default.png' %}">
+                                {% endif %}
+                            </picture>
+                        </div>
+                        <div class="left">
+                            <div class="user-info">
+                                이메일 : {{ user.email }}
+                            </div>
+                            <div class="user-info">
+                                닉네임 : {{ user.nickname }}
+                            </div>
+                            <div class="user-info">
+                                생년월일 : {{ user.birth_date }}
+                            </div>
+                            <div class="user-info">
+                                나이 : {{ user.age }}
+                            </div>
+                            {% if user.gender == 0 %}
+                            <div class="user-info">
+                                성별 : 남자
+                            </div>
+                            {% elif user.gender == 1 %}
+                            <div class="user-info">
+                                성별 : 여자
+                            </div>
+                            {% else %}
+                            <div class="user-info">
+                                성별 : not specified
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a href="{% url 'user_info_update' %}?id={{ user.id }}" class="btn float update-btn">수정하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

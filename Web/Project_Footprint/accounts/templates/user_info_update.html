@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div id = "user_update">
+    <div class="container p-5">
+        <div class="container">
+            <div class="row userinfo" style="margin:20px auto;">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ user.email }}님의 회원정보 수정</h2>
+                            <hr>
+                            <form action="{% url 'user_info_update' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ form.instance.id }}" />
+                                {% for field in form %}
+                                <div class="myinfo">
+                                    {% if field.label == '프로필 이미지' %}
+                                    <div class="user-img">
+                                        <img id="image{{field.id}}" src="{{ field.image.url }}" type="file">
+                                        {{ field }}
+                                    </div>
+                                    {% elif field.label == '나이' %}
+                                    <div class="user-info">
+                                        {{ field }}
+                                    </div>
+                                    {% else %}
+                                    <div class="user-info">
+                                        {{ field }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% for error in field.errors %}
+                                <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                                {% endfor %}
+                                <div class="update-btn">
+                                    <button class="btn confirm_btn" type="submit">수정완료</button>
+                                </div>
+                            </form>
+                            <div class="buttons">
+                                <form action="{% url 'user_password_update' %}">
+                                    {% csrf_token %}
+                                    <button class="btn pw_btn">PW변경</button></a>
+                                </form>
+                                <form action="{% url 'user_delete' %}">
+                                    {% csrf_token %}
+                                    <button class="btn delete_btn">탈퇴하기</button></a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

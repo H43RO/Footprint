@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+
+<div class="container">
+    <form enctype="multipart/form-data" class="history-form" action="{% url 'history-create' %}" method="post">
+        {% csrf_token %}
+        <div class="history-form">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block">등록</button>
+    </form>
+</div>
+{% endblock %}

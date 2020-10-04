@@ -23,7 +23,7 @@ for key, value in secrets.items():
 
 ALLOWED_HOSTS = ['*']
 # Application definition
-AUTH_USER_MODEL = 'website.User'
+AUTH_USER_MODEL = 'accounts.User'
 INSTALLED_APPS = [
     'grappelli',
     'django.contrib.admin',
@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'website',
     'rest_framework',
     'django_filters',
     'rangefilter',
@@ -41,13 +40,17 @@ INSTALLED_APPS = [
     'crispy_forms',
     'ckeditor_uploader',
     'ckeditor',
+    # My app
+    'accounts',
+    'histories',
+    'places',
+    'posts',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
 
     ],
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -68,10 +71,8 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_URL' : ('http://127.0.0.1:8000/api_password/'),
     'RESET_PASSWORD_VERIFICATION_EMAIL_REMPLATES' : {'html_body': 'rest_registration/reset_password/body.html', 'subject': 'rest_registration/reset_password/subject.txt'}, 
     'USER_LOGIN_FIELDS' :  ['email'],
-    'SUCCESS_RESPONSE_BULIDER' : ('website.user_serializers.build_default_success_response'),
-    'LOGIN_SERIALIZER_CLASS' : ('website.user_serializers.UserLoginSerializer'),
-    'SUCCESS_RESPONSE_BUILDER' : ('website.user_serializers.build_default_success_response'),
-
+    'SUCCESS_RESPONSE_BUILDER' : ('accounts.serializers.build_default_success_response'),
+    'LOGIN_SERIALIZER_CLASS' : ('accounts.serializers.UserLoginSerializer'),
 }
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ ROOT_URLCONF = 'footprint.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,13 +152,16 @@ TIME_ZONE = 'Asia/Seoul'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 이메일 인증을 위한 smtp 설정
-AUTHENTICATION_BACKENDS = ['website.backends.EmailAuthBackend']
+AUTHENTICATION_BACKENDS = ['accounts.backend.EmailAuthBackend']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

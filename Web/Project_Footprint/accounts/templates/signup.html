@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />   
+<link rel="stylesheet" type="text/css" href="{% static '/css/media.css' %}" />
+
+    <div id = "signup">
+        <div class="container1">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <form form action="{% url 'signup' %}" method="post" >
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% if field.label == '성별' %}
+                                <div class="input-group form-group">
+                                    <select class="form-control" id="{{ form.gender.id_for_label }}" name="{{ form.gender.html_name }}" type="state" placeholder="성별" />
+                                        <option value="" disabled selected hidden>성별을 입력해주세요</option>
+                                        <option value="0">남자</option>
+                                        <option value="1">여자</option>
+                                        <option value="2">Not Specified</option>
+                                    </select>
+                                </div>
+                            {% elif field.label == '비밀번호' %}
+                                <div class="input-group form-group">
+                                    <input class="form-control" id="{{ form.password1.id_for_label }}" name="{{ form.password1.html_name }}" type="password" placeholder="8~25글자 사이의 비밀번호를 입력해주세요" />
+                                </div>
+                            {% elif field.label == '비밀번호 확인' %}
+                                <div class="input-group form-group">
+                                    <input class="form-control" id="{{ form.password2.id_for_label }}" name="{{ form.password2.html_name }}" type="password" placeholder="비밀번호를 재입력해주세요" />
+                                </div>
+                            {% else %}
+                                <div class="input-group form-group">
+                                    <input class="form-control" id="{{ field.id_for_label }}" name="{{ field.html_name }}" type="text" placeholder="{{field.help_text}}"/>
+                                </div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <p style="color: #293263">{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                        <div class="form-group">
+                            <input type="submit" value="회원가입" class="btn float signup_btn"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <div class="container2">
+            <div class="d-flex justify-content-center h-100">
+                <div class="introduce">
+                    <div class="introduce-header">
+                        <h1>발자취를 남김으로써<br>하루를 마무리하기.</h1>
+                    </div>
+                    <div class="introduce-body">
+                        <h3>하루를 기록하고,<br>하루를 돌아보며<br>기록을 남겨요.</h3>
+                    </div>
+                    <div class="introduce-body">
+                        <h3>오늘 하루,<br>당신이 어디를 가서<br>무엇을 했는지<br>돌아볼 수 있게끔 도와줄게요.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

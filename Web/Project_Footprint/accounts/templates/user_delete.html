@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div id="user_delete">
+    <div class="container p-5">
+        <div class="container">
+            <div class="filter_content section--search_category">
+                <div class="section--category_group">
+                    <ul class="list--category depth1" style="list-style:none">
+                    </ul>
+                </div>
+            </div>
+            <div class="row userinfo" style="margin:20px auto;">
+                <div class="col-sm-12">
+                    <div class="card border-secondary">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ user.email }}님의 회원 탈퇴</h2>
+                            <hr>
+                            <form action="{% url 'user_delete' %}" method="post" novalidate>
+                                {% csrf_token %}
+                                <p style="color: red"><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.<br><br>
+                                <h5><strong>본인인증을 위해 비밀번호를 다시 입력해주세요.</strong></h5>
+                                    <label name="label_password" for="{{ password_form.password.id_for_label }}"></label>
+                                    {{ password_form.password }}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                          <p style="color: red">{{ message.message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                <button class="btn delete_btn" type="submit" >탈퇴하기</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

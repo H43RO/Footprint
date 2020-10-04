@@ -399,7 +399,11 @@ fabric.properties
 pyvenv.cfg
 pip-selfcheck.json
 
-# End of https://www.toptal.com/developers/gitignore/api/django,venv,pycharm
-
 #Secrets
 secrets.json
+
+#migrations
+migrations/
+
+# End of https://www.toptal.com/developers/gitignore/api/django,venv,pycharm
+
