@@ -20,7 +20,6 @@ secrets = json.loads(open(SECRET_BASE_FILE).read())
 for key, value in secrets.items():
     setattr(sys.modules[__name__], key, value)
 
-
 ALLOWED_HOSTS = ['*']
 # Application definition
 AUTH_USER_MODEL = 'accounts.User'
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django_filters',
     'rangefilter',
     'rest_registration',
-    'rest_framework.authtoken',
     'crispy_forms',
     'ckeditor_uploader',
     'ckeditor',
@@ -45,7 +44,26 @@ INSTALLED_APPS = [
     'histories',
     'places',
     'posts',
+    #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.kakao',
+    #django-rest-auth
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
 ]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = 'index'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'index'
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED= True
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -86,7 +104,6 @@ MIDDLEWARE = [
 ]
 
 
-
 ROOT_URLCONF = 'footprint.urls'
 TEMPLATES = [
     {
@@ -96,7 +113,6 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -161,7 +177,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 이메일 인증을 위한 smtp 설정
-AUTHENTICATION_BACKENDS = ['accounts.backend.EmailAuthBackend']
+AUTHENTICATION_BACKENDS = ['accounts.backend.EmailAuthBackend', 'allauth.account.auth_backends.AuthenticationBackend']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

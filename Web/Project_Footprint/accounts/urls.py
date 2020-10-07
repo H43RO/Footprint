@@ -22,5 +22,8 @@ urlpatterns = [
     path('api_password/', views.api_password_reset, name='api_password_reset'),
 
     path('signup_email_confirm/', TemplateView.as_view(template_name="signup_email_confirm.html"), name='signup_email_confirm'),
-    
+    path('accounts/kakao/login', views.kakao_login, name='kakao_login'),
+    path('accounts/kakao/logout', views.kakao_logout, name='kakao_logout'),
+    path('accounts/kakao/login/callback/', views.kakao_callback, name='kakao_callback'),
+
 ]

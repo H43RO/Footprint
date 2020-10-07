@@ -18,6 +18,8 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 import requests
+from django.conf import settings
+
 
 def signup(request):
     """
@@ -247,3 +249,46 @@ def user_password_find(request):
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="user_password_find.html",
                   context={"password_reset_form": password_reset_form})
+
+class KaKaoException(Exception):
+    pass
+
+def kakao_login(request):
+    rest_api_key =  getattr(settings, 'KAKAO_REST_API_KEY')
+    domain = get_current_site(request).domain
+    redirect_uri = domain + "accounts/kakao/login/callback/"
+    return redirect(
+        f"https://kauth.kakao.com/oauth/authorize?client_id={rest_api_key}&redirect_uri={redirect_uri}&response_type=code"
+    )
+
+def kakao_logout(request):
+    print(request)
+
+def kakao_callback(request):
+    try:
+        rest_api_key =  getattr(settings, 'KAKAO_REST_API_KEY')
+        domain = get_current_site(request).domain 
+        redirect_uri = domain + "accounts/kakao/login/callback/" ##callback
+        code = request.GET.get("code") ## code
+        token_request = requests.get(f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={rest_api_key}&redirect_uri={redirect_uri}&code={code}")
+        token_request_json = token_request.json()
+        error = token_request_json.get("error")
+        if error is not None:
+            raise KaKaoException()
+        access_token = token_request_json.get("access_token")
+        profile_request = requests.get("https://kapi.kakao.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"})
+        profile_json = profile_request.json()
+        properties = profile_json.get('properties')
+        kakao_account = profile_json.get('kakao_account')
+        print(kakao_account)
+        email = kakao_account.get("email", None)
+        print(email)
+        if email is None:
+            raise KaKaoException()
+        profile = kakao_account.get("profile")
+        nickname = kakao_account.get("nickname")
+        profile_image_url = profile.get('thumbnail_image_url')
+    except KaKaoException:
+        return redirect('/signin/')
+
+    

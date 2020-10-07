@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
 {% load static %}
 {% block content %}
 
@@ -31,6 +33,7 @@
 						<div class="form-group">
 							<input type="submit" value="로그인" class="btn float login_btn">
 						</div>
+						<a href="{% url 'kakao_login' %}">카카오 로그인</a>
 					</form>
 				</div>
 				<div class="card-footer">
