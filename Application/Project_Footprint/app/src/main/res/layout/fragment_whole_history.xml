@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#e8e8e8"
     android:orientation="vertical"
-    tools:context=".ui.history.WholeHistoryFragment">
+    tools:context=".Fragment.history.WholeHistoryFragment">
 
 
     <TextView

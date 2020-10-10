@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.menu
+package com.haerokim.project_footprint.Fragment.menu
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -10,12 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.R
 import io.paperdb.Paper
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 
 /**  사용자 설정 및 앱 사용 관련 메뉴 제공 UI  **/

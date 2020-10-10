@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.notice
+package com.haerokim.project_footprint.Fragment.notice
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.ActivityNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder

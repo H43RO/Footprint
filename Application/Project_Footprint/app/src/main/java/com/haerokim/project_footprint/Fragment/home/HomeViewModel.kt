@@ -1,6 +1,5 @@
-package com.haerokim.project_footprint.ui.home
+package com.haerokim.project_footprint.Fragment.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e8e8e8"
     android:orientation="vertical"
-    tools:context=".ui.history.KeywordHistoryFragment">
+    tools:context=".Fragment.history.KeywordHistoryFragment">
 
     <EditText
         android:id="@+id/edit_text_keyword"

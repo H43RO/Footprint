@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.home
+package com.haerokim.project_footprint.Fragment.home
 
 import android.Manifest
 import android.app.Activity
@@ -15,8 +15,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -29,28 +29,22 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.haerokim.project_footprint.Activity.HistoryWriteActivity
 import com.haerokim.project_footprint.Adapter.EditorPickViewPagerAdapter
 import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
 import com.haerokim.project_footprint.DataClass.EditorPick
-import com.haerokim.project_footprint.DataClass.NaverPlaceID
 import com.haerokim.project_footprint.DataClass.Place
 import com.haerokim.project_footprint.DataClass.User
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.Network.Website
 import com.haerokim.project_footprint.Utility.ForegroundService
 import com.haerokim.project_footprint.R
-import com.haerokim.project_footprint.Utility.GetPlaceInfo
-import kotlin.concurrent.timer
 import io.paperdb.Paper
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -81,9 +75,11 @@ class HomeFragment : Fragment(), PermissionListener {
     private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onPermissionGranted() {
+
     }
 
     override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+        Toast.makeText(context, "권한을 허가하지 않으면 일부 동작이 제한됩니다.", Toast.LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

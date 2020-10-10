@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.history
+package com.haerokim.project_footprint.Fragment.history
 
 import android.content.Intent
 import android.graphics.Color
@@ -24,7 +24,6 @@ import io.paperdb.Paper
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_today_history.*
-import kotlinx.android.synthetic.main.fragment_whole_history.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

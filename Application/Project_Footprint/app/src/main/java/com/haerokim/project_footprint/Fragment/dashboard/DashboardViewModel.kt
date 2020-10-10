@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.dashboard
+package com.haerokim.project_footprint.Fragment.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

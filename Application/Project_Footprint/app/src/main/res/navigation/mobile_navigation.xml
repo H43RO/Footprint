@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.haerokim.project_footprint.ui.home.HomeFragment"
+        android:name="com.haerokim.project_footprint.Fragment.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.haerokim.project_footprint.ui.dashboard.DashboardFragment"
+        android:name="com.haerokim.project_footprint.Fragment.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/navigation_menu"
-        android:name="com.haerokim.project_footprint.ui.menu.MenuFragment"
+        android:name="com.haerokim.project_footprint.Fragment.menu.MenuFragment"
         android:label="@string/title_menu"
         tools:layout="@layout/fragment_menu" >
         <action
@@ -79,13 +79,13 @@
 
     <fragment
         android:id="@+id/navigation_surround"
-        android:name="com.haerokim.project_footprint.ui.surround.SurroundFragment"
+        android:name="com.haerokim.project_footprint.Fragment.surround.SurroundFragment"
         android:label="@string/title_surround"
         tools:layout="@layout/fragment_surround" />
 
     <fragment
         android:id="@+id/navigation_notice"
-        android:name="com.haerokim.project_footprint.ui.notice.NoticeFragment"
+        android:name="com.haerokim.project_footprint.Fragment.notice.NoticeFragment"
         android:label="공지사항"
         tools:layout="@layout/fragment_notice" >
         <action
@@ -100,31 +100,31 @@
 
     <fragment
         android:id="@+id/navigation_edit_profile"
-        android:name="com.haerokim.project_footprint.ui.edit_profile.EditProfileFragment"
+        android:name="com.haerokim.project_footprint.Fragment.edit_profile.EditProfileFragment"
         android:label="프로필 수정"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/navigation_today_history"
-        android:name="com.haerokim.project_footprint.ui.history.TodayHistoryFragment"
+        android:name="com.haerokim.project_footprint.Fragment.history.TodayHistoryFragment"
         android:label="오늘 히스토리"
         tools:layout="@layout/fragment_today_history"/>
 
     <fragment
         android:id="@+id/navigation_keyword_history"
-        android:name="com.haerokim.project_footprint.ui.history.KeywordHistoryFragment"
+        android:name="com.haerokim.project_footprint.Fragment.history.KeywordHistoryFragment"
         android:label="키워드 히스토리"
         tools:layout="@layout/fragment_keyword_history"/>
 
     <fragment
         android:id="@+id/navigation_date_history"
-        android:name="com.haerokim.project_footprint.ui.history.DateHistoryFragment"
+        android:name="com.haerokim.project_footprint.Fragment.history.DateHistoryFragment"
         android:label="날짜별 히스토리"
         tools:layout="@layout/fragment_date_history"/>
 
     <fragment
         android:id="@+id/navigation_notice_detail"
-        android:name="com.haerokim.project_footprint.ui.notice.NoticeDetailFragment"
+        android:name="com.haerokim.project_footprint.Fragment.notice.NoticeDetailFragment"
         android:label="공지사항 자세히보기"
         tools:layout="@layout/fragment_notcie_detail">
         <argument
@@ -142,7 +142,7 @@
 
     <fragment
         android:id="@+id/navigation_editor_pick"
-        android:name="com.haerokim.project_footprint.ui.editor_pick.EditorPickFragment"
+        android:name="com.haerokim.project_footprint.Fragment.editor_pick.EditorPickFragment"
         android:label="에디터픽 자세히 보기"
         tools:layout="@layout/fragment_editor_pick">
 

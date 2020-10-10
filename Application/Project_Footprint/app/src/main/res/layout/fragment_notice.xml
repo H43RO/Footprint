@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#e8e8e8"
     android:orientation="vertical"
-    tools:context=".ui.notice.NoticeFragment">
+    tools:context=".Fragment.notice.NoticeFragment">
 
 
     <TextView

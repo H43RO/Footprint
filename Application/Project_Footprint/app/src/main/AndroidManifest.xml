@@ -87,7 +87,7 @@
         </service>
 
         <receiver
-            android:name=".ui.surround.SurroundFragment$SurroundBeaconReceiver"
+            android:name=".Fragment.surround.SurroundFragment$SurroundBeaconReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="surround_beacon_list" />
