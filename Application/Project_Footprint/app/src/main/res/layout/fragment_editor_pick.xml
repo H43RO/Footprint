@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#e8e8e8"
     android:orientation="vertical"
-    tools:context=".ui.editor_pick.EditorPickFragment">
+    tools:context=".Fragment.editor_pick.EditorPickFragment">
 
     <TextView
         style="@style/historyTextViewFontStyle"

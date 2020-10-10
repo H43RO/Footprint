@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.editor_pick
+package com.haerokim.project_footprint.Fragment.editor_pick
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.haerokim.project_footprint.Adapter.EditorPickListAdapter
-import com.haerokim.project_footprint.Adapter.HotPlaceListAdapter
 import com.haerokim.project_footprint.DataClass.EditorPick
-import com.haerokim.project_footprint.DataClass.History
 import com.haerokim.project_footprint.R
 
 /**

@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.ui.surround
+package com.haerokim.project_footprint.Fragment.surround
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -24,7 +24,7 @@ import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.ShowPlaceInfo
-import com.haerokim.project_footprint.ui.home.HomeViewModel
+import com.haerokim.project_footprint.Fragment.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import retrofit2.Call

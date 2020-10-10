@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#EFEFEF"
     android:orientation="vertical"
-    tools:context=".ui.menu.MenuFragment">
+    tools:context=".Fragment.menu.MenuFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
