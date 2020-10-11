@@ -198,7 +198,9 @@ class HomeFragment : Fragment(), PermissionListener {
                             if (currentPage == editorPickList.size) {
                                 currentPage = 0
                             }
-                            home_editor_place_pager.setCurrentItem(currentPage++, true)
+                            if(home_editor_place_pager != null){
+                                home_editor_place_pager.setCurrentItem(currentPage++, true)
+                            }
                         }
                     }
                     // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
