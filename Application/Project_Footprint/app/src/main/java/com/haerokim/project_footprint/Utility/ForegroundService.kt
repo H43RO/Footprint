@@ -42,6 +42,7 @@ class ForegroundService : Service(), BeaconConsumer {
     var alreadyNotifiedPlace: MutableSet<String> = mutableSetOf() // 푸시알림을 보냈던 Beacon의 UUID가 기록될 예정
     var alreadyVisitedPlace: MutableSet<String> = mutableSetOf() // 이미 방문 기록된 Beacon의 UUID가 기록될 예정
     var surroundBeaconList: ArrayList<String> = ArrayList() //BroadCast 할 List (UUID 담김)
+    var handlerStatus: Boolean = true
 
     override fun onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(RangeNotifier { beacons, region ->
@@ -73,6 +74,9 @@ class ForegroundService : Service(), BeaconConsumer {
 
     override fun onCreate() {
         super.onCreate()
+
+        handlerStatus = true
+
         // Realm, Paper DB 사용을 위해 init() 필요
         Realm.init(applicationContext)
         Paper.init(applicationContext)
@@ -121,13 +125,19 @@ class ForegroundService : Service(), BeaconConsumer {
                         // 모듈의 UUID 통해서 Naver Place ID 얻어옴
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
                             .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
-                                override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
+                                override fun onFailure(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    t: Throwable
+                                ) {
                                     Log.e("Retrofit_Error", t.message)
                                 }
 
-                                override fun onResponse(call: Call<ArrayList<NaverPlaceID>>, response: Response<ArrayList<NaverPlaceID>>) {
+                                override fun onResponse(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    response: Response<ArrayList<NaverPlaceID>>
+                                ) {
                                     var id = response.body()
-                                    if(!id.isNullOrEmpty()){
+                                    if (!id.isNullOrEmpty()) {
                                         // 해당 장소의 이름을 Realm (Local DB)에 저장함
                                         realm.executeTransaction {
                                             with(it.createObject(VisitedPlace::class.java)) {
@@ -135,11 +145,17 @@ class ForegroundService : Service(), BeaconConsumer {
                                                 this.naverPlaceID = id.get(0).naver_place_id
                                             }
                                         }
-                                        Log.d("Foreground_GetPlaceInfo", "감지된 장소 : " + id.get(0).naver_place_id)
+                                        Log.d(
+                                            "Foreground_GetPlaceInfo",
+                                            "감지된 장소 : " + id.get(0).naver_place_id
+                                        )
 
                                         // 해당 장소 상세정보 푸시알림 보내줌
                                         id.get(0).naver_place_id.let {
-                                            ShowPlaceInfo(applicationContext, it).notifyInfo("nearPlace")
+                                            ShowPlaceInfo(
+                                                applicationContext,
+                                                it
+                                            ).notifyInfo("nearPlace")
                                         }
                                     }
                                 }
@@ -156,32 +172,53 @@ class ForegroundService : Service(), BeaconConsumer {
                         var naverPlaceID: String?
                         retrofitService.requestNaverPlaceID(beacon.id1.toString())
                             .enqueue(object : retrofit2.Callback<ArrayList<NaverPlaceID>> {
-                                override fun onFailure(call: Call<ArrayList<NaverPlaceID>>, t: Throwable) {
+                                override fun onFailure(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    t: Throwable
+                                ) {
                                     Log.e("Retrofit_Error", t.message)
                                 }
 
                                 // API 특성 상 응답 객체는 1개 이지만 배열 형태로 오기 때문에 ArrayList 사용
-                                override fun onResponse(call: Call<ArrayList<NaverPlaceID>>, response: Response<ArrayList<NaverPlaceID>>) {
+                                override fun onResponse(
+                                    call: Call<ArrayList<NaverPlaceID>>,
+                                    response: Response<ArrayList<NaverPlaceID>>
+                                ) {
                                     var id = response.body()
 
-                                    if(!id.isNullOrEmpty()){
+                                    if (!id.isNullOrEmpty()) {
                                         // 따라서 배열의 0번째 객체가 응답으로 요하는 객체라고 봐도 무방
                                         naverPlaceID = id.get(0).naver_place_id
 
                                         // 사용자에게 해당 장소를 방문한 것을 확인했다는 푸시알림 보내줌
-                                        ShowPlaceInfo(applicationContext, naverPlaceID!!).notifyInfo("visitedPlace")
+                                        ShowPlaceInfo(
+                                            applicationContext,
+                                            naverPlaceID!!
+                                        ).notifyInfo("visitedPlace")
 
                                         // NaverPlaceID 와 사용자 ID로 History 생성 API 호출
                                         naverPlaceID?.let {
                                             retrofitService.createRealVisitHistory(it, user.id)
                                                 .enqueue(object : retrofit2.Callback<History> {
-                                                    override fun onFailure(call: Call<History>, t: Throwable) {
+                                                    override fun onFailure(
+                                                        call: Call<History>,
+                                                        t: Throwable
+                                                    ) {
                                                         Log.e("Upload Error", t.message)
                                                     }
 
-                                                    override fun onResponse(call: Call<History>, response: Response<History>) {
-                                                        Log.d("Foreground_History",response.code().toString())
-                                                        Log.d("Foreground_History", "업로드 된 장소 : $naverPlaceID")
+                                                    override fun onResponse(
+                                                        call: Call<History>,
+                                                        response: Response<History>
+                                                    ) {
+                                                        Log.d(
+                                                            "Foreground_History",
+                                                            response.code().toString()
+                                                        )
+                                                        Log.d(
+                                                            "Foreground_History",
+                                                            "업로드 된 장소 : $naverPlaceID"
+                                                        )
                                                     }
                                                 })
                                         }
@@ -190,9 +227,12 @@ class ForegroundService : Service(), BeaconConsumer {
                             })
                     }
                 }
-                this.sendEmptyMessageDelayed(0, 1000)
+                if(handlerStatus == true){
+                    this.sendEmptyMessageDelayed(0, 1000)
+                }
             }
         }
+
 
         // Beacon Scanning 기능 동작을 위해 BeaconManager Binding
         beaconManager.bind(this)
@@ -243,6 +283,7 @@ class ForegroundService : Service(), BeaconConsumer {
         beaconManager.removeAllRangeNotifiers()
         beaconManager.removeAllMonitorNotifiers()
         beaconManager.unbind(this)
+        handlerStatus = false
         ScanJobScheduler.getInstance().cancelSchedule(applicationContext)
     }
 
