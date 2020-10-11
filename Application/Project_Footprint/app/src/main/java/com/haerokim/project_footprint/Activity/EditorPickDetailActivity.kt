@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.haerokim.project_footprint.R
-import kotlinx.android.synthetic.main.activity_editor_pick_deatil.*
+import kotlinx.android.synthetic.main.activity_editor_pick_detail.*
 
 /**
  *  에디터 추천 장소 게시물의 상세 내용을 화면에 보여줌
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_editor_pick_deatil.*
 class EditorPickDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editor_pick_deatil)
+        setContentView(R.layout.activity_editor_pick_detail)
 
         val bundle = intent.extras
         val title = bundle?.getString("title")
