@@ -27,8 +27,8 @@ class GetPlaceInfo(placeID: String) : AsyncTask<Place, Void, Place>() {
         var placeTime: String? = null
         var placeLocation: String? = null
         var placeImageSrc: String? = null
-        var placeMenuName: ArrayList<String> = arrayListOf()
-        var placeMenuPrice: ArrayList<String> = arrayListOf()
+        val placeMenuName: ArrayList<String> = arrayListOf()
+        val placeMenuPrice: ArrayList<String> = arrayListOf()
 
         try {
             val doc: Document =
