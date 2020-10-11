@@ -27,7 +27,6 @@ import io.realm.RealmConfiguration
  *  - 주로 ForegroundService 에서 특정 장소를 스캔했을 때 호출됨
  **/
 class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
-    private var placeName = placeID
 
     fun notifyInfo(mode: String?) {
         // Realm 사용을 위해 init() 필요
@@ -38,19 +37,19 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(config)
-        var realm = Realm.getDefaultInstance()
+        val realm = Realm.getDefaultInstance()
 
         //  푸시알림 데이터 구성을 위해 GetPlaceInfo() 호출
-        var place = GetPlaceInfo(placeID).execute().get()
+        val place = GetPlaceInfo(placeID).execute().get()
 
-        var placeTitle = place.title
-        var placeCategory = place.category
-        var placeDescription = place.description
-        var placeTime = place.businessHours
-        var placeLocation = place.location
-        var placeImageSrc = place.imageSrc
-        var placeMenuName = place.menuName
-        var placeMenuPrice = place.menuPrice
+        val placeTitle = place.title
+        val placeCategory = place.category
+        val placeDescription = place.description
+        val placeTime = place.businessHours
+        val placeLocation = place.location
+        val placeImageSrc = place.imageSrc
+        val placeMenuName = place.menuName
+        val placeMenuPrice = place.menuPrice
 
         // Realm (Local DB)에 해당 장소의 이름을 저장함
         realm.executeTransaction {
@@ -61,7 +60,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         // 해당 푸시알림을 탭하면 장소의 상세정보를 보여주는 Activity 로 이동하게 됨
         // PlaceDetailActivity 로 보낼 장소 데이터 모두 번들에 담음
         val intent = Intent(context, PlaceDetailActivity::class.java)
-        val bundle: Bundle = Bundle()
+        val bundle = Bundle()
         bundle.putString("PlaceID", placeID)
         bundle.putString("Title", placeTitle)
         bundle.putString("Category", placeCategory)
@@ -83,7 +82,7 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
         // ========================= Head-Up Notification 구현  (SDK 26 기준으로 다르게 구현 필요) ========================= //
 
         if (Build.VERSION.SDK_INT >= 26) {
-            var mNotificationManager =
+            val mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val id = "channel_notify"
             val name: CharSequence = if (mode == "nearPlace") {
@@ -171,14 +170,14 @@ class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
 
     fun showInfo(place: Place) {
 
-        var placeTitle = place.title
-        var placeCategory = place.category
-        var placeDescription = place.description
-        var placeTime = place.businessHours
-        var placeLocation = place.location
-        var placeImageSrc = place.imageSrc
-        var placeMenuName = place.menuName
-        var placeMenuPrice = place.menuPrice
+        val placeTitle = place.title
+        val placeCategory = place.category
+        val placeDescription = place.description
+        val placeTime = place.businessHours
+        val placeLocation = place.location
+        val placeImageSrc = place.imageSrc
+        val placeMenuName = place.menuName
+        val placeMenuPrice = place.menuPrice
 
         //PlaceDetailActivity 로 보낼 장소 데이터 모두 번들에 담음
         val intent = Intent(context, PlaceDetailActivity::class.java)

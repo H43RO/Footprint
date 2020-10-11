@@ -1,5 +1,6 @@
 package com.haerokim.project_footprint.Fragment.surround
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -86,6 +87,7 @@ class SurroundFragment : Fragment() {
      *  3. 주변 장소 리스트 아이템 Binding 완료
      **/
 
+    @SuppressLint("StaticFieldLeak")
     inner class PlaceListBinder : AsyncTask<Void, Void, Void>() {
         override fun onPreExecute() {
             super.onPreExecute()

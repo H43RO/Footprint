@@ -46,6 +46,12 @@ interface RetrofitService {
         @Field("password") password: String
     ): Call<User>
 
+    // 회원 가입
+    @POST("/api/v1/accounts/register/")
+    fun registerUser(
+        @Body body: RegisterForm
+    ): Call<User>
+
     // 사용자 회원정보 수정
     @PUT("userinfo/{userID}/update/")
     fun updateUserInfo(
@@ -58,12 +64,6 @@ interface RetrofitService {
     fun withDrawUser(
         @Path("userID") userID: Int
     ): Call<String>
-
-    // 회원 가입
-    @POST("/api/v1/accounts/register/")
-    fun registerUser(
-        @Body body: RegisterForm
-    ): Call<User>
 
     // 비밀번호 초기화
     @FormUrlEncoded
@@ -83,12 +83,43 @@ interface RetrofitService {
         @Field("user") userID: Int
     ): Call<History>
 
-    // 사용자 임의 히스토리 생성 : 수정 예정
+    // 임의 히스토리 생성 (이미지 포함)
+    @Multipart
+    @POST("/api/histories/")
+    fun writeHistoryWithImage(
+        @Part("user") userID: RequestBody,
+        @Part img: MultipartBody.Part,
+        @Part("title") title: RequestBody,
+        @Part("comment") content: RequestBody,
+        @Part("mood") mood: RequestBody,
+        @Part("custom_place") customPlace: RequestBody,
+        @Part("created_at") createdAt: RequestBody
+    ): Call<History>
+
+    // 임의 히스토리 생성 (이미지 미포함)
     @FormUrlEncoded
-    @POST("api/histories/")
-    fun createVirtualHistory(
-        @Field("place") placeName: String
-    ): Call<History> //Response : Status Code
+    @POST("/api/histories/")
+    fun writeHistoryNoImage(
+        @Field ("user")userID: Int,
+        @Field ("title") title: String?,
+        @Field("comment") comment: String?,
+        @Field("custom_place") customPlace: String?,
+        @Field("created_at") createdAt: LocalDateTime,
+        @Field("mood") mood: String?
+    ): Call<History>
+
+    // 히스토리 수정 (이미지 미포함)
+    @PUT("api/histories/{historyID}/edit/")
+    fun updateHistoryWithoutImage(
+        @Path("historyID") historyID: Int,
+        @Body body: UpdateHistory
+    ): Call<History>
+
+    // 히스토리 삭제
+    @DELETE("/api/histories/{historyID}/delete/")
+    fun deleteHistory(
+        @Path("historyID") historyID: Int
+    ): Call<String>
 
     // 히스토리 조회 API (* 오늘 히스토리)
     @GET("api/histories/")
@@ -97,7 +128,7 @@ interface RetrofitService {
         @Query("created_at__date__gte") today: String
     ): Call<ArrayList<History>>
 
-    // 히스토리 조회 API (* 전체 히스토리)
+    // 히스토리 조회 API (* 전체 히스토리) : 사용 안함
     @GET("api/histories/")
     fun requestWholeHistoryList(
         @Query("user") userID: Int
@@ -128,43 +159,5 @@ interface RetrofitService {
         @Part("comment") content: RequestBody,
         @Part("mood") mood: RequestBody,
         @Part img: MultipartBody.Part
-    ): Call<History>
-
-    // 히스토리 수정 (이미지 미포함)
-    @PUT("api/histories/{historyID}/edit/")
-    fun updateHistoryWithoutImage(
-        @Path("historyID") historyID: Int,
-        @Body body: UpdateHistory
-    ): Call<History>
-
-    // 히스토리 삭제
-    @DELETE("/api/histories/{historyID}/delete/")
-    fun deleteHistory(
-        @Path("historyID") historyID: Int
-    ): Call<String>
-
-    // 임의 히스토리 생성 (이미지 포함)
-    @Multipart
-    @POST("/api/histories/")
-    fun writeHistoryWithImage(
-        @Part("user") userID: RequestBody,
-        @Part img: MultipartBody.Part,
-        @Part("title") title: RequestBody,
-        @Part("comment") content: RequestBody,
-        @Part("mood") mood: RequestBody,
-        @Part("custom_place") customPlace: RequestBody,
-        @Part("created_at") createdAt: RequestBody
-    ): Call<History>
-
-    // 임의 히스토리 생성 (이미지 미포함)
-    @FormUrlEncoded
-    @POST("/api/histories/")
-    fun writeHistoryNoImage(
-        @Field ("user")userID: Int,
-        @Field ("title") title: String?,
-        @Field("comment") comment: String?,
-        @Field("custom_place") customPlace: String?,
-        @Field("created_at") createdAt: LocalDateTime,
-        @Field("mood") mood: String?
     ): Call<History>
 }
