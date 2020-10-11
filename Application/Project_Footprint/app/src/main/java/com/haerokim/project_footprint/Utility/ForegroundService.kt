@@ -243,6 +243,7 @@ class ForegroundService : Service(), BeaconConsumer {
         beaconManager.removeAllRangeNotifiers()
         beaconManager.removeAllMonitorNotifiers()
         beaconManager.unbind(this)
+        ScanJobScheduler.getInstance().cancelSchedule(applicationContext)
     }
 
     override fun onBind(intent: Intent): IBinder? {
