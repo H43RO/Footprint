@@ -1,4 +1,8 @@
 
+    a { text-decoration:none !important }
+    a:hover { text-decoration:none !important }
+
+
 /* myinfo */
     #myinfo .html,body {
         background-color: #f9f9f9;
@@ -714,18 +718,18 @@
     /* editor */
 
         .container_editor {
-            padding-top: 150px;
+            padding: 150px 0;
+            width:1056px;
+            margin: 0 auto;
+            overflow: hidden;
         }
         div.board_contents.editor{
             width : 1056px;
-            margin: 0 auto;
         }
-        h3.editor_head{
+        h1.editor_head{
             display: inline-block;
-            font-family: "나눔스퀘어";
             font-size: 3.0rem;
             font-weight: 700;
-            margin-left : -3.3em;
         }
         hr.editor{
             margin-top: 1rem;
@@ -743,8 +747,7 @@
         img.card_img.editor {
             display: block;
             max-width:100%;
-            max-height: 100%;
-            object-fit: contain;
+            max-height: 75%;
         }
         .culture_gallery .title_editor {
             display: block;
@@ -774,7 +777,7 @@
             width: 328px;
             height: 420px;
             margin: 0 24px 39px 0;
-            line-height: 22px;
+            line-height: 420px;
             border-radius: 15px;
         }
         .editor_card{
@@ -787,16 +790,8 @@
 
     /* editor view */
 
-    h1.editor_head{
-        display: inline-block;
-        height: 700px;
-        font-size: 3.0rem;
-        font-weight: 800;
-
-    }
-
     .editor_contents{
-        padding-top: 60px;
+        padding-tosp: 60px;
     }
 
     h4.editor {
@@ -818,16 +813,18 @@
     /* notice */
 
     .container_notice{
-        padding-top: 150px;
+        padding: 150px 0;
+        width : 1056px;
+        margin: 0 auto;
+        overflow:hidden;
     }
-
     .notices_contents{
         padding-top: 45px;
     }
 
     .board_contents.notice{
-        width : 1056px;
         margin: 0 auto;
+
     }
     .board_aside {
         width: 250px;
@@ -838,6 +835,7 @@
         font-size: 3.0rem;
         font-weight: 700;
     }
+
 
     #notice hr.notice {
         margin-top: 1rem;
@@ -884,10 +882,6 @@
         margin: 0 auto;
     }
 
-    h1.notice_head {
-        font-size: 3.0rem;
-        font-weight: 700;
-    }
 
     .notices_contents{
         padding-top: 60px;
@@ -907,11 +901,7 @@
         width: 85px;
         color: #3cadd4;
     }
-    h4.notice_head {
-        font-size: 2.3rem;
-         font-weight: 550;
-         font-family: "나눔명조";
-    }
+
     .notice{
         margin-top: 60px;
     }

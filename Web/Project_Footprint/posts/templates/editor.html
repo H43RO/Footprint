@@ -6,22 +6,22 @@
 
 <div id="editor">
   <div class="container_editor">
-    <div class="board_contents editor">
       <div class="board_contents editor">
-        <h3 class="editor_head">Editor Pick</h3>
-        <hr class="editor" />
+        <h1 class="editor_head">Editor Pick<br></h1>
+        <hr class="editor">
       </div>
       <div class="board_contents editor">
         <div class="editor_card">
           <div class="Culture_box">
             <ul class="culture_gallery">
               {% for item in editors %}
-              <div class="card mb-4 shadow-sm editor">
-                <a
+              <a
                   href="editor_view/{{ item.id }}"
                   class="link_editor"
                   omni-click="맵:Submain:COOKINGLIBRARY"
                 >
+              <div class="card mb-4 shadow-sm editor">
+
                   {% if item.img %}
                   <img
                     class="card_img editor"
@@ -33,14 +33,13 @@
                     <strong class="title_editor">{{ item.title }} &gt;</strong>
                     <span class="txt editor">{{ item.contents }}</span>
                   </div>
-                </a>
               </div>
+              </a>
               {% endfor %}
             </ul>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 {% endblock %}
