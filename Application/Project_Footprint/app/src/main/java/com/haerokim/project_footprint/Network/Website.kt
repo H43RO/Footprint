@@ -4,6 +4,6 @@ package com.haerokim.project_footprint.Network
 
 class Website {
     companion object{
-        const val BASE_URL = "http://96f51c38db5e.ngrok.io"
+        const val BASE_URL = "https://440df85c49da.ngrok.io"
     }
 }
