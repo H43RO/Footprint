@@ -91,11 +91,8 @@ class TodayHistoryFragment : Fragment() {
             startActivity(Intent(requireContext(), HistoryWriteActivity::class.java))
         }
 
-        // 당겨서 리스트 새로 고침 기능
-        today_history_swipe.setColorSchemeColors(Color.GRAY)
-        today_history_swipe.setOnRefreshListener {
             getTodayHistoryList()
-        }
+
     }
 
     // onResume() 실행될 때마다 진입 (리스트 아이템 바인딩 동작)
@@ -131,7 +128,6 @@ class TodayHistoryFragment : Fragment() {
                     text_today_no_data.visibility = View.VISIBLE
                     loading_today_history.visibility = View.GONE
                     text_today_no_data.text = "정보를 가져오지 못했습니다"
-                    today_history_swipe.isRefreshing = false
                 }
 
                 override fun onResponse(call: Call<ArrayList<History>>, response: Response<ArrayList<History>>) {
@@ -144,7 +140,6 @@ class TodayHistoryFragment : Fragment() {
                         text_today_no_data.visibility = View.VISIBLE
                         loading_today_history.visibility = View.GONE
                         text_today_no_data.text = "기록이 없습니다"
-                        today_history_swipe.isRefreshing = false
                     } else {  // 기록이 있을 경우 진입
                         today_history_list.visibility = View.VISIBLE
                         responseBody = response.body()!!
@@ -162,7 +157,6 @@ class TodayHistoryFragment : Fragment() {
                         }
                         historyList.addAll(responseBody)
                         viewAdapter.notifyDataSetChanged()
-                        today_history_swipe.isRefreshing = false
                         loading_today_history.visibility = View.GONE
                     }
                 }
