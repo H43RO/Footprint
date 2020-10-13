@@ -4,6 +4,10 @@
 
 발자취는 BLE(Bluetooth Low Energy) 핵심 기술인 'Beacon' 을 활용하여, 사용자의 하루 일과를 자동으로 기록해주는 서비스입니다. 자동으로 기록된 일과는 사용자의 마음대로 자신만의 다이어리 처럼 꾸밀 수 있습니다. 또한 임의로 일과를 추가할 수도 있습니다. 이렇게 쌓인 사용자의 기록 하나하나가 서버에 저장되어, 자신만의 추억으로 간직하거나 SNS에 공유할 수 있습니다.
 
+## 시나리오 소개 동영상
+
+[![Video Label](http://img.youtube.com/vi/Mo7A4ZyVBEg/0.jpg)](https://www.youtube.com/embed/Mo7A4ZyVBEg)
+
 ## Development Environment
 
 - Web Server : Python 3.7 + **Django** 3.0 with PyCharm 2019 ( + Django Templates으로 Front-end 구현 )
