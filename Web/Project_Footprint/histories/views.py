@@ -43,7 +43,6 @@ def history_create(request):
             if form.is_valid():
                 new_item = form.save()
             else:
-                messages.error(request, '작성 시간은 YYYY-mm-dd h:m:s 양식입니다.')
                 return redirect('history-create')
             return HttpResponseRedirect('../')
     form = HistoryForm(request.FILES)

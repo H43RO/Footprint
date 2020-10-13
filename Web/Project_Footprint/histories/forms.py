@@ -39,6 +39,9 @@ class HistoryForm(forms.ModelForm):
             'created_at': _('작성 시간 양식은 YYYY-mm-dd입니다.'),
         }
 
+
+
+
 class UpdateHistoryForm(HistoryForm):
     class Meta:
         model = History
