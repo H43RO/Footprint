@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'histories',
     'places',
     'posts',
+    'django_cleanup',
 ]
 
 REST_FRAMEWORK = {
@@ -113,7 +114,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'footprint',
         'USER': 'root',
-        'PASSWORD': 's9423093',
+        'PASSWORD': '!khc532412',
         'HOST': 'localhost',
         'PORT': '3306'
     }
