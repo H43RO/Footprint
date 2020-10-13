@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.notice
+package com.haerokim.project_footprint.Fragment.Notice
 
 import android.os.Bundle
 import android.util.Log

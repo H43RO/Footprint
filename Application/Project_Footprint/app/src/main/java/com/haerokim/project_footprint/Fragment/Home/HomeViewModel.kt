@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.home
+package com.haerokim.project_footprint.Fragment.Home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,5 +11,4 @@ class HomeViewModel : ViewModel() {
         // "on"이 입력되면 value를 true로 바꿔줌
         scanMode.value = (mode == "on")
     }
-
 }

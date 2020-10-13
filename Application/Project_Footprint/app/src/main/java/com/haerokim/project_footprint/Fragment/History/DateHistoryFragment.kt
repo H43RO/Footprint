@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.history
+package com.haerokim.project_footprint.Fragment.History
 
 import android.os.Bundle
 import android.transition.AutoTransition

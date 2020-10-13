@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e8e8e8"
     android:orientation="vertical"
-    tools:context=".Fragment.history.DateHistoryFragment">
+    tools:context=".Fragment.History.DateHistoryFragment">
 
     <RelativeLayout
         android:id="@+id/button_show_calendar"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e8e8e8"
-    tools:context=".Fragment.edit_profile.EditProfileFragment">
+    tools:context=".Fragment.EditProfile.EditProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
