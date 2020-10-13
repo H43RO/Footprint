@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.surround
+package com.haerokim.project_footprint.Fragment.SurroundPlace
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -25,7 +25,7 @@ import com.haerokim.project_footprint.Utility.GetPlaceInfo
 import com.haerokim.project_footprint.Network.RetrofitService
 import com.haerokim.project_footprint.R
 import com.haerokim.project_footprint.Utility.ShowPlaceInfo
-import com.haerokim.project_footprint.Fragment.home.HomeViewModel
+import com.haerokim.project_footprint.Fragment.Home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_surround.*
 import kotlinx.android.synthetic.main.place_item.view.*
 import retrofit2.Call

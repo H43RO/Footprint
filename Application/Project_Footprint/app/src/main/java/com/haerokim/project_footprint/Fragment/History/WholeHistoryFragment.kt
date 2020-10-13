@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.history
+package com.haerokim.project_footprint.Fragment.History
 
 /**  현재 사용하지 않는 기능 (필요 없다고 판단) **/
 

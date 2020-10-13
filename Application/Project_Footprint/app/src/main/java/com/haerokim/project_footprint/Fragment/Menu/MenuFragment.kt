@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.menu
+package com.haerokim.project_footprint.Fragment.Menu
 
 import android.app.Activity
 import android.content.SharedPreferences

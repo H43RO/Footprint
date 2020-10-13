@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.home
+package com.haerokim.project_footprint.Fragment.Home
 
 import android.Manifest
 import android.app.Activity
@@ -75,7 +75,7 @@ class HomeFragment : Fragment(), PermissionListener {
     private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onPermissionGranted() {
-
+        Log.d("Bluetooth Permission", "Permission Granted")
     }
 
     override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -331,6 +331,11 @@ class HomeFragment : Fragment(), PermissionListener {
         timer.cancel()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+
+    }
 }
 
 

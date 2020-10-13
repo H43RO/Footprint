@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.editor_pick
+package com.haerokim.project_footprint.Fragment.EditorPick
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.edit_profile
+package com.haerokim.project_footprint.Fragment.EditProfile
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK

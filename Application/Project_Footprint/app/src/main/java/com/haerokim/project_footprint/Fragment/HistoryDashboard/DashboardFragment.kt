@@ -1,4 +1,4 @@
-package com.haerokim.project_footprint.Fragment.dashboard
+package com.haerokim.project_footprint.Fragment.HistoryDashboard
 
 import android.content.Intent
 import android.os.Bundle
