@@ -7,7 +7,7 @@ class Place(models.Model):
     place_div = models.PositiveSmallIntegerField()
     naver_place_id = models.CharField(primary_key=True, max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
-    img = models.ImageField(blank=True, null=True, upload_to="place/%Y/%m/%d")
+    img = models.ImageField(upload_to="place/%Y/%m/%d", default="Img")
     count = models.IntegerField(null=True, default=0)
 
     beacon_uuid.db_index = True
@@ -26,7 +26,7 @@ class HotPlace(models.Model):
     businessHours = models.CharField(max_length=100, blank=True, null=True,)
     description = models.CharField(max_length=200, blank=True, null=True,)
     imageSrc = models.CharField(max_length=1000,blank=True, null=True)
-    menuName = jsonfield.JSONField(blank=True, null=True)
+    menuName = jsonfield.JSONField(blank=False, null=True)
     menuPrice = jsonfield.JSONField(blank=True, null=True)
     counts = models.IntegerField(default=0, null=True)
 

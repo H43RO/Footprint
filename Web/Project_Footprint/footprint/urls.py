@@ -37,7 +37,6 @@ from posts.viewsets import NoticeViewSet, EditorViewSet
 router = routers.DefaultRouter()
 router.register('histories', HistoryViewSet)
 router.register('places', ApiPlaceId, basename='places')
-router.register('userinfo', UserListView, basename='userinfo')
 router.register('noticelist', NoticeViewSet)
 router.register('hotplaces', HotPlcaeViewSet, basename='hotplaces')
 router.register('editorlist', EditorViewSet)

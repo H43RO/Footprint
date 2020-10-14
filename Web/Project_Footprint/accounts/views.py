@@ -20,6 +20,8 @@ from django.core.mail import send_mail, BadHeaderError
 from django.utils.translation import ugettext_lazy as _
 import requests
 
+BASE_URL = 'http://127.0.0.1:8000'
+
 def signup(request):
     """
     회원가입
@@ -45,7 +47,7 @@ def signup(request):
                 
                 return HttpResponseRedirect('../signup_email_confirm/')
         else:
-            print(1)
+           return redirect('../signup/')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -110,8 +112,8 @@ def api_user_activate(request):
         user_id = request.GET.get('user_id')
         timestamp = request.GET.get('timestamp')
         signature = request.GET.get('signature')
-        requests.post('http://127.0.0.1:8000/api/v1/accounts/verify-registration/',
-                      data={'user_id': user_id, 'timestamp': timestamp, 'signature': signature})
+        requests.post(BASE_URL + '/api/v1/accounts/verify-registration/',
+                      data={'user_id': user_id, 'timestamp': timestamp, 'signature': signature})              
     return HttpResponseRedirect('../index/')
 
 
@@ -201,7 +203,7 @@ def api_password_reset(request):
     if request.method == 'POST':
         if form.is_valid():
             password = request.POST.get('new_password2')
-            response_message = requests.post('http://127.0.0.1:8000/api/v1/accounts/reset-password/',
+            response_message = requests.post(BASE_URL + '/api/v1/accounts/reset-password/',
                                              data={'user_id': user_id, 'timestamp': timestamp, 'signature': signature,
                                                    'password': password})
             if response_message.status_code == 200:
@@ -238,7 +240,7 @@ def user_password_find(request):
                     }
                     email = render_to_string(email_template_name, c)
                     try:
-                        send_mail(subject, email, 'pcj980@gmail.com', [user.email], fail_silently=False)
+                        send_mail(subject, email, 'sch.iot.esc@gmail.com', [user.email], fail_silently=False)
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
                     return redirect("/password_reset/done/")
