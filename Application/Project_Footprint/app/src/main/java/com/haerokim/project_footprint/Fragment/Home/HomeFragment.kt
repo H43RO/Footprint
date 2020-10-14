@@ -112,6 +112,13 @@ class HomeFragment : Fragment(), PermissionListener {
         val foregroundIntent = Intent(context, ForegroundService::class.java)
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
+        // 앱 최초 실행 시 위치 권한, 저장소 접근 권한 요구
+        TedPermission.with(context)
+            .setPermissionListener(this)
+            .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+            .check()
+
         Paper.init(context)
 
         // User 정보 로드 필요 (닉네임 등)
@@ -192,15 +199,12 @@ class HomeFragment : Fragment(), PermissionListener {
 
                     // 자동 전환 View Pager 동작을 위한 Handler 객체 + 동작부
                     val handler = Handler()
-                    val updateTask: Runnable = object : Runnable {
-                        override fun run() {
-                            // 호출될 때 마다 페이지를 한 칸 이동하고, 마지막 페이지면 처음으로 이동
-                            if (currentPage == editorPickList.size) {
-                                currentPage = 0
-                            }
-                            if(home_editor_place_pager != null){
-                                home_editor_place_pager.setCurrentItem(currentPage++, true)
-                            }
+                    val updateTask: Runnable = Runnable { // 호출될 때 마다 페이지를 한 칸 이동하고, 마지막 페이지면 처음으로 이동
+                        if (currentPage == editorPickList.size) {
+                            currentPage = 0
+                        }
+                        if(home_editor_place_pager != null){
+                            home_editor_place_pager.setCurrentItem(currentPage++, true)
                         }
                     }
                     // 한 번 cancle()한 Timer는 재사용할 수 없어서 재정의해야함
@@ -230,13 +234,6 @@ class HomeFragment : Fragment(), PermissionListener {
             image_home_user_profile.setImageResource(R.drawable.basic_profile)
         }
 
-        // 앱 최초 실행 시 위치 권한, 저장소 접근 권한 요구
-        TedPermission.with(context)
-            .setPermissionListener(this)
-            .setDeniedMessage("위치 기반 서비스이므로 위치 정보 권한이 필요합니다.\n\n[설정] > [앱]을 통해 권한 허가를 해주세요.")
-            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-            .check()
-
         // 발자취 따라가기 ON/OFF 상태에 따른 동작
         scanning_mode_switch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {  // 발자취 따라가기 모드를 켰을 때 진입
@@ -251,7 +248,7 @@ class HomeFragment : Fragment(), PermissionListener {
                 text_switch_state.text = "발자취를 따라갑니다"
 
                 //위치 권한 허용 되어있으면 비콘 스캔 시작
-                if (TedPermission.isGranted(context)) {
+                if (TedPermission.isGranted(context) ) {
                     if (mBluetoothAdapter == null) {
                         // 기종 자체가 블루투스 지원 안하는 경우
                     } else if (!mBluetoothAdapter.isEnabled) {
@@ -265,6 +262,13 @@ class HomeFragment : Fragment(), PermissionListener {
                             "당신의 발자취를 따라가기 시작합니다!",
                             Snackbar.LENGTH_LONG
                         ).show()
+
+                        // Foreground Service 시작 (비콘 스캔 서비스 호출)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            context?.startForegroundService(foregroundIntent)
+                        } else {
+                            context?.startService(foregroundIntent)
+                        }
                     }
                 } else { //워치 권한 허용 안됨
                     Snackbar.make(
@@ -272,13 +276,6 @@ class HomeFragment : Fragment(), PermissionListener {
                         "앱 사용을 위한 위치 권한이 필요합니다",
                         Snackbar.LENGTH_LONG
                     ).show()
-                }
-
-                // Foreground Service 시작 (비콘 스캔 서비스 호출)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context?.startForegroundService(foregroundIntent)
-                } else {
-                    context?.startService(foregroundIntent)
                 }
 
             } else {  // 발자취 따라가기 모드를 껐을 때 진입
