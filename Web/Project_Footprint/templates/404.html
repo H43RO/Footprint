@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    #not_found {
+        background-image: url("{% static '404.jpg' %}");
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+    }
+
+</style>
+<div id="not_found"></div>
+{% endblock %}
