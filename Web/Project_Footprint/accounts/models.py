@@ -55,9 +55,8 @@ class User(AbstractUser):
         help_text=_('유저 활성화를 하기 위한 Boolean 필드'),
     )
     image = models.ImageField(blank=True, null=True)
-    
-    email.db_index = True
     USERNAME_FIELD = 'email'
+    email.db_index = True
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['birth_date', 'nickname', 'age', 'gender']
     objects = UserManager()

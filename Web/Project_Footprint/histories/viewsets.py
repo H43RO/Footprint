@@ -13,6 +13,7 @@ from .serializers import HistorySerializer, HistoryPutSerializer, HistoryDateSer
 class HistoryCreateViewSet(ListCreateAPIView):
     queryset = History.objects.all()
     serializer_class = HistorySerializer
+    http_method_names = ['post']
 
 
 class HistoryUpdateAPIView(UpdateAPIView):
@@ -41,3 +42,4 @@ class HistoryViewSet(ModelViewSet):
     serializer_class = HistorySerializer
     filterset_class = HistoryFilter
     filter_backends = [DjangoFilterBackend]
+    http_method_names = ['get']

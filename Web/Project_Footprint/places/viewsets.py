@@ -19,6 +19,7 @@ class ApiPlaceId(ModelViewSet):
     serializer_class = PlaceSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = PlaceFilter
+    http_method_names = ['get']
 
 class ApiHotPlace(ModelViewSet):
     queryset = Place.objects.order_by('-count')[:5]
