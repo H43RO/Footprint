@@ -6,7 +6,6 @@ from django.contrib.auth.forms import (
     UserChangeForm, 
     PasswordChangeForm, 
     SetPasswordForm,
-    AuthenticationForm
 )
 from .models import User
 from django.utils.translation import gettext_lazy as _
@@ -105,7 +104,7 @@ class SignInForm(forms.Form):
                 code='user_inactivate',
             )
         return 
-        
+
     def get_user(self):
         return self.user
 

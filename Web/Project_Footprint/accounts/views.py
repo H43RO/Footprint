@@ -44,7 +44,6 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                
                 return HttpResponseRedirect('../signup_email_confirm/')
         else:
            return redirect('../signup/')
