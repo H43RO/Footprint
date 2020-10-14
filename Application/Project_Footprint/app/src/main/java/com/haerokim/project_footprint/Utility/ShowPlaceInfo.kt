@@ -27,7 +27,6 @@ import io.realm.RealmConfiguration
  *  - 주로 ForegroundService 에서 특정 장소를 스캔했을 때 호출됨
  **/
 class ShowPlaceInfo(var context: Context, var placeID: String) : Activity() {
-
     fun notifyInfo(mode: String?) {
         // Realm 사용을 위해 init() 필요
         Realm.init(context)
