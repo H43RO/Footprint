@@ -42,7 +42,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=255, unique=True)
     birth_date = models.DateField(null=True, blank=False)
     nickname = models.CharField(max_length=10, blank=False, null=True)
-    age = models.IntegerField(blank=False, null=True)
+    age = models.IntegerField(blank=True, null=True)
     gender = models.IntegerField(choices=GENDER_CHOICES, blank=False, null=True)
     is_staff = models.BooleanField(
         _('staff status'),
@@ -58,8 +58,16 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     email.db_index = True
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['birth_date', 'nickname', 'age', 'gender']
+    REQUIRED_FIELDS = ['birth_date', 'nickname', 'gender']
     objects = UserManager()
 
     def __str__(self):
         return self.email
+
+    def now_age(self):
+        import datetime
+        if self.birth_date is None:
+            raise ValueError(_('birth_date must be set'))
+        return int((datetime.date.today() - self.birth_date).days / 365.25 )
+    age = property(now_age)
+        
