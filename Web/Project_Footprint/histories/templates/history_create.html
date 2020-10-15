@@ -4,6 +4,12 @@
 <link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
 
 <div class="container">
+    {% if validation %}
+        <script>
+            alert("폼 형식을 맞춰주세요. 날짜 형식은 'YYYY-MM-DD' 입니다.");
+            history.back();
+        </script>
+        {% endif %}
     <form enctype="multipart/form-data" class="history-form" action="{% url 'history-create' %}" method="post">
         {% csrf_token %}
         <div class="history-form">
