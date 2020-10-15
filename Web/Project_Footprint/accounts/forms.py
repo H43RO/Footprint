@@ -33,19 +33,17 @@ class SignUpForm(UserCreationForm):
     )
     class Meta:
         model = User
-        fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'age', 'gender']
+        fields = ['email', 'password1', 'password2', 'birth_date', 'nickname', 'gender']
         labels = {
             'email': _('이메일'),
             'birth_date': _('생년월일'),
             'nickname': _('닉네임'),
-            'age': _('나이'),
             'gender': _('성별'),
         }
         help_texts = {
             'email': _('이메일을 입력해주세요'),
             'birth_date': _('생년월일을 입력해주세요 (YYYY-MM-DD)'),
             'nickname': _('10자 이내의 닉네임을 입력해주세요'),
-            'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
         
@@ -55,12 +53,11 @@ class UpdateUserInfoForm(UserChangeForm):
     password = None
     class Meta:
         model = User
-        fields = ['image', 'birth_date', 'nickname', 'age', 'gender']
+        fields = ['image', 'birth_date', 'nickname', 'gender']
         labels = {
             'image': _('프로필 이미지'),
             'birth_date': _('생년월일'),
             'nickname': _('닉네임'),
-            'age': _('나이'),
             'gender': _('성별'),
         }
 
