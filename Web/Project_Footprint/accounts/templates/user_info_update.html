@@ -36,9 +36,9 @@
                                     </div>
                                     {% endif %}
                                 </div>
-                                {% for error in field.errors %}
-                                <p style="color: red">{{ error }}</p>
                                 {% endfor %}
+                                {% for message in messages %}
+                                <p style="color: red">{{ message.message }}</p>
                                 {% endfor %}
                                 <div class="update-btn">
                                     <button class="btn confirm_btn" type="submit">수정완료</button>

@@ -18,6 +18,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 import requests
+from django.utils.translation import gettext_lazy as _
 
 def signup(request):
     """
@@ -139,7 +140,10 @@ def user_info_update(request):
         form = UpdateUserInfoForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-    elif 'id' in request.GET:
+        else:
+            messages.error(request, '형식에 맞게 작성해주세요(YYYY-MM-DD)')
+            return HttpResponseRedirect('../user_info_update/')
+    else:
         form = UpdateUserInfoForm(instance=request.user)
         return render(request, 'user_info_update.html', {'form': form})
     return HttpResponseRedirect("../myinfo")
