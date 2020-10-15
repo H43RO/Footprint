@@ -33,7 +33,7 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password1'])
+            user = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password1'])
             if user is not None:
                 current_site = get_current_site(request)
                 domain = current_site.domain
@@ -44,7 +44,6 @@ def signup(request):
                 mail_to = form.cleaned_data['email']
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
-                
                 return HttpResponseRedirect('../signup_email_confirm/')
         else:
            return redirect('../signup/')
@@ -60,23 +59,17 @@ def signin(request):
     """
     if request.user.is_authenticated:
         return HttpResponseRedirect('/index/')
+    args = {}
     if request.method == 'POST':
-        form = SignInForm(data=request.POST)
+        form = SignInForm(request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
-            if user is not None:
-                if user.is_active is True:
-                    login(request, user)
-                    return HttpResponseRedirect('../index/')
-                else:
-                    messages.error(request, '인증되지 않은 이메일입니다.')
-                    return HttpResponseRedirect('../signin/')
-            else:
-                messages.error(request, '이메일 혹은 비밀번호를 다시 입력해주세요')
-                return HttpResponseRedirect('../signin/')
+            user = authenticate(email=form.data['email'], password=form.data['password'])
+            login(request, user)
+            return HttpResponseRedirect('../index/')
     else:
         form = SignInForm()
-    return render(request, 'signin.html', {'form': form})
+    args['form'] = form
+    return render(request, 'signin.html', args)
 
 
 def signout(request):

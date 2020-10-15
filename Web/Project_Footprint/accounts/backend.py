@@ -8,9 +8,9 @@ class EmailAuthBackend(object):
     유저 인증 시, email field를 username 대신 사용
     """
 
-    def authenticate(self, request, username, password):
+    def authenticate(self, request, email, password):
         try:
-            user = User.objects.get(email=username)
+            user = User.objects.get(email=email)
             if user.check_password(password):  # check valid password
                 return user  # return user to be authenticated
         except User.DoesNotExist:  # no matching user exists

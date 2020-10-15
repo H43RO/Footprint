@@ -1,4 +1,4 @@
-python manage.py runserver --settings=footprint.settings.production 배포용
+python manage.py runserver --settings=footprint.settings.production --insecure 배포용
 python manage.py runserver --settings=footprint.settings.development 개발용
 python manage.py runserver --settings=footprint.settings.base 기본
 

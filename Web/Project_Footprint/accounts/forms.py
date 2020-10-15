@@ -5,13 +5,14 @@ from django.contrib.auth.forms import (
     AuthenticationForm, 
     UserChangeForm, 
     PasswordChangeForm, 
-    SetPasswordForm 
+    SetPasswordForm,
 )
 from .models import User
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.hashers import check_password
-
+from django.contrib.auth import authenticate
+from django.contrib import messages
 
 
 
@@ -47,6 +48,7 @@ class SignUpForm(UserCreationForm):
             'age': _('나이를 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
+        
 
 
 class UpdateUserInfoForm(UserChangeForm):
@@ -63,6 +65,10 @@ class UpdateUserInfoForm(UserChangeForm):
         }
 
 class SignInForm(forms.Form):
+    error_messages = {
+        'user_inactivate' : _('인증되지 않은 이메일입니다.'),
+        'user_missmatch' : _('이메일 혹은 비밀번호를 다시 입력해주세요')
+    }    
     email = forms.EmailField(
         label=_("이메일"),
         widget=forms.EmailInput()
@@ -72,21 +78,35 @@ class SignInForm(forms.Form):
         strip=False,
         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}, render_value=True),
     )
-
-    def __init__(self, request=None, *args, **kwargs):
-        self.request = request
-        self.user_cache = None
-        super().__init__(*args, **kwargs)
+    class Meta:
+        model = User
+        fields = ("email",)   
+  
+    def __init__(self, *args, **kwargs):
+        super(SignInForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget = forms.EmailInput(attrs={'placeholder': '이메일'})
         self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['password'].widget = forms.PasswordInput(attrs={'placeholder': '비밀번호'})
         self.fields['password'].widget.attrs['class'] = 'form-control'
-        
+    
     def clean(self):
-        return self.cleaned_data
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        user = authenticate(email=email, password=password)
+        if user is None:
+            raise forms.ValidationError(
+                self.error_messages['user_missmatch'],
+                code='user_missmatch',
+            )   
+        if user.is_active is not True :
+            raise forms.ValidationError(
+                self.error_messages['user_inactivate'],
+                code='user_inactivate',
+            )
+        return 
 
     def get_user(self):
-        return self.user_cache
+        return self.user
 
 
 class CheckPasswordForm(forms.Form):

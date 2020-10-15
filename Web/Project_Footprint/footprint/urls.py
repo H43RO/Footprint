@@ -34,6 +34,10 @@ from places.viewsets import ApiPlaceId, HotPlcaeViewSet
 from histories.viewsets import HistoryViewSet
 from posts.viewsets import NoticeViewSet, EditorViewSet
 
+from django.views.static import serve
+from django.urls import re_path
+
+
 router = routers.DefaultRouter()
 router.register('histories', HistoryViewSet)
 router.register('places', ApiPlaceId, basename='places')
@@ -62,6 +66,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     url('api/histories/create/$', HistoryCreateViewSet.as_view(), name='history_create'),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
