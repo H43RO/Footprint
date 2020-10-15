@@ -43,7 +43,8 @@ def history_create(request):
             if form.is_valid():
                 new_item = form.save()
             else:
-                return redirect('history-create')
+                validation = 'error'
+                return render(request, 'history_create.html', {'validation': validation})
             return HttpResponseRedirect('../')
     form = HistoryForm(request.FILES)
     return render(request, 'history_create.html', {'form': form})
@@ -76,6 +77,9 @@ def history_update(request):
         form = UpdateHistoryForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             item = form.save()
+        else:
+            validation = 'error'
+            return render(request, 'history_update.html', {'validation': validation})
     elif 'id' in request.GET:
         item = get_object_or_404(History, pk=request.GET.get('id'))
         form = HistoryForm(instance=item)
