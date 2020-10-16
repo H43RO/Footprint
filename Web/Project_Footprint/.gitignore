@@ -401,7 +401,7 @@ pip-selfcheck.json
 
 #Secrets
 secrets.json
-
+db.py
 #migrations
 migrations/
 

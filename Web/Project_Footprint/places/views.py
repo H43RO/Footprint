@@ -2,10 +2,9 @@ from django.shortcuts import render
 from .models import Place
 from django.http import request
 from bs4 import BeautifulSoup
-import pymysql
 import json
 import requests
-
+from .db import add_to_db
 
 # from multiprocessing import Pool, Manager  ??
 def index(request):
@@ -117,33 +116,6 @@ def place_detail_crawl(pk):
     add_to_db(res)
 
     return res
-
-
-def add_to_db(crawled_items):
-    """
-     크롤링한 Hotplace 데이터를 Database(Mysql)에 저장함
-    """
-    db = pymysql.connect(host='localhost', user='root', password='s9423093', db='footprint', charset='utf8')
-    cursor = db.cursor(pymysql.cursors.DictCursor)
-    items_to_insert_into_db = {}
-    items_to_insert_into_db = crawled_items
-    item_naverPlaceID = items_to_insert_into_db['naverPlaceID']
-    item_title = items_to_insert_into_db['title']
-    item_category = items_to_insert_into_db['category']
-    item_location = items_to_insert_into_db['location']
-    item_businessHours = items_to_insert_into_db['businessHours']
-    item_description = items_to_insert_into_db['description']
-    item_imageSrc = items_to_insert_into_db['imageSrc']
-    item_menuName = items_to_insert_into_db['menuName']
-    item_menuPrice = items_to_insert_into_db['menuPrice']
-    item_count = 0
-    # 만약DB에 추가된 naverPlaceID와 동일한id가 없다면 새로 INSERT, 동일한 id 값이 있다면 UPDATE
-    sql = "INSERT IGNORE INTO places_hotplace (naverPlaceID, title, category, location, businessHours, description, imageSrc, menuName, menuPrice, counts) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (item_naverPlaceID, item_title, item_category, item_location, item_businessHours, item_description, item_imageSrc, item_menuName, item_menuPrice, item_count)
-    cursor.execute(sql, val)
-    db.commit()
-    db.close()
-
 
 def get_hotplace():
     """
