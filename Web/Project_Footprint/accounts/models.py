@@ -68,6 +68,6 @@ class User(AbstractUser):
         import datetime
         if self.birth_date is None:
             raise ValueError(_('birth_date must be set'))
-        return int((datetime.date.today() - self.birth_date).days / 365.25 )
+        return int((datetime.date.today() - self.birth_date).days / 365.25 + 1)
     age = property(now_age)
         
