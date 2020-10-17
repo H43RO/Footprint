@@ -499,7 +499,7 @@
     background-repeat: no-repeat;
     height: 100%;
     }
-        
+
     #signin .container{
     height: 100%;
     align-content: center;
@@ -558,15 +558,7 @@
         color:white;
     }
 
-    #signin .form-control {
-        /* height: 45px;
-        padding: 20px; */
-        border-style: none;
-        border-radius: 10px 10px 10px 10px;
-        color: white;
-        background-color: #d9dbd9;
-        opacity:0.5;
-    }
+
 
     /* Signup */
 

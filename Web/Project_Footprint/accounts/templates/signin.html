@@ -15,11 +15,11 @@
 				<div class="card-body">
 					<form method="post" >
 						{% csrf_token %}
-						<div class="input-group form-group">
-                             {{form.email}} 
+						<div class="form-group">
+                             {{ form.email }}
 						</div>
-						<div class="input-group form-group">
-                            {{ form.password}}
+						<div class="form-group">
+							{{ form.password }}
 						</div>
 						 {% if form.non_field_errors %}
 							<small style="color: red">{{ form.non_field_errors }}</small>
@@ -31,7 +31,7 @@
 				</div>
 				<div class="card-footer">
 					<div class="d-flex justify-content-center">
-						<a href="/user_password_find" class = "password_find"><b class="password_find">비밀번호를 잊으셨나요?</b></a>
+						<a href="/user_password_find"><b class="password_find">비밀번호를 잊으셨나요?</b></a>
 					</div>
 				</div>
 			</div>
