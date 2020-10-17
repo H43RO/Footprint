@@ -1,7 +1,11 @@
 from django import forms
 from .models import History
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
+from django.contrib.admin import widgets
+from functools import partial
 
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 MOOD_POINT_CHOICES = (
     ('기분 좋았던 순간', "기분 좋았던 순간"),
     ('기뻤던 순간', "기뻤던 순간"),
@@ -27,19 +31,19 @@ class HistoryForm(forms.ModelForm):
             'img': _('사진'),
             'comment': _('코멘트'),
             'place': _('장소'),
-            'custom_place': _('임의 장소'),
+            'custom_place': _('장소'),
             'created_at':_('작성 시간'),
         }
         widgets = {
             'mood': forms.Select(choices=MOOD_POINT_CHOICES),
-            'user': forms.HiddenInput()
+            'user': forms.HiddenInput(),
+            'place' : forms.HiddenInput(),
+            'created_at' : DateInput(),
         }
         help_texts = {
             'comment': _('일기를 작성해주세요.'),
-            'created_at': _('작성 시간 양식은 YYYY-mm-dd입니다.'),
+            'created_at': _('날짜를 선택해 주세요.'),
         }
-
-
 
 
 class UpdateHistoryForm(HistoryForm):

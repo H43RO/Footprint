@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from accounts.models import User
 from places.models import Place, HotPlace
 from django.db.models import F
+from django.core.exceptions import ValidationError
+from django.contrib.admin import widgets
 
 DEFAULT_HISTORY = 1
 
@@ -19,7 +21,7 @@ class History(models.Model):
     mood = models.CharField(max_length=30, default=DEFAULT_HISTORY, blank=True)
     comment = models.TextField(max_length=1000, blank=True, null=True)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
-    custom_place = models.CharField(max_length=500, blank=True, null=True)
+    custom_place = models.CharField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     created_at = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -33,3 +35,5 @@ class History(models.Model):
 
     def __str__(self):
         return self.title + ': ' + self.comment[:3]
+
+
