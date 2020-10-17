@@ -2,11 +2,19 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/webstyle.css' %}" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker();
+});
+</script>
 
 <div class="container">
     {% if validation %}
         <script>
-            alert("폼 형식을 맞춰주세요. 날짜 형식은 'YYYY-MM-DD' 입니다.");
+            alert("폼 형식을 맞춰주세요.");
             history.back();
         </script>
         {% endif %}
