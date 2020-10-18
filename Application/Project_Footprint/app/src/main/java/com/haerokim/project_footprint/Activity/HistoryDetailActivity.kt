@@ -42,7 +42,7 @@ class HistoryDetailActivity : AppCompatActivity() {
             text_history_detail_title.text = data?.getStringExtra("title")
             text_history_detail_content.text = data?.getStringExtra("comment")
             if (data?.getStringExtra("image") != null) {
-                history_detail_image.setImageURI(Uri.parse(data?.getStringExtra("image")))
+                history_detail_image.setImageURI(Uri.parse(data.getStringExtra("image")))
             }
         }
     }

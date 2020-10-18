@@ -58,8 +58,7 @@ class HistoryEditActivity : AppCompatActivity() {
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
-                val bitmap =
-                    MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
 
                 imageUri = bitmapToFile(bitmap!!)
                 history_detail_image.setImageURI(imageUri)
@@ -72,6 +71,7 @@ class HistoryEditActivity : AppCompatActivity() {
 
     /**  Bitmap 이미지를 Local에 저장하고, URI를 반환함  **/
     private fun bitmapToFile(bitmap: Bitmap): Uri {
+
         // Get the context wrapper
         val wrapper = ContextWrapper(this)
 
@@ -132,9 +132,9 @@ class HistoryEditActivity : AppCompatActivity() {
         }
 
         edit_history_detail_title.setText(historyTitle)
+        edit_history_detail_content.setText(historyComment)
         edit_history_detail_place.text = historyPlaceTitle
         edit_history_detail_time.text = historyCreatedAt
-        edit_history_detail_content.setText(historyComment)
 
         history_detail_image.setOnClickListener {
             // Android Image Cropper 라이브러리 사용
@@ -199,7 +199,10 @@ class HistoryEditActivity : AppCompatActivity() {
                                     Log.e("Update History Error", t.message)
                                 }
 
-                                override fun onResponse(call: Call<History>, response: Response<History>) {
+                                override fun onResponse(
+                                    call: Call<History>,
+                                    response: Response<History>
+                                ) {
                                     if (response.code() == 400) {
                                         Log.e("Update History Error", response.message())
                                     } else {
@@ -240,30 +243,33 @@ class HistoryEditActivity : AppCompatActivity() {
                             mood = mood,
                             img = uploadImage
                         ).enqueue(object : Callback<History> {
-                                override fun onFailure(call: Call<History>, t: Throwable) {
-                                    Log.e("Update History Error", t.message)
+                            override fun onFailure(call: Call<History>, t: Throwable) {
+                                Log.e("Update History Error", t.message)
+                            }
+
+                            override fun onResponse(
+                                call: Call<History>,
+                                response: Response<History>
+                            ) {
+                                if (response.code() == 400) {
+                                    Log.e("Update History Error", response.message())
+                                } else if (response.code() == 200) {
+                                    Log.d("Update History", "History 수정 완료")
+
+                                    val resultHistory = response.body()
+                                    val intent = Intent()
+
+                                    intent.putExtra("image", imageUri.toString())
+                                    intent.putExtra("title", resultHistory?.title)
+                                    intent.putExtra("mood", resultHistory?.mood)
+                                    intent.putExtra("comment", resultHistory?.comment)
+
+                                    // HistoryDetailActivity 에게 수정 결과 전달 후 종료
+                                    setResult(Activity.RESULT_OK, intent)
+                                    finish()
                                 }
-
-                                override fun onResponse(call: Call<History>, response: Response<History>) {
-                                    if (response.code() == 400) {
-                                        Log.e("Update History Error", response.message())
-                                    } else if (response.code() == 200) {
-                                        Log.d("Update History", "History 수정 완료")
-
-                                        val resultHistory = response.body()
-                                        val intent = Intent()
-
-                                        intent.putExtra("image", imageUri.toString())
-                                        intent.putExtra("title", resultHistory?.title)
-                                        intent.putExtra("mood", resultHistory?.mood)
-                                        intent.putExtra("comment", resultHistory?.comment)
-
-                                        // HistoryDetailActivity 에게 수정 결과 전달 후 종료
-                                        setResult(Activity.RESULT_OK, intent)
-                                        finish()
-                                    }
-                                }
-                            })
+                            }
+                        })
                     }
                 })
 
