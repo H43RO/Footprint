@@ -30,7 +30,6 @@ class History(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            Place.objects.filter(pk=self.place_id).update(count=F('count')+1)
             print(Place.objects.values('naver_place_id', 'title'))
             new = self.custom_place.replace(" ","")
             cmplist = []
@@ -41,8 +40,9 @@ class History(models.Model):
             for cmp in cmplist:
                 if new == cmp['title'].replace(" ",""):
                     naverid = cmp['naver_place_id']
-
-            HotPlace.objects.filter(pk=naverid).update(counts=F('counts')+1)
+                    HotPlace.objects.filter(pk=naverid).update(counts=F('counts') + 1)
+                else :
+                    Place.objects.filter(pk=self.place_id).update(count=F('count') + 1)
 
         super().save(*args, **kwargs)
 
