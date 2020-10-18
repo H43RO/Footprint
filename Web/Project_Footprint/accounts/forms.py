@@ -13,6 +13,7 @@ from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.contrib import messages
+from django.contrib.admin import widgets
 
 
 
@@ -42,10 +43,16 @@ class SignUpForm(UserCreationForm):
         }
         help_texts = {
             'email': _('이메일을 입력해주세요'),
-            'birth_date': _('생년월일을 입력해주세요 (YYYY-MM-DD)'),
+            'birth_date': _('생년월일을 입력해주세요'),
             'nickname': _('10자 이내의 닉네임을 입력해주세요'),
             'gender': _('성별을 입력해주세요'),
         }
+        widgets = {
+            'birth_date': forms.DateInput(format=('%m/%d/%Y'),
+                                             attrs={'class': 'form-control', 'placeholder': 'Select a date',
+                                                    'type': 'date'}),
+        }
+
         
 
 
@@ -59,6 +66,11 @@ class UpdateUserInfoForm(UserChangeForm):
             'birth_date': _('생년월일'),
             'nickname': _('닉네임'),
             'gender': _('성별'),
+        }
+        widgets = {
+            'birth_date': forms.DateInput(format=('%m/%d/%Y'),
+                                             attrs={'class': 'form-control', 'placeholder': 'Select a date',
+                                                    'type': 'date'}),
         }
 
 class SignInForm(forms.Form):

@@ -31,6 +31,10 @@
                                 <div class="input-group form-group">
                                     <input class="form-control" id="{{ form.password2.id_for_label }}" name="{{ form.password2.html_name }}" type="password" placeholder="비밀번호를 재입력해주세요" />
                                 </div>
+                            {% elif field.label == '생년월일' %}
+                                <div class="input-group form-group">
+                                    {{ field }}
+                                </div>
                             {% else %}
                                 <div class="input-group form-group">
                                     <input class="form-control" id="{{ field.id_for_label }}" name="{{ field.html_name }}" type="text" placeholder="{{field.help_text}}"/>
