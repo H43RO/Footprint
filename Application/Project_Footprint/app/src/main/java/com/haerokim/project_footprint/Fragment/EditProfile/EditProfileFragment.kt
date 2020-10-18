@@ -138,7 +138,8 @@ class EditProfileFragment : Fragment() {
         val user: User = Paper.book().read("user_profile")
 
         // 회원 생년월일 Date to String
-        val userBirthDate = user.birthDate
+        val userBirthDate = user.birth_date
+
         val userBirthDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val userBirthDateString: String = userBirthDateFormat.format(userBirthDate)
 
@@ -155,7 +156,7 @@ class EditProfileFragment : Fragment() {
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when(it.itemId){
                     R.id.basic->{
-                        pref?.edit()?.remove("profile_image")?.commit()
+                        pref?.edit()?.remove("profile_image")?.apply()
                         image_edit_user_profile.setImageResource(R.drawable.basic_profile)
                     }
                     R.id.galery->{

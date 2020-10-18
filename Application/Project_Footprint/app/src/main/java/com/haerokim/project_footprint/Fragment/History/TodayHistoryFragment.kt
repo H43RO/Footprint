@@ -90,7 +90,7 @@ class TodayHistoryFragment : Fragment() {
             startActivity(Intent(requireContext(), HistoryWriteActivity::class.java))
         }
 
-            getTodayHistoryList()
+        getTodayHistoryList()
 
     }
 
@@ -129,7 +129,10 @@ class TodayHistoryFragment : Fragment() {
                     text_today_no_data.text = "정보를 가져오지 못했습니다"
                 }
 
-                override fun onResponse(call: Call<ArrayList<History>>, response: Response<ArrayList<History>>) {
+                override fun onResponse(
+                    call: Call<ArrayList<History>>,
+                    response: Response<ArrayList<History>>
+                ) {
                     historyList.clear()
                     text_today_no_data.visibility = View.GONE
 
@@ -149,8 +152,11 @@ class TodayHistoryFragment : Fragment() {
                                 // 장소 이름이 Realm 에 저장되어 있으면 (방문한 적 있으면 캐싱됨) 사용하고, 없으면 GetPlaceTitleOnly() 호출
                                 realm.executeTransaction {
                                     val visitedPlace: VisitedPlace? =
-                                        it.where(VisitedPlace::class.java).equalTo("naverPlaceID", history.place).findFirst()
-                                    history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(history.place!!).execute().get()
+                                        it.where(VisitedPlace::class.java)
+                                            .equalTo("naverPlaceID", history.place).findFirst()
+                                    history.place = visitedPlace?.placeTitle ?: GetPlaceTitleOnly(
+                                        history.place!!
+                                    ).execute().get()
                                 }
                             }
                         }

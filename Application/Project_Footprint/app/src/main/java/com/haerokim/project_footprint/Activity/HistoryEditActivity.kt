@@ -229,7 +229,7 @@ class HistoryEditActivity : AppCompatActivity() {
                             MultipartBody.Part.createFormData("img", image.name, requestFile)
                         val title = RequestBody.create(MediaType.parse("text/plain"), historyTitle)
                         val comment =
-                            RequestBody.create(MediaType.parse("text/plain"), historyTitle)
+                            RequestBody.create(MediaType.parse("text/plain"), historyComment)
                         val mood =
                             RequestBody.create(MediaType.parse("text/plain"), historyMood ?: "1")
 

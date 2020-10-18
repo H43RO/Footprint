@@ -108,9 +108,10 @@ class HomeFragment : Fragment(), PermissionListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val switchStateSave = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        val foregroundIntent = Intent(context, ForegroundService::class.java)
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        val foregroundIntent = Intent(context, ForegroundService::class.java)
 
         // 앱 최초 실행 시 위치 권한, 저장소 접근 권한 요구
         TedPermission.with(context)
@@ -130,11 +131,11 @@ class HomeFragment : Fragment(), PermissionListener {
             .create()
 
         // API 호출을 위한 Retrofit 객체 생성
-        var retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl(Website.BASE_URL) //사이트 Base URL을 갖고있는 Companion Obejct
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-        var getPlaceList: RetrofitService = retrofit.create(RetrofitService::class.java)
+        val getPlaceList: RetrofitService = retrofit.create(RetrofitService::class.java)
 
         viewManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
