@@ -114,9 +114,10 @@ class LoginActivity : AppCompatActivity() {
                                     // Paper DB에 사용자의 정보를 저장함
                                     Paper.book().write("user_profile", response.body())
                                     Log.d("login success", response.body()?.nickname)
+                                    
                                     //자동 로그인을 위한 SharedPreference 저장 (로그인 정보)
                                     editor.putBoolean("auto_login_enable", true)
-                                    editor.commit()
+                                    editor.apply()
 
                                     val intent = Intent(applicationContext, HomeActivity::class.java)
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)

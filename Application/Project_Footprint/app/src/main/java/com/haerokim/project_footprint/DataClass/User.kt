@@ -9,7 +9,7 @@ data class User(
     val id: Int,
     val email: String,
     @SerializedName("birth_date")
-    val birthDate: Date,
+    val birth_date: Date,
     val nickname: String,
     val age: Int,
     val gender: Int,
