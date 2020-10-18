@@ -223,6 +223,7 @@ class HomeFragment : Fragment(), PermissionListener {
 
         // 앱 재시작 후 UI 복원 시 마지막 Switch 상태로 복구 (SharedPreference)
         scanning_mode_switch.isChecked = switchStateSave.getBoolean("state", false)
+        viewModel.scanMode.value = switchStateSave.getBoolean("state", false)
 
         // 사용자 프로필 이미지 로드를 위한 SharedPreferences 객체
         val pref: SharedPreferences? =
@@ -332,7 +333,6 @@ class HomeFragment : Fragment(), PermissionListener {
 
     override fun onDestroy() {
         super.onDestroy()
-
 
     }
 }
