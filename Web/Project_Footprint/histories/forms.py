@@ -4,8 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.contrib.admin import widgets
 from functools import partial
+from datetimepicker.widgets import DateTimePicker
 
-DateInput = partial(forms.DateInput, {'class': 'datepicker'})
+DateInput = partial(forms.DateTimeInput, {'class': 'datepicker'})
 MOOD_POINT_CHOICES = (
     ('기분 좋았던 순간', "기분 좋았던 순간"),
     ('기뻤던 순간', "기뻤던 순간"),
