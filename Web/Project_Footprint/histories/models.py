@@ -5,6 +5,8 @@ from places.models import Place, HotPlace
 from django.db.models import F
 from django.core.exceptions import ValidationError
 from django.contrib.admin import widgets
+from django.forms.models import model_to_dict
+
 
 DEFAULT_HISTORY = 1
 
@@ -29,7 +31,19 @@ class History(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             Place.objects.filter(pk=self.place_id).update(count=F('count')+1)
-            HotPlace.objects.filter(pk=self.place_id).update(counts=F('counts')+1)
+            print(Place.objects.values('naver_place_id', 'title'))
+            new = self.custom_place.replace(" ","")
+            cmplist = []
+            for item in Place.objects.values('naver_place_id','title'):
+                places = item
+                cmplist.append(places)
+
+            for cmp in cmplist:
+                if new == cmp['title'].replace(" ",""):
+                    naverid = cmp['naver_place_id']
+
+            HotPlace.objects.filter(pk=naverid).update(counts=F('counts')+1)
+
         super().save(*args, **kwargs)
 
 
