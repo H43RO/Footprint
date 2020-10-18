@@ -244,6 +244,7 @@ class HomeFragment : Fragment(), PermissionListener {
                     commit()
                 }
                 viewModel.changeMode("on")
+                Log.d("ScanMode", viewModel.scanMode.value.toString())
 
                 card_switch_state.setCardBackgroundColor(Color.parseColor("#CC59628F"))
                 text_switch_state.text = "발자취를 따라갑니다"

@@ -58,7 +58,9 @@ class SurroundFragment : Fragment() {
 
             if (intent != null) {
                 surroundBeaconList.clear()
-                surroundBeaconList.addAll(intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf())
+                surroundBeaconList.addAll(
+                    intent.getStringArrayListExtra("surround_beacon_list") ?: arrayListOf()
+                )
                 // 기존 리스트와 다른 점이 없으면 새로고침하지 않음
                 // 원소 순서와 상관 없이 원소가 같아야함 (Set 특성 이용)
                 if (tempBeaconList.toSet() != surroundBeaconList.toSet()) {
@@ -150,6 +152,7 @@ class SurroundFragment : Fragment() {
                     surroundBeaconReceiver,
                     IntentFilter("surround_beacon_list")
                 )
+
             }
         })
     }
@@ -180,7 +183,8 @@ class SurroundFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.view.setOnClickListener {
                 // 아이템을 터치했을 때 상세 정보 페이지로 이동 : ShowPlaceInfo().showInfo() 사용
-                ShowPlaceInfo(context,
+                ShowPlaceInfo(
+                    context,
                     surroundPlaceList[position].naverPlaceID
                 ).showInfo(surroundPlaceList[position])
             }
@@ -217,15 +221,14 @@ class SurroundFragment : Fragment() {
             adapter = viewAdapter
         }
 
-        viewModel.scanMode.observe(viewLifecycleOwner, Observer {
-            if (it == false) {
-                loading_spinner.visibility = View.GONE
-                Toast.makeText(context, "발자취 따라가기를 활성화 해주세요", Toast.LENGTH_LONG).show()
-                text_state.text = "발자취 따라가기를 활성화 해주세요"
-            } else {
-                text_state.text = "가까운 주변 장소를 탐색합니다"
-            }
-        })
+        if (viewModel.scanMode.value == false) {
+            loading_spinner.visibility = View.GONE
+            Toast.makeText(context, "발자취 따라가기를 활성화 해주세요", Toast.LENGTH_LONG).show()
+            text_state.text = "발자취 따라가기를 활성화 해주세요"
+        } else {
+            text_state.text = "가까운 주변 장소를 탐색합니다"
+
+        }
     }
 
     // 화면 이탈 시 Broadcast Receiver 해지
