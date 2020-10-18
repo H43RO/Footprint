@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -222,10 +223,13 @@ class SurroundFragment : Fragment() {
         }
 
         if (viewModel.scanMode.value == false) {
+            surround_place_banner.setBackgroundColor(Color.parseColor("#696969"))
             loading_spinner.visibility = View.GONE
             Toast.makeText(context, "발자취 따라가기를 활성화 해주세요", Toast.LENGTH_LONG).show()
             text_state.text = "발자취 따라가기를 활성화 해주세요"
+
         } else {
+            surround_place_banner.setBackgroundColor(Color.parseColor("#FF293263"))
             text_state.text = "가까운 주변 장소를 탐색합니다"
 
         }

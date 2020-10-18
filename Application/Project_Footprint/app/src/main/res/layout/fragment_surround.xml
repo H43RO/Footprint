@@ -6,9 +6,10 @@
     tools:context=".Fragment.SurroundPlace.SurroundFragment">
 
     <ImageView
+        android:id="@+id/surround_place_banner"
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:src="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"/>
 
     <RelativeLayout
         android:id="@+id/status_banner"
