@@ -68,9 +68,7 @@ class UpdateUserInfoForm(UserChangeForm):
             'gender': _('성별'),
         }
         widgets = {
-            'birth_date': forms.DateInput(format=('%m/%d/%Y'),
-                                             attrs={'class': 'form-control', 'placeholder': 'Select a date',
-                                                    'type': 'date'}),
+            'birth_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
 
 class SignInForm(forms.Form):
