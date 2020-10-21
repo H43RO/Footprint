@@ -46,8 +46,6 @@ def signup(request):
                 email = EmailMessage(mail_title, message_data, to=[mail_to])
                 email.send()
                 return HttpResponseRedirect('../signup_email_confirm/')
-        else:
-           return redirect('../signup/')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -67,7 +65,7 @@ def signin(request):
             user = authenticate(email=form.data['email'], password=form.data['password'])
             login(request, user)
             return HttpResponseRedirect('../index/')
-    else:
+    else:    
         form = SignInForm()
     args['form'] = form
     return render(request, 'signin.html', args)
