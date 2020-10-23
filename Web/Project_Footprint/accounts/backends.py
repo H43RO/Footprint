@@ -4,8 +4,7 @@ from .models import User
 
 class EmailAuthBackend(object):
     """
-    커스텀 이메일 백엔드
-    유저 인증 시, email field를 username 대신 사용
+    Custom Email Backend to perform authentication via email
     """
 
     def authenticate(self, request, email, password):

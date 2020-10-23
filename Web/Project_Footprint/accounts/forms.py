@@ -1,19 +1,14 @@
-from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import (
     UserCreationForm, 
-    AuthenticationForm, 
     UserChangeForm, 
     PasswordChangeForm, 
     SetPasswordForm,
 )
 from .models import User
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
-from django.contrib import messages
-from django.contrib.admin import widgets
 
 
 
@@ -68,9 +63,7 @@ class UpdateUserInfoForm(UserChangeForm):
             'gender': _('성별'),
         }
         widgets = {
-            'birth_date': forms.DateInput(format=('%m/%d/%Y'),
-                                             attrs={'class': 'form-control', 'placeholder': 'Select a date',
-                                                    'type': 'date'}),
+            'birth_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
 
 class SignInForm(forms.Form):
@@ -107,12 +100,12 @@ class SignInForm(forms.Form):
                 self.error_messages['user_missmatch'],
                 code='user_missmatch',
             )   
-        if user.is_active is not True :
+        elif user.is_active is not True :
             raise forms.ValidationError(
                 self.error_messages['user_inactivate'],
                 code='user_inactivate',
             )
-        return 
+        return self.cleaned_data
 
     def get_user(self):
         return self.user
