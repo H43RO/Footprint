@@ -1,5 +1,7 @@
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 import jsonfield
+
 
 class Place(models.Model):
     beacon_uuid = models.CharField(max_length=100)
@@ -18,16 +20,17 @@ class Place(models.Model):
     def __str__(self):
         return self.title
 
+
 class HotPlace(models.Model):
     naverPlaceID = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=30)
     category = models.CharField(max_length=30, default='')
     location = models.CharField(max_length=200, default='')
-    businessHours = models.CharField(max_length=100, blank=True, null=True,)
-    description = models.CharField(max_length=200, blank=True, null=True,)
-    imageSrc = models.CharField(max_length=1000,blank=True, null=True)
-    menuName = jsonfield.JSONField(blank=False, null=True)
-    menuPrice = jsonfield.JSONField(blank=True, null=True)
+    businessHours = models.CharField(max_length=100, blank=True, null=True, )
+    description = models.CharField(max_length=200, blank=True, null=True, )
+    imageSrc = models.CharField(max_length=1000, blank=True, null=True)
+    menuName = JSONField(blank=False, null=True)
+    menuPrice = JSONField(blank=True, null=True)
     counts = models.IntegerField(default=0, null=True)
 
     def __int__(self):
