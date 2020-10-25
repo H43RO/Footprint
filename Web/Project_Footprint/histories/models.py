@@ -8,7 +8,7 @@ from django.contrib.admin import widgets
 from django.forms.models import model_to_dict
 
 
-DEFAULT_HISTORY = 1
+DEFAULT_HISTORY = "기분 좋은 날"
 
 GENDER_CHOICES = (
     (0, 'male'),
