@@ -53,21 +53,7 @@
 2. Venv 에 진입한 다음, 아래의 명령어를 실행합니다.
 
     ```bash
-    pip install —upgrade pip 
-    pip install six
-    pip install Pillow
-    pip install djangorestframework
-    pip install django-admin-rangefilter
-    pip install djangoframework-fiters
-    pip install django-filter
-    pip install django-rest-registeration
-    pip install django-grappelli
-    pip install requests
-    pip install django-crispy-forms
-    pip install django-ckeditor
-    pip install beautifulsoup4
-    pip install jsonfield
-    pip install mysqlclient  # MySQL을 사용할 경우
+    pip install -r requirements.txt
     ```
 
 3. `settings.py` 에서 사용할 데이터베이스 설정을 완료해줍니다. (MySQL으로 기본 세팅 되어있습니다.)
