@@ -44,9 +44,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SurroundFragment : Fragment() {
     var surroundBeaconList: ArrayList<String> = ArrayList()
     var tempBeaconList: ArrayList<String> = ArrayList()
-    var surroundPlaceList: ArrayList<Place> = ArrayList()
+
+    var surroundPlaceList: MutableSet<Place> = mutableSetOf()
+    var finalPlaceList: ArrayList<Place> = arrayListOf()
     var tempNaverPlacIDList: ArrayList<NaverPlaceID> = ArrayList()
+
     var tempPlaceList: ArrayList<Place> = ArrayList()
+
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var viewManager: RecyclerView.LayoutManager
@@ -107,8 +111,8 @@ class SurroundFragment : Fragment() {
                 .build()
 
             var getPlaceInfoService: RetrofitService = retrofit.create(RetrofitService::class.java)
-            surroundPlaceList.clear()
 
+            surroundPlaceList.clear()
             // 현재 가지고 있는 UUID 값 각각을 기반으로 Place 객체를 찍어내는 동작을 함 (리스트 아이템으로 사용될 예정)
             for (beacon in surroundBeaconList) {
                 getPlaceInfoService.requestNaverPlaceID(beacon)
@@ -129,10 +133,14 @@ class SurroundFragment : Fragment() {
 
                             // Naver Place ID 각각에 대한 장소 정보를 얻어서 RecyclerView 에 보여줄 리스트에 추가
                             for (place in tempNaverPlacIDList) {
+                                finalPlaceList.clear()
                                 surroundPlaceList.add(
                                     GetPlaceInfo(place.naver_place_id).execute().get()
                                 )
+
                                 if (place == tempNaverPlacIDList[tempNaverPlacIDList.size - 1]) {
+                                    finalPlaceList.addAll(surroundPlaceList)
+                                    Log.d("Final Place", finalPlaceList.size.toString())
                                     viewAdapter.notifyDataSetChanged()
                                 }
                             }
@@ -211,7 +219,7 @@ class SurroundFragment : Fragment() {
         viewManager = LinearLayoutManager(context)
         viewAdapter =
             PlaceListAdapter(
-                surroundPlaceList,
+                finalPlaceList,
                 requireContext()
             )
 

@@ -134,7 +134,11 @@ class TodayHistoryFragment : Fragment() {
                     response: Response<ArrayList<History>>
                 ) {
                     historyList.clear()
-                    text_today_no_data.visibility = View.GONE
+                    try {
+                        text_today_no_data.visibility = View.GONE
+                    } catch (e: Exception) {
+
+                    }
 
                     // 해당 날짜에 기록이 없을 경우 진입
                     if (response.body()?.size == 0 || response.body() == null) {
@@ -143,7 +147,11 @@ class TodayHistoryFragment : Fragment() {
                         loading_today_history.visibility = View.GONE
                         text_today_no_data.text = "기록이 없습니다"
                     } else {  // 기록이 있을 경우 진입
-                        today_history_list.visibility = View.VISIBLE
+                        try {
+                            today_history_list.visibility = View.VISIBLE
+                        } catch (e: Exception) {
+
+                        }
                         responseBody = response.body()!!
                         // History 객체 각각의 place 속성에 Naver Place ID가 담겨있기 때문에 장소명으로 변환해줘야함
                         for (history in responseBody) {
@@ -160,9 +168,15 @@ class TodayHistoryFragment : Fragment() {
                                 }
                             }
                         }
+
                         historyList.addAll(responseBody)
                         viewAdapter.notifyDataSetChanged()
-                        loading_today_history.visibility = View.GONE
+
+                        try{
+                            loading_today_history.visibility = View.GONE
+                        }catch (e: Exception){
+
+                        }
                     }
                 }
             })
