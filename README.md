@@ -53,21 +53,7 @@
 2. Venv 에 진입한 다음, 아래의 명령어를 실행합니다.
 
     ```bash
-    pip install —upgrade pip 
-    pip install six
-    pip install Pillow
-    pip install djangorestframework
-    pip install django-admin-rangefilter
-    pip install djangoframework-fiters
-    pip install django-filter
-    pip install django-rest-registeration
-    pip install django-grappelli
-    pip install requests
-    pip install django-crispy-forms
-    pip install django-ckeditor
-    pip install beautifulsoup4
-    pip install jsonfield
-    pip install mysqlclient  # MySQL을 사용할 경우
+    pip install -r requirements.txt
     ```
 
 3. `settings.py` 에서 사용할 데이터베이스 설정을 완료해줍니다. (MySQL으로 기본 세팅 되어있습니다.)
@@ -111,20 +97,4 @@
 - **yulhee741** : DB History Model 설계 및 Django History 관련 API 개발, History 관련 Front-end 구현
 - **Chanjongp** : DB User Model 설계 및 Django User 관련 API 개발, User 관련 Front-end 구현
 - **jinsol0330** : DB User Model 설계 및 Django User 관련 API 개발, User 관련 Front-end 구현
-
-## License
-```
-Copyright 2020 Team ESC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
 ```
