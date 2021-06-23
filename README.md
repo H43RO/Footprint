@@ -4,14 +4,17 @@
 
 발자취는 BLE(Bluetooth Low Energy) 핵심 기술인 'Beacon' 을 활용하여, 사용자의 하루 일과를 자동으로 기록해주는 서비스입니다. 자동으로 기록된 일과는 사용자의 마음대로 자신만의 다이어리 처럼 꾸밀 수 있습니다. 또한 임의로 일과를 추가할 수도 있습니다. 이렇게 쌓인 사용자의 기록 하나하나가 서버에 저장되어, 자신만의 추억으로 간직하거나 SNS에 공유할 수 있습니다.
 
+
 # 📺 시나리오 소개 동영상
 
 [![Video Label](http://img.youtube.com/vi/Mo7A4ZyVBEg/0.jpg)](https://www.youtube.com/embed/Mo7A4ZyVBEg)
 
-# 📷 Screenshot
-<img width="30%" src="https://user-images.githubusercontent.com/30336663/123149524-51f61300-d49c-11eb-9b3b-fca8f1d841be.jpg"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123149579-5f130200-d49c-11eb-9a0a-0db95b38978e.jpg"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123149578-5e7a6b80-d49c-11eb-9111-c8889e36229f.jpg">
 
-<img width="30%" src="https://user-images.githubusercontent.com/30336663/123149541-56bac700-d49c-11eb-9bcf-d50307059aca.jpg"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123149644-705c0e80-d49c-11eb-9103-056c83560e6b.jpg"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123149572-5d493e80-d49c-11eb-9690-cb60d6c7dd47.jpg">
+# 📷 Screenshot
+<img width="30%" src="https://user-images.githubusercontent.com/30336663/123149524-51f61300-d49c-11eb-9b3b-fca8f1d841be.jpg"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123149572-5d493e80-d49c-11eb-9690-cb60d6c7dd47.jpg"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123149578-5e7a6b80-d49c-11eb-9111-c8889e36229f.jpg">
+
+<img width="30%" src="https://user-images.githubusercontent.com/30336663/123151924-f2e5cd80-d49e-11eb-8cc3-2a06a7af54aa.gif"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123151947-f9744500-d49e-11eb-9d58-ab7aa4131e82.gif"> <img width="30%" src="https://user-images.githubusercontent.com/30336663/123152631-be264600-d49f-11eb-8930-af2d5f2e5626.gif">
+
 
 # ⚙️ Development Environment
 |Part|Version|
@@ -20,6 +23,7 @@
 |**Android App**|**Kotlin** 1.4 with Android Studio 4.0
 |**Beacon Module**|**Raspberry Pi** 3B+, **Arduino UNO** with HM-10 BLE Module
 |**Database**|**MySQL** 8.0.21
+
 
 # 🖥 System Architecture
 
